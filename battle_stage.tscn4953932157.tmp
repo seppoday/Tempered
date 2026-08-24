@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://b8uwfasnhmcvo"]
+
+[ext_resource type="Script" uid="uid://o2qfee1l1fc5" path="res://battle_stage.gd" id="1_a6phw"]
+[ext_resource type="Script" uid="uid://cdykdlc7cvrlk" path="res://player.gd" id="1_wcqk0"]
+[ext_resource type="PackedScene" uid="uid://b1s7u3s7uxodv" path="res://enemy.tscn" id="2_a6phw"]
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="2_fya1x"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a6phw"]
+radius = 65.06919
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bixy7"]
+size = Vector2(149, 39)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a6phw"]
+size = Vector2(3067, 20)
+
+[node name="BattleStage" type="Node2D" unique_id=1982877711]
+script = ExtResource("1_a6phw")
+enemy_scene = ExtResource("2_a6phw")
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=527077888]
+position = Vector2(110, 336)
+collision_mask = 8
+script = ExtResource("1_wcqk0")
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=609600965]
+position = Vector2(382, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Player" unique_id=847184810]
+texture = ExtResource("2_fya1x")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1540800332]
+shape = SubResource("CircleShape2D_a6phw")
+
+[node name="SwordHitbox" type="Area2D" parent="Player" unique_id=705515230]
+collision_layer = 4
+collision_mask = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Player/SwordHitbox" unique_id=1412022631]
+position = Vector2(88, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/SwordHitbox" unique_id=1972495793]
+position = Vector2(152.5, 0.5)
+shape = SubResource("RectangleShape2D_bixy7")
+debug_color = Color(0.9944462, 0, 0.2292727, 0.41960785)
+
+[node name="Enemy" parent="." unique_id=758901562 instance=ExtResource("2_a6phw")]
+position = Vector2(995, 317)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=912947156]
+position = Vector2(45, 498)
+collision_layer = 8
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D" unique_id=41721863]
+scale = Vector2(49.32, 1)
+texture = ExtResource("2_fya1x")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1059049323]
+position = Vector2(1092, -54)
+rotation = 3.1415925
+shape = SubResource("RectangleShape2D_a6phw")

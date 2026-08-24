@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://x4spoxodgh4x"]
+
+[ext_resource type="Script" uid="uid://dslmjuxfshvq7" path="res://equipment_slot.gd" id="1_f3jqd"]
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="2_optkv"]
+
+[node name="EquipmentSlot" type="Panel" unique_id=1626732313]
+custom_minimum_size = Vector2(80, 80)
+script = ExtResource("1_f3jqd")
+
+[node name="Icon" type="TextureRect" parent="." unique_id=1240173784]
+custom_maximum_size = Vector2(128, 128)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_optkv")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="." unique_id=78564007]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "1"

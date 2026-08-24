@@ -1,5 +1,44 @@
 [gd_scene format=3 uid="uid://b7geclixrytt3"]
 
+[ext_resource type="Script" uid="uid://rhwee7ilv64" path="res://item_panel.gd" id="1_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://bcpnv4byjqn5d" path="res://player.tscn" id="1_a6jrf"]
+[ext_resource type="Script" uid="uid://cpns5yr2xh0ev" path="res://inventory.gd" id="1_h2yge"]
+[ext_resource type="Script" uid="uid://b5k2cr1mrofrk" path="res://battle_arena.gd" id="1_qsp4k"]
+[ext_resource type="Script" uid="uid://dpyk5dj1dlqss" path="res://gold_label.gd" id="1_seu75"]
+[ext_resource type="Script" uid="uid://ciakkvnknrtrw" path="res://alchemy_panel.gd" id="2_0xm2m"]
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="2_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://b1s7u3s7uxodv" path="res://enemy.tscn" id="2_kq58d"]
+[ext_resource type="PackedScene" uid="uid://x4spoxodgh4x" path="res://equipment_slot.tscn" id="3_dg77c"]
+[ext_resource type="PackedScene" uid="uid://djk4dwog07htq" path="res://drop.tscn" id="3_kq58d"]
+[ext_resource type="Texture2D" uid="uid://cjumvaohjjexs" path="res://assets/clover_fragment.png" id="4_efxa6"]
+[ext_resource type="Texture2D" uid="uid://cp1hwkfgl84rj" path="res://assets/weapon.png" id="4_w48qg"]
+[ext_resource type="Texture2D" uid="uid://d36ijvbhu3dn3" path="res://assets/dragon_eye.png" id="5_dg77c"]
+[ext_resource type="Texture2D" uid="uid://doswu3pxkpcf6" path="res://assets/shield.png" id="5_vivmo"]
+[ext_resource type="Texture2D" uid="uid://bp8alctflgmd7" path="res://assets/helmet.png" id="6_cegan"]
+[ext_resource type="Texture2D" uid="uid://bnqayedv8brpb" path="res://assets/dust_magic.png" id="6_ycdy4"]
+[ext_resource type="Texture2D" uid="uid://b4jtn8mldxqyf" path="res://assets/armor.png" id="7_82xsv"]
+[ext_resource type="Texture2D" uid="uid://c0snlqchvic2" path="res://assets/lucky_powder.png" id="7_w48qg"]
+[ext_resource type="Texture2D" uid="uid://hckl245r3g2f" path="res://assets/boots.png" id="8_getpj"]
+[ext_resource type="Texture2D" uid="uid://nwljsveg0qmg" path="res://assets/quicksilver_oil.png" id="8_vivmo"]
+[ext_resource type="Texture2D" uid="uid://bd4qr4k8mk4hl" path="res://assets/stone_elixir_weapon.png" id="9_2cqfq"]
+[ext_resource type="Texture2D" uid="uid://ygdvvwu2iiq5" path="res://assets/amulet.png" id="9_ryguw"]
+[ext_resource type="Texture2D" uid="uid://dftmcck2to81" path="res://assets/ring.png" id="10_d13ii"]
+[ext_resource type="Texture2D" uid="uid://chjme7xfor85v" path="res://assets/whetstone.png" id="10_yaehf"]
+[ext_resource type="Texture2D" uid="uid://0l5qr4hlen4a" path="res://assets/obsidian_blade.jpeg" id="19_getpj"]
+[ext_resource type="Texture2D" uid="uid://dyuor5gq0y08d" path="res://assets/iron_shield.jpeg" id="20_ryguw"]
+[ext_resource type="Texture2D" uid="uid://1uy3olis0w12" path="res://assets/chainmail_armor.jpeg" id="22_1u8w0"]
+[ext_resource type="Texture2D" uid="uid://cb3riuari6imq" path="res://assets/hat (1).png" id="22_a6jrf"]
+[ext_resource type="Texture2D" uid="uid://brrdeqocjha3i" path="res://assets/worn boots.jpeg" id="23_lswn8"]
+[ext_resource type="Texture2D" uid="uid://c7675vp32ev6d" path="res://assets/jade_amulet.jpeg" id="24_a6jrf"]
+[ext_resource type="Texture2D" uid="uid://bf1coygh0o48r" path="res://assets/copper_ring.png" id="25_xuqvo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ifow5"]
+bg_color = Color(0, 0, 0, 0.42352942)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [node name="Main" type="Control" unique_id=165499954]
 layout_mode = 3
 anchors_preset = 15
@@ -7,3 +46,414 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=211961604]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="MainWindow" type="BoxContainer" parent="MarginContainer" unique_id=251606534]
+layout_mode = 2
+theme_override_constants/separation = 12
+vertical = true
+
+[node name="TopPanel" type="PanelContainer" parent="MarginContainer/MainWindow" unique_id=741333311]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainWindow/TopPanel" unique_id=1598694986]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MainWindow/TopPanel/MarginContainer" unique_id=1906673140]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 24
+
+[node name="Label" type="Label" parent="MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer" unique_id=1577298421]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Wojownik"
+
+[node name="HBoxContainer" type="BoxContainer" parent="MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer" unique_id=904977546]
+layout_mode = 2
+vertical = true
+
+[node name="BoxContainer" type="BoxContainer" parent="MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1984892666]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/BoxContainer" unique_id=1270091180]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+text = "HP: "
+
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/BoxContainer" unique_id=654604108]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+value = 11.05
+
+[node name="BoxContainer2" type="BoxContainer" parent="MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1405562181]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/BoxContainer2" unique_id=146813683]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+text = "MANA: "
+
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/BoxContainer2" unique_id=1411875886]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+value = 11.05
+
+[node name="BoxContainer3" type="BoxContainer" parent="MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer" unique_id=321935131]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/BoxContainer3" unique_id=635124935]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+text = "EXP: "
+
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/BoxContainer3" unique_id=498474180]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+value = 11.05
+
+[node name="GoldLabel" type="Label" parent="MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer" unique_id=1692207773]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Gold: 1235$"
+script = ExtResource("1_seu75")
+
+[node name="MiddlePanel" type="BoxContainer" parent="MarginContainer/MainWindow" unique_id=2126571782]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="BattleArena" type="PanelContainer" parent="MarginContainer/MainWindow/MiddlePanel" unique_id=1848101840]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+mouse_filter = 2
+script = ExtResource("1_qsp4k")
+enemy_scene = ExtResource("2_kq58d")
+spawn_interval_min = 0.2
+spawn_interval_max = 0.4
+drop_scene = ExtResource("3_kq58d")
+
+[node name="Player" parent="MarginContainer/MainWindow/MiddlePanel/BattleArena" unique_id=1413141307 instance=ExtResource("1_a6jrf")]
+unique_name_in_owner = true
+position = Vector2(620, 458)
+
+[node name="DropLayer" type="Node2D" parent="MarginContainer/MainWindow/MiddlePanel/BattleArena" unique_id=2116879078]
+unique_name_in_owner = true
+position = Vector2(620, 458)
+
+[node name="InventorySection" type="BoxContainer" parent="MarginContainer/MainWindow/MiddlePanel" unique_id=920328019]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="BoxContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection" unique_id=1587470251]
+layout_mode = 2
+theme_override_constants/separation = 12
+vertical = true
+
+[node name="Equipment" type="PanelContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer" unique_id=1078332561]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ifow5")
+script = ExtResource("1_1bvp3")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment" unique_id=85847800]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="EquipmentGrid" type="GridContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer" unique_id=139815665]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+columns = 3
+
+[node name="AmuletSlot" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1593952919 instance=ExtResource("3_dg77c")]
+unique_name_in_owner = true
+layout_mode = 2
+accepted_item_type = "amulet"
+placeholder_texture = ExtResource("9_ryguw")
+
+[node name="HelmetSlot" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=315832620 instance=ExtResource("3_dg77c")]
+unique_name_in_owner = true
+layout_mode = 2
+accepted_item_type = "helmet"
+placeholder_texture = ExtResource("6_cegan")
+
+[node name="RingSlot" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1299274000 instance=ExtResource("3_dg77c")]
+unique_name_in_owner = true
+layout_mode = 2
+accepted_item_type = "ring"
+placeholder_texture = ExtResource("10_d13ii")
+
+[node name="WeaponSlot" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1626732313 instance=ExtResource("3_dg77c")]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_texture = ExtResource("4_w48qg")
+
+[node name="ArmorSlot" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=427080641 instance=ExtResource("3_dg77c")]
+unique_name_in_owner = true
+layout_mode = 2
+accepted_item_type = "armor"
+placeholder_texture = ExtResource("7_82xsv")
+
+[node name="ShieldSlot" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=44661284 instance=ExtResource("3_dg77c")]
+unique_name_in_owner = true
+layout_mode = 2
+accepted_item_type = "shield"
+placeholder_texture = ExtResource("5_vivmo")
+
+[node name="Empty" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1214779061 instance=ExtResource("3_dg77c")]
+layout_mode = 2
+accepted_item_type = "shield"
+
+[node name="Icon" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid/Empty" index="0" unique_id=1240173784]
+texture = null
+
+[node name="Label" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid/Empty" index="1" unique_id=78564007]
+text = ""
+
+[node name="BootsSlot" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1576719944 instance=ExtResource("3_dg77c")]
+unique_name_in_owner = true
+layout_mode = 2
+accepted_item_type = "boots"
+placeholder_texture = ExtResource("8_getpj")
+
+[node name="Empty2" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=670356730 instance=ExtResource("3_dg77c")]
+layout_mode = 2
+accepted_item_type = "shield"
+
+[node name="Icon" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid/Empty2" index="0" unique_id=1240173784]
+custom_minimum_size = Vector2(64, 64)
+texture = null
+
+[node name="Label" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid/Empty2" index="1" unique_id=78564007]
+text = ""
+
+[node name="Header" type="PanelContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer" unique_id=390046125]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ifow5")
+script = ExtResource("1_1bvp3")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header" unique_id=302558074]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HeaderRow" type="BoxContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer" unique_id=1818068224]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+theme_override_constants/separation = 12
+alignment = 1
+vertical = true
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow" unique_id=1682381546]
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/PanelContainer" unique_id=498874160]
+unique_name_in_owner = true
+custom_maximum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_1bvp3")
+
+[node name="CharacterStats" type="VBoxContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow" unique_id=904516349]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats" unique_id=1424671028]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer" unique_id=1930763405]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "STR"
+
+[node name="Label3" type="Label" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer" unique_id=406623404]
+layout_mode = 2
+text = "10"
+
+[node name="Button" type="Button" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer" unique_id=1493268433]
+layout_mode = 2
+disabled = true
+text = " + "
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats" unique_id=1590339535]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer2" unique_id=565890370]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "INT"
+
+[node name="Label3" type="Label" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer2" unique_id=2011018835]
+layout_mode = 2
+text = "10"
+
+[node name="Button" type="Button" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer2" unique_id=1180738286]
+layout_mode = 2
+disabled = true
+text = " + "
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats" unique_id=645674225]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer3" unique_id=671092552]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "DEX"
+
+[node name="Label3" type="Label" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer3" unique_id=817500746]
+layout_mode = 2
+text = "10"
+
+[node name="Button" type="Button" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer3" unique_id=121290993]
+layout_mode = 2
+disabled = true
+text = " + "
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats" unique_id=1298427746]
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer4" unique_id=1057634515]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "CON"
+
+[node name="Label2" type="Label" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer4" unique_id=702323166]
+layout_mode = 2
+text = "10"
+
+[node name="Button" type="Button" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer4" unique_id=1189752753]
+layout_mode = 2
+disabled = true
+text = " + "
+
+[node name="Stats" type="PanelContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer" unique_id=688894949]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ifow5")
+script = ExtResource("1_1bvp3")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Stats" unique_id=323181302]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="StatsBox" type="VBoxContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Stats/MarginContainer" unique_id=815937749]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InventoryPanel" type="VBoxContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection" unique_id=1748168337]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Alchemy" type="PanelContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel" unique_id=865049812]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ifow5")
+script = ExtResource("2_0xm2m")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy" unique_id=162177359]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer" unique_id=345366625]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer" unique_id=1820349696]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="AlchemyGrid" type="GridContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2001586315]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 5
+
+[node name="AlchemyGridResults" type="GridContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1755035230]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 5
+
+[node name="CraftButton" type="Button" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer" unique_id=820951479]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Połącz składniki"
+
+[node name="Inventory" type="PanelContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel" unique_id=1023669752]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ifow5")
+script = ExtResource("1_h2yge")
+clover_fragment = ExtResource("4_efxa6")
+dragons_eye = ExtResource("5_dg77c")
+dust_magic = ExtResource("6_ycdy4")
+lucky_powder = ExtResource("7_w48qg")
+quicksilver_oil = ExtResource("8_vivmo")
+stone_elixir_weapon = ExtResource("9_2cqfq")
+whetstone = ExtResource("10_yaehf")
+obsidian_blade_icon = ExtResource("19_getpj")
+iron_shield_icon = ExtResource("20_ryguw")
+leather_helmet_icon = ExtResource("22_a6jrf")
+chainmail_armor_icon = ExtResource("22_1u8w0")
+worn_boots_icon = ExtResource("23_lswn8")
+jade_amulet_icon = ExtResource("24_a6jrf")
+copper_ring_icon = ExtResource("25_xuqvo")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory" unique_id=809901435]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer" unique_id=1134863120]
+custom_minimum_size = Vector2(336, 0)
+layout_mode = 2
+
+[editable path="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid/Empty"]
+[editable path="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid/Empty2"]

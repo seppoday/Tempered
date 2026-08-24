@@ -1,0 +1,112 @@
+[gd_scene format=3 uid="uid://b7geclixrytt3"]
+
+[ext_resource type="Script" uid="uid://cpns5yr2xh0ev" path="res://inventory.gd" id="1_h2yge"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ifow5"]
+bg_color = Color(0, 0, 0, 0.42352942)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="LabelSettings" id="LabelSettings_7dm0k"]
+font_color = Color(1, 0.81960785, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ig7tw"]
+font_color = Color(0.1764706, 0.8745098, 1, 1)
+
+[node name="Main" type="Control" unique_id=165499954]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ItemPanel" type="PanelContainer" parent="." unique_id=1078332561]
+layout_mode = 0
+offset_left = 152.0
+offset_top = 137.0
+offset_right = 409.0
+offset_bottom = 454.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ifow5")
+
+[node name="MarginContainer" type="MarginContainer" parent="ItemPanel" unique_id=85847800]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ItemPanel/MarginContainer" unique_id=815937749]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ItemPanel/MarginContainer/VBoxContainer" unique_id=1464862017]
+layout_mode = 2
+text = "Blade (+46)"
+label_settings = SubResource("LabelSettings_7dm0k")
+
+[node name="Label2" type="Label" parent="ItemPanel/MarginContainer/VBoxContainer" unique_id=814226556]
+layout_mode = 2
+text = "Seal of Sun"
+label_settings = SubResource("LabelSettings_7dm0k")
+
+[node name="Label3" type="Label" parent="ItemPanel/MarginContainer/VBoxContainer" unique_id=286619417]
+layout_mode = 2
+text = "Type: Blade"
+
+[node name="Label4" type="Label" parent="ItemPanel/MarginContainer/VBoxContainer" unique_id=1443522960]
+layout_mode = 2
+text = "Degree: 14 degrees"
+
+[node name="Label5" type="Label" parent="ItemPanel/MarginContainer/VBoxContainer" unique_id=1068963100]
+layout_mode = 2
+
+[node name="Label6" type="Label" parent="ItemPanel/MarginContainer/VBoxContainer" unique_id=567439510]
+layout_mode = 2
+text = "Phy. atk. pwr. 125 ~ 135 (+0%)"
+
+[node name="Label7" type="Label" parent="ItemPanel/MarginContainer/VBoxContainer" unique_id=627975226]
+layout_mode = 2
+text = "Mag. atk. pwr. 125 ~ 135 (+0%)"
+
+[node name="Label8" type="Label" parent="ItemPanel/MarginContainer/VBoxContainer" unique_id=2020626017]
+layout_mode = 2
+text = "Durability 80/161 (+0%)"
+
+[node name="Label9" type="Label" parent="ItemPanel/MarginContainer/VBoxContainer" unique_id=875516257]
+layout_mode = 2
+text = "Attack distance 0.6 m"
+
+[node name="Label10" type="Label" parent="ItemPanel/MarginContainer/VBoxContainer" unique_id=2021067046]
+layout_mode = 2
+
+[node name="Label11" type="Label" parent="ItemPanel/MarginContainer/VBoxContainer" unique_id=1997995280]
+layout_mode = 2
+text = "Str 8 Increase (+100%)"
+label_settings = SubResource("LabelSettings_ig7tw")
+
+[node name="InventoryPanel" type="PanelContainer" parent="." unique_id=1023669752]
+custom_minimum_size = Vector2(600, 300)
+layout_mode = 1
+offset_left = 515.0
+offset_top = 23.0
+offset_right = 1115.0
+offset_bottom = 323.0
+script = ExtResource("1_h2yge")
+
+[node name="GridContainer" type="GridContainer" parent="InventoryPanel" unique_id=1134863120]
+layout_mode = 2
+columns = 5
+
+[node name="InventoryPanel2" type="PanelContainer" parent="." unique_id=865049812]
+custom_minimum_size = Vector2(600, 300)
+layout_mode = 1
+offset_left = 516.0
+offset_top = 331.0
+offset_right = 1116.0
+offset_bottom = 631.0
+
+[node name="GridContainer" type="GridContainer" parent="InventoryPanel2" unique_id=2001586315]
+layout_mode = 2
+columns = 5
