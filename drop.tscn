@@ -11,6 +11,7 @@ script = ExtResource("1_f4jv2")
 min_distance = 80.0
 max_distance = 400.0
 total_duration = 1.5
+despawn_time = 15.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=512379759]
 scale = Vector2(0.5, 0.5)

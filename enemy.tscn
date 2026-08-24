@@ -1,18 +1,16 @@
 [gd_scene format=3 uid="uid://b1s7u3s7uxodv"]
 
 [ext_resource type="Script" uid="uid://ehpvratewg3y" path="res://enemy.gd" id="1_7k104"]
-[ext_resource type="PackedScene" uid="uid://b5e6onr0nkuv6" path="res://floating_text.tscn" id="2_4gyqm"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_fya1x"]
 load_path = "res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bixy7"]
-radius = 33.01515
+radius = 35.014282
 
 [node name="Enemy" type="CharacterBody2D" unique_id=758901562 groups=["enemies"]]
 collision_layer = 2
 script = ExtResource("1_7k104")
-floating_text_scene = ExtResource("2_4gyqm")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1756268848]
 modulate = Color(1, 0.95332307, 0.94528455, 1)

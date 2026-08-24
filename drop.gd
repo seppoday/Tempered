@@ -2,7 +2,7 @@ extends Area2D
 
 @onready var sprite: Sprite2D = $Sprite2D
 
-# --- KONFIGURACJA W INSPECTORZE (Gdy tworzysz gotowy prefabrykat w edytorze) ---
+# --- KONFIGURACJA W INSPECTORZE ---
 @export_group("Item Definition")
 @export var item_name: String = "Miecz Przeznaczenia"
 @export_enum("equipment", "material", "upgrade_stone", "stat_scroll", "modifier") var item_type: String = "equipment"
@@ -24,16 +24,17 @@ extends Area2D
 @export var jump_height: float = 35.0
 @export var total_duration: float = 1.0
 
-# Słownik z danymi przedmiotu (przekazywany ze spawnera lub generowany z Inspectora)
+@export_group("Despawn Settings")
+@export var queue_free_timer: bool = true   # Czy ma znikać po czasie?
+@export var despawn_time: float = 120.0    # Czas leżenia w sekundach (120s = 2 minuty)
+
+# Słownik z danymi przedmiotu
 @export var item_data: Dictionary = {}
 
-# Referencja do aktywnego panelu tooltipa
 var _tooltip_instance: Control = null
-var _is_collected: bool = false # Zabezpieczenie przed wielokrotnym kliknięciem
+var _is_collected: bool = false
+var _current_lifetime: float = 0.0 # Licznik czasu leżenia na ziemi
 
-# ==========================================
-# TOOLTIP DATA & CONFIG
-# ==========================================
 const STAT_DISPLAY := {
 	"base_damage":      ["Damage", Color(1, 1, 1), "int"],
 	"attack_speed":     ["Attack Speed", Color(1, 1, 1), "speed"],
@@ -58,82 +59,40 @@ const STAT_DISPLAY := {
 }
 
 func _ready() -> void:
-	# 1. Zbudowanie item_data z pól Inspectora (jeśli spawner nie wstrzyknął własnych danych)
 	_setup_item_data()
-
-	# 2. Synchronizacja tekstury (pomiędzy Sprite2D a item_data)
 	_sync_texture()
 
-	# 3. Włączenie wykrywania kursora i kliknięć
 	input_pickable = true
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 	input_event.connect(_on_input_event)
 
-	# 4. Czekamy jedną klatkę na pozycję ze spawnera i odpalamy animację odbicia
 	await get_tree().process_frame
 	_animate_bounce()
 
-# Zbudowanie słownika z ustawień Inspectora
-func _setup_item_data() -> void:
-	# 1. Jeśli item_data jest puste (brak spawnera), budujemy je z Inspectora
-	if item_data.is_empty():
-		var slot_val: String = equip_slot if (item_type == "equipment" and equip_slot != "none") else ""
-
-		item_data = {
-			"id": item_name.to_snake_case(),
-			"name": item_name,
-			"item_type": item_type,
-			"equip_slot": slot_val,
-			"rarity": rarity,
-			"description": description,
-			"stackable": item_type != "equipment",
-			"count": 1
-		}
-
-		if base_damage > 0: item_data["base_damage"] = base_damage
-		if attack_speed > 0.0: item_data["attack_speed"] = attack_speed
-		if crit_chance > 0.0: item_data["crit_chance"] = crit_chance
-		if block_chance > 0.0: item_data["block_chance"] = block_chance
-		if dodge_chance > 0.0: item_data["dodge_chance"] = dodge_chance
-		if luck > 0: item_data["luck"] = luck
-
-	# 2. BEZPIECZNIK: Uzupełniamy ewentualne brakujące klucze w przekazanym słowniku
-	if not item_data.has("id"):
-		item_data["id"] = item_data.get("name", "item").to_snake_case()
-	if not item_data.has("item_type"):
-		item_data["item_type"] = "equipment"
-	if not item_data.has("equip_slot") and item_data["item_type"] == "equipment":
-		item_data["equip_slot"] = "weapon"
-	if not item_data.has("stackable"):
-		item_data["stackable"] = (item_data["item_type"] != "equipment")
-	if not item_data.has("count"):
-		item_data["count"] = 1
-	if not item_data.has("rarity"):
-		item_data["rarity"] = "common"
-
-func _sync_texture() -> void:
-	if sprite == null:
-		return
-
-	# A) Przepisz teksturę ze Sprite2D do item_data (jeśli item_data jej nie ma)
-	if sprite.texture != null and not item_data.has("texture"):
-		item_data["texture"] = sprite.texture
-
-	# B) Przepisz teksturę z item_data do Sprite2D (jeśli spawner wstrzyknął teksturę)
-	elif item_data.has("texture") and item_data["texture"] != null:
-		sprite.texture = item_data["texture"]
-
-func _process(_delta: float) -> void:
-	# Podążanie tooltipa za kursorem myszy
+func _process(delta: float) -> void:
+	# 1. Aktualizacja pozycji tooltipa
 	if is_instance_valid(_tooltip_instance):
 		_tooltip_instance.global_position = get_viewport().get_mouse_position() + Vector2(14, 14)
+
+	# 2. PROSTY I WYDAJNY LICZNIK CZASU ZNIKANIA
+	if queue_free_timer and not _is_collected:
+		_current_lifetime += delta
+
+		# Miganie w ostatnich 3 sekundach życia
+		if _current_lifetime >= despawn_time - 3.0:
+			modulate.a = 0.3 + 0.7 * abs(sin(_current_lifetime * 10.0))
+
+		# Czas minął -> usuwamy
+		if _current_lifetime >= despawn_time:
+			_hide_tooltip()
+			queue_free()
 
 func _exit_tree() -> void:
 	_hide_tooltip()
 
 # ==========================================
-# HOVER & PODNOSZENIE PRZEDMIOTU
+# HOVER & PICKUP
 # ==========================================
 func _on_mouse_entered() -> void:
 	_show_tooltip()
@@ -142,7 +101,7 @@ func _on_mouse_exited() -> void:
 	_hide_tooltip()
 
 func _show_tooltip() -> void:
-	if item_data.is_empty() or is_instance_valid(_tooltip_instance):
+	if item_data.is_empty() or is_instance_valid(_tooltip_instance) or _is_collected:
 		return
 
 	_tooltip_instance = _build_tooltip_panel()
@@ -155,24 +114,56 @@ func _hide_tooltip() -> void:
 		_tooltip_instance.queue_free()
 		_tooltip_instance = null
 
-# Kliknięcie myszką w przedmiot leżący na ziemi
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if _is_collected:
 		return
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		get_viewport().set_input_as_handled() # Blokujemy przekazanie kliknięcia pod spód
+		get_viewport().set_input_as_handled()
 		EventBus.item_pickup_requested.emit(item_data, self)
 
-# Wywoływane przez inventory.gd gdy przedmiot uda się pomyślnie schować do plecaka
 func on_collected() -> void:
 	_is_collected = true
 	_hide_tooltip()
 	queue_free()
 
 # ==========================================
-# GENERATOR TOOLTIPA (RPG STYLE)
+# SETUP & TOOLTIP BUILDING
 # ==========================================
+func _setup_item_data() -> void:
+	if item_data.is_empty():
+		var slot_val: String = equip_slot if (item_type == "equipment" and equip_slot != "none") else ""
+		item_data = {
+			"id": item_name.to_snake_case(),
+			"name": item_name,
+			"item_type": item_type,
+			"equip_slot": slot_val,
+			"rarity": rarity,
+			"description": description,
+			"stackable": item_type != "equipment",
+			"count": 1
+		}
+		if base_damage > 0: item_data["base_damage"] = base_damage
+		if attack_speed > 0.0: item_data["attack_speed"] = attack_speed
+		if crit_chance > 0.0: item_data["crit_chance"] = crit_chance
+		if block_chance > 0.0: item_data["block_chance"] = block_chance
+		if dodge_chance > 0.0: item_data["dodge_chance"] = dodge_chance
+		if luck > 0: item_data["luck"] = luck
+
+	if not item_data.has("id"): item_data["id"] = item_data.get("name", "item").to_snake_case()
+	if not item_data.has("item_type"): item_data["item_type"] = "equipment"
+	if not item_data.has("equip_slot") and item_data["item_type"] == "equipment": item_data["equip_slot"] = "weapon"
+	if not item_data.has("stackable"): item_data["stackable"] = (item_data["item_type"] != "equipment")
+	if not item_data.has("count"): item_data["count"] = 1
+	if not item_data.has("rarity"): item_data["rarity"] = "common"
+
+func _sync_texture() -> void:
+	if sprite == null: return
+	if sprite.texture != null and not item_data.has("texture"):
+		item_data["texture"] = sprite.texture
+	elif item_data.has("texture") and item_data["texture"] != null:
+		sprite.texture = item_data["texture"]
+
 func _build_tooltip_panel() -> Control:
 	var container = PanelContainer.new()
 	var style = StyleBoxFlat.new()
@@ -180,7 +171,6 @@ func _build_tooltip_panel() -> Control:
 	style.border_color = _get_rarity_color()
 	style.set_border_width_all(2)
 	style.set_corner_radius_all(4)
-
 	style.content_margin_left = 8
 	style.content_margin_top = 8
 	style.content_margin_right = 8
@@ -191,14 +181,12 @@ func _build_tooltip_panel() -> Control:
 	vbox.add_theme_constant_override("separation", 2)
 	container.add_child(vbox)
 
-	# Nazwa
 	var name_label = Label.new()
 	name_label.text = item_data.get("name", "Przedmiot")
 	name_label.add_theme_color_override("font_color", _get_rarity_color())
 	name_label.add_theme_font_size_override("font_size", 14)
 	vbox.add_child(name_label)
 
-	# Rzadkość / Slot Ekwipunku
 	var rarity_label = Label.new()
 	var rarity_str = item_data.get("rarity", "common").to_upper()
 	var equip_slot_str = item_data.get("equip_slot", "")
@@ -212,13 +200,11 @@ func _build_tooltip_panel() -> Control:
 	rarity_label.add_theme_font_size_override("font_size", 10)
 	vbox.add_child(rarity_label)
 
-	# Linia oddzielająca
 	var line = ColorRect.new()
 	line.custom_minimum_size = Vector2(100, 1)
 	line.color = Color(0.3, 0.3, 0.3, 0.5)
 	vbox.add_child(line)
 
-	# Ilość (dla materiałów/stosów)
 	var count: int = item_data.get("count", 1)
 	if count > 1:
 		var count_lbl = Label.new()
@@ -227,13 +213,11 @@ func _build_tooltip_panel() -> Control:
 		count_lbl.add_theme_font_size_override("font_size", 11)
 		vbox.add_child(count_lbl)
 
-	# Lista statystyk
 	var stat_rows := _get_stat_rows()
 	if not stat_rows.is_empty():
 		var stat_spacer = Control.new()
 		stat_spacer.custom_minimum_size = Vector2(0, 4)
 		vbox.add_child(stat_spacer)
-
 		for row in stat_rows:
 			var stat_lbl = Label.new()
 			stat_lbl.text = row["text"]
@@ -243,12 +227,10 @@ func _build_tooltip_panel() -> Control:
 
 	_add_special_item_rows(vbox)
 
-	# Opis
 	if item_data.has("description") and str(item_data["description"]) != "":
 		var desc_spacer = Control.new()
 		desc_spacer.custom_minimum_size = Vector2(0, 4)
 		vbox.add_child(desc_spacer)
-
 		var desc_lbl = Label.new()
 		desc_lbl.text = item_data["description"]
 		desc_lbl.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5))
@@ -316,12 +298,8 @@ func _get_rarity_color() -> Color:
 		"legendary": return Color(1.0, 0.7, 0.0)
 	return Color.WHITE
 
-# ==========================================
-# ANIMACJA ODBICIA
-# ==========================================
 func _animate_bounce() -> void:
 	if sprite == null: return
-
 	var random_angle := randf_range(0.0, TAU)
 	var distance := randf_range(min_distance, max_distance)
 	var target_position := global_position + Vector2.RIGHT.rotated(random_angle) * distance

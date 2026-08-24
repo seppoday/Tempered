@@ -14,5 +14,5 @@ func _pop_animation() -> void:
 	pivot_offset = size * 0.5
 	var tween := create_tween()
 	tween.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, "scale", Vector2(1.25, 1.25), 0.08)
-	tween.tween_property(self, "scale", Vector2.ONE, 0.15)
+	tween.tween_property(self, "offset_transform_scale", Vector2(1.25, 1.25), 0.08)
+	tween.tween_property(self, "offset_transform_scale", Vector2.ONE, 0.15)

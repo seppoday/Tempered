@@ -1,21 +1,26 @@
-extends PanelContainer
+extends Node2D
 
 @export var enemy_scene: PackedScene
 @export var spawn_interval_min: float = 1.5
 @export var spawn_interval_max: float = 3.0
-@export var spawn_margin: float = 40.0  # jak daleko za krawędzią panelu spawnować
+@export var spawn_margin: float = 40.0  
+
+# Opcjonalnie: Przypisz tu panel UI areny z drzewa scen (jeśli arena ma stały panel w UI).
+# Jeśli zostawisz puste, skrypt automatycznie użyje wymiarów widocznego ekranu!
+@export var arena_ui_panel: Control
 
 @export_group("Drop Settings")
 @export var drop_scene: PackedScene
-# Bazowa szansa na drop: 0.1 = 10%
-@export_range(0.0, 1.0) var drop_chance: float = 0.1 
+@export_range(0.0, 1.0) var drop_chance: float = 0.1
+@export var max_ground_drops: int = 50  
 
-@export_group("Gold Settings")
-@export var floating_text_scene: PackedScene # Przypisz floating_text.tscn w edytorze!
+@export_group("Gold & Exp Settings")
+@export var floating_text_scene: PackedScene 
 @export var min_gold_drop: int = 5
 @export var max_gold_drop: int = 15
 
-@onready var drop_layer: Node2D = %DropLayer
+@onready var enemy_layer: Node2D = get_node_or_null("%EnemyLayer")
+@onready var drop_layer: Node2D = get_node_or_null("%DropLayer")
 @onready var player: CharacterBody2D = %Player
 
 var spawn_timer: float = 0.0
@@ -38,57 +43,79 @@ func _spawn_enemy() -> void:
 		return
 
 	var enemy := enemy_scene.instantiate()
-	add_child(enemy)
+	
+	if enemy_layer != null:
+		enemy_layer.add_child(enemy)
+	else:
+		add_child(enemy)
+	
 	enemy.global_position = _get_random_edge_position()
 	enemy.target_position = player.global_position
 
 	EventBus.enemy_spawned.emit(enemy)
 
+# ==========================================
+# OBLICZANIE POZYCJI SPAWNU W 2D
+# ==========================================
 func _get_random_edge_position() -> Vector2:
-	var rect: Rect2 = get_global_rect()
+	var rect: Rect2
+
+	# Jeśli przypisano panel UI, bierzemy jego wymiary.
+	# W przeciwnym razie bierzemy rozmiar widocznego ekranu (Viewport)
+	if arena_ui_panel != null:
+		rect = arena_ui_panel.get_global_rect()
+	else:
+		rect = get_viewport_rect()
+
 	var side := randi() % 4
 	match side:
-		0: # góra
+		0: # Góra
 			return Vector2(randf_range(rect.position.x, rect.position.x + rect.size.x), rect.position.y - spawn_margin)
-		1: # dół
+		1: # Dół
 			return Vector2(randf_range(rect.position.x, rect.position.x + rect.size.x), rect.position.y + rect.size.y + spawn_margin)
-		2: # lewo
+		2: # Lewo
 			return Vector2(rect.position.x - spawn_margin, randf_range(rect.position.y, rect.position.y + rect.size.y))
-		_: # prawo
+		_: # Prawo
 			return Vector2(rect.position.x + rect.size.x + spawn_margin, randf_range(rect.position.y, rect.position.y + rect.size.y))
 
 # ==========================================
-# GŁÓWNA OBSŁUGA ŚMIERCI WROGA (Drop + Gold)
+# OBSŁUGA ŚMIERCI WROGA (Drop + Złoto + EXP)
 # ==========================================
-
 func _on_enemy_died(enemy: Node, death_position: Vector2) -> void:
-	# 1. Próba zdropowania przedmiotu
 	spawn_drop(enemy, death_position)
+	
+	if PlayerData != null:
+		# Złoto
+		var earned_gold := randi_range(min_gold_drop, max_gold_drop)
+		PlayerData.add_gold(earned_gold)
+		_spawn_floating_text(death_position + Vector2(0, -15), "+%d$" % earned_gold, Color(1.0, 0.85, 0.2))
+		
+		# EXP
+		var earned_exp: int = 10
+		if "exp_reward" in enemy:
+			earned_exp = enemy.exp_reward
+			
+		PlayerData.add_exp(earned_exp)
+		_spawn_floating_text(death_position + Vector2(15, -5), "+%d XP" % earned_exp, Color(0.8, 0.4, 1.0))
 
-	# 2. Losowanie i przyznawanie złota
-	_award_gold(death_position)
-
-
-func _award_gold(death_position: Vector2) -> void:
-	var earned_gold := randi_range(min_gold_drop, max_gold_drop)
-	PlayerData.add_gold(earned_gold)
-	_spawn_gold_text(death_position, earned_gold)
-
-
-func _spawn_gold_text(pos: Vector2, amount: int) -> void:
+func _spawn_floating_text(pos: Vector2, text: String, color: Color) -> void:
 	if floating_text_scene == null:
 		return
-
+	
 	var text_node := floating_text_scene.instantiate()
-	get_tree().current_scene.add_child(text_node)
-	text_node.global_position = pos + Vector2(0, -15) # Kawałek wyżej nad wrogiem
-	text_node.setup("+%d$" % amount, Color(1.0, 0.85, 0.2)) # Złoty kolor tekstu
-
+	text_node.z_index = 100 # Rysuj zawsze na wierzchu!
+	
+	if drop_layer != null:
+		drop_layer.add_child(text_node)
+	else:
+		add_child(text_node)
+		
+	text_node.global_position = pos
+	text_node.setup(text, color)
 
 # ==========================================
 # GENEROWANIE PRZEDMIOTU (DROP)
 # ==========================================
-
 func spawn_drop(_enemy: Node, death_position: Vector2) -> void:
 	if drop_scene == null or drop_layer == null:
 		return
@@ -99,6 +126,12 @@ func spawn_drop(_enemy: Node, death_position: Vector2) -> void:
 
 	if randf() > final_drop_chance:
 		return
+
+	# LIMIT PRZEDMIOTÓW NA ZIEMI
+	if drop_layer.get_child_count() >= max_ground_drops:
+		var oldest_drop = drop_layer.get_child(0)
+		if is_instance_valid(oldest_drop):
+			oldest_drop.queue_free()
 
 	var drop := drop_scene.instantiate()
 	if drop == null:
