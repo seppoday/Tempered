@@ -22,6 +22,13 @@ GameManager="*uid://cn6mg6lu8ybnx"
 ForgeSystem="*uid://bmnsfyefhmqxn"
 EventBus="*uid://djqyjqh76fg4j"
 PlayerData="*uid://bj574n8hpsceu"
+MaterialDatabase="*uid://crk3ixjega3wf"
+RecipeDatabase="*uid://n6u31r2q82g3"
+EnemyDatabase="*uid://cuf30qpjf65it"
+LootTableDatabase="*uid://wkffv8ro0n06"
+RNG="*uid://t87xmd5kuqdc"
+CharacterDatabase="*uid://dijwlqmfj15qv"
+WaveDatabase="*uid://c31j52364cspq"
 
 [display]
 
@@ -29,6 +36,10 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/yard/plugin.cfg")
 
 [global_group]
 

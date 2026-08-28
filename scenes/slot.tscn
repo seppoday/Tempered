@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bbadchds7qm5n"]
 
-[ext_resource type="Script" uid="uid://dgospwr7yh66l" path="res://scripts/slot.gd" id="1_c24ra"]
+[ext_resource type="Script" uid="uid://dgospwr7yh66l" path="res://scripts/ui/slot.gd" id="1_c24ra"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wvhbo"]
 bg_color = Color(0.11764706, 0.11764706, 0.14117648, 1)

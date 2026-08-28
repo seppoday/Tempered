@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="MaterialDefinition" format=3 uid="uid://cys41i4h53vjd"]
+
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="1_5o75q"]
+[ext_resource type="Script" uid="uid://ca7fwkvbpwp8c" path="res://data/definitions/material_definition.gd" id="1_yjgsu"]
+
+[resource]
+script = ExtResource("1_yjgsu")
+id = "iron"
+material_name = "Iron"
+description = "Iron description"
+icon = ExtResource("1_5o75q")
+metadata/_custom_type_script = "uid://ca7fwkvbpwp8c"
