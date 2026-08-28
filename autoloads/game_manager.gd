@@ -16,8 +16,6 @@ func _ready() -> void:
 
 func _on_enemy_spawned(enemy: Node2D) -> void:
 	enemies_spawned_this_wave += 1
-	print("[GameManager] enemy spawned: ", enemy.name, " (total this wave: ", enemies_spawned_this_wave, ")")
 
 func _on_enemy_died(enemy: Node2D, death_position: Vector2) -> void:
 	enemies_killed_this_wave += 1
-	print("[GameManager] enemy died at ", death_position, " (killed this wave: ", enemies_killed_this_wave, "/", enemies_spawned_this_wave, ")")

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b1s7u3s7uxodv"]
 
-[ext_resource type="Script" uid="uid://ehpvratewg3y" path="res://enemy.gd" id="1_7k104"]
+[ext_resource type="Script" uid="uid://ehpvratewg3y" path="res://scripts/enemy.gd" id="1_7k104"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_fya1x"]
 load_path = "res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex"

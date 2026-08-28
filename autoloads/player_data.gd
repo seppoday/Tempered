@@ -1,6 +1,8 @@
+# PlayerData.gd
 extends Node
 
 signal stats_changed(changed_stat_key: String)
+signal item_equipped(slot_type: EquipmentSlot.Type, item_instance: ItemInstance)
 signal exp_changed
 signal level_up(new_level: int)
 signal gold_changed(new_gold_amount: int)
@@ -19,7 +21,7 @@ var character_stats: Dictionary = {
 }
 
 var points_per_level: int = 3  # Ile punktów dostajemy co poziom
-var attribute_points: int = 5  # Punkty na start (zmieniłem na 5 dla testów)
+var attribute_points: int = 5  # Punkty na start
 
 var gold: int = 0
 
@@ -33,7 +35,18 @@ var attributes: Dictionary = {
 	"CON": 10,
 }
 
-var equipped_items: Dictionary = {}
+# Słownik przechowuje teraz obiekty ItemInstance (lub null), kluczowany przez
+# EquipmentSlot.Type — dokładnie ten sam enum, którego używa ItemDefinition.slot.
+var equipped_items: Dictionary = {
+	EquipmentSlot.Type.WEAPON: null,
+	EquipmentSlot.Type.HELMET: null,
+	EquipmentSlot.Type.CHEST: null,
+	EquipmentSlot.Type.GLOVES: null,
+	EquipmentSlot.Type.BOOTS: null,
+	EquipmentSlot.Type.AMULET: null,
+	EquipmentSlot.Type.RING: null,
+	EquipmentSlot.Type.OFF_HAND: null,
+}
 
 # ==========================================
 # OBLICZANIE STATYSTYK
@@ -41,30 +54,45 @@ var equipped_items: Dictionary = {}
 func get_total_stats() -> Dictionary:
 	var totals: Dictionary = {}
 
-	# 1. PRZELICZAMY ATRYBUTY NA STATYSTYKI BOJOWE
-	totals["base_damage"]     = 5.0 + (attributes["STR"] * 2.0)
-	totals["crit_multiplier"] = 1.5 + (attributes["STR"] * 0.02) + (attributes["INT"] * 0.01)
+	# 1. PRZELICZAMY BAZOWE ATRYBUTY NA STATYSTYKI BOJOWE
+	# (Nazwy kluczy są teraz identyczne z polami w ItemDefinition!)
+	totals["dmg"]           = 5.0 + (attributes["STR"] * 2.0)
+	totals["crit_damage"]   = 1.5 + (attributes["STR"] * 0.02) + (attributes["INT"] * 0.01)
 	
-	totals["attack_speed"]    = 9.5 + (attributes["DEX"] * 0.01)
-	totals["crit_chance"]     = 0.05 + (attributes["DEX"] * 0.005)
-	totals["dodge_chance"]    = 0.0 + (attributes["DEX"] * 0.002)
+	totals["attack_speed"]  = 0.5 + (attributes["DEX"] * 0.01)
+	totals["crit_chance"]   = 0.05 + (attributes["DEX"] * 0.005)
+	totals["dodge"]         = 0.0 + (attributes["DEX"] * 0.002)
 	
-	totals["max_hp"]          = 100.0 + (attributes["CON"] * 10.0)
-	totals["block_chance"]    = 0.0 + (attributes["CON"] * 0.005)
+	totals["hp"]            = 100.0 + (attributes["CON"] * 10.0)
+	totals["armor"]         = 0.0  # Bazowo brak armora
+	totals["lifesteal"]     = 0.0  # Bazowo brak lifestealu
 	
-	totals["fire_damage"]     = 0.0 + (attributes["INT"] * 0.5)
-	
-	totals["attack_range"] = 1.0
-	totals["target_count"] = 10
+	# Pozostałe statystyki mechaniczne gry (niezależne od eq na razie)
+	totals["block_chance"]  = 0.0 + (attributes["CON"] * 0.005)
+	totals["fire_damage"]   = 0.0 + (attributes["INT"] * 0.5)
+	totals["attack_range"]  = 1.0
+	totals["target_count"]  = 10
 
-	# 2. DODAJEMY EFEKTY Z EKWIPUNKU
+	# 2. DODAJEMY EFEKTY Z EKWIPUNKU (Z nowej klasy ItemDefinition)
+	# slot_type to teraz wartość enuma EquipmentSlot.Type, nie string
 	for slot_type in equipped_items:
-		var item: Dictionary = equipped_items[slot_type]
-		if item.is_empty():
+		var item: ItemInstance = equipped_items[slot_type]
+		
+		# Jeśli slot jest pusty lub nie ma poprawnej definicji, pomijamy
+		if item == null or item.definition == null:
 			continue
-		for key in item.keys():
-			if typeof(item[key]) in [TYPE_INT, TYPE_FLOAT]:
-				totals[key] = totals.get(key, 0.0) + item[key]
+			
+		var def: ItemDefinition = item.definition
+		
+		# Sumujemy statystyki bezpośrednio z pól zasobu (Resource)
+		totals["hp"] += def.hp
+		totals["dmg"] += def.dmg
+		totals["attack_speed"] += def.attack_speed
+		totals["armor"] += def.armor
+		totals["crit_chance"] += def.crit_chance
+		totals["crit_damage"] += def.crit_damage
+		totals["dodge"] += def.dodge
+		totals["lifesteal"] += def.lifesteal
 
 	return totals
 
@@ -111,16 +139,45 @@ func add_gold(amount: int) -> void:
 	gold += amount
 	gold_changed.emit(gold)
 
-func set_equipped_item(slot_type: String, item_data: Dictionary) -> void:
-	equipped_items[slot_type] = item_data
-	stats_changed.emit(slot_type)
 
+func get_equipped_item(slot_type: EquipmentSlot.Type) -> ItemInstance:
+	# Dostosuj do swojej struktury danych, np. słownika:
+	return equipped_items.get(slot_type, null)
+
+# Equipuje item we właściwym slocie na podstawie item_instance.definition.slot —
+# UI (EquipmentSlot) nie musi znać/przekazywać typu slotu ręcznie.
+# Zwraca poprzednio wyekwipowany ItemInstance (lub null), np. do odłożenia go
+# z powrotem do ekwipunku.
+func equip_item(item_instance: ItemInstance) -> ItemInstance:
+	if item_instance == null or item_instance.definition == null:
+		return null
+	
+
+	var slot_type: EquipmentSlot.Type = item_instance.definition.slot
+	var previous: ItemInstance = equipped_items.get(slot_type)
+	equipped_items[slot_type] = item_instance
+	stats_changed.emit(EquipmentSlot.Type.keys()[slot_type])
+	item_equipped.emit(slot_type, item_instance)  # Emitujemy sygnał po zmianie ekwipunku
+	print("Equipped item emitted: ", item_instance.definition.item_name, " in slot: ", slot_type)
+	return previous
+
+# Zdejmuje item z podanego slotu. Zwraca zdjęty ItemInstance (lub null).
+func unequip_item(slot_type: EquipmentSlot.Type) -> ItemInstance:
+	var previous: ItemInstance = equipped_items.get(slot_type)
+	equipped_items[slot_type] = null
+	stats_changed.emit(EquipmentSlot.Type.keys()[slot_type])
+	item_equipped.emit(slot_type, null)  # Emitujemy sygnał po zmianie ekwipunku
+
+
+	return previous
+
+# ZMIANA: Dostosowane do nowych nazw statystyk (dmg, crit_damage)
 func calculate_attack() -> Dictionary:
 	var stats := get_total_stats()
-	var raw_damage: float = stats.get("base_damage", 1.0)
+	var raw_damage: float = stats.get("dmg", 1.0)
 	var is_crit: bool = randf() < stats.get("crit_chance", 0.0)
 	if is_crit:
-		raw_damage *= stats.get("crit_multiplier", 1.5)
+		raw_damage *= stats.get("crit_damage", 1.5)
 		
 	var text_color := Color.WHITE
 	if is_crit: text_color = Color(1.0, 0.85, 0.1)

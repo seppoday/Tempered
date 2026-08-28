@@ -1,37 +1,23 @@
 [gd_scene format=3 uid="uid://b7geclixrytt3"]
 
-[ext_resource type="Script" uid="uid://rhwee7ilv64" path="res://item_panel.gd" id="1_1bvp3"]
+[ext_resource type="Script" uid="uid://rhwee7ilv64" path="res://scripts/item_panel.gd" id="1_1bvp3"]
+[ext_resource type="Script" uid="uid://0wut03xwyp7d" path="res://main.gd" id="1_2cqfq"]
 [ext_resource type="PackedScene" uid="uid://bcpnv4byjqn5d" path="res://player.tscn" id="1_a6jrf"]
-[ext_resource type="Script" uid="uid://cpns5yr2xh0ev" path="res://inventory.gd" id="1_h2yge"]
-[ext_resource type="Script" uid="uid://b5k2cr1mrofrk" path="res://battle_arena.gd" id="1_qsp4k"]
-[ext_resource type="Script" uid="uid://dpyk5dj1dlqss" path="res://gold_label.gd" id="1_seu75"]
-[ext_resource type="Script" uid="uid://ciakkvnknrtrw" path="res://alchemy_panel.gd" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://cpns5yr2xh0ev" path="res://scripts/inventory.gd" id="1_h2yge"]
+[ext_resource type="Script" uid="uid://b5k2cr1mrofrk" path="res://scripts/battle_arena.gd" id="1_qsp4k"]
+[ext_resource type="Script" uid="uid://dpyk5dj1dlqss" path="res://scripts/gold_label.gd" id="1_seu75"]
+[ext_resource type="Script" uid="uid://ciakkvnknrtrw" path="res://scripts/alchemy_panel.gd" id="2_0xm2m"]
 [ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="2_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://b1s7u3s7uxodv" path="res://enemy.tscn" id="2_kq58d"]
 [ext_resource type="PackedScene" uid="uid://x4spoxodgh4x" path="res://equipment_slot.tscn" id="3_dg77c"]
 [ext_resource type="PackedScene" uid="uid://djk4dwog07htq" path="res://drop.tscn" id="3_kq58d"]
-[ext_resource type="Texture2D" uid="uid://cjumvaohjjexs" path="res://assets/clover_fragment.png" id="4_efxa6"]
-[ext_resource type="Texture2D" uid="uid://cp1hwkfgl84rj" path="res://assets/weapon.png" id="4_w48qg"]
-[ext_resource type="Texture2D" uid="uid://d36ijvbhu3dn3" path="res://assets/dragon_eye.png" id="5_dg77c"]
 [ext_resource type="PackedScene" uid="uid://b5e6onr0nkuv6" path="res://floating_text.tscn" id="5_htxhm"]
-[ext_resource type="Texture2D" uid="uid://doswu3pxkpcf6" path="res://assets/shield.png" id="5_vivmo"]
-[ext_resource type="Texture2D" uid="uid://bp8alctflgmd7" path="res://assets/helmet.png" id="6_cegan"]
-[ext_resource type="Texture2D" uid="uid://bnqayedv8brpb" path="res://assets/dust_magic.png" id="6_ycdy4"]
-[ext_resource type="Texture2D" uid="uid://b4jtn8mldxqyf" path="res://assets/armor.png" id="7_82xsv"]
-[ext_resource type="Texture2D" uid="uid://c0snlqchvic2" path="res://assets/lucky_powder.png" id="7_w48qg"]
-[ext_resource type="Texture2D" uid="uid://hckl245r3g2f" path="res://assets/boots.png" id="8_getpj"]
-[ext_resource type="Texture2D" uid="uid://nwljsveg0qmg" path="res://assets/quicksilver_oil.png" id="8_vivmo"]
-[ext_resource type="Texture2D" uid="uid://bd4qr4k8mk4hl" path="res://assets/stone_elixir_weapon.png" id="9_2cqfq"]
-[ext_resource type="Texture2D" uid="uid://ygdvvwu2iiq5" path="res://assets/amulet.png" id="9_ryguw"]
-[ext_resource type="Texture2D" uid="uid://dftmcck2to81" path="res://assets/ring.png" id="10_d13ii"]
-[ext_resource type="Texture2D" uid="uid://chjme7xfor85v" path="res://assets/whetstone.png" id="10_yaehf"]
-[ext_resource type="Texture2D" uid="uid://0l5qr4hlen4a" path="res://assets/obsidian_blade.jpeg" id="19_getpj"]
-[ext_resource type="Texture2D" uid="uid://dyuor5gq0y08d" path="res://assets/iron_shield.jpeg" id="20_ryguw"]
-[ext_resource type="Texture2D" uid="uid://1uy3olis0w12" path="res://assets/chainmail_armor.jpeg" id="22_1u8w0"]
-[ext_resource type="Texture2D" uid="uid://cb3riuari6imq" path="res://assets/hat (1).png" id="22_a6jrf"]
-[ext_resource type="Texture2D" uid="uid://brrdeqocjha3i" path="res://assets/worn boots.jpeg" id="23_lswn8"]
-[ext_resource type="Texture2D" uid="uid://c7675vp32ev6d" path="res://assets/jade_amulet.jpeg" id="24_a6jrf"]
-[ext_resource type="Texture2D" uid="uid://bf1coygh0o48r" path="res://assets/copper_ring.png" id="25_xuqvo"]
+[ext_resource type="Texture2D" uid="uid://ygdvvwu2iiq5" path="res://assets/ui/amulet.png" id="14_yaehf"]
+[ext_resource type="Texture2D" uid="uid://cp1hwkfgl84rj" path="res://assets/ui/weapon.png" id="15_074og"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://scripts/items/item_definition.gd" id="19_ryguw"]
+[ext_resource type="Resource" uid="uid://dk71jywyh32lp" path="res://resources/items/weapons/iron_sword.tres" id="20_d13ii"]
+[ext_resource type="Resource" uid="uid://bckoqtfake7w5" path="res://resources/items/weapons/steel_sword.tres" id="21_1u8w0"]
+[ext_resource type="Resource" uid="uid://y1857jqhwxk4" path="res://resources/items/weapons/wooden_sword.tres" id="22_0odxb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ifow5"]
 bg_color = Color(0, 0, 0, 0.42352942)
@@ -41,6 +27,7 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [node name="Main" type="Node2D" unique_id=206172842]
+script = ExtResource("1_2cqfq")
 
 [node name="BattleArena" type="Node2D" parent="." unique_id=1335840837]
 position = Vector2(3, 160)
@@ -49,6 +36,7 @@ enemy_scene = ExtResource("2_kq58d")
 spawn_interval_min = 0.05
 spawn_interval_max = 0.1
 drop_scene = ExtResource("3_kq58d")
+loot_pool = Array[ExtResource("19_ryguw")]([ExtResource("20_d13ii"), ExtResource("21_1u8w0"), ExtResource("22_0odxb")])
 floating_text_scene = ExtResource("5_htxhm")
 
 [node name="EnemyLayer" type="Node2D" parent="BattleArena" unique_id=1133646402]
@@ -195,64 +183,38 @@ columns = 3
 [node name="AmuletSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1593952919 instance=ExtResource("3_dg77c")]
 unique_name_in_owner = true
 layout_mode = 2
-accepted_item_type = "amulet"
-placeholder_texture = ExtResource("9_ryguw")
+slot_type = 5
+placeholder_texture = ExtResource("14_yaehf")
 
 [node name="HelmetSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=315832620 instance=ExtResource("3_dg77c")]
 unique_name_in_owner = true
 layout_mode = 2
-accepted_item_type = "helmet"
-placeholder_texture = ExtResource("6_cegan")
+slot_type = 1
 
 [node name="RingSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1299274000 instance=ExtResource("3_dg77c")]
 unique_name_in_owner = true
 layout_mode = 2
-accepted_item_type = "ring"
-placeholder_texture = ExtResource("10_d13ii")
+slot_type = 6
 
 [node name="WeaponSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1626732313 instance=ExtResource("3_dg77c")]
 unique_name_in_owner = true
 layout_mode = 2
-placeholder_texture = ExtResource("4_w48qg")
+placeholder_texture = ExtResource("15_074og")
 
 [node name="ArmorSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=427080641 instance=ExtResource("3_dg77c")]
 unique_name_in_owner = true
 layout_mode = 2
-accepted_item_type = "armor"
-placeholder_texture = ExtResource("7_82xsv")
+slot_type = 2
 
 [node name="ShieldSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=44661284 instance=ExtResource("3_dg77c")]
 unique_name_in_owner = true
 layout_mode = 2
-accepted_item_type = "shield"
-placeholder_texture = ExtResource("5_vivmo")
-
-[node name="Empty" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1214779061 instance=ExtResource("3_dg77c")]
-layout_mode = 2
-accepted_item_type = "shield"
-
-[node name="Icon" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid/Empty" index="0" unique_id=1240173784]
-texture = null
-
-[node name="Label" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid/Empty" index="1" unique_id=78564007]
-text = ""
+slot_type = 7
 
 [node name="BootsSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1576719944 instance=ExtResource("3_dg77c")]
 unique_name_in_owner = true
 layout_mode = 2
-accepted_item_type = "boots"
-placeholder_texture = ExtResource("8_getpj")
-
-[node name="Empty2" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=670356730 instance=ExtResource("3_dg77c")]
-layout_mode = 2
-accepted_item_type = "shield"
-
-[node name="Icon" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid/Empty2" index="0" unique_id=1240173784]
-custom_minimum_size = Vector2(64, 64)
-texture = null
-
-[node name="Label" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid/Empty2" index="1" unique_id=78564007]
-text = ""
+slot_type = 4
 
 [node name="Header" type="PanelContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer" unique_id=390046125]
 layout_mode = 2
@@ -448,20 +410,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_ifow5")
 script = ExtResource("1_h2yge")
-clover_fragment = ExtResource("4_efxa6")
-dragons_eye = ExtResource("5_dg77c")
-dust_magic = ExtResource("6_ycdy4")
-lucky_powder = ExtResource("7_w48qg")
-quicksilver_oil = ExtResource("8_vivmo")
-stone_elixir_weapon = ExtResource("9_2cqfq")
-whetstone = ExtResource("10_yaehf")
-obsidian_blade_icon = ExtResource("19_getpj")
-iron_shield_icon = ExtResource("20_ryguw")
-leather_helmet_icon = ExtResource("22_a6jrf")
-chainmail_armor_icon = ExtResource("22_1u8w0")
-worn_boots_icon = ExtResource("23_lswn8")
-jade_amulet_icon = ExtResource("24_a6jrf")
-copper_ring_icon = ExtResource("25_xuqvo")
+test_items = Array[ExtResource("19_ryguw")]([ExtResource("20_d13ii"), ExtResource("21_1u8w0"), ExtResource("22_0odxb")])
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory" unique_id=809901435]
 layout_mode = 2
@@ -473,6 +422,3 @@ theme_override_constants/margin_bottom = 12
 [node name="GridContainer" type="GridContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer" unique_id=1134863120]
 custom_minimum_size = Vector2(336, 0)
 layout_mode = 2
-
-[editable path="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid/Empty"]
-[editable path="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid/Empty2"]
