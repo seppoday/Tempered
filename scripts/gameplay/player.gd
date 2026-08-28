@@ -24,7 +24,7 @@ var _anim_start_angle: float = 0.0
 var _anim_end_angle: float = 0.0
 var _anim_max_ext: float = 0.0
 
-var starting_weapon_id: String = "wooden_sword"	# Domyślny ID broni startowej na wszelki wypadek (powinien być nadpisany przez definicję postaci)
+var starting_weapon_id: String = "goodslayer"	# Domyślny ID broni startowej na wszelki wypadek (powinien być nadpisany przez definicję postaci)
 
 # Pamięta TYLKO wrogów trafionych w obecnym zamachu
 var enemies_hit_this_swing: Array[Node2D] = []
@@ -48,9 +48,9 @@ func _ready() -> void:
 	var item_def = ItemDatabase.get_item_definition(starting_weapon_id)
 	if item_def != null:
 		var instance := ItemInstance.new(item_def)
-		print("Equipping starting weapon: ", item_def.item_name)
+		print("Equipping starting weapon: ", item_def.name)
 		PlayerData.equip_item(instance)
-		print("Starting weapon equipped: ", instance.definition.item_name)
+		print("Starting weapon equipped: ", instance.definition.name)
 
 func _physics_process(delta: float) -> void:
 	_update_target()

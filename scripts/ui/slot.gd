@@ -51,7 +51,7 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 	container.add_child(vbox)
 
 	var name_label = Label.new()
-	name_label.text = def.item_name
+	name_label.text = def.name
 	name_label.add_theme_color_override("font_color", _get_rarity_color())
 	name_label.add_theme_font_size_override("font_size", 14)
 	vbox.add_child(name_label)
@@ -113,13 +113,7 @@ func _get_stat_rows() -> Array[Dictionary]:
 func _get_rarity_color() -> Color:
 	if is_empty() or not item_data.definition:
 		return Color.WHITE
-	match item_data.definition.rarity:
-		GameEnums.Rarity.COMMON: return Color(0.7, 0.7, 0.7)
-		GameEnums.Rarity.UNCOMMON: return Color(0.2, 0.8, 0.2)
-		GameEnums.Rarity.RARE: return Color(0.2, 0.5, 1.0)
-		GameEnums.Rarity.EPIC: return Color(0.7, 0.2, 0.9)
-		GameEnums.Rarity.LEGENDARY: return Color(1.0, 0.7, 0.0)
-	return Color.WHITE
+	return GameEnums.get_rarity_color(item_data.definition.rarity)
 
 # ==========================================
 # DRAG & DROP
@@ -186,7 +180,7 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	else:
 		var my_def = item_data.definition
 		var drag_def = dragged_instance.definition
-		var is_stackable = my_def.stackable and drag_def.stackable
+		var is_stackable = my_def.is_stackable() and drag_def.is_stackable()
 
 		if my_def.id == drag_def.id and is_stackable:
 			var room = my_def.max_stack_size - item_data.quantity
@@ -249,7 +243,7 @@ func _update_visual() -> void:
 		var def = item_data.definition
 		icon.texture = def.icon
 		icon.visible = icon.texture != null
-		count_label.text = str(item_data.quantity) if item_data.quantity > 1 else ""
+		count_label.text = str(item_data.quantity) if item_data.quantity >= 1 else ""
 
 		var rarity_color := _get_rarity_color()
 		_apply_slot_style(BASE_BG.lerp(rarity_color, 0.08), BASE_BORDER.lerp(rarity_color, 0.55))

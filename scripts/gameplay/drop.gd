@@ -163,7 +163,7 @@ func _build_tooltip_panel() -> Control:
 
 	# Nazwa przedmiotu
 	var name_label = Label.new()
-	name_label.text = def.item_name
+	name_label.text = def.name
 	name_label.add_theme_color_override("font_color", _get_rarity_color())
 	name_label.add_theme_font_size_override("font_size", 14)
 	vbox.add_child(name_label)
@@ -257,14 +257,7 @@ func _get_stat_rows() -> Array[Dictionary]:
 func _get_rarity_color() -> Color:
 	if item_data == null or item_data.definition == null:
 		return Color.WHITE
-		
-	match item_data.definition.rarity:
-		GameEnums.Rarity.COMMON: return Color(0.7, 0.7, 0.7)
-		GameEnums.Rarity.UNCOMMON: return Color(0.2, 0.8, 0.2)
-		GameEnums.Rarity.RARE: return Color(0.2, 0.5, 1.0)
-		GameEnums.Rarity.EPIC: return Color(0.7, 0.2, 0.9)
-		GameEnums.Rarity.LEGENDARY: return Color(1.0, 0.7, 0.0)
-	return Color.WHITE
+	return GameEnums.get_rarity_color(item_data.definition.rarity)
 
 func _animate_bounce() -> void:
 	if sprite == null: return

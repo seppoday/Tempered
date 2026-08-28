@@ -158,7 +158,7 @@ func equip_item(item_instance: ItemInstance) -> ItemInstance:
 	equipped_items[slot_type] = item_instance
 	stats_changed.emit(EquipmentSlot.Type.keys()[slot_type])
 	item_equipped.emit(slot_type, item_instance)  # Emitujemy sygnał po zmianie ekwipunku
-	print("Equipped item emitted: ", item_instance.definition.item_name, " in slot: ", slot_type)
+	print("Equipped item emitted: ", item_instance.definition.name, " in slot: ", slot_type)
 	return previous
 
 # Zdejmuje item z podanego slotu. Zwraca zdjęty ItemInstance (lub null).

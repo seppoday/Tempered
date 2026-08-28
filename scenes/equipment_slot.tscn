@@ -19,7 +19,6 @@ texture = ExtResource("2_optkv")
 expand_mode = 3
 
 [node name="CountLabel" type="Label" parent="." unique_id=78564007]
-visible = false
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0

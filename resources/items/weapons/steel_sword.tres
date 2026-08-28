@@ -5,10 +5,12 @@
 
 [resource]
 script = ExtResource("1_mdto8")
-id = "steel_sword"
-item_name = "Steel Sword"
+dmg = 23
+attack_speed = 1.0
+crit_chance = 0.02
+id = "steel_longsword"
+name = "Steel Longsword"
+description = "A long steel blade designed to deliver powerful strikes."
 icon = ExtResource("1_miq1x")
-description = "Steel Sword Description"
-dmg = 16
-attack_speed = 0.8
+rarity = 1
 metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

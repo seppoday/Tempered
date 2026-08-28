@@ -44,7 +44,7 @@ func _on_item_equipped(equipped_slot_type: Type, item_instance: ItemInstance) ->
 			print("Slot ", slot_type, " cleared.")
 		else:
 			super.set_item(item_instance)
-			print("Slot ", slot_type, " equipped with: ", item_instance.definition.item_name)
+			print("Slot ", slot_type, " equipped with: ", item_instance.definition.name)
 
 # ==========================================
 # DRAG & DROP (restricted to matching equipment)

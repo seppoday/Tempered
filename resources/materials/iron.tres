@@ -5,8 +5,10 @@
 
 [resource]
 script = ExtResource("1_yjgsu")
+stackable = true
+max_stack_size = 100
 id = "iron"
-material_name = "Iron"
+name = "Iron"
 description = "Iron description"
 icon = ExtResource("1_5o75q")
 metadata/_custom_type_script = "uid://ca7fwkvbpwp8c"

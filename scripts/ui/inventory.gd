@@ -10,7 +10,7 @@ const GRID_COLUMNS: int = 5
 # Jedyna linijka potrzebna do tworzenia slotów:
 const SlotScene: PackedScene = preload("res://scenes/slot.tscn")
 
-@export var test_items: Array[ItemDefinition]
+@export var test_items: Array[InventoryEntry] = []
 
 func _ready() -> void:
 	EventBus.item_pickup_requested.connect(_on_item_pickup_requested)
@@ -37,27 +37,67 @@ func _setup_grid() -> void:
 # ==========================================
 
 func add_item(item: ItemInstance) -> bool:
-	if item.definition.stackable:
-		for slot in grid.get_children():
-			if not slot.is_empty() and slot.item_data.definition.id == item.definition.id:
-				var current_qty = slot.item_data.quantity
-				var max_stack = slot.item_data.definition.max_stack_size
-				if current_qty < max_stack:
-					var to_add = min(max_stack - current_qty, item.quantity)
-					slot.item_data.quantity += to_add
-					item.quantity -= to_add
-					slot._update_visual()
-					if item.quantity <= 0:
-						return true
+	# Najpierw próbujemy dołożyć do istniejących stacków.
+	if item.is_stackable():
+		var max_stack := item.get_max_stack_size()
 
-	if item.quantity > 0:
 		for slot in grid.get_children():
 			if slot.is_empty():
-				slot.set_item(item)
+				continue
+
+			var slot_item: ItemInstance = slot.item_data
+
+			if not slot_item.is_stackable():
+				continue
+
+			if slot_item.definition.id != item.definition.id:
+				continue
+
+			if slot_item.quantity >= max_stack:
+				continue
+
+			var space := max_stack - slot_item.quantity
+			var to_add = min(space, item.quantity)
+
+			slot_item.quantity += to_add
+			item.quantity -= to_add
+
+			slot._update_visual()
+
+			if item.quantity <= 0:
 				return true
 
-	print("[INVENTORY] Full!")
-	return false
+	# Jeżeli nadal coś zostało, szukamy pustych slotów.
+	while item.quantity > 0:
+		var empty_slot = null
+
+		for slot in grid.get_children():
+			if slot.is_empty():
+				empty_slot = slot
+				break
+
+		if empty_slot == null:
+			print("[INVENTORY] Full! Remaining: ", item.quantity)
+			return false
+
+		if item.is_stackable():
+			var stack_size = min(item.quantity, item.get_max_stack_size())
+
+			var new_item := ItemInstance.new(
+				item.definition,
+				stack_size
+			)
+
+			empty_slot.set_item(new_item)
+			item.quantity -= stack_size
+		else:
+			# Zwykły ItemDefinition = jeden item na slot.
+			var new_item := ItemInstance.new(item.definition, 1)
+
+			empty_slot.set_item(new_item)
+			item.quantity -= 1
+
+	return true
 
 func remove_item(item_id: String, amount: int = 1) -> bool:
 	var remaining: int = amount
@@ -84,7 +124,7 @@ func get_all_items() -> Array[ItemInstance]:
 
 func _on_slot_changed(slot: Panel) -> void:
 	if slot.item_data:
-		print("[INVENTORY] Slot: ", slot.item_data.definition.item_name, " x", slot.item_data.quantity)
+		print("[INVENTORY] Slot: ", slot.item_data.definition.name, " x", slot.item_data.quantity)
 	else:
 		print("[INVENTORY] Slot cleared")
 

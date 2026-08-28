@@ -1,21 +1,4 @@
-class_name ItemDefinition extends Resource
-
-enum Category {
-	CONSUMABLE,
-	EQUIPMENT,
-	MATERIAL
-}
-
-@export var id: String
-@export var item_name: String
-@export_multiline var description: String
-@export var icon: Texture2D
-
-@export_category("Inventory")
-@export var stackable: bool = false
-@export var max_stack_size: int = 1
-@export var category: Category = Category.EQUIPMENT
-@export var rarity: GameEnums.Rarity = GameEnums.Rarity.COMMON
+class_name ItemDefinition extends InventoryEntry
 
 @export_category("Equipment")
 @export var slot: EquipmentSlot.Type
