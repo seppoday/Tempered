@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://dffx18w2nqoo1"]
+
+[ext_resource type="Texture2D" uid="uid://d3egwq4bbmt16" path="res://assets/items/leather_helmet.jpeg" id="1_w7a0e"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_cqhuf"]
+
+[resource]
+script = ExtResource("2_cqhuf")
+slot = 4
+hp = 10
+armor = 1
+dodge = 0.03
+id = "leather_boots"
+name = "Leather Boots"
+description = "Leather Boots"
+icon = ExtResource("1_w7a0e")
+metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

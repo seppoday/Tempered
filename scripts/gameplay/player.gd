@@ -24,23 +24,14 @@ var _anim_start_angle: float = 0.0
 var _anim_end_angle: float = 0.0
 var _anim_max_ext: float = 0.0
 
-var starting_weapon_id: String = "goodslayer"	# Domyślny ID broni startowej na wszelki wypadek (powinien być nadpisany przez definicję postaci)
 
 # Pamięta TYLKO wrogów trafionych w obecnym zamachu
+var starting_weapon_id: String 
+
 var enemies_hit_this_swing: Array[Node2D] = []
 
 func _ready() -> void:
-	var wave_def = WaveDatabase.get_wave_definition("test_wave")
-	if wave_def != null:
-		print("Wave 1 duration:", wave_def.duration, "seconds")
-	
-	var failed_def = WaveDatabase.get_wave_definition("non_existent_wave")
-	if failed_def == null:
-		print("Wave 'non_existent_wave' not found in database.")
-	else:
-		print("Wave 'non_existent_wave' found:", failed_def)
-
-
+	starting_weapon_id = PlayerData.character_definition.starting_weapon_id	# Domyślny ID broni startowej na wszelki wypadek (powinien być nadpisany przez definicję postaci)
 	base_distance = sword_hitbox.position.length()
 	current_angle = sword_hitbox.position.angle()
 	_perform_swing_cycle()

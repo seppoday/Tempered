@@ -91,6 +91,7 @@ func _update_ui(changed_stat: String = "") -> void:
 
 	# Mapowanie statystyk z PlayerData (Zalecane ujednolicenie nazw z ItemDefinition)
 	if totals.has("dmg"): _add_label("Damage: %d" % totals["dmg"], Color.WHITE, 12, "dmg")
+	if totals.has("magic_dmg"): _add_label("Magic Damage: %d" % totals["magic_dmg"], Color.WHITE, 12, "magic_dmg")
 	if totals.has("attack_speed"): _add_label("Attack Speed: %.2f /s" % totals["attack_speed"], Color.WHITE, 12, "attack_speed")
 	if totals.has("crit_chance"): _add_label("Crit Chance: %d%%" % int(totals["crit_chance"] * 100), Color.WHITE, 12, "crit_chance")
 	if totals.has("crit_damage"): _add_label("Crit Damage: %d%%" % int(totals["crit_damage"] * 100), Color.WHITE, 12, "crit_damage")

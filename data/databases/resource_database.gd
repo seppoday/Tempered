@@ -19,12 +19,9 @@ func _scan_folder(path: String, expected_type) -> void:
 		var full_path = path + "/" + file_name
 
 		if dir.current_is_dir():
-			# TODO: Rekurencyjnie skanuj podkatalogi
 			_scan_folder(full_path, expected_type)
 			pass
 		elif file_name.ends_with(".tres"):
-			# TODO: Na razie tylko print pełnej ścieżki do pliku .tres, później można tu wczytywać ItemDefinition
-			print("Znaleziono plik .tres: ", full_path)
 			var resource := load(full_path)
 			if is_instance_of(resource, expected_type):
 				if _entries.has(resource.id):

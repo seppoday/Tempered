@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MaterialDefinition" format=3 uid="uid://1yjj5wigy8wt"]
+
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="1_cfcq4"]
+[ext_resource type="Script" uid="uid://ca7fwkvbpwp8c" path="res://data/definitions/material_definition.gd" id="2_elyk1"]
+
+[resource]
+script = ExtResource("2_elyk1")
+id = "ruby"
+name = "Ruby"
+description = "Ruby"
+icon = ExtResource("1_cfcq4")
+category = 2
+stackable = true
+max_stack_size = 100
+metadata/_custom_type_script = "uid://ca7fwkvbpwp8c"

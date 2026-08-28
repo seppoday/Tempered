@@ -26,6 +26,8 @@ extends Node2D
 @onready var drop_layer: Node2D = get_node_or_null("%DropLayer")
 @onready var player: CharacterBody2D = %Player
 
+@export var test_enemy_def : EnemyDefinition
+
 var spawn_timer: float = 0.0
 
 func _ready() -> void:
@@ -54,6 +56,7 @@ func _spawn_enemy() -> void:
 	
 	enemy.global_position = _get_random_edge_position()
 	enemy.target_position = player.global_position
+	enemy.setup(test_enemy_def)
 
 	EventBus.enemy_spawned.emit(enemy)
 
@@ -61,12 +64,7 @@ func _spawn_enemy() -> void:
 # OBLICZANIE POZYCJI SPAWNU W 2D
 # ==========================================
 func _get_random_edge_position() -> Vector2:
-	var rect: Rect2
-
-	if arena_ui_panel != null:
-		rect = arena_ui_panel.get_global_rect()
-	else:
-		rect = get_viewport_rect()
+	var rect: Rect2 = get_viewport_rect()
 
 	var side := randi() % 4
 	match side:
@@ -89,15 +87,14 @@ func _on_enemy_died(enemy: Node, death_position: Vector2) -> void:
 		# Złoto
 		var earned_gold := randi_range(min_gold_drop, max_gold_drop)
 		PlayerData.add_gold(earned_gold)
-		_spawn_floating_text(death_position + Vector2(0, -15), "+%d$" % earned_gold, Color(1.0, 0.85, 0.2))
+		_spawn_floating_text(death_position + Vector2(0, -50), "+%d$" % earned_gold, Color(1.0, 0.85, 0.2))
 		
 		# EXP
 		var earned_exp: int = 10
-		if "exp_reward" in enemy:
-			earned_exp = enemy.exp_reward
+		earned_exp = enemy.get_exp_reward()
 			
 		PlayerData.add_exp(earned_exp)
-		_spawn_floating_text(death_position + Vector2(15, -5), "+%d XP" % earned_exp, Color(0.8, 0.4, 1.0))
+		_spawn_floating_text(death_position + Vector2(50, -10), "+%d XP" % earned_exp, Color(0.8, 0.4, 1.0))
 
 func _spawn_floating_text(pos: Vector2, text: String, color: Color) -> void:
 	if floating_text_scene == null:

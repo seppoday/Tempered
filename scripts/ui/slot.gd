@@ -12,6 +12,7 @@ signal slot_changed(slot: Panel)
 const STAT_DISPLAY := {
 	"hp":           ["Max HP", Color(0.2, 0.8, 0.2), "plus_int"],
 	"dmg":          ["Damage", Color(0.95, 0.3, 0.3), "plus_int"],
+	"magic_dmg":    ["Magic Damage", Color(0.0, 0.3, 0.9), "plus_int"],
 	"attack_speed": ["Attack Speed", Color(0.95, 0.95, 0.95), "speed"],
 	"armor":        ["Armor", Color(0.6, 0.6, 0.65), "plus_int"],
 	"crit_chance":  ["Crit Chance", Color(0.9, 0.7, 0.2), "percent"],
@@ -180,7 +181,7 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	else:
 		var my_def = item_data.definition
 		var drag_def = dragged_instance.definition
-		var is_stackable = my_def.is_stackable() and drag_def.is_stackable()
+		var is_stackable = item_data.is_stackable() and dragged_instance.is_stackable()
 
 		if my_def.id == drag_def.id and is_stackable:
 			var room = my_def.max_stack_size - item_data.quantity

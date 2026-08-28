@@ -13,6 +13,8 @@ signal attribute_points_changed(points: int)
 # ==========================================
 # POSTAĆ I POSTĘP
 # ==========================================
+var character_definition : CharacterDefinition
+
 var character_stats: Dictionary = {
 	"name": "Kowal",
 	"level": 1,
@@ -21,7 +23,7 @@ var character_stats: Dictionary = {
 }
 
 var points_per_level: int = 3  # Ile punktów dostajemy co poziom
-var attribute_points: int = 5  # Punkty na start
+var attribute_points: int = 0  # Punkty na start
 
 var gold: int = 0
 
@@ -48,6 +50,19 @@ var equipped_items: Dictionary = {
 	EquipmentSlot.Type.OFF_HAND: null,
 }
 
+func _ready() -> void:
+	character_definition = CharacterDatabase.get_character_definition("warrior")
+	print(character_definition.starting_str)
+
+	if character_definition == null:
+		character_definition = CharacterDefinition.new()
+
+	attributes["STR"] = character_definition.starting_str
+	attributes["DEX"] = character_definition.starting_dex
+	attributes["INT"] = character_definition.starting_int
+	attributes["CON"] = character_definition.starting_con
+	
+
 # ==========================================
 # OBLICZANIE STATYSTYK
 # ==========================================
@@ -56,20 +71,20 @@ func get_total_stats() -> Dictionary:
 
 	# 1. PRZELICZAMY BAZOWE ATRYBUTY NA STATYSTYKI BOJOWE
 	# (Nazwy kluczy są teraz identyczne z polami w ItemDefinition!)
-	totals["dmg"]           = 5.0 + (attributes["STR"] * 2.0)
-	totals["crit_damage"]   = 1.5 + (attributes["STR"] * 0.02) + (attributes["INT"] * 0.01)
+	totals["dmg"]           = character_definition.base_dmg + (attributes["STR"] * 2.0)
+	totals["magic_dmg"]     = character_definition.base_magic_dmg + (attributes["INT"] * 2.0)
+	totals["crit_damage"]   = character_definition.base_crit_damage + (attributes["STR"] * 0.02) + (attributes["INT"] * 0.01)
 	
-	totals["attack_speed"]  = 0.5 + (attributes["DEX"] * 0.01)
-	totals["crit_chance"]   = 0.05 + (attributes["DEX"] * 0.005)
-	totals["dodge"]         = 0.0 + (attributes["DEX"] * 0.002)
+	totals["attack_speed"]  = character_definition.base_attack_speed + (attributes["DEX"] * 0.01)
+	totals["crit_chance"]   = character_definition.base_crit_chance + (attributes["DEX"] * 0.005)
+	totals["dodge"]         = character_definition.base_dodge + (attributes["DEX"] * 0.002)
 	
-	totals["hp"]            = 100.0 + (attributes["CON"] * 10.0)
-	totals["armor"]         = 0.0  # Bazowo brak armora
+	totals["hp"]            = character_definition.base_hp + (attributes["CON"] * 10.0)
+	totals["armor"]         = character_definition.base_armor  # Bazowo brak armora
 	totals["lifesteal"]     = 0.0  # Bazowo brak lifestealu
 	
 	# Pozostałe statystyki mechaniczne gry (niezależne od eq na razie)
 	totals["block_chance"]  = 0.0 + (attributes["CON"] * 0.005)
-	totals["fire_damage"]   = 0.0 + (attributes["INT"] * 0.5)
 	totals["attack_range"]  = 1.0
 	totals["target_count"]  = 10
 
@@ -87,6 +102,7 @@ func get_total_stats() -> Dictionary:
 		# Sumujemy statystyki bezpośrednio z pól zasobu (Resource)
 		totals["hp"] += def.hp
 		totals["dmg"] += def.dmg
+		totals["magic_dmg"] += def.magic_dmg
 		totals["attack_speed"] += def.attack_speed
 		totals["armor"] += def.armor
 		totals["crit_chance"] += def.crit_chance
@@ -181,7 +197,6 @@ func calculate_attack() -> Dictionary:
 		
 	var text_color := Color.WHITE
 	if is_crit: text_color = Color(1.0, 0.85, 0.1)
-	elif stats.get("fire_damage", 0) > 0: text_color = Color(1.0, 0.4, 0.2)
 
 	return {
 		"damage": int(round(raw_damage)),

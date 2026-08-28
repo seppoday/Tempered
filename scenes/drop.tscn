@@ -8,8 +8,6 @@ radius = 48.010414
 
 [node name="Drop" type="Area2D" unique_id=689540874]
 script = ExtResource("1_f4jv2")
-min_distance = 80.0
-max_distance = 400.0
 total_duration = 1.5
 despawn_time = 15.0
 

@@ -6,11 +6,11 @@
 [resource]
 script = ExtResource("2_1aaew")
 slot = 1
-hp = 25
-armor = 9
-id = "steel_greathelm"
-name = "Steel Greathelm"
-description = "A heavy steel helmet providing excellent protection at the cost of mobility."
+hp = 45
+armor = 8
+id = "knight_helmet"
+name = "Knight Helmet"
+description = "Knight Helmet"
 icon = ExtResource("1_e6t7a")
 rarity = 1
 metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

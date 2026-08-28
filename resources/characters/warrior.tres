@@ -6,5 +6,5 @@
 script = ExtResource("1_2m8aq")
 id = "warrior"
 character_name = "Warrior"
-starting_weapon_id = "wooden_sword"
+starting_weapon_id = "rusty_sword"
 metadata/_custom_type_script = "uid://1j1x34d4nlm"

@@ -9,8 +9,8 @@ extends Area2D
 @export var fallback_definition: ItemDefinition
 
 @export_group("Bounce Settings")
-@export var min_distance: float = 40.0
-@export var max_distance: float = 80.0
+@export var min_distance: float = 80.0
+@export var max_distance: float = 200.0
 @export var jump_height: float = 35.0
 @export var total_duration: float = 1.0
 

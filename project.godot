@@ -17,8 +17,10 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-ItemDatabase="*uid://bd5jd72g3kuwk"
+RNG="*uid://t87xmd5kuqdc"
 GameManager="*uid://cn6mg6lu8ybnx"
+CharacterDatabase="*uid://dijwlqmfj15qv"
+ItemDatabase="*uid://bd5jd72g3kuwk"
 ForgeSystem="*uid://bmnsfyefhmqxn"
 EventBus="*uid://djqyjqh76fg4j"
 PlayerData="*uid://bj574n8hpsceu"
@@ -26,8 +28,6 @@ MaterialDatabase="*uid://crk3ixjega3wf"
 RecipeDatabase="*uid://n6u31r2q82g3"
 EnemyDatabase="*uid://cuf30qpjf65it"
 LootTableDatabase="*uid://wkffv8ro0n06"
-RNG="*uid://t87xmd5kuqdc"
-CharacterDatabase="*uid://dijwlqmfj15qv"
 WaveDatabase="*uid://c31j52364cspq"
 
 [display]

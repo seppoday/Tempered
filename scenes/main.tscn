@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://x4spoxodgh4x" path="res://scenes/equipment_slot.tscn" id="3_dg77c"]
 [ext_resource type="PackedScene" uid="uid://djk4dwog07htq" path="res://scenes/drop.tscn" id="3_kq58d"]
 [ext_resource type="PackedScene" uid="uid://b5e6onr0nkuv6" path="res://scenes/floating_text.tscn" id="5_htxhm"]
+[ext_resource type="Resource" uid="uid://beuml7s1oqpqj" path="res://resources/enemies/goblin.tres" id="10_dgi5k"]
 [ext_resource type="Texture2D" uid="uid://ygdvvwu2iiq5" path="res://assets/ui/amulet.png" id="14_yaehf"]
 [ext_resource type="Texture2D" uid="uid://bp8alctflgmd7" path="res://assets/ui/helmet.png" id="15_5q0nq"]
 [ext_resource type="Texture2D" uid="uid://cp1hwkfgl84rj" path="res://assets/ui/weapon.png" id="15_074og"]
@@ -24,15 +25,14 @@
 [ext_resource type="Texture2D" uid="uid://hckl245r3g2f" path="res://assets/ui/boots.png" id="20_fuf3a"]
 [ext_resource type="Resource" uid="uid://bckoqtfake7w5" path="res://resources/items/weapons/steel_sword.tres" id="21_1u8w0"]
 [ext_resource type="Resource" uid="uid://4kdjereu5t3i" path="res://resources/items/helmets/iron_helmet.tres" id="21_2f3dj"]
-[ext_resource type="Resource" uid="uid://cys41i4h53vjd" path="res://resources/materials/iron.tres" id="21_jscy8"]
 [ext_resource type="Resource" uid="uid://y1857jqhwxk4" path="res://resources/items/weapons/rusty_sword.tres" id="22_0odxb"]
-[ext_resource type="Resource" uid="uid://dqmfwjkan2chc" path="res://resources/items/helmets/leather_cap.tres" id="22_yq6so"]
-[ext_resource type="Resource" uid="uid://gxa5nyxfh74q" path="res://resources/items/helmets/steel_greathelm.tres" id="23_fv21b"]
-[ext_resource type="Resource" uid="uid://bwsv7mvgjxo2i" path="res://resources/items/weapons/bloodfang.tres" id="24_tel4y"]
-[ext_resource type="Resource" uid="uid://btlt6638ysvrj" path="res://resources/items/weapons/demon_slayer.tres" id="25_qkpxi"]
-[ext_resource type="Resource" uid="uid://ca6n4lt4kyo3t" path="res://resources/items/weapons/goodslayer.tres" id="26_5q0nq"]
-[ext_resource type="Resource" uid="uid://cvhu1ot22s6vr" path="res://resources/items/weapons/moonblade.tres" id="27_dgi5k"]
+[ext_resource type="Resource" uid="uid://d05poumq2y3b4" path="res://resources/items/amulets/silver_amulet.tres" id="26_5q0nq"]
+[ext_resource type="Resource" uid="uid://ceuejdknftoi6" path="res://resources/items/armor/leather_armor.tres" id="27_dgi5k"]
 [ext_resource type="Resource" uid="uid://c1uqlv8rly0eu" path="res://resources/items/weapons/silver_sword.tres" id="28_j8jky"]
+[ext_resource type="Resource" uid="uid://dffx18w2nqoo1" path="res://resources/items/boots/leather_boots.tres" id="28_kmb1v"]
+[ext_resource type="Resource" uid="uid://prbrontime00" path="res://resources/items/gloves/leather_gloves.tres" id="29_fuf3a"]
+[ext_resource type="Resource" uid="uid://cxy31slwwnuqb" path="res://resources/items/off hand/arcane_tome.tres" id="31_pibwh"]
+[ext_resource type="Resource" uid="uid://cbmn2ojp41inn" path="res://resources/items/rings/iron_ring.tres" id="32_c6pm6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ifow5"]
 bg_color = Color(0, 0, 0, 0.42352942)
@@ -40,16 +40,6 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
-
-[sub_resource type="Resource" id="Resource_gqmmt"]
-script = ExtResource("19_ryguw")
-dmg = 20
-attack_speed = 0.6
-id = "battle_axe"
-name = "Battle Axe"
-description = "Battle Axe Description"
-icon = ExtResource("2_1bvp3")
-metadata/_custom_type_script = "uid://c8gwocrlh6aa7"
 
 [node name="Main" type="Node2D" unique_id=206172842]
 script = ExtResource("1_2cqfq")
@@ -63,6 +53,7 @@ spawn_interval_max = 0.1
 drop_scene = ExtResource("3_kq58d")
 loot_pool = Array[ExtResource("19_ryguw")]([ExtResource("20_d13ii"), ExtResource("21_1u8w0"), ExtResource("22_0odxb")])
 floating_text_scene = ExtResource("5_htxhm")
+test_enemy_def = ExtResource("10_dgi5k")
 
 [node name="EnemyLayer" type="Node2D" parent="BattleArena" unique_id=1133646402]
 unique_name_in_owner = true
@@ -239,6 +230,12 @@ unique_name_in_owner = true
 layout_mode = 2
 slot_type = 7
 placeholder_texture = ExtResource("19_kmb1v")
+
+[node name="GlovesSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1219771909 instance=ExtResource("3_dg77c")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 3
+placeholder_texture = ExtResource("2_1bvp3")
 
 [node name="BootsSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1576719944 instance=ExtResource("3_dg77c")]
 unique_name_in_owner = true
@@ -440,7 +437,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_ifow5")
 script = ExtResource("1_h2yge")
-test_items = Array[ExtResource("19_yc10j")]([ExtResource("20_d13ii"), ExtResource("21_1u8w0"), ExtResource("22_0odxb"), ExtResource("21_1u8w0"), SubResource("Resource_gqmmt"), ExtResource("21_jscy8"), ExtResource("21_2f3dj"), ExtResource("22_yq6so"), ExtResource("23_fv21b"), ExtResource("21_1u8w0"), ExtResource("24_tel4y"), ExtResource("25_qkpxi"), ExtResource("26_5q0nq"), ExtResource("20_d13ii"), ExtResource("27_dgi5k"), ExtResource("22_0odxb"), ExtResource("28_j8jky"), ExtResource("21_1u8w0")])
+test_items = Array[ExtResource("19_yc10j")]([ExtResource("26_5q0nq"), ExtResource("27_dgi5k"), ExtResource("28_kmb1v"), ExtResource("29_fuf3a"), ExtResource("21_2f3dj"), ExtResource("31_pibwh"), ExtResource("32_c6pm6"), ExtResource("22_0odxb"), ExtResource("28_j8jky")])
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory" unique_id=809901435]
 layout_mode = 2
