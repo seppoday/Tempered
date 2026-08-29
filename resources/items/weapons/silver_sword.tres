@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_ldulo")
 dmg = 25
-attack_speed = 1.0
+attack_speed = 0.6
 crit_chance = 0.03
 crit_damage = 0.1
 id = "silver_sword"

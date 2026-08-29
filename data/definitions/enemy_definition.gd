@@ -6,4 +6,4 @@ class_name EnemyDefinition extends Resource
 @export var max_hp: int = 100
 @export var movement_speed: float = 100.0
 @export var exp_reward: int = 10
-@export var loot_table_id: String
+@export var loot_table: LootTable

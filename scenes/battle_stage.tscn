@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b8uwfasnhmcvo"]
 
 [ext_resource type="Script" path="res://battle_stage.gd" id="1_a6phw"]
-[ext_resource type="PackedScene" uid="uid://b1s7u3s7uxodv" path="res://scenes/enemy.tscn" id="2_a6phw"]
+[ext_resource type="PackedScene" uid="uid://b1s7u3s7uxodv" path="res://scenes/goblin.tscn" id="2_a6phw"]
 [ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="2_fya1x"]
 [ext_resource type="PackedScene" uid="uid://bcpnv4byjqn5d" path="res://scenes/player.tscn" id="3_a6phw"]
 

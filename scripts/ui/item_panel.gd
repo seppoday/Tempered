@@ -2,7 +2,7 @@ extends PanelContainer
 
 @onready var stats_box: VBoxContainer = %StatsBox
 @onready var level_label: Label = %Label
-@onready var exp_bar: ProgressBar = %ProgressBar
+@onready var exp_bar: ProgressBar = %ExpProgressBar
 @onready var avatar: TextureRect = %TextureRect
 
 # === REFERENCJE DO LEWEGO PANELU ATRYBUTÓW ===

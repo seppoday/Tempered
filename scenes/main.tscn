@@ -8,11 +8,11 @@
 [ext_resource type="Script" uid="uid://dpyk5dj1dlqss" path="res://scripts/ui/gold_label.gd" id="1_seu75"]
 [ext_resource type="Script" uid="uid://ciakkvnknrtrw" path="res://scripts/ui/alchemy_panel.gd" id="2_0xm2m"]
 [ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="2_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://b1s7u3s7uxodv" path="res://scenes/enemy.tscn" id="2_kq58d"]
 [ext_resource type="PackedScene" uid="uid://x4spoxodgh4x" path="res://scenes/equipment_slot.tscn" id="3_dg77c"]
 [ext_resource type="PackedScene" uid="uid://djk4dwog07htq" path="res://scenes/drop.tscn" id="3_kq58d"]
 [ext_resource type="PackedScene" uid="uid://b5e6onr0nkuv6" path="res://scenes/floating_text.tscn" id="5_htxhm"]
-[ext_resource type="Resource" uid="uid://beuml7s1oqpqj" path="res://resources/enemies/goblin.tres" id="10_dgi5k"]
+[ext_resource type="Resource" uid="uid://dnhvfrwiph40a" path="res://resources/waves/test_wave.tres" id="8_5q0nq"]
+[ext_resource type="PackedScene" uid="uid://c7phvb8df3w7u" path="res://wave_manager.tscn" id="10_qkpxi"]
 [ext_resource type="Texture2D" uid="uid://ygdvvwu2iiq5" path="res://assets/ui/amulet.png" id="14_yaehf"]
 [ext_resource type="Texture2D" uid="uid://bp8alctflgmd7" path="res://assets/ui/helmet.png" id="15_5q0nq"]
 [ext_resource type="Texture2D" uid="uid://cp1hwkfgl84rj" path="res://assets/ui/weapon.png" id="15_074og"]
@@ -47,13 +47,10 @@ script = ExtResource("1_2cqfq")
 [node name="BattleArena" type="Node2D" parent="." unique_id=1335840837]
 position = Vector2(3, 160)
 script = ExtResource("1_qsp4k")
-enemy_scene = ExtResource("2_kq58d")
-spawn_interval_min = 0.05
-spawn_interval_max = 0.1
 drop_scene = ExtResource("3_kq58d")
 loot_pool = Array[ExtResource("19_ryguw")]([ExtResource("20_d13ii"), ExtResource("21_1u8w0"), ExtResource("22_0odxb")])
+wave_definition = ExtResource("8_5q0nq")
 floating_text_scene = ExtResource("5_htxhm")
-test_enemy_def = ExtResource("10_dgi5k")
 
 [node name="EnemyLayer" type="Node2D" parent="BattleArena" unique_id=1133646402]
 unique_name_in_owner = true
@@ -61,11 +58,14 @@ position = Vector2(620, 458)
 
 [node name="Player" parent="BattleArena" unique_id=1413141307 instance=ExtResource("1_a6jrf")]
 unique_name_in_owner = true
-position = Vector2(620, 458)
+position = Vector2(483, 443)
 
 [node name="DropLayer" type="Node2D" parent="BattleArena" unique_id=2116879078]
 unique_name_in_owner = true
 position = Vector2(620, 458)
+
+[node name="WaveManager" parent="BattleArena" unique_id=898634147 instance=ExtResource("10_qkpxi")]
+unique_name_in_owner = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=176301771]
 
@@ -84,11 +84,12 @@ theme_override_constants/margin_bottom = 12
 [node name="MainWindow" type="BoxContainer" parent="CanvasLayer/MarginContainer" unique_id=251606534]
 layout_mode = 2
 theme_override_constants/separation = 12
-vertical = true
 
 [node name="TopPanel" type="PanelContainer" parent="CanvasLayer/MarginContainer/MainWindow" unique_id=741333311]
 custom_minimum_size = Vector2(0, 128)
+custom_maximum_size = Vector2(-1, 128)
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel" unique_id=1598694986]
 layout_mode = 2
@@ -104,49 +105,53 @@ theme_override_constants/separation = 24
 
 [node name="Label" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer" unique_id=1577298421]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 text = "Wojownik"
 
 [node name="HBoxContainer" type="BoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer" unique_id=904977546]
 layout_mode = 2
+alignment = 1
 vertical = true
 
-[node name="BoxContainer" type="BoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1984892666]
+[node name="ExpBox" type="BoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1984892666]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/BoxContainer" unique_id=1270091180]
+[node name="Label2" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/ExpBox" unique_id=635124935]
 custom_minimum_size = Vector2(64, 0)
 layout_mode = 2
-text = "HP: "
+text = "EXP: "
 
-[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/BoxContainer" unique_id=654604108]
+[node name="ExpProgressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/ExpBox" unique_id=498474180]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 value = 11.05
 
-[node name="BoxContainer2" type="BoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1405562181]
+[node name="HpBox" type="BoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1405562181]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/BoxContainer2" unique_id=146813683]
+[node name="Label2" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/HpBox" unique_id=1270091180]
 custom_minimum_size = Vector2(64, 0)
 layout_mode = 2
-text = "MANA: "
+text = "HP: "
 
-[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/BoxContainer2" unique_id=1411875886]
+[node name="HpProgressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/HpBox" unique_id=654604108]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 value = 11.05
 
-[node name="BoxContainer3" type="BoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer" unique_id=321935131]
+[node name="ManaBox" type="BoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer" unique_id=321935131]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/BoxContainer3" unique_id=635124935]
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/ManaBox" unique_id=146813683]
 custom_minimum_size = Vector2(64, 0)
 layout_mode = 2
-text = "EXP: "
+text = "MANA: "
 
-[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/BoxContainer3" unique_id=498474180]
+[node name="ManaProgressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/ManaBox" unique_id=1411875886]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 value = 11.05
@@ -194,6 +199,8 @@ theme_override_constants/margin_bottom = 12
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
 columns = 3
 
 [node name="AmuletSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1593952919 instance=ExtResource("3_dg77c")]
@@ -264,17 +271,6 @@ size_flags_stretch_ratio = 0.5
 theme_override_constants/separation = 12
 alignment = 1
 vertical = true
-
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow" unique_id=1682381546]
-visible = false
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/PanelContainer" unique_id=498874160]
-unique_name_in_owner = true
-custom_maximum_size = Vector2(64, 64)
-layout_mode = 2
-size_flags_horizontal = 4
-texture = ExtResource("2_1bvp3")
 
 [node name="CharacterStats" type="VBoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow" unique_id=904516349]
 layout_mode = 2
@@ -371,6 +367,17 @@ custom_minimum_size = Vector2(36, 0)
 layout_mode = 2
 disabled = true
 text = " + "
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow" unique_id=1682381546]
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/PanelContainer" unique_id=498874160]
+unique_name_in_owner = true
+custom_maximum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_1bvp3")
 
 [node name="Stats" type="PanelContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer" unique_id=688894949]
 layout_mode = 2

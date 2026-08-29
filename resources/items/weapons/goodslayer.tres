@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://ca6n4lt4kyo3t"]
 
-[ext_resource type="Texture2D" uid="uid://jrau58b8cdsr" path="res://assets/items/steel_sword.jpg" id="1_l1oio"]
+[ext_resource type="Texture2D" uid="uid://0l5qr4hlen4a" path="res://assets/items/obsidian_blade.jpeg" id="1_7lmvm"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_a8qly"]
 
 [resource]
@@ -12,6 +12,6 @@ crit_damage = 0.5
 id = "goodslayer"
 name = "Goodslayer"
 description = "A mythical sword forged to bring down the most powerful beings in existence."
-icon = ExtResource("1_l1oio")
+icon = ExtResource("1_7lmvm")
 rarity = 5
 metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://cbmn2ojp41inn"]
 
-[ext_resource type="Texture2D" uid="uid://d3egwq4bbmt16" path="res://assets/items/leather_helmet.jpeg" id="1_3qowt"]
+[ext_resource type="Texture2D" uid="uid://bf1coygh0o48r" path="res://assets/items/copper_ring.png" id="1_ih6mu"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_kr464"]
 
 [resource]
@@ -11,5 +11,5 @@ armor = 3
 id = "iron_ring"
 name = "Iron Ring"
 description = "Iron Ring"
-icon = ExtResource("1_3qowt")
+icon = ExtResource("1_ih6mu")
 metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

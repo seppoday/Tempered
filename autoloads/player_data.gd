@@ -190,7 +190,16 @@ func unequip_item(slot_type: EquipmentSlot.Type) -> ItemInstance:
 # ZMIANA: Dostosowane do nowych nazw statystyk (dmg, crit_damage)
 func calculate_attack() -> Dictionary:
 	var stats := get_total_stats()
-	var raw_damage: float = stats.get("dmg", 1.0)
+	var weapon: ItemInstance = get_equipped_item(EquipmentSlot.Type.WEAPON)
+
+	var raw_damage: float = 0.0
+
+	if weapon != null and weapon.definition != null:
+		if weapon.definition.dmg > 0:
+			raw_damage += stats["dmg"]
+		if weapon.definition.magic_dmg > 0:
+			raw_damage += stats["magic_dmg"]
+
 	var is_crit: bool = randf() < stats.get("crit_chance", 0.0)
 	if is_crit:
 		raw_damage *= stats.get("crit_damage", 1.5)

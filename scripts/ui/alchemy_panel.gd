@@ -5,7 +5,7 @@ extends PanelContainer
 @onready var craft_button: Button = %CraftButton
 
 const INGREDIENT_SLOT_COUNT: int = 2
-const SLOT_SIZE: int = 64
+const SLOT_SIZE: int = 96
 const SLOT_GAP: int = 4
 
 func _ready() -> void:

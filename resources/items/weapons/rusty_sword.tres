@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_2f7oi")
 dmg = 8
-attack_speed = 1.2
+attack_speed = 0.8
 id = "rusty_sword"
 name = "Rusty Sword"
 description = "A rusty blade that barely serves its purpose in combat."

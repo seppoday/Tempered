@@ -54,13 +54,13 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 	var name_label = Label.new()
 	name_label.text = def.name
 	name_label.add_theme_color_override("font_color", _get_rarity_color())
-	name_label.add_theme_font_size_override("font_size", 14)
+	name_label.add_theme_font_size_override("font_size", 18)
 	vbox.add_child(name_label)
 
 	var rarity_label = Label.new()
 	rarity_label.text = "[ %s ]" % GameEnums.Rarity.keys()[def.rarity]
 	rarity_label.add_theme_color_override("font_color", _get_rarity_color() * 0.8)
-	rarity_label.add_theme_font_size_override("font_size", 10)
+	rarity_label.add_theme_font_size_override("font_size", 14)
 	vbox.add_child(rarity_label)
 
 	var line = ColorRect.new()
@@ -74,7 +74,7 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 		desc_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		desc_label.custom_minimum_size = Vector2(180, 0)
 		desc_label.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
-		desc_label.add_theme_font_size_override("font_size", 11)
+		desc_label.add_theme_font_size_override("font_size", 14)
 		vbox.add_child(desc_label)
 
 	var stat_rows := _get_stat_rows()
@@ -86,7 +86,7 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 			var stat_lbl = Label.new()
 			stat_lbl.text = row["text"]
 			stat_lbl.add_theme_color_override("font_color", row["color"])
-			stat_lbl.add_theme_font_size_override("font_size", 12)
+			stat_lbl.add_theme_font_size_override("font_size", 14)
 			vbox.add_child(stat_lbl)
 
 	return container

@@ -103,7 +103,7 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> voi
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		get_viewport().set_input_as_handled()
 		# Przekazujemy DEFINICJĘ do inventory (tak jak oczekuje sygnał) i SIEBIE (do usunięcia)
-		EventBus.item_pickup_requested.emit(item_data.definition, self)
+		EventBus.item_pickup_requested.emit(item_data, self)
 
 func on_collected() -> void:
 	_is_collected = true
@@ -165,7 +165,7 @@ func _build_tooltip_panel() -> Control:
 	var name_label = Label.new()
 	name_label.text = def.name
 	name_label.add_theme_color_override("font_color", _get_rarity_color())
-	name_label.add_theme_font_size_override("font_size", 14)
+	name_label.add_theme_font_size_override("font_size", 18)
 	vbox.add_child(name_label)
 
 	# Rzadkość i Kategoria
@@ -174,7 +174,7 @@ func _build_tooltip_panel() -> Control:
 	var category_str = ItemDefinition.Category.keys()[def.category]
 	rarity_label.text = "[ %s • %s ]" % [rarity_str, category_str]
 	rarity_label.add_theme_color_override("font_color", _get_rarity_color() * 0.8)
-	rarity_label.add_theme_font_size_override("font_size", 10)
+	rarity_label.add_theme_font_size_override("font_size", 14)
 	vbox.add_child(rarity_label)
 
 	# Linia oddzielająca
@@ -188,7 +188,7 @@ func _build_tooltip_panel() -> Control:
 		var count_lbl = Label.new()
 		count_lbl.text = "Ilość: %d" % item_data.quantity
 		count_lbl.add_theme_color_override("font_color", Color(0.8, 0.8, 0.8))
-		count_lbl.add_theme_font_size_override("font_size", 11)
+		count_lbl.add_theme_font_size_override("font_size", 14)
 		vbox.add_child(count_lbl)
 
 	# Statystyki generowane automatycznie z definicji
@@ -201,7 +201,7 @@ func _build_tooltip_panel() -> Control:
 			var stat_lbl = Label.new()
 			stat_lbl.text = row["text"]
 			stat_lbl.add_theme_color_override("font_color", row["color"])
-			stat_lbl.add_theme_font_size_override("font_size", 12)
+			stat_lbl.add_theme_font_size_override("font_size", 14)
 			vbox.add_child(stat_lbl)
 
 	# Opis przedmiotu
@@ -212,7 +212,7 @@ func _build_tooltip_panel() -> Control:
 		var desc_lbl = Label.new()
 		desc_lbl.text = def.description
 		desc_lbl.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
-		desc_lbl.add_theme_font_size_override("font_size", 11)
+		desc_lbl.add_theme_font_size_override("font_size", 14)
 		desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		desc_lbl.custom_minimum_size = Vector2(180, 0)
 		vbox.add_child(desc_lbl)

@@ -3,9 +3,9 @@ extends PanelContainer
 
 @onready var grid: GridContainer = $MarginContainer/GridContainer
 
-const SLOT_COUNT: int = 55
-const SLOT_GAP: int = 4
-const GRID_COLUMNS: int = 5
+const SLOT_COUNT: int = 48
+const SLOT_GAP: int = 12
+const GRID_COLUMNS: int = 6
 
 # Jedyna linijka potrzebna do tworzenia slotów:
 const SlotScene: PackedScene = preload("res://scenes/slot.tscn")
@@ -128,9 +128,8 @@ func _on_slot_changed(slot: Panel) -> void:
 	else:
 		print("[INVENTORY] Slot cleared")
 
-func _on_item_pickup_requested(item_def: ItemDefinition, drop_node: Node) -> void:
-	var instance := ItemInstance.new(item_def)
-	if add_item(instance):
+func _on_item_pickup_requested(item_instance: ItemInstance, drop_node: Node) -> void:
+	if add_item(item_instance):
 		if is_instance_valid(drop_node):
 			if drop_node.has_method("on_collected"):
 				drop_node.on_collected()

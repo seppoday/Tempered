@@ -2,16 +2,18 @@
 
 [ext_resource type="Script" uid="uid://cpvjw3l1cvyqx" path="res://data/definitions/wave_enemy_entry.gd" id="1_xa510"]
 [ext_resource type="Script" uid="uid://b2div1d71srwn" path="res://data/definitions/wave_definition.gd" id="2_v3q8c"]
+[ext_resource type="Resource" uid="uid://beuml7s1oqpqj" path="res://resources/enemies/goblin.tres" id="2_wybc8"]
+[ext_resource type="Resource" uid="uid://qirqxv6fkeuy" path="res://resources/enemies/wolf.tres" id="3_k2yhy"]
 
 [sub_resource type="Resource" id="Resource_qrwtw"]
 script = ExtResource("1_xa510")
-enemy_id = "goblin"
+enemy = ExtResource("2_wybc8")
 weight = 2
 metadata/_custom_type_script = "uid://cpvjw3l1cvyqx"
 
 [sub_resource type="Resource" id="Resource_qoyj2"]
 script = ExtResource("1_xa510")
-enemy_id = "wolf"
+enemy = ExtResource("3_k2yhy")
 metadata/_custom_type_script = "uid://cpvjw3l1cvyqx"
 
 [resource]
