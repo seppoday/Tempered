@@ -31,6 +31,12 @@ var starting_weapon_id: String
 var enemies_hit_this_swing: Array[Node2D] = []
 
 func _ready() -> void:
+	var all_recipes := RecipeDatabase.get_all_recipes()
+	print("Liczba przepisów: ", all_recipes.size())
+	for r in all_recipes:
+		print(" - ", r.id)
+
+
 	starting_weapon_id = PlayerData.character_definition.starting_weapon_id	# Domyślny ID broni startowej na wszelki wypadek (powinien być nadpisany przez definicję postaci)
 	base_distance = sword_hitbox.position.length()
 	current_angle = sword_hitbox.position.angle()

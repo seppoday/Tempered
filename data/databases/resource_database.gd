@@ -34,10 +34,12 @@ func _scan_folder(path: String, expected_type) -> void:
 		
 		file_name = dir.get_next()
 
-
 func get_entry(id: String) -> Resource:
 	if not _entries.has(id):
 		push_warning("ResourceDatabase: Nie znaleziono Resource o ID: ", id)
 		return null
 	else:
 		return _entries[id]
+
+func get_entries() -> Array:
+	return _entries.values()

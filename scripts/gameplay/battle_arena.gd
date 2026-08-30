@@ -6,25 +6,20 @@ extends Node2D
 
 @export_group("Drop Settings")
 @export var drop_scene: PackedScene
-@export_range(0.0, 1.0) var drop_chance: float = 0.02
+@export_range(0.0, 1.0) var drop_chance: float = 0.1
 @export var max_ground_drops: int = 50  
 
 # === NOWE: PULA ŁUPÓW (LOOT POOL) ===
 # Tutaj w Inspektorze przeciągasz swoje pliki .tres (np. steel_sword.tres, shield.tres)
-@export var loot_pool: Array[ItemDefinition] = []
 @export var wave_definition: WaveDefinition
 
 @export_group("Gold & Exp Settings")
 @export var floating_text_scene: PackedScene 
-@export var min_gold_drop: int = 5
-@export var max_gold_drop: int = 15
 
 @onready var enemy_layer: Node2D = get_node_or_null("%EnemyLayer")
 @onready var drop_layer: Node2D = get_node_or_null("%DropLayer")
 @onready var wave_manager: WaveManager = get_node_or_null("%WaveManager")
 @onready var player: CharacterBody2D = %Player
-
-var spawn_timer: float = 0.0
 
 func _ready() -> void:
 	EventBus.enemy_died.connect(_on_enemy_died)
@@ -66,7 +61,6 @@ func _get_random_edge_position() -> Vector2:
 
 func _on_enemy_spawn_requested(enemy_definition: EnemyDefinition, hp_multiplier: float) -> void:
 	_spawn_enemy(enemy_definition, hp_multiplier)
-	pass
 
 # OBSŁUGA ŚMIERCI WROGA (Drop + Złoto + EXP)
 func _on_enemy_died(enemy: Node, death_position: Vector2) -> void:

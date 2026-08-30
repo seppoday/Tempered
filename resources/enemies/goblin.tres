@@ -9,5 +9,6 @@ script = ExtResource("1_ttibx")
 id = "goblin"
 enemy_name = "Goblin"
 scene = ExtResource("1_8t8dg")
+max_hp = 20
 loot_table = ExtResource("1_bxi3o")
 metadata/_custom_type_script = "uid://dfsxlht8w22ue"

@@ -19,11 +19,8 @@
 [ext_resource type="Texture2D" uid="uid://dftmcck2to81" path="res://assets/ui/ring.png" id="16_dgi5k"]
 [ext_resource type="Texture2D" uid="uid://b4jtn8mldxqyf" path="res://assets/ui/armor.png" id="18_j8jky"]
 [ext_resource type="Texture2D" uid="uid://doswu3pxkpcf6" path="res://assets/ui/shield.png" id="19_kmb1v"]
-[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="19_ryguw"]
 [ext_resource type="Script" uid="uid://dyvxaabqf72dk" path="res://data/definitions/inventory_entry.gd" id="19_yc10j"]
-[ext_resource type="Resource" uid="uid://dk71jywyh32lp" path="res://resources/items/weapons/iron_sword.tres" id="20_d13ii"]
 [ext_resource type="Texture2D" uid="uid://hckl245r3g2f" path="res://assets/ui/boots.png" id="20_fuf3a"]
-[ext_resource type="Resource" uid="uid://bckoqtfake7w5" path="res://resources/items/weapons/steel_sword.tres" id="21_1u8w0"]
 [ext_resource type="Resource" uid="uid://4kdjereu5t3i" path="res://resources/items/helmets/iron_helmet.tres" id="21_2f3dj"]
 [ext_resource type="Resource" uid="uid://y1857jqhwxk4" path="res://resources/items/weapons/rusty_sword.tres" id="22_0odxb"]
 [ext_resource type="Resource" uid="uid://d05poumq2y3b4" path="res://resources/items/amulets/silver_amulet.tres" id="26_5q0nq"]
@@ -32,6 +29,7 @@
 [ext_resource type="Resource" uid="uid://dffx18w2nqoo1" path="res://resources/items/boots/leather_boots.tres" id="28_kmb1v"]
 [ext_resource type="Resource" uid="uid://prbrontime00" path="res://resources/items/gloves/leather_gloves.tres" id="29_fuf3a"]
 [ext_resource type="Resource" uid="uid://cxy31slwwnuqb" path="res://resources/items/off hand/arcane_tome.tres" id="31_pibwh"]
+[ext_resource type="Resource" uid="uid://cys41i4h53vjd" path="res://resources/materials/iron.tres" id="31_tel4y"]
 [ext_resource type="Resource" uid="uid://cbmn2ojp41inn" path="res://resources/items/rings/iron_ring.tres" id="32_c6pm6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ifow5"]
@@ -48,7 +46,6 @@ script = ExtResource("1_2cqfq")
 position = Vector2(3, 160)
 script = ExtResource("1_qsp4k")
 drop_scene = ExtResource("3_kq58d")
-loot_pool = Array[ExtResource("19_ryguw")]([ExtResource("20_d13ii"), ExtResource("21_1u8w0"), ExtResource("22_0odxb")])
 wave_definition = ExtResource("8_5q0nq")
 floating_text_scene = ExtResource("5_htxhm")
 
@@ -422,7 +419,7 @@ theme_override_constants/separation = 12
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer" unique_id=1820349696]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 128
 
 [node name="AlchemyGrid" type="GridContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2001586315]
 unique_name_in_owner = true
@@ -432,6 +429,7 @@ columns = 5
 [node name="AlchemyGridResults" type="GridContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1755035230]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 columns = 5
 
 [node name="CraftButton" type="Button" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer" unique_id=820951479]
@@ -444,7 +442,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_ifow5")
 script = ExtResource("1_h2yge")
-test_items = Array[ExtResource("19_yc10j")]([ExtResource("26_5q0nq"), ExtResource("27_dgi5k"), ExtResource("28_kmb1v"), ExtResource("29_fuf3a"), ExtResource("21_2f3dj"), ExtResource("31_pibwh"), ExtResource("32_c6pm6"), ExtResource("22_0odxb"), ExtResource("28_j8jky")])
+test_items = Array[ExtResource("19_yc10j")]([ExtResource("26_5q0nq"), ExtResource("27_dgi5k"), ExtResource("28_kmb1v"), ExtResource("29_fuf3a"), ExtResource("21_2f3dj"), ExtResource("31_pibwh"), ExtResource("32_c6pm6"), ExtResource("22_0odxb"), ExtResource("28_j8jky"), ExtResource("31_tel4y"), ExtResource("31_tel4y"), ExtResource("28_j8jky")])
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory" unique_id=809901435]
 layout_mode = 2
