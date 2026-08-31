@@ -442,7 +442,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_ifow5")
 script = ExtResource("1_h2yge")
-test_items = Array[ExtResource("19_yc10j")]([ExtResource("26_5q0nq"), ExtResource("27_dgi5k"), ExtResource("28_kmb1v"), ExtResource("29_fuf3a"), ExtResource("21_2f3dj"), ExtResource("31_pibwh"), ExtResource("32_c6pm6"), ExtResource("22_0odxb"), ExtResource("28_j8jky"), ExtResource("31_tel4y"), ExtResource("31_tel4y"), ExtResource("28_j8jky")])
+test_items = Array[ExtResource("19_yc10j")]([ExtResource("26_5q0nq"), ExtResource("27_dgi5k"), ExtResource("28_kmb1v"), ExtResource("29_fuf3a"), ExtResource("21_2f3dj"), ExtResource("31_pibwh"), ExtResource("32_c6pm6"), ExtResource("22_0odxb"), ExtResource("28_j8jky"), ExtResource("31_tel4y"), ExtResource("31_tel4y"), ExtResource("28_j8jky"), ExtResource("31_tel4y")])
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory" unique_id=809901435]
 layout_mode = 2
