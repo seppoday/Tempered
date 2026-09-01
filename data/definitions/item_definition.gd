@@ -3,6 +3,8 @@ class_name ItemDefinition extends InventoryEntry
 @export_category("Equipment")
 @export var slot: EquipmentSlot.Type
 
+@export_category("Upgrade")
+@export var upgrade_curve: UpgradeCurve
 
 @export_category("Base Stats")
 @export var hp: int = 0

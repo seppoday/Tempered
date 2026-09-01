@@ -2,9 +2,11 @@
 
 [ext_resource type="Texture2D" uid="uid://cah3noor8r36x" path="res://assets/items/wooden_sword.jpg" id="1_5yctc"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_2f7oi"]
+[ext_resource type="Resource" uid="uid://b0if0ok25gxs7" path="res://resources/upgrade_curves/weapon_curve.tres" id="3_2f7oi"]
 
 [resource]
 script = ExtResource("2_2f7oi")
+upgrade_curve = ExtResource("3_2f7oi")
 dmg = 8
 attack_speed = 0.8
 id = "rusty_sword"

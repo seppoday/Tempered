@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeCurve" format=3 uid="uid://b0if0ok25gxs7"]
+
+[ext_resource type="Script" uid="uid://3oc8qs3c300v" path="res://data/definitions/item_upgrade_level.gd" id="1_ko4c0"]
+[ext_resource type="Script" uid="uid://dm3xmb61ndnfv" path="res://data/definitions/upgrade_curve.gd" id="2_ebjo0"]
+
+[sub_resource type="Resource" id="Resource_v4sqs"]
+script = ExtResource("1_ko4c0")
+stat_name = "dmg"
+bonus_percent = 0.1
+metadata/_custom_type_script = "uid://3oc8qs3c300v"
+
+[resource]
+script = ExtResource("2_ebjo0")
+levels = Array[ExtResource("1_ko4c0")]([SubResource("Resource_v4sqs")])
+metadata/_custom_type_script = "uid://dm3xmb61ndnfv"

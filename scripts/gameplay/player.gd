@@ -47,6 +47,9 @@ func _ready() -> void:
 		var instance := ItemInstance.new(item_def)
 		print("Equipping starting weapon: ", item_def.name)
 		PlayerData.equip_item(instance)
+		print("Dmg przed ulepszeniem: ", PlayerData.get_total_stats()["dmg"])
+		instance.upgrade_level = 1
+		print("Dmg po ręcznym ulepszeniu: ", PlayerData.get_total_stats()["dmg"])
 		print("Starting weapon equipped: ", instance.definition.name)
 
 func _physics_process(delta: float) -> void:

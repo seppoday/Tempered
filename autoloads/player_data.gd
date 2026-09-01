@@ -52,7 +52,6 @@ var equipped_items: Dictionary = {
 
 func _ready() -> void:
 	character_definition = CharacterDatabase.get_character_definition("warrior")
-	print(character_definition.starting_str)
 
 	if character_definition == null:
 		character_definition = CharacterDefinition.new()
@@ -109,6 +108,17 @@ func get_total_stats() -> Dictionary:
 		totals["crit_damage"] += def.crit_damage
 		totals["dodge"] += def.dodge
 		totals["lifesteal"] += def.lifesteal
+
+		if item.upgrade_level > 0 and def.upgrade_curve != null and item.upgrade_level <= def.upgrade_curve.levels.size():
+			var levels := def.upgrade_curve.levels
+			if item.upgrade_level <= levels.size():
+				var upgrade: ItemUpgradeLevel = levels[item.upgrade_level - 1]
+				var base_value: float = def.get(upgrade.stat_name)
+				var bonus: float = base_value * upgrade.bonus_percent
+				if totals.has(upgrade.stat_name):
+					totals[upgrade.stat_name] += bonus
+				else:
+					totals[upgrade.stat_name] = bonus
 
 	return totals
 

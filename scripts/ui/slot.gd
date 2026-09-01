@@ -52,7 +52,10 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 	container.add_child(vbox)
 
 	var name_label = Label.new()
-	name_label.text = def.name
+	if item_data.upgrade_level > 0:
+		name_label.text = "%s (+%d)" % [def.name, item_data.upgrade_level]
+	else:
+		name_label.text = def.name
 	name_label.add_theme_color_override("font_color", _get_rarity_color())
 	name_label.add_theme_font_size_override("font_size", 18)
 	vbox.add_child(name_label)
@@ -74,7 +77,7 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 		desc_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		desc_label.custom_minimum_size = Vector2(180, 0)
 		desc_label.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
-		desc_label.add_theme_font_size_override("font_size", 14)
+		desc_label.add_theme_font_size_override("font_size", 12)
 		vbox.add_child(desc_label)
 
 	var stat_rows := _get_stat_rows()
@@ -97,6 +100,16 @@ func _get_stat_rows() -> Array[Dictionary]:
 	for property in STAT_DISPLAY.keys():
 		if property in def:
 			var value = def.get(property)
+
+			if item_data.upgrade_level > 0 and def.upgrade_curve != null:
+				var levels = def.upgrade_curve.levels
+				if item_data.upgrade_level <= levels.size():
+					var upgrade: ItemUpgradeLevel = levels[item_data.upgrade_level - 1]
+					if upgrade.stat_name == property:
+						var base_value: float = def.get(property)
+						var bonus: float = base_value * upgrade.bonus_percent
+						value += bonus
+
 			if value == 0 or value == 0.0:
 				continue
 			var info = STAT_DISPLAY[property]
