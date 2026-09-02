@@ -60,7 +60,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 		return false
 
 	# Only equipment can go in an equipment slot, and only in its matching slot type.
-	return def.category == ItemDefinition.Category.EQUIPMENT and def.slot == slot_type
+	return def.category == ItemDefinition.Category.EQUIPMENT and def.slot == slot_type or dragged_instance.definition.category == InventoryEntry.Category.UPGRADE_STONE
 
 func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	super._drop_data(_at_position, data)

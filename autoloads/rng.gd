@@ -31,3 +31,6 @@ func weighted_pick(entries: Array) -> Variant:
 			return entry
 	
 	return null
+
+func randf() -> float:
+	return _generator.randf()

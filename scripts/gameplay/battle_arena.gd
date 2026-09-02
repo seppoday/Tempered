@@ -6,12 +6,11 @@ extends Node2D
 
 @export_group("Drop Settings")
 @export var drop_scene: PackedScene
-@export_range(0.0, 1.0) var drop_chance: float = 0.1
+@export_range(0.0, 1.0) var drop_chance: float = 1.0
 @export var max_ground_drops: int = 50  
 
-# === NOWE: PULA ŁUPÓW (LOOT POOL) ===
-# Tutaj w Inspektorze przeciągasz swoje pliki .tres (np. steel_sword.tres, shield.tres)
-@export var wave_definition: WaveDefinition
+@export_group("Wave Settings")
+@export var wave_sequence: WaveSequence
 
 @export_group("Gold & Exp Settings")
 @export var floating_text_scene: PackedScene 
@@ -24,7 +23,7 @@ extends Node2D
 func _ready() -> void:
 	EventBus.enemy_died.connect(_on_enemy_died)
 	wave_manager.enemy_spawn_requested.connect(_on_enemy_spawn_requested)
-	wave_manager.start_wave(wave_definition)
+	wave_manager.start_sequence(wave_sequence)
 
 func _spawn_enemy(enemy_definition: EnemyDefinition, hp_multiplier: float) -> void:
 	if enemy_definition.scene == null or player == null:

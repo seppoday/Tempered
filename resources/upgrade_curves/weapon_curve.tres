@@ -3,13 +3,111 @@
 [ext_resource type="Script" uid="uid://3oc8qs3c300v" path="res://data/definitions/item_upgrade_level.gd" id="1_ko4c0"]
 [ext_resource type="Script" uid="uid://dm3xmb61ndnfv" path="res://data/definitions/upgrade_curve.gd" id="2_ebjo0"]
 
+[sub_resource type="Resource" id="Resource_ko4c0"]
+script = ExtResource("1_ko4c0")
+stat_name = "dmg"
+bonus_percent = 0.04
+metadata/_custom_type_script = "uid://3oc8qs3c300v"
+
+[sub_resource type="Resource" id="Resource_ebjo0"]
+script = ExtResource("1_ko4c0")
+stat_name = "dmg"
+bonus_percent = 0.08
+success_chance = 0.95
+metadata/_custom_type_script = "uid://3oc8qs3c300v"
+
+[sub_resource type="Resource" id="Resource_fy4ks"]
+script = ExtResource("1_ko4c0")
+stat_name = "dmg"
+bonus_percent = 0.13
+success_chance = 0.9
+metadata/_custom_type_script = "uid://3oc8qs3c300v"
+
+[sub_resource type="Resource" id="Resource_rdpu1"]
+script = ExtResource("1_ko4c0")
+stat_name = "dmg"
+bonus_percent = 0.18
+success_chance = 0.85
+metadata/_custom_type_script = "uid://3oc8qs3c300v"
+
+[sub_resource type="Resource" id="Resource_v1v4n"]
+script = ExtResource("1_ko4c0")
+stat_name = "dmg"
+bonus_percent = 0.24
+success_chance = 0.75
+metadata/_custom_type_script = "uid://3oc8qs3c300v"
+
+[sub_resource type="Resource" id="Resource_lyneh"]
+script = ExtResource("1_ko4c0")
+stat_name = "dmg"
+bonus_percent = 0.3
+success_chance = 0.7
+metadata/_custom_type_script = "uid://3oc8qs3c300v"
+
+[sub_resource type="Resource" id="Resource_qe8e8"]
+script = ExtResource("1_ko4c0")
+stat_name = "dmg"
+bonus_percent = 0.37
+success_chance = 0.65
+metadata/_custom_type_script = "uid://3oc8qs3c300v"
+
+[sub_resource type="Resource" id="Resource_uwaxv"]
+script = ExtResource("1_ko4c0")
+stat_name = "dmg"
+bonus_percent = 0.44
+success_chance = 0.6
+metadata/_custom_type_script = "uid://3oc8qs3c300v"
+
+[sub_resource type="Resource" id="Resource_5lv58"]
+script = ExtResource("1_ko4c0")
+stat_name = "dmg"
+bonus_percent = 0.52
+success_chance = 0.55
+metadata/_custom_type_script = "uid://3oc8qs3c300v"
+
+[sub_resource type="Resource" id="Resource_vwp1r"]
+script = ExtResource("1_ko4c0")
+stat_name = "dmg"
+bonus_percent = 0.6
+success_chance = 0.5
+metadata/_custom_type_script = "uid://3oc8qs3c300v"
+
+[sub_resource type="Resource" id="Resource_plait"]
+script = ExtResource("1_ko4c0")
+stat_name = "dmg"
+bonus_percent = 0.69
+success_chance = 0.45
+metadata/_custom_type_script = "uid://3oc8qs3c300v"
+
 [sub_resource type="Resource" id="Resource_v4sqs"]
 script = ExtResource("1_ko4c0")
 stat_name = "dmg"
-bonus_percent = 0.1
+bonus_percent = 0.78
+success_chance = 0.4
+metadata/_custom_type_script = "uid://3oc8qs3c300v"
+
+[sub_resource type="Resource" id="Resource_438an"]
+script = ExtResource("1_ko4c0")
+stat_name = "dmg"
+bonus_percent = 0.88
+success_chance = 0.3
+metadata/_custom_type_script = "uid://3oc8qs3c300v"
+
+[sub_resource type="Resource" id="Resource_2twt1"]
+script = ExtResource("1_ko4c0")
+stat_name = "dmg"
+bonus_percent = 0.99
+success_chance = 0.2
+metadata/_custom_type_script = "uid://3oc8qs3c300v"
+
+[sub_resource type="Resource" id="Resource_yo6kv"]
+script = ExtResource("1_ko4c0")
+stat_name = "dmg"
+bonus_percent = 1.1
+success_chance = 0.1
 metadata/_custom_type_script = "uid://3oc8qs3c300v"
 
 [resource]
 script = ExtResource("2_ebjo0")
-levels = Array[ExtResource("1_ko4c0")]([SubResource("Resource_v4sqs")])
+levels = Array[ExtResource("1_ko4c0")]([SubResource("Resource_ko4c0"), SubResource("Resource_ebjo0"), SubResource("Resource_fy4ks"), SubResource("Resource_rdpu1"), SubResource("Resource_v1v4n"), SubResource("Resource_lyneh"), SubResource("Resource_qe8e8"), SubResource("Resource_uwaxv"), SubResource("Resource_5lv58"), SubResource("Resource_vwp1r"), SubResource("Resource_plait"), SubResource("Resource_v4sqs"), SubResource("Resource_438an"), SubResource("Resource_2twt1"), SubResource("Resource_yo6kv")])
 metadata/_custom_type_script = "uid://dm3xmb61ndnfv"

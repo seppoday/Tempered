@@ -11,8 +11,8 @@ signal slot_changed(slot: Panel)
 
 const STAT_DISPLAY := {
 	"hp":           ["Max HP", Color(0.2, 0.8, 0.2), "plus_int"],
-	"dmg":          ["Damage", Color(0.95, 0.3, 0.3), "plus_int"],
-	"magic_dmg":    ["Magic Damage", Color(0.0, 0.3, 0.9), "plus_int"],
+	"dmg":          ["Damage", Color(0.95, 0.3, 0.3), "plus_float"],
+	"magic_dmg":    ["Magic Damage", Color(0.0, 0.3, 0.9), "plus_float"],
 	"attack_speed": ["Attack Speed", Color(0.95, 0.95, 0.95), "speed"],
 	"armor":        ["Armor", Color(0.6, 0.6, 0.65), "plus_int"],
 	"crit_chance":  ["Crit Chance", Color(0.9, 0.7, 0.2), "percent"],
@@ -116,6 +116,7 @@ func _get_stat_rows() -> Array[Dictionary]:
 			var value_str := ""
 			match info[2]:
 				"plus_int": value_str = "+%d" % int(value)
+				"plus_float": value_str = "+%.2f" % value
 				"percent":
 					var pct = int(round(value * 100.0)) if value <= 1.0 else int(round(value))
 					value_str = "+%d%%" % pct
@@ -183,6 +184,23 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	var dragged_instance: ItemInstance = data["item_instance"]
 	var drag_count: int = data["drag_count"]
 	var is_partial: bool = data["is_partial"]
+
+	if not is_empty() and dragged_instance.definition.category == InventoryEntry.Category.UPGRADE_STONE:
+		if item_data.definition is ItemDefinition and item_data.definition.upgrade_curve != null:
+			var upgrade_result: ItemInstance.UpgradeResult = item_data.attempt_upgrade()
+
+			if upgrade_result == ItemInstance.UpgradeResult.SUCCESS or upgrade_result == ItemInstance.UpgradeResult.FAILURE:
+				source_slot.item_data.quantity -= 1
+				if source_slot.item_data.quantity <= 0:
+					source_slot.clear()
+				else:
+					source_slot._update_visual()
+				_update_visual()
+
+			slot_changed.emit(self)
+			source_slot.slot_changed.emit(source_slot)
+
+		return
 
 	if is_empty():
 		set_item(dragged_instance)

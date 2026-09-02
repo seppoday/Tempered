@@ -24,84 +24,119 @@ var _anim_start_angle: float = 0.0
 var _anim_end_angle: float = 0.0
 var _anim_max_ext: float = 0.0
 
-
 # Pamięta TYLKO wrogów trafionych w obecnym zamachu
 var starting_weapon_id: String 
 
 var enemies_hit_this_swing: Array[Node2D] = []
 
+# --- FLAGA BLOKADY WALKI NA STARCIU ---
+var _combat_active: bool = false
+
 func _ready() -> void:
+	# 1. Natychmiastowe wypisanie receptur i konfiguracja podstawowych zmiennych
 	var all_recipes := RecipeDatabase.get_all_recipes()
 	print("Liczba przepisów: ", all_recipes.size())
 	for r in all_recipes:
 		print(" - ", r.id)
 
-
-	starting_weapon_id = PlayerData.character_definition.starting_weapon_id	# Domyślny ID broni startowej na wszelki wypadek (powinien być nadpisany przez definicję postaci)
+	starting_weapon_id = PlayerData.character_definition.starting_weapon_id
 	base_distance = sword_hitbox.position.length()
 	current_angle = sword_hitbox.position.angle()
-	_perform_swing_cycle()
 
+	# 2. Natychmiastowe wyłączenie kolizji miecza na starcie gry
+	var collision_shape := sword_hitbox.get_node("CollisionShape2D") as CollisionShape2D
+	if collision_shape != null:
+		collision_shape.disabled = true
+
+	# 3. Natychmiastowe wyposażenie broni startowej (bez żadnego opóźnienia!)
 	var item_def = ItemDatabase.get_item_definition(starting_weapon_id)
 	if item_def != null:
 		var instance := ItemInstance.new(item_def)
 		print("Equipping starting weapon: ", item_def.name)
 		PlayerData.equip_item(instance)
-		print("Dmg przed ulepszeniem: ", PlayerData.get_total_stats()["dmg"])
-		instance.upgrade_level = 1
-		print("Dmg po ręcznym ulepszeniu: ", PlayerData.get_total_stats()["dmg"])
 		print("Starting weapon equipped: ", instance.definition.name)
+		print(instance.definition.dmg)
+
+	# 4. Odpalenie opóźnienia walki "w tle" - nie blokuje to wykonania _ready()!
+	_enable_combat_delayed()
+
+
+# Asynchroniczna metoda uruchamiająca walkę po 1 sekundzie
+func _enable_combat_delayed() -> void:
+	# Czekamy 1 sekundę w tle. W tym czasie reszta gry działa w pełni normalnie.
+	await get_tree().create_timer(1.0).timeout
+	
+	# Włączamy hitbox miecza
+	var collision_shape := sword_hitbox.get_node("CollisionShape2D") as CollisionShape2D
+	if collision_shape != null:
+		collision_shape.disabled = false
+		
+	# Odpalamy pętlę machania mieczem
+	_combat_active = true
+	_perform_swing_cycle()
+
 
 func _physics_process(delta: float) -> void:
-	_update_target()
+	# Szukamy nowego celu TYLKO wtedy, gdy miecz NIE wykonuje aktywnego cięcia.
+	if swing_extension < 1.0:
+		_update_target()
+		
 	_face_target(delta)
 	_update_sword_position()
 
 	# Gdy miecz jest w trakcie ruchu wysuwania, aktywnie tniemy!
-	if swing_extension > 1.0:
+	# (Dodatkowy warunek _combat_active zabezpiecza przed zadaniem obrażeń przed upływem sekundy)
+	if _combat_active and swing_extension > 1.0:
 		_deal_damage_to_overlapping_enemies()
 
 # ==========================================
-# SYSTEM NAMIERZANIA (BEZPIECZNY)
+# SYSTEM NAMIERZANIA (BEZPIECZNY, ANTI-JITTER)
 # ==========================================
 
 func _update_target() -> void:
-	# Sprawdzamy, czy obecny cel jest wciąż żywy i poprawny
-	if current_target != null and is_instance_valid(current_target):
-		var is_dying: bool = false
-		
-		# Sprawdzamy czy cel umiera (często wrogowie mają zmienną hp, state itp.)
-		if "hp" in current_target and current_target.hp <= 0:
-			is_dying = true
-		if current_target.is_queued_for_deletion():
-			is_dying = true
-		if current_target.has_method("is_dead") and current_target.is_dead():
-			is_dying = true
-
-		if not is_dying:
-			return # Cel jest w pełni poprawny, nie zmieniamy go
-			
-	# Jeśli cel nie istnieje lub umarł, szukamy nowego
 	current_target = _find_nearest_enemy()
 
 func _find_nearest_enemy() -> Node2D:
 	var enemies := get_tree().get_nodes_in_group("enemies")
 	var nearest: Node2D = null
-	var nearest_dist := INF
+	var nearest_dist_sq := INF
 	
+	# 1. Sprawdzamy czy nasz obecny cel wciąż żyje i jest poprawny
+	var current_target_valid := false
+	var current_target_dist_sq := INF
+	
+	if current_target != null and is_instance_valid(current_target) and not current_target.is_queued_for_deletion():
+		var is_dead_check := false
+		if "hp" in current_target and current_target.hp <= 0:
+			is_dead_check = true
+		if current_target.has_method("is_dead") and current_target.is_dead():
+			is_dead_check = true
+			
+		if not is_dead_check:
+			current_target_valid = true
+			current_target_dist_sq = global_position.distance_squared_to(current_target.global_position)
+			
+			nearest = current_target
+			# NAKŁADAMY "LEPKOŚĆ" (Histerezę)
+			nearest_dist_sq = current_target_dist_sq * 0.56
+
+	# 2. Przeszukujemy resztę wrogów
 	for enemy in enemies:
 		if not is_instance_valid(enemy) or enemy.is_queued_for_deletion():
 			continue
 			
-		# IGNORUJEMY PRZECIWNIKÓW, KTÓRZY JUŻ SĄ MARTWI (odtwarzają animację śmierci)
+		if enemy == current_target:
+			continue
+			
 		if "hp" in enemy and enemy.hp <= 0:
 			continue
 		if enemy.has_method("is_dead") and enemy.is_dead():
 			continue
 			
-		var dist := global_position.distance_squared_to(enemy.global_position)
-		if dist < nearest_dist:
-			nearest_dist = dist
+		var dist_sq := global_position.distance_squared_to(enemy.global_position)
+		
+		if dist_sq < nearest_dist_sq:
+			nearest_dist_sq = dist_sq
 			nearest = enemy
 			
 	return nearest
@@ -124,6 +159,10 @@ func _update_sword_position() -> void:
 # ==========================================
 
 func _perform_swing_cycle() -> void:
+	# Jeśli walka została jakimś cudem dezaktywowana, przerywamy pętlę
+	if not _combat_active:
+		return
+
 	enemies_hit_this_swing.clear()
 
 	var stats := PlayerData.get_total_stats()
@@ -132,8 +171,7 @@ func _perform_swing_cycle() -> void:
 	# Obliczanie prędkości
 	var speed_factor := log(attack_speed + 1.0) * 1.5 + (attack_speed * 0.1)
 	
-	# NAPRAWA BŁĘDU: Wymuszamy minimalną wartość speed_factor (np. 0.1),
-	# aby uniknąć dzielenia przez zero i zawieszenia animacji!
+	# Zabezpieczenie przed dzieleniem przez zero
 	speed_factor = maxf(0.1, speed_factor)
 	
 	var current_swing_duration: float = maxf(0.05, swing_duration / speed_factor)
@@ -172,6 +210,10 @@ func _update_swing_progress(t: float) -> void:
 # ==========================================
 
 func _deal_damage_to_overlapping_enemies() -> void:
+	# Zabezpieczenie: jeśli walka jest nieaktywna, nie pozwól na zadanie obrażeń
+	if not _combat_active:
+		return
+
 	var stats := PlayerData.get_total_stats()
 	var max_targets: int = stats.get("target_count", 1)
 
@@ -180,8 +222,12 @@ func _deal_damage_to_overlapping_enemies() -> void:
 
 	var space_state := get_world_2d().direct_space_state
 	var collision_shape := sword_hitbox.get_node("CollisionShape2D") as CollisionShape2D
-	if collision_shape == null or collision_shape.shape == null:
+	
+	# Zabezpieczenie: nie zadawaj obrażeń, jeśli kształt kolizji jest wyłączony
+	if collision_shape == null or collision_shape.shape == null or collision_shape.disabled:
 		return
+
+	collision_shape.force_update_transform()
 
 	var query := PhysicsShapeQueryParameters2D.new()
 	query.shape = collision_shape.shape
@@ -203,7 +249,6 @@ func _deal_damage_to_overlapping_enemies() -> void:
 		if enemy == null or enemy.is_queued_for_deletion():
 			continue
 
-		# Pomijamy, jeśli wróg ma 0 HP (już nie żyje)
 		if "hp" in enemy and enemy.hp <= 0:
 			continue
 

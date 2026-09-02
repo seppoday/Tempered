@@ -2,15 +2,33 @@ class_name WaveManager extends Node
 
 signal enemy_spawn_requested(enemy_definition: EnemyDefinition, hp_multiplier: float)
 signal wave_completed
+signal sequence_completed
 
 var current_wave: WaveDefinition = null
+var current_sequence: WaveSequence = null
 var _time_remaining: float = 0.0
 var _spawn_timer: float = 0.0
+var _sequence_index: int = -1
 
 func start_wave(wave_definition: WaveDefinition) -> void:
 	current_wave = wave_definition
 	_time_remaining = current_wave.duration
 	_spawn_timer = 0.0
+
+func start_sequence(sequence: WaveSequence) -> void:
+	current_sequence = sequence
+	_sequence_index = -1
+	_advance_to_next_wave()
+
+func _advance_to_next_wave() -> void:
+	_sequence_index += 1
+	if _sequence_index >= current_sequence.waves.size():
+		sequence_completed.emit()
+		current_sequence = null
+		current_wave = null
+		return
+
+	start_wave(current_sequence.waves[_sequence_index])
 
 func _process(delta: float) -> void:
 	if current_wave == null:
@@ -19,7 +37,7 @@ func _process(delta: float) -> void:
 	_time_remaining -= delta
 	if _time_remaining <= 0.0:
 		wave_completed.emit()
-		current_wave = null
+		_advance_to_next_wave()
 		return
 
 	_spawn_timer -= delta

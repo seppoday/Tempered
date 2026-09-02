@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="WaveSequence" format=3 uid="uid://drv28jejre3bd"]
+
+[ext_resource type="Script" uid="uid://dey65coh8u728" path="res://data/definitions/wave_sequence.gd" id="1_5swok"]
+[ext_resource type="Script" uid="uid://b2div1d71srwn" path="res://data/definitions/wave_definition.gd" id="2_nix47"]
+[ext_resource type="Resource" uid="uid://dnhvfrwiph40a" path="res://resources/waves/test_wave_goblins.tres" id="3_75rsi"]
+[ext_resource type="Resource" uid="uid://cv2djw1wishok" path="res://resources/waves/test_wave_wolves.tres" id="4_4feen"]
+
+[resource]
+script = ExtResource("1_5swok")
+id = "test_wave_seq"
+waves = Array[ExtResource("2_nix47")]([ExtResource("3_75rsi"), ExtResource("4_4feen")])
+metadata/_custom_type_script = "uid://dey65coh8u728"

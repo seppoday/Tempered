@@ -10,6 +10,8 @@ signal gold_changed(new_gold_amount: int)
 signal attributes_changed
 signal attribute_points_changed(points: int)
 
+signal hp_changed(current_hp: float, max_hp: float)
+
 # ==========================================
 # POSTAĆ I POSTĘP
 # ==========================================
@@ -26,6 +28,8 @@ var points_per_level: int = 3  # Ile punktów dostajemy co poziom
 var attribute_points: int = 0  # Punkty na start
 
 var gold: int = 0
+
+var current_hp: float = 0.0
 
 # ==========================================
 # BAZOWE ATRYBUTY
@@ -60,7 +64,15 @@ func _ready() -> void:
 	attributes["DEX"] = character_definition.starting_dex
 	attributes["INT"] = character_definition.starting_int
 	attributes["CON"] = character_definition.starting_con
-	
+
+	current_hp = get_total_stats()["hp"]
+
+func take_damage(amount: float) -> void:
+	print("Player takes damage: ", amount)
+	current_hp = max(0.0, current_hp - amount)
+	hp_changed.emit(current_hp, get_total_stats()["hp"])
+	if current_hp <= 0.0:
+		print("Gracz zginął! (na razie tylko log)")
 
 # ==========================================
 # OBLICZANIE STATYSTYK
@@ -109,7 +121,7 @@ func get_total_stats() -> Dictionary:
 		totals["dodge"] += def.dodge
 		totals["lifesteal"] += def.lifesteal
 
-		if item.upgrade_level > 0 and def.upgrade_curve != null and item.upgrade_level <= def.upgrade_curve.levels.size():
+		if item.upgrade_level > 0 and def.upgrade_curve != null:
 			var levels := def.upgrade_curve.levels
 			if item.upgrade_level <= levels.size():
 				var upgrade: ItemUpgradeLevel = levels[item.upgrade_level - 1]

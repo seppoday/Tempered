@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="WaveDefinition" format=3 uid="uid://cv2djw1wishok"]
+
+[ext_resource type="Script" uid="uid://cpvjw3l1cvyqx" path="res://data/definitions/wave_enemy_entry.gd" id="1_4i8jb"]
+[ext_resource type="Resource" uid="uid://qirqxv6fkeuy" path="res://resources/enemies/wolf.tres" id="2_4i8jb"]
+[ext_resource type="Script" uid="uid://b2div1d71srwn" path="res://data/definitions/wave_definition.gd" id="3_lv0tr"]
+
+[sub_resource type="Resource" id="Resource_qrwtw"]
+script = ExtResource("1_4i8jb")
+enemy = ExtResource("2_4i8jb")
+weight = 2
+metadata/_custom_type_script = "uid://cpvjw3l1cvyqx"
+
+[resource]
+script = ExtResource("3_lv0tr")
+id = "test_wave_wolf"
+spawn_rate = 2.0
+enemies = Array[ExtResource("1_4i8jb")]([SubResource("Resource_qrwtw")])
+metadata/_custom_type_script = "uid://b2div1d71srwn"

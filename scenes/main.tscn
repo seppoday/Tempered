@@ -10,8 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="2_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://x4spoxodgh4x" path="res://scenes/equipment_slot.tscn" id="3_dg77c"]
 [ext_resource type="PackedScene" uid="uid://djk4dwog07htq" path="res://scenes/drop.tscn" id="3_kq58d"]
+[ext_resource type="Resource" uid="uid://drv28jejre3bd" path="res://resources/waves/test_wave_sequence.tres" id="4_qkpxi"]
 [ext_resource type="PackedScene" uid="uid://b5e6onr0nkuv6" path="res://scenes/floating_text.tscn" id="5_htxhm"]
-[ext_resource type="Resource" uid="uid://dnhvfrwiph40a" path="res://resources/waves/test_wave.tres" id="8_5q0nq"]
 [ext_resource type="PackedScene" uid="uid://c7phvb8df3w7u" path="res://wave_manager.tscn" id="10_qkpxi"]
 [ext_resource type="Texture2D" uid="uid://ygdvvwu2iiq5" path="res://assets/ui/amulet.png" id="14_yaehf"]
 [ext_resource type="Texture2D" uid="uid://bp8alctflgmd7" path="res://assets/ui/helmet.png" id="15_5q0nq"]
@@ -31,6 +31,7 @@
 [ext_resource type="Resource" uid="uid://cxy31slwwnuqb" path="res://resources/items/off hand/arcane_tome.tres" id="31_pibwh"]
 [ext_resource type="Resource" uid="uid://cys41i4h53vjd" path="res://resources/materials/iron.tres" id="31_tel4y"]
 [ext_resource type="Resource" uid="uid://cbmn2ojp41inn" path="res://resources/items/rings/iron_ring.tres" id="32_c6pm6"]
+[ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://resources/materials/misc/upgrade_stone.tres" id="32_qkpxi"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ifow5"]
 bg_color = Color(0, 0, 0, 0.42352942)
@@ -46,7 +47,7 @@ script = ExtResource("1_2cqfq")
 position = Vector2(3, 160)
 script = ExtResource("1_qsp4k")
 drop_scene = ExtResource("3_kq58d")
-wave_definition = ExtResource("8_5q0nq")
+wave_sequence = ExtResource("4_qkpxi")
 floating_text_scene = ExtResource("5_htxhm")
 
 [node name="EnemyLayer" type="Node2D" parent="BattleArena" unique_id=1133646402]
@@ -56,6 +57,11 @@ position = Vector2(620, 458)
 [node name="Player" parent="BattleArena" unique_id=1413141307 instance=ExtResource("1_a6jrf")]
 unique_name_in_owner = true
 position = Vector2(483, 443)
+
+[node name="Camera2D" type="Camera2D" parent="BattleArena/Player" unique_id=420368047]
+position = Vector2(863, 0)
+enabled = false
+zoom = Vector2(0.5, 0.5)
 
 [node name="DropLayer" type="Node2D" parent="BattleArena" unique_id=2116879078]
 unique_name_in_owner = true
@@ -442,7 +448,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_ifow5")
 script = ExtResource("1_h2yge")
-test_items = Array[ExtResource("19_yc10j")]([ExtResource("26_5q0nq"), ExtResource("27_dgi5k"), ExtResource("28_kmb1v"), ExtResource("29_fuf3a"), ExtResource("21_2f3dj"), ExtResource("31_pibwh"), ExtResource("32_c6pm6"), ExtResource("22_0odxb"), ExtResource("28_j8jky"), ExtResource("31_tel4y"), ExtResource("31_tel4y"), ExtResource("28_j8jky"), ExtResource("31_tel4y")])
+test_items = Array[ExtResource("19_yc10j")]([ExtResource("26_5q0nq"), ExtResource("27_dgi5k"), ExtResource("28_kmb1v"), ExtResource("29_fuf3a"), ExtResource("21_2f3dj"), ExtResource("31_pibwh"), ExtResource("32_c6pm6"), ExtResource("22_0odxb"), ExtResource("28_j8jky"), ExtResource("31_tel4y"), ExtResource("31_tel4y"), ExtResource("28_j8jky"), ExtResource("31_tel4y"), ExtResource("32_qkpxi"), ExtResource("32_qkpxi"), ExtResource("32_qkpxi"), ExtResource("32_qkpxi"), ExtResource("32_qkpxi")])
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory" unique_id=809901435]
 layout_mode = 2

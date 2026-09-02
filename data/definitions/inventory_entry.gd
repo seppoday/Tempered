@@ -3,7 +3,8 @@ class_name InventoryEntry extends Resource
 enum Category {
 	CONSUMABLE,
 	EQUIPMENT,
-	MATERIAL
+	MATERIAL,
+	UPGRADE_STONE
 }
 
 @export var id: String

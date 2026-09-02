@@ -10,5 +10,7 @@ id = "goblin"
 enemy_name = "Goblin"
 scene = ExtResource("1_8t8dg")
 max_hp = 20
+damage = 5.0
+attack_range = 100.0
 loot_table = ExtResource("1_bxi3o")
 metadata/_custom_type_script = "uid://dfsxlht8w22ue"
