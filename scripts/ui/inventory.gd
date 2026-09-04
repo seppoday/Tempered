@@ -10,16 +10,17 @@ const GRID_COLUMNS: int = 4
 # Jedyna linijka potrzebna do tworzenia slotów:
 const SlotScene: PackedScene = preload("res://scenes/slot.tscn")
 
-@export var test_items: Array[InventoryEntry] = []
+@export var base_items: Dictionary[InventoryEntry, int] = {}
 
 func _ready() -> void:
 	EventBus.item_pickup_requested.connect(_on_item_pickup_requested)
 	_setup_grid()
 	_create_slots()
-
-	for definition in test_items:
+	
+	for definition in base_items.keys():
 		if definition:
-			add_item(ItemInstance.new(definition))
+			var quantity: int = base_items[definition]
+			add_item(ItemInstance.new(definition, quantity))
 
 func _create_slots() -> void:
 	for i in range(SLOT_COUNT):

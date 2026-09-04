@@ -6,8 +6,10 @@
 [resource]
 script = ExtResource("1_jwpa5")
 heal_hp = 40.0
+cooldown = 5.0
 id = "potion_small"
-name = "Small Healing Piotion"
+name = "Small Healing Potion"
+description = "Small Healing Potion"
 icon = ExtResource("1_8ltho")
 category = 0
 stackable = true

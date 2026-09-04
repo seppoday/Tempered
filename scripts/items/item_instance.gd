@@ -41,3 +41,13 @@ func attempt_upgrade() -> UpgradeResult:
 		return UpgradeResult.SUCCESS
 	else:
 		return UpgradeResult.FAILURE
+
+
+func use() -> void:
+	if definition is ConsumableDefinition:
+		var consumable_def: ConsumableDefinition = definition as ConsumableDefinition
+		var heal_hp: float = consumable_def.heal_hp
+
+		if heal_hp > 0.0:
+			# Heal the player
+			PlayerData.heal(heal_hp)

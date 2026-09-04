@@ -20,6 +20,8 @@ extends PanelContainer
 # Wolne punkty
 @onready var points_label: Label = get_node_or_null("%PointsLabel")
 
+const FONT_SIZE: int = 12
+
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 
@@ -90,29 +92,29 @@ func _update_ui(changed_stat: String = "") -> void:
 	for child in stats_box.get_children():
 		child.queue_free()
 
-	_add_label("%s (Level %d)" % [char_info["name"], char_info["level"]], Color(0.95, 0.75, 0.2), 15, "level")
+	_add_label("%s (Level %d)" % [char_info["name"], char_info["level"]], Color(0.95, 0.75, 0.2), FONT_SIZE, "level")
 	_add_spacer()
 
 	# Mapowanie statystyk z PlayerData (Zalecane ujednolicenie nazw z ItemDefinition)
-	if totals.has("dmg"): _add_label("Damage: %.2f" % totals["dmg"], Color.WHITE, 12, "dmg")
-	if totals.has("magic_dmg"): _add_label("Magic Damage: %.2f" % totals["magic_dmg"], Color.WHITE, 12, "magic_dmg")
-	if totals.has("attack_speed"): _add_label("Attack Speed: %.2f /s" % totals["attack_speed"], Color.WHITE, 12, "attack_speed")
-	if totals.has("crit_chance"): _add_label("Crit Chance: %d%%" % int(totals["crit_chance"] * 100), Color.WHITE, 12, "crit_chance")
-	if totals.has("crit_damage"): _add_label("Crit Damage: %d%%" % int(totals["crit_damage"] * 100), Color.WHITE, 12, "crit_damage")
-	if totals.has("armor"): _add_label("Armor: %d" % totals["armor"], Color.WHITE, 12, "armor")
+	if totals.has("dmg"): _add_label("Damage: %.2f" % totals["dmg"], Color.WHITE, FONT_SIZE, "dmg")
+	if totals.has("magic_dmg"): _add_label("Magic Damage: %.2f" % totals["magic_dmg"], Color.WHITE, FONT_SIZE, "magic_dmg")
+	if totals.has("attack_speed"): _add_label("Attack Speed: %.2f /s" % totals["attack_speed"], Color.WHITE, FONT_SIZE, "attack_speed")
+	if totals.has("crit_chance"): _add_label("Crit Chance: %d%%" % int(totals["crit_chance"] * 100), Color.WHITE, FONT_SIZE, "crit_chance")
+	if totals.has("crit_damage"): _add_label("Crit Damage: %d%%" % int(totals["crit_damage"] * 100), Color.WHITE, FONT_SIZE, "crit_damage")
+	if totals.has("armor"): _add_label("Armor: %d" % totals["armor"], Color.WHITE, FONT_SIZE, "armor")
 
 	_add_spacer()
 
 	# Pozostałe statystyki (np. uniki, lifesteal)
 	var has_survival := false
 	if totals.get("lifesteal", 0) > 0:
-		_add_label("Lifesteal: %d%%" % int(totals["lifesteal"] * 100), Color(0.85, 0.3, 0.4), 11, "lifesteal")
+		_add_label("Lifesteal: %d%%" % int(totals["lifesteal"] * 100), Color(0.85, 0.3, 0.4), FONT_SIZE, "lifesteal")
 		has_survival = true
 	if totals.get("dodge", 0) > 0:
-		_add_label("Dodge: %d%%" % int(totals["dodge"] * 100), Color(0.6, 0.6, 0.65), 11, "dodge")
+		_add_label("Dodge: %d%%" % int(totals["dodge"] * 100), Color(0.6, 0.6, 0.65), FONT_SIZE, "dodge")
 		has_survival = true
 	if totals.has("hp"):
-		_add_label("Max HP: %d" % totals["hp"], Color(0.4, 0.8, 0.4), 11, "hp")
+		_add_label("Max HP: %d" % totals["hp"], Color(0.4, 0.8, 0.4), FONT_SIZE, "hp")
 		has_survival = true
 	if has_survival: _add_spacer()
 

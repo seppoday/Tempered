@@ -21,78 +21,214 @@ const STAT_DISPLAY := {
 	"lifesteal":    ["Lifesteal", Color(0.85, 0.3, 0.4), "percent"],
 }
 
+const BASE_BG := Color(0.12, 0.12, 0.14, 1.0)
+const BASE_BORDER := Color(0.32, 0.32, 0.36, 1.0)
+
 func _ready() -> void:
 	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	count_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
+
+func _gui_input(event: InputEvent) -> void:
+	var is_double_click_lmb = event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.double_click
+	if not is_double_click_lmb:
+		return
+
+	if is_empty() or item_data.definition.category != InventoryEntry.Category.CONSUMABLE:
+		return
+
+	item_data.use()
+	item_data.quantity -= 1
+
+	if item_data.quantity <= 0:
+		clear()
+	else:
+		_update_visual()
+
+	slot_changed.emit(self)
+
 # ==========================================
 # TOOLTIP
 # ==========================================
+const FONT_TITLE := 24
+const FONT_BODY := 12
 
 func _make_custom_tooltip(_for_text: String) -> Control:
 	if is_empty() or not item_data.definition:
 		return null
 
 	var def = item_data.definition
+	var rarity_color := _get_rarity_color()
 
-	var container = PanelContainer.new()
-	var style = StyleBoxFlat.new()
-	style.bg_color = Color(0.08, 0.08, 0.1, 0.95)
-	style.border_color = _get_rarity_color()
+	# ── Root ──────────────────────────────────────────────
+	var container := PanelContainer.new()
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.05, 0.06, 0.08, 0.96)
+	style.border_color = Color(rarity_color, 0.55)
 	style.set_border_width_all(2)
-	style.set_corner_radius_all(4)
-	style.content_margin_left = 10
-	style.content_margin_top = 10
-	style.content_margin_right = 10
-	style.content_margin_bottom = 10
+	style.set_corner_radius_all(0)
+	style.content_margin_left = 8
+	style.content_margin_top = 8
+	style.content_margin_right = 8
+	style.content_margin_bottom = 8
 	container.add_theme_stylebox_override("panel", style)
 
-	var vbox = VBoxContainer.new()
-	vbox.add_theme_constant_override("separation", 3)
-	container.add_child(vbox)
+	# Usuń domyślne tło TooltipPanel
+	container.tree_entered.connect(_clear_tooltip_panel_bg.bind(container), CONNECT_ONE_SHOT)
 
-	var name_label = Label.new()
+	var root := VBoxContainer.new()
+	root.add_theme_constant_override("separation", 8)
+	container.add_child(root)
+
+	# ── HEADER: ikona + nazwa/kategoria | cena ────────────
+	var header := HBoxContainer.new()
+	header.add_theme_constant_override("separation", 8)
+	root.add_child(header)
+
+	# Ikona przedmiotu
+	if def.icon:
+		var icon_rect := TextureRect.new()
+		icon_rect.texture = def.icon
+		icon_rect.custom_minimum_size = Vector2(22, 22) # multiple bazy fontu
+		icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		header.add_child(icon_rect)
+
+	# Nazwa + kategoria
+	var title_box := VBoxContainer.new()
+	title_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title_box.add_theme_constant_override("separation", 0)
+	header.add_child(title_box)
+
+	var name_label := Label.new()
 	if item_data.upgrade_level > 0:
-		name_label.text = "%s (+%d)" % [def.name, item_data.upgrade_level]
+		name_label.text = "%.2f %s" % [item_data.upgrade_level, def.name]
 	else:
 		name_label.text = def.name
-	name_label.add_theme_color_override("font_color", _get_rarity_color())
-	name_label.add_theme_font_size_override("font_size", 18)
-	vbox.add_child(name_label)
+	name_label.add_theme_color_override("font_color", Color(0.91, 0.84, 0.58)) # LoL gold
+	name_label.add_theme_font_size_override("font_size", FONT_TITLE)
+	title_box.add_child(name_label)
 
-	var rarity_label = Label.new()
-	rarity_label.text = "[ %s ]" % GameEnums.Rarity.keys()[def.rarity]
-	rarity_label.add_theme_color_override("font_color", _get_rarity_color() * 0.8)
-	rarity_label.add_theme_font_size_override("font_size", 14)
-	vbox.add_child(rarity_label)
+	var category_label := Label.new()
+	category_label.text = GameEnums.Rarity.keys()[def.rarity].capitalize()
+	category_label.add_theme_color_override("font_color", Color(0.55, 0.52, 0.42))
+	category_label.add_theme_font_size_override("font_size", FONT_BODY)
+	title_box.add_child(category_label)
 
-	var line = ColorRect.new()
-	line.custom_minimum_size = Vector2(120, 1)
-	line.color = Color(0.3, 0.3, 0.3, 0.5)
-	vbox.add_child(line)
+	# Cena / sell value
+	if def.get("sell_value") != null or def.get("price") != null:
+		var price_box := VBoxContainer.new()
+		price_box.alignment = BoxContainer.ALIGNMENT_CENTER
+		header.add_child(price_box)
 
-	if not def.description.is_empty():
-		var desc_label = Label.new()
-		desc_label.text = def.description
-		desc_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		desc_label.custom_minimum_size = Vector2(180, 0)
-		desc_label.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
-		desc_label.add_theme_font_size_override("font_size", 12)
-		vbox.add_child(desc_label)
+		var sell_label := Label.new()
+		var price = def.sell_value if def.get("sell_value") != null else def.price
+		sell_label.text = "Sells: %d" % price
+		sell_label.add_theme_color_override("font_color", Color(0.78, 0.70, 0.40))
+		sell_label.add_theme_font_size_override("font_size", FONT_BODY)
+		sell_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		price_box.add_child(sell_label)
 
+	# ── Separator ─────────────────────────────────────────
+	root.add_child(_make_separator())
+
+	# ── STATY ─────────────────────────────────────────────
 	var stat_rows := _get_stat_rows()
 	if not stat_rows.is_empty():
-		var stat_spacer = Control.new()
-		stat_spacer.custom_minimum_size = Vector2(0, 4)
-		vbox.add_child(stat_spacer)
+		var stats_box := VBoxContainer.new()
+		stats_box.add_theme_constant_override("separation", 0)
+		root.add_child(stats_box)
+
 		for row in stat_rows:
-			var stat_lbl = Label.new()
+			var row_h := HBoxContainer.new()
+			row_h.add_theme_constant_override("separation", 0)
+			stats_box.add_child(row_h)
+
+			if row.has("icon") and row["icon"]:
+				var s_icon := TextureRect.new()
+				s_icon.texture = row["icon"]
+				s_icon.custom_minimum_size = Vector2(12, 12)
+				s_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+				s_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+				s_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+				row_h.add_child(s_icon)
+
+			var stat_lbl := Label.new()
 			stat_lbl.text = row["text"]
-			stat_lbl.add_theme_color_override("font_color", row["color"])
-			stat_lbl.add_theme_font_size_override("font_size", 14)
-			vbox.add_child(stat_lbl)
+			stat_lbl.add_theme_color_override("font_color", row.get("color", Color(0.85, 0.78, 0.50)))
+			stat_lbl.add_theme_font_size_override("font_size", FONT_BODY)
+			row_h.add_child(stat_lbl)
+
+		root.add_child(_make_separator())
+
+	# ── OPIS / PASYWKI ────────────────────────────────────
+	if not def.description.is_empty():
+		var blocks = def.description.split("\n\n", false)
+		for i in blocks.size():
+			var block: String = blocks[i].strip_edges()
+			if block.is_empty():
+				continue
+
+			var lines := block.split("\n", false)
+			var passive_box := VBoxContainer.new()
+			passive_box.add_theme_constant_override("separation", 2)
+			root.add_child(passive_box)
+
+			if lines.size() >= 2:
+				var p_title := Label.new()
+				p_title.text = lines[0]
+				p_title.add_theme_color_override("font_color", Color(0.91, 0.75, 0.35))
+				p_title.add_theme_font_size_override("font_size", FONT_BODY)
+				passive_box.add_child(p_title)
+
+				var p_desc := RichTextLabel.new()
+				p_desc.bbcode_enabled = true
+				p_desc.fit_content = true
+				p_desc.scroll_active = false
+				p_desc.custom_minimum_size = Vector2(220, 0)
+				p_desc.add_theme_color_override("default_color", Color(0.72, 0.72, 0.70))
+				p_desc.add_theme_font_size_override("normal_font_size", FONT_BODY)
+				p_desc.text = _colorize_numbers("\n".join(lines.slice(1)))
+				passive_box.add_child(p_desc)
+			else:
+				var desc := RichTextLabel.new()
+				desc.bbcode_enabled = true
+				desc.fit_content = true
+				desc.scroll_active = false
+				desc.custom_minimum_size = Vector2(220, 0)
+				desc.add_theme_color_override("default_color", Color(0.72, 0.72, 0.70))
+				desc.add_theme_font_size_override("normal_font_size", FONT_BODY)
+				desc.text = _colorize_numbers(block)
+				passive_box.add_child(desc)
+
+			if i < blocks.size() - 1:
+				var gap := Control.new()
+				gap.custom_minimum_size = Vector2(0, 4)
+				root.add_child(gap)
 
 	return container
+
+
+func _clear_tooltip_panel_bg(tooltip_content: Control) -> void:
+	var parent := tooltip_content.get_parent()
+	if parent == null:
+		return
+	parent.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+
+
+func _make_separator() -> ColorRect:
+	var line := ColorRect.new()
+	line.custom_minimum_size = Vector2(0, 1)
+	line.color = Color(0.35, 0.32, 0.22, 0.6)
+	return line
+
+
+func _colorize_numbers(text: String) -> String:
+	var regex := RegEx.new()
+	regex.compile(r"(\d+\.?\d*%?)")
+	return regex.sub(text, "[color=#ff8c39]$1[/color]", true)
+
 
 func _get_stat_rows() -> Array[Dictionary]:
 	var rows: Array[Dictionary] = []
@@ -115,14 +251,14 @@ func _get_stat_rows() -> Array[Dictionary]:
 			var info = STAT_DISPLAY[property]
 			var value_str := ""
 			match info[2]:
-				"plus_int": value_str = "+%d" % int(value)
-				"plus_float": value_str = "+%.2f" % value
+				"plus_int": value_str = "%d" % int(value)
+				"plus_float": value_str = "%.2f" % value
 				"percent":
 					var pct = int(round(value * 100.0)) if value <= 1.0 else int(round(value))
-					value_str = "+%d%%" % pct
+					value_str = "%d%%" % pct
 				"speed": value_str = "%.2f/s" % value
 				_: value_str = str(value)
-			rows.append({"text": "%s: %s" % [info[0], value_str], "color": info[1]})
+			rows.append({"text": "%s %s" % [value_str, info[0]], "color": info[1]})
 	return rows
 
 func _get_rarity_color() -> Color:
@@ -257,9 +393,6 @@ func is_empty() -> bool:
 # ==========================================
 # VISUAL
 # ==========================================
-
-const BASE_BG := Color(0.12, 0.12, 0.14, 1.0)
-const BASE_BORDER := Color(0.32, 0.32, 0.36, 1.0)
 
 func _update_visual() -> void:
 	modulate = Color.WHITE

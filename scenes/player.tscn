@@ -9,7 +9,7 @@
 radius = 11.045361
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bixy7"]
-size = Vector2(31.199997, 11)
+size = Vector2(41, 11)
 
 [node name="Player" type="CharacterBody2D" unique_id=1413141307 groups=["player"]]
 collision_mask = 2
@@ -36,6 +36,6 @@ scale = Vector2(0.05, 0.05)
 texture = ExtResource("4_dqkch")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SwordHitbox" unique_id=262130884]
-position = Vector2(39.4, 0.5)
+position = Vector2(41.5, 0.5)
 shape = SubResource("RectangleShape2D_bixy7")
 debug_color = Color(0.9944462, 0, 0.2292727, 0.41960785)

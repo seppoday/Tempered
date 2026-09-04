@@ -252,3 +252,8 @@ func calculate_armor_reduction(armor: float) -> float:
 	# 100 armor = 50% redukcji
 	# 200 armor = 66.7% redukcji
 	return armor / (armor + 100.0)
+
+func heal(amount: float) -> void:
+	var stats := get_total_stats()
+	current_hp = min(stats["hp"], current_hp + amount)
+	hp_changed.emit(current_hp, stats["hp"])
