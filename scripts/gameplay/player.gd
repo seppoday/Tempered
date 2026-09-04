@@ -8,6 +8,7 @@ extends CharacterBody2D
 @export var swing_duration: float = 0.2        # Czas trwania jednego zamachu
 @export var base_swing_interval: float = 0.45  # Przerwa między zamachami
 @export var rotation_speed: float = 10.0       # Szybkość obracania się do wroga
+@export var attack_range_margin: float = 50.0  # Dodatkowy margines na promień wroga/hitboxa
 
 @onready var sword_hitbox: Area2D = $SwordHitbox
 
@@ -19,6 +20,7 @@ var current_angle: float = 0.0
 var swing_arc_offset: float = 0.0
 var swing_extension: float = 0.0
 var is_swing_left_to_right: bool = true
+var is_swinging: bool = false                  # Czy trwa animacja / cooldown zamachu
 
 var _anim_start_angle: float = 0.0
 var _anim_end_angle: float = 0.0
@@ -33,7 +35,7 @@ var enemies_hit_this_swing: Array[Node2D] = []
 var _combat_active: bool = false
 
 func _ready() -> void:
-	# 1. Natychmiastowe wypisanie receptur i konfiguracja podstawowych zmiennych
+	# 1. Wypisanie receptur
 	var all_recipes := RecipeDatabase.get_all_recipes()
 	print("Liczba przepisów: ", all_recipes.size())
 	for r in all_recipes:
@@ -48,7 +50,7 @@ func _ready() -> void:
 	if collision_shape != null:
 		collision_shape.disabled = true
 
-	# 3. Natychmiastowe wyposażenie broni startowej (bez żadnego opóźnienia!)
+	# 3. Wyposażenie broni startowej
 	var item_def = ItemDatabase.get_item_definition(starting_weapon_id)
 	if item_def != null:
 		var instance := ItemInstance.new(item_def)
@@ -57,40 +59,55 @@ func _ready() -> void:
 		print("Starting weapon equipped: ", instance.definition.name)
 		print(instance.definition.dmg)
 
-	# 4. Odpalenie opóźnienia walki "w tle" - nie blokuje to wykonania _ready()!
+	# 4. Odpalenie opóźnienia walki w tle
 	_enable_combat_delayed()
 
 
-# Asynchroniczna metoda uruchamiająca walkę po 1 sekundzie
 func _enable_combat_delayed() -> void:
-	# Czekamy 1 sekundę w tle. W tym czasie reszta gry działa w pełni normalnie.
 	await get_tree().create_timer(1.0).timeout
 	
-	# Włączamy hitbox miecza
 	var collision_shape := sword_hitbox.get_node("CollisionShape2D") as CollisionShape2D
 	if collision_shape != null:
 		collision_shape.disabled = false
 		
-	# Odpalamy pętlę machania mieczem
 	_combat_active = true
-	_perform_swing_cycle()
+	# Nie wywołujemy pętli na sztywno – zajmie się tym _physics_process, gdy wróg będzie w zasięgu
 
 
 func _physics_process(delta: float) -> void:
-	# Szukamy nowego celu TYLKO wtedy, gdy miecz NIE wykonuje aktywnego cięcia.
-	if swing_extension < 1.0:
+	# Szukamy celu i sprawdzamy czy możemy zaatakować, gdy miecz NIE jest w trakcie zamachu
+	if not is_swinging:
 		_update_target()
+		
+		# Jeśli walka jest aktywna i cel jest w zasięgu – odpalamy zamach
+		if _combat_active and _is_target_in_range():
+			_perform_swing_cycle()
 		
 	_face_target(delta)
 	_update_sword_position()
 
-	# Gdy miecz jest w trakcie ruchu wysuwania, aktywnie tniemy!
-	# (Dodatkowy warunek _combat_active zabezpiecza przed zadaniem obrażeń przed upływem sekundy)
+	# Gdy miecz jest w trakcie ruchu wysuwania, aktywnie zadajemy obrażenia
 	if _combat_active and swing_extension > 1.0:
 		_deal_damage_to_overlapping_enemies()
 
 # ==========================================
-# SYSTEM NAMIERZANIA (BEZPIECZNY, ANTI-JITTER)
+# SPRAWDZANIE ZASIĘGU
+# ==========================================
+
+func _is_target_in_range() -> bool:
+	if current_target == null or not is_instance_valid(current_target):
+		return false
+
+	var stats := PlayerData.get_total_stats()
+	var attack_range_stat: float = stats.get("attack_range", 1.0)
+	
+	# Maksymalny zasięg końca miecza przy pełnym wysunięciu + margines na ciało wroga
+	var max_reach := base_distance + (swing_extension_max * attack_range_stat) + attack_range_margin
+	
+	return global_position.distance_to(current_target.global_position) <= max_reach
+
+# ==========================================
+# SYSTEM NAMIERZANIA
 # ==========================================
 
 func _update_target() -> void:
@@ -101,10 +118,6 @@ func _find_nearest_enemy() -> Node2D:
 	var nearest: Node2D = null
 	var nearest_dist_sq := INF
 	
-	# 1. Sprawdzamy czy nasz obecny cel wciąż żyje i jest poprawny
-	var current_target_valid := false
-	var current_target_dist_sq := INF
-	
 	if current_target != null and is_instance_valid(current_target) and not current_target.is_queued_for_deletion():
 		var is_dead_check := false
 		if "hp" in current_target and current_target.hp <= 0:
@@ -113,28 +126,22 @@ func _find_nearest_enemy() -> Node2D:
 			is_dead_check = true
 			
 		if not is_dead_check:
-			current_target_valid = true
-			current_target_dist_sq = global_position.distance_squared_to(current_target.global_position)
-			
+			var current_target_dist_sq := global_position.distance_squared_to(current_target.global_position)
 			nearest = current_target
-			# NAKŁADAMY "LEPKOŚĆ" (Histerezę)
+			# Histereza / lepkość namierzania
 			nearest_dist_sq = current_target_dist_sq * 0.56
 
-	# 2. Przeszukujemy resztę wrogów
 	for enemy in enemies:
 		if not is_instance_valid(enemy) or enemy.is_queued_for_deletion():
 			continue
-			
 		if enemy == current_target:
 			continue
-			
 		if "hp" in enemy and enemy.hp <= 0:
 			continue
 		if enemy.has_method("is_dead") and enemy.is_dead():
 			continue
 			
 		var dist_sq := global_position.distance_squared_to(enemy.global_position)
-		
 		if dist_sq < nearest_dist_sq:
 			nearest_dist_sq = dist_sq
 			nearest = enemy
@@ -159,19 +166,16 @@ func _update_sword_position() -> void:
 # ==========================================
 
 func _perform_swing_cycle() -> void:
-	# Jeśli walka została jakimś cudem dezaktywowana, przerywamy pętlę
-	if not _combat_active:
+	if not _combat_active or is_swinging:
 		return
 
+	is_swinging = true
 	enemies_hit_this_swing.clear()
 
 	var stats := PlayerData.get_total_stats()
 	var attack_speed: float = stats.get("attack_speed", 1.0)
 	
-	# Obliczanie prędkości
 	var speed_factor := log(attack_speed + 1.0) * 1.5 + (attack_speed * 0.1)
-	
-	# Zabezpieczenie przed dzieleniem przez zero
 	speed_factor = maxf(0.1, speed_factor)
 	
 	var current_swing_duration: float = maxf(0.05, swing_duration / speed_factor)
@@ -193,13 +197,20 @@ func _perform_swing_cycle() -> void:
 	var tween := create_tween()
 	tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
 
-	# Płynny ruch tam i z powrotem
+	# Animacja cięcia tam i z powrotem
 	tween.tween_method(_update_swing_progress, 0.0, 0.5, half_duration)\
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	tween.tween_method(_update_swing_progress, 0.5, 1.0, half_duration)\
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_interval(current_interval)
-	tween.tween_callback(_perform_swing_cycle)
+	
+	# Zamiast odpalać kolejny zamach, kończymy cykl – następny zamach odpali _physics_process, jeśli wróg nadal jest w zasięgu
+	tween.tween_callback(_on_swing_completed)
+
+func _on_swing_completed() -> void:
+	is_swinging = false
+	swing_arc_offset = 0.0
+	swing_extension = 0.0
 
 func _update_swing_progress(t: float) -> void:
 	swing_arc_offset = lerp(_anim_start_angle, _anim_end_angle, t)
@@ -210,7 +221,6 @@ func _update_swing_progress(t: float) -> void:
 # ==========================================
 
 func _deal_damage_to_overlapping_enemies() -> void:
-	# Zabezpieczenie: jeśli walka jest nieaktywna, nie pozwól na zadanie obrażeń
 	if not _combat_active:
 		return
 
@@ -223,7 +233,6 @@ func _deal_damage_to_overlapping_enemies() -> void:
 	var space_state := get_world_2d().direct_space_state
 	var collision_shape := sword_hitbox.get_node("CollisionShape2D") as CollisionShape2D
 	
-	# Zabezpieczenie: nie zadawaj obrażeń, jeśli kształt kolizji jest wyłączony
 	if collision_shape == null or collision_shape.shape == null or collision_shape.disabled:
 		return
 
@@ -272,7 +281,6 @@ func _deal_damage_to_overlapping_enemies() -> void:
 		if enemy.has_method("take_damage"):
 			enemy.take_damage(damage)
 
-		# Obsługa mechaniki Execute (wykończenia)
 		if execute_threshold > 0.0 and is_instance_valid(enemy) and not enemy.is_queued_for_deletion():
 			if "hp" in enemy and "max_hp" in enemy and enemy.max_hp > 0.0:
 				var hp_percent: float = float(enemy.hp) / float(enemy.max_hp)
@@ -297,6 +305,6 @@ func _spawn_floating_text(pos: Vector2, text: String, color: Color) -> void:
 	else:
 		get_tree().current_scene.add_child(text_node)
 		
-	var random_offset := Vector2(randf_range(-8.0, 8.0), randf_range(-12.0, -4.0))
+	var random_offset := Vector2(randf_range(-4.0, 4.0), randf_range(-6.0, -2.0))
 	text_node.global_position = pos + random_offset
 	text_node.setup(text, color)

@@ -82,15 +82,15 @@ func get_total_stats() -> Dictionary:
 
 	# 1. PRZELICZAMY BAZOWE ATRYBUTY NA STATYSTYKI BOJOWE
 	# (Nazwy kluczy są teraz identyczne z polami w ItemDefinition!)
-	totals["dmg"]           = character_definition.base_dmg + (attributes["STR"] * 2.0)
-	totals["magic_dmg"]     = character_definition.base_magic_dmg + (attributes["INT"] * 2.0)
+	totals["dmg"]           = character_definition.base_dmg + (attributes["STR"] * 1.0)
+	totals["magic_dmg"]     = character_definition.base_magic_dmg + (attributes["INT"] * 1.0)
 	totals["crit_damage"]   = character_definition.base_crit_damage + (attributes["STR"] * 0.02) + (attributes["INT"] * 0.01)
 	
 	totals["attack_speed"]  = character_definition.base_attack_speed + (attributes["DEX"] * 0.01)
 	totals["crit_chance"]   = character_definition.base_crit_chance + (attributes["DEX"] * 0.005)
 	totals["dodge"]         = character_definition.base_dodge + (attributes["DEX"] * 0.002)
 	
-	totals["hp"]            = character_definition.base_hp + (attributes["CON"] * 10.0)
+	totals["hp"]            = character_definition.base_hp + (attributes["CON"] * 5.0)
 	totals["armor"]         = character_definition.base_armor  # Bazowo brak armora
 	totals["lifesteal"]     = 0.0  # Bazowo brak lifestealu
 	
@@ -162,7 +162,7 @@ func add_exp(amount: int) -> void:
 	while character_stats["exp"] >= character_stats["exp_to_next"]:
 		character_stats["exp"] -= character_stats["exp_to_next"]
 		character_stats["level"] += 1
-		character_stats["exp_to_next"] = int(character_stats["exp_to_next"] * 1.15)
+		character_stats["exp_to_next"] = int(character_stats["exp_to_next"] * 1.45)
 		
 		attribute_points += points_per_level
 		leveled = true

@@ -5,10 +5,10 @@
 [ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="2_i3pqv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a6phw"]
-radius = 32.38827
+radius = 11.045361
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bixy7"]
-size = Vector2(80, 20)
+size = Vector2(31.199997, 11)
 
 [node name="Player" type="CharacterBody2D" unique_id=1413141307 groups=["player"]]
 collision_mask = 2
@@ -17,7 +17,7 @@ floating_text_scene = ExtResource("2_hqtel")
 swing_extension_max = 10.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1974758292]
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_i3pqv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1622053892]
@@ -28,11 +28,11 @@ collision_layer = 4
 collision_mask = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="SwordHitbox" unique_id=880787820]
-position = Vector2(74.4, 1)
-scale = Vector2(0.6, 0.15)
+position = Vector2(40.400005, 1)
+scale = Vector2(0.2281249, 0.09375)
 texture = ExtResource("2_i3pqv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SwordHitbox" unique_id=262130884]
-position = Vector2(73.9, 0.5)
+position = Vector2(39.4, 0.5)
 shape = SubResource("RectangleShape2D_bixy7")
 debug_color = Color(0.9944462, 0, 0.2292727, 0.41960785)

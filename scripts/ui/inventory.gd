@@ -3,9 +3,9 @@ extends PanelContainer
 
 @onready var grid: GridContainer = $MarginContainer/GridContainer
 
-const SLOT_COUNT: int = 48
-const SLOT_GAP: int = 12
-const GRID_COLUMNS: int = 6
+const SLOT_COUNT: int = 32
+const SLOT_GAP: int = 2
+const GRID_COLUMNS: int = 4
 
 # Jedyna linijka potrzebna do tworzenia slotów:
 const SlotScene: PackedScene = preload("res://scenes/slot.tscn")

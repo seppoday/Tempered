@@ -3,6 +3,7 @@ extends PanelContainer
 @onready var stats_box: VBoxContainer = %StatsBox
 @onready var level_label: Label = %Label
 @onready var exp_bar: ProgressBar = %ExpProgressBar
+@onready var hp_bar: ProgressBar = %HpProgressBar
 @onready var avatar: TextureRect = %TextureRect
 
 # === REFERENCJE DO LEWEGO PANELU ATRYBUTÓW ===
@@ -26,6 +27,7 @@ func _ready() -> void:
 	if not PlayerData.stats_changed.is_connected(_on_stats_changed):
 		PlayerData.stats_changed.connect(_on_stats_changed)
 		PlayerData.exp_changed.connect(_update_exp_bar)
+		PlayerData.hp_changed.connect(_update_hp_bar)
 		PlayerData.attributes_changed.connect(_update_attributes_ui)
 		PlayerData.attribute_points_changed.connect(_on_attribute_points_changed)
 
@@ -36,6 +38,8 @@ func _ready() -> void:
 
 	_update_ui()
 	_update_exp_bar()
+	var totals := PlayerData.get_total_stats()
+	_update_hp_bar(PlayerData.current_hp, totals.get("hp", 0))
 	_update_attributes_ui()
 	_on_attribute_points_changed(PlayerData.attribute_points)
 
@@ -154,6 +158,23 @@ func _update_exp_bar() -> void:
 	exp_bar.max_value = info["exp_to_next"]
 	exp_bar.value = info["exp"]
 	level_label.text = "%s (Level %d)" % [info["name"], info["level"]]
+
+func _update_hp_bar(current_hp: float, max_hp: float) -> void:
+	var totals := PlayerData.get_total_stats()
+	if totals.has("hp"):
+		hp_bar.max_value = max_hp
+		hp_bar.value = current_hp
+	
+	var hp_percentage := 0.0
+	var hp_bar_stylebox = hp_bar.get_theme_stylebox("fill", "ProgressBar")
+	hp_percentage = hp_bar.value / hp_bar.max_value if hp_bar.max_value > 0 else 0.0
+
+	if hp_percentage > 0.5:
+		hp_bar_stylebox.bg_color = Color(0.4, 0.8, 0.4) # Zielony
+	elif hp_percentage > 0.2:
+		hp_bar_stylebox.bg_color = Color(1.0, 0.85, 0.2) # Żółty
+	else:
+		hp_bar_stylebox.bg_color = Color(0.85, 0.3, 0.4) # Czerwony
 
 func set_avatar(tex: Texture2D) -> void:
 	avatar.texture = tex

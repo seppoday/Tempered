@@ -9,8 +9,8 @@ extends Area2D
 @export var fallback_definition: ItemDefinition
 
 @export_group("Bounce Settings")
-@export var min_distance: float = 80.0
-@export var max_distance: float = 200.0
+@export var min_distance: float = 40.0
+@export var max_distance: float = 100.0
 @export var jump_height: float = 35.0
 @export var total_duration: float = 1.0
 
@@ -89,7 +89,7 @@ func _show_tooltip() -> void:
 	_tooltip_instance = _build_tooltip_panel()
 	if _tooltip_instance:
 		get_tree().root.add_child(_tooltip_instance)
-		_tooltip_instance.global_position = get_viewport().get_mouse_position() + Vector2(14, 14)
+		_tooltip_instance.global_position = get_viewport().get_mouse_position()
 
 func _hide_tooltip() -> void:
 	if is_instance_valid(_tooltip_instance):
@@ -147,14 +147,14 @@ func _build_tooltip_panel() -> Control:
 
 	var container = PanelContainer.new()
 	var style = StyleBoxFlat.new()
-	style.bg_color = Color(0.08, 0.08, 0.1, 0.95)
+	style.bg_color = Color(0.08, 0.08, 0.1, 1.0)
 	style.border_color = _get_rarity_color()
 	style.set_border_width_all(2)
 	style.set_corner_radius_all(4)
-	style.content_margin_left = 10
-	style.content_margin_top = 10
-	style.content_margin_right = 10
-	style.content_margin_bottom = 10
+	style.content_margin_left = 4
+	style.content_margin_top = 4
+	style.content_margin_right = 4
+	style.content_margin_bottom = 4
 	container.add_theme_stylebox_override("panel", style)
 
 	var vbox = VBoxContainer.new()
@@ -214,7 +214,7 @@ func _build_tooltip_panel() -> Control:
 		desc_lbl.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
 		desc_lbl.add_theme_font_size_override("font_size", 14)
 		desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		desc_lbl.custom_minimum_size = Vector2(180, 0)
+		desc_lbl.custom_minimum_size = Vector2(120, 0)
 		vbox.add_child(desc_lbl)
 
 	return container

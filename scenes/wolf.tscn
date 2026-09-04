@@ -6,7 +6,7 @@
 load_path = "res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bixy7"]
-radius = 35.014282
+radius = 16.0
 
 [node name="Enemy" type="CharacterBody2D" unique_id=758901562 groups=["enemies"]]
 collision_layer = 2
@@ -14,9 +14,8 @@ script = ExtResource("1_xsq4n")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1756268848]
 modulate = Color(0.68937296, 0.55907995, 0, 1)
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.2, 0.2)
 texture = SubResource("CompressedTexture2D_fya1x")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1598097328]
-visible = false
 shape = SubResource("CircleShape2D_bixy7")

@@ -2,11 +2,26 @@
 
 [ext_resource type="Script" uid="uid://dey65coh8u728" path="res://data/definitions/wave_sequence.gd" id="1_5swok"]
 [ext_resource type="Script" uid="uid://b2div1d71srwn" path="res://data/definitions/wave_definition.gd" id="2_nix47"]
-[ext_resource type="Resource" uid="uid://dnhvfrwiph40a" path="res://resources/waves/test_wave_goblins.tres" id="3_75rsi"]
+[ext_resource type="Script" uid="uid://cpvjw3l1cvyqx" path="res://data/definitions/wave_enemy_entry.gd" id="3_a8fxh"]
 [ext_resource type="Resource" uid="uid://cv2djw1wishok" path="res://resources/waves/test_wave_wolves.tres" id="4_4feen"]
+[ext_resource type="Resource" uid="uid://beuml7s1oqpqj" path="res://resources/enemies/goblin.tres" id="4_w4ww0"]
+[ext_resource type="Resource" uid="uid://bgckmkkk5kn7j" path="res://resources/waves/test_weave_both.tres" id="5_4feen"]
+
+[sub_resource type="Resource" id="Resource_qrwtw"]
+script = ExtResource("3_a8fxh")
+enemy = ExtResource("4_w4ww0")
+weight = 2
+metadata/_custom_type_script = "uid://cpvjw3l1cvyqx"
+
+[sub_resource type="Resource" id="Resource_euck0"]
+script = ExtResource("2_nix47")
+id = "test_wave_goblin"
+spawn_rate = 0.5
+enemies = Array[ExtResource("3_a8fxh")]([SubResource("Resource_qrwtw")])
+metadata/_custom_type_script = "uid://b2div1d71srwn"
 
 [resource]
 script = ExtResource("1_5swok")
 id = "test_wave_seq"
-waves = Array[ExtResource("2_nix47")]([ExtResource("3_75rsi"), ExtResource("4_4feen")])
+waves = Array[ExtResource("2_nix47")]([SubResource("Resource_euck0"), ExtResource("4_4feen"), ExtResource("5_4feen")])
 metadata/_custom_type_script = "uid://dey65coh8u728"

@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://djk4dwog07htq"]
 
 [ext_resource type="Script" uid="uid://dc074wb38hh4" path="res://scripts/gameplay/drop.gd" id="1_f4jv2"]
-[ext_resource type="Texture2D" uid="uid://cb3riuari6imq" path="res://assets/items/hat (1).png" id="1_hmaih"]
+[ext_resource type="Texture2D" uid="uid://dw5boufyrwytf" path="res://assets/PNG/WoodCube.png" id="2_n3sop"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wvhbo"]
-radius = 48.010414
+radius = 11.0
 
 [node name="Drop" type="Area2D" unique_id=689540874]
 script = ExtResource("1_f4jv2")
@@ -13,7 +13,7 @@ despawn_time = 15.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=512379759]
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("1_hmaih")
+texture = ExtResource("2_n3sop")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1676398418]
 shape = SubResource("CircleShape2D_wvhbo")

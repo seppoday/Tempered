@@ -1,10 +1,12 @@
 [gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://c1uqlv8rly0eu"]
 
-[ext_resource type="Texture2D" uid="uid://jrau58b8cdsr" path="res://assets/items/steel_sword.jpg" id="1_a35co"]
+[ext_resource type="Texture2D" uid="uid://cp1hwkfgl84rj" path="res://assets/ui/weapon.png" id="1_ldulo"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_ldulo"]
+[ext_resource type="Resource" uid="uid://b0if0ok25gxs7" path="res://resources/upgrade_curves/weapon_curve.tres" id="3_cd8vw"]
 
 [resource]
 script = ExtResource("2_ldulo")
+upgrade_curve = ExtResource("3_cd8vw")
 dmg = 25
 attack_speed = 0.6
 crit_chance = 0.03
@@ -12,6 +14,6 @@ crit_damage = 0.1
 id = "silver_sword"
 name = "Silver Sword"
 description = "A silver blade favored by hunters of monsters and creatures of the night."
-icon = ExtResource("1_a35co")
+icon = ExtResource("1_ldulo")
 rarity = 1
 metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

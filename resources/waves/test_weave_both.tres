@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="WaveDefinition" format=3 uid="uid://bgckmkkk5kn7j"]
+
+[ext_resource type="Script" uid="uid://cpvjw3l1cvyqx" path="res://data/definitions/wave_enemy_entry.gd" id="1_12y4g"]
+[ext_resource type="Resource" uid="uid://qirqxv6fkeuy" path="res://resources/enemies/wolf.tres" id="2_5owe8"]
+[ext_resource type="Resource" uid="uid://beuml7s1oqpqj" path="res://resources/enemies/goblin.tres" id="3_5owe8"]
+[ext_resource type="Script" uid="uid://b2div1d71srwn" path="res://data/definitions/wave_definition.gd" id="3_gjenh"]
+
+[sub_resource type="Resource" id="Resource_qrwtw"]
+script = ExtResource("1_12y4g")
+enemy = ExtResource("2_5owe8")
+metadata/_custom_type_script = "uid://cpvjw3l1cvyqx"
+
+[sub_resource type="Resource" id="Resource_gjenh"]
+script = ExtResource("1_12y4g")
+enemy = ExtResource("3_5owe8")
+metadata/_custom_type_script = "uid://cpvjw3l1cvyqx"
+
+[resource]
+script = ExtResource("3_gjenh")
+id = "test_wave_both"
+enemies = Array[ExtResource("1_12y4g")]([SubResource("Resource_qrwtw"), SubResource("Resource_gjenh")])
+metadata/_custom_type_script = "uid://b2div1d71srwn"

@@ -7,9 +7,9 @@ extends PanelContainer
 
 var slot_content: Dictionary = {}
 
-const SLOT_COUNT: int = 4
-const SLOT_GAP: int = 12
-const GRID_COLUMNS: int = 6
+const SLOT_COUNT: int = 3
+const SLOT_GAP: int = 2
+const GRID_COLUMNS: int = 3
 
 # Jedyna linijka potrzebna do tworzenia slotów:
 const SlotScene: PackedScene = preload("res://scenes/slot.tscn")

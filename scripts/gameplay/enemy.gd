@@ -36,11 +36,11 @@ func _physics_process(delta: float) -> void:
 
 
 func _perform_attack() -> void:
+	print("Enemy attacking player for %f damage!" % definition.damage)
 	if definition == null:
 		return
-
+	print("Enemy attacking player for %f damage!" % definition.damage)
 	PlayerData.take_damage(definition.damage)
-
 
 func take_damage(amount: float) -> void:
 	# Jeśli wróg dopiero się narodził i fizyka go nie rozstawiła - ignoruj obrażenia!

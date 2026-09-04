@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://b4jtn8mldxqyf" path="res://assets/ui/armor.png" id="18_j8jky"]
 [ext_resource type="Texture2D" uid="uid://doswu3pxkpcf6" path="res://assets/ui/shield.png" id="19_kmb1v"]
 [ext_resource type="Script" uid="uid://dyvxaabqf72dk" path="res://data/definitions/inventory_entry.gd" id="19_yc10j"]
+[ext_resource type="FontFile" uid="uid://cnyweplkvrn20" path="res://assets/PNG/Silver.ttf" id="20_5q0nq"]
 [ext_resource type="Texture2D" uid="uid://hckl245r3g2f" path="res://assets/ui/boots.png" id="20_fuf3a"]
 [ext_resource type="Resource" uid="uid://4kdjereu5t3i" path="res://resources/items/helmets/iron_helmet.tres" id="21_2f3dj"]
 [ext_resource type="Resource" uid="uid://y1857jqhwxk4" path="res://resources/items/weapons/rusty_sword.tres" id="22_0odxb"]
@@ -33,12 +34,49 @@
 [ext_resource type="Resource" uid="uid://cbmn2ojp41inn" path="res://resources/items/rings/iron_ring.tres" id="32_c6pm6"]
 [ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://resources/materials/misc/upgrade_stone.tres" id="32_qkpxi"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n3sop"]
+bg_color = Color(0.20152655, 0.20152661, 0.20152646, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kmb1v"]
+bg_color = Color(0.64194864, 0.09343437, 0.9999997, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fuf3a"]
+bg_color = Color(0.2816801, 0.60469335, 0.9927555, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ifow5"]
 bg_color = Color(0, 0, 0, 0.42352942)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5q0nq"]
+content_margin_top = 2.0
+bg_color = Color(0.47112602, 0.17446384, 0.051596835, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dgi5k"]
+content_margin_top = 2.0
+bg_color = Color(0.18717611, 0.18717617, 0.18717602, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [node name="Main" type="Node2D" unique_id=206172842]
 script = ExtResource("1_2cqfq")
@@ -56,12 +94,11 @@ position = Vector2(620, 458)
 
 [node name="Player" parent="BattleArena" unique_id=1413141307 instance=ExtResource("1_a6jrf")]
 unique_name_in_owner = true
-position = Vector2(483, 443)
+position = Vector2(201, 23)
 
 [node name="Camera2D" type="Camera2D" parent="BattleArena/Player" unique_id=420368047]
-position = Vector2(863, 0)
 enabled = false
-zoom = Vector2(0.5, 0.5)
+zoom = Vector2(0.25, 0.25)
 
 [node name="DropLayer" type="Node2D" parent="BattleArena" unique_id=2116879078]
 unique_name_in_owner = true
@@ -79,30 +116,31 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 
 [node name="MainWindow" type="BoxContainer" parent="CanvasLayer/MarginContainer" unique_id=251606534]
 layout_mode = 2
-theme_override_constants/separation = 12
+alignment = 2
 
 [node name="TopPanel" type="PanelContainer" parent="CanvasLayer/MarginContainer/MainWindow" unique_id=741333311]
-custom_minimum_size = Vector2(0, 128)
-custom_maximum_size = Vector2(-1, 128)
+custom_maximum_size = Vector2(-1, 36)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 10
+theme_override_styles/panel = SubResource("StyleBoxFlat_n3sop")
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel" unique_id=1598694986]
 layout_mode = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 12
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer" unique_id=1906673140]
 layout_mode = 2
+size_flags_horizontal = 0
 size_flags_vertical = 4
 theme_override_constants/separation = 24
 
@@ -114,6 +152,7 @@ text = "Wojownik"
 
 [node name="HBoxContainer" type="BoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer" unique_id=904977546]
 layout_mode = 2
+theme_override_constants/separation = -2
 alignment = 1
 vertical = true
 
@@ -121,31 +160,44 @@ vertical = true
 layout_mode = 2
 
 [node name="Label2" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/ExpBox" unique_id=635124935]
-custom_minimum_size = Vector2(64, 0)
+custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 12
 text = "EXP: "
 
 [node name="ExpProgressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/ExpBox" unique_id=498474180]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(-1, 16)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/fill = SubResource("StyleBoxFlat_kmb1v")
 value = 11.05
+show_percentage = false
 
 [node name="HpBox" type="BoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1405562181]
 layout_mode = 2
 
 [node name="Label2" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/HpBox" unique_id=1270091180]
-custom_minimum_size = Vector2(64, 0)
+custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 12
 text = "HP: "
+vertical_alignment = 1
 
 [node name="HpProgressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/HpBox" unique_id=654604108]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(100, 4)
+custom_maximum_size = Vector2(-1, 16)
 layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/fill = SubResource("StyleBoxFlat_fuf3a")
 value = 11.05
+show_percentage = false
 
 [node name="ManaBox" type="BoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer" unique_id=321935131]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/ManaBox" unique_id=146813683]
@@ -155,11 +207,13 @@ text = "MANA: "
 
 [node name="ManaProgressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/ManaBox" unique_id=1411875886]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(-1, 16)
 layout_mode = 2
 value = 11.05
 
 [node name="GoldLabel" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/TopPanel/MarginContainer/HBoxContainer" unique_id=1692207773]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 10
 offset_transform_enabled = true
@@ -170,18 +224,18 @@ script = ExtResource("1_seu75")
 
 [node name="MiddlePanel" type="BoxContainer" parent="CanvasLayer/MarginContainer/MainWindow" unique_id=2126571782]
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 8
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_constants/separation = 12
 
 [node name="InventorySection" type="BoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel" unique_id=920328019]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 3
 
 [node name="HBoxContainer" type="BoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection" unique_id=1587470251]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 3
 vertical = true
 
 [node name="Equipment" type="PanelContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer" unique_id=1078332561]
@@ -193,17 +247,17 @@ script = ExtResource("1_1bvp3")
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment" unique_id=85847800]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 
 [node name="EquipmentGrid" type="GridContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer" unique_id=139815665]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 8
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
 columns = 3
 
 [node name="AmuletSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1593952919 instance=ExtResource("3_dg77c")]
@@ -262,112 +316,147 @@ script = ExtResource("1_1bvp3")
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header" unique_id=302558074]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
 [node name="HeaderRow" type="BoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer" unique_id=1818068224]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
-theme_override_constants/separation = 12
+theme_override_constants/separation = 0
 alignment = 1
 vertical = true
 
-[node name="CharacterStats" type="VBoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow" unique_id=904516349]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="PointsLabel" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats" unique_id=736905344]
+[node name="PointsLabel" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow" unique_id=736905344]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/font_size = 12
 text = "Available points: 0"
+
+[node name="CharacterStats" type="BoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow" unique_id=1404750165]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+vertical = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats" unique_id=1424671028]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 4
 
 [node name="Label2" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer" unique_id=1930763405]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
 text = "STR"
 
 [node name="STRLabel" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer" unique_id=406623404]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/font_size = 12
 text = "10"
 
 [node name="STRButton" type="Button" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer" unique_id=1493268433]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(36, 0)
+custom_minimum_size = Vector2(24, 0)
+custom_maximum_size = Vector2(-1, 12)
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_5q0nq")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_dgi5k")
 disabled = true
 text = " + "
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats" unique_id=1590339535]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 4
 
 [node name="Label4" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer2" unique_id=565890370]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
 text = "INT"
 
 [node name="INTLabel" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer2" unique_id=2011018835]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/font_size = 12
 text = "10"
 
 [node name="INTButton" type="Button" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer2" unique_id=1180738286]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(36, 0)
+custom_minimum_size = Vector2(24, 0)
+custom_maximum_size = Vector2(-1, 12)
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_5q0nq")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_dgi5k")
 disabled = true
 text = " + "
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats" unique_id=645674225]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 4
 
 [node name="Label4" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer3" unique_id=671092552]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
 text = "DEX"
 
 [node name="DEXLabel" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer3" unique_id=817500746]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/font_size = 12
 text = "10"
 
 [node name="DEXButton" type="Button" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer3" unique_id=121290993]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(36, 0)
+custom_minimum_size = Vector2(24, 0)
+custom_maximum_size = Vector2(-1, 12)
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_5q0nq")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_dgi5k")
 disabled = true
 text = " + "
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats" unique_id=1298427746]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 4
 
 [node name="Label5" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer4" unique_id=1057634515]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
 text = "CON"
 
 [node name="CONLabel" type="Label" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer4" unique_id=702323166]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/font_size = 12
 text = "10"
 
 [node name="CONButton" type="Button" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Header/MarginContainer/HeaderRow/CharacterStats/HBoxContainer4" unique_id=1189752753]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(36, 0)
+custom_minimum_size = Vector2(24, 0)
+custom_maximum_size = Vector2(-1, 12)
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_5q0nq")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_dgi5k")
 disabled = true
 text = " + "
 
@@ -392,32 +481,34 @@ script = ExtResource("1_1bvp3")
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Stats" unique_id=323181302]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
 [node name="StatsBox" type="VBoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Stats/MarginContainer" unique_id=815937749]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = -2
 
 [node name="InventoryPanel" type="VBoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection" unique_id=1748168337]
+custom_maximum_size = Vector2(200, -1)
 layout_mode = 2
-theme_override_constants/separation = 12
+size_flags_horizontal = 4
+theme_override_constants/separation = 3
 
 [node name="Alchemy" type="PanelContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel" unique_id=865049812]
-custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ifow5")
 script = ExtResource("2_0xm2m")
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy" unique_id=162177359]
 layout_mode = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer" unique_id=345366625]
 layout_mode = 2
@@ -425,7 +516,7 @@ theme_override_constants/separation = 12
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer" unique_id=1820349696]
 layout_mode = 2
-theme_override_constants/separation = 128
+theme_override_constants/separation = 2
 
 [node name="AlchemyGrid" type="GridContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2001586315]
 unique_name_in_owner = true
@@ -435,12 +526,12 @@ columns = 5
 [node name="AlchemyGridResults" type="GridContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1755035230]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-columns = 5
 
 [node name="CraftButton" type="Button" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer" unique_id=820951479]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_fonts/font = ExtResource("20_5q0nq")
+theme_override_font_sizes/font_size = 8
 text = "Połącz składniki"
 
 [node name="Inventory" type="PanelContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel" unique_id=1023669752]
@@ -452,11 +543,10 @@ test_items = Array[ExtResource("19_yc10j")]([ExtResource("26_5q0nq"), ExtResourc
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory" unique_id=809901435]
 layout_mode = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 
 [node name="GridContainer" type="GridContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer" unique_id=1134863120]
-custom_minimum_size = Vector2(336, 0)
 layout_mode = 2

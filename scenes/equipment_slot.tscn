@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="2_optkv"]
 
 [node name="EquipmentSlot" type="Panel" unique_id=1626732313]
-custom_minimum_size = Vector2(96, 96)
+custom_minimum_size = Vector2(32, 32)
 script = ExtResource("1_optkv")
 
 [node name="Icon" type="TextureRect" parent="." unique_id=1240173784]

@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://34vypc21v6xg"]
+
+[ext_resource type="FontFile" uid="uid://cnyweplkvrn20" path="res://assets/PNG/Silver.ttf" id="1_8rs2j"]
+
+[resource]
+default_font = ExtResource("1_8rs2j")
+default_font_size = 16

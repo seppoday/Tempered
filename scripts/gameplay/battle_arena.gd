@@ -6,7 +6,7 @@ extends Node2D
 
 @export_group("Drop Settings")
 @export var drop_scene: PackedScene
-@export_range(0.0, 1.0) var drop_chance: float = 1.0
+@export_range(0.0, 1.0) var drop_chance: float = .5	
 @export var max_ground_drops: int = 50  
 
 @export_group("Wave Settings")
@@ -71,13 +71,13 @@ func _on_enemy_died(enemy: Node, death_position: Vector2) -> void:
 			var enemy_loot = enemy.definition.loot_table
 			var earned_gold := RNG.randi_range(enemy_loot.gold_min, enemy_loot.gold_max)
 			PlayerData.add_gold(earned_gold)
-			_spawn_floating_text(death_position + Vector2(0, -50), "+%d$" % earned_gold, Color(1.0, 0.85, 0.2))
+			_spawn_floating_text(death_position + Vector2(0, -16), "+%d$" % earned_gold, Color(1.0, 0.85, 0.2))
 		
 		# EXP
 		var earned_exp = enemy.get_exp_reward()
 			
 		PlayerData.add_exp(earned_exp)
-		_spawn_floating_text(death_position + Vector2(50, -10), "+%d XP" % earned_exp, Color(0.8, 0.4, 1.0))
+		_spawn_floating_text(death_position + Vector2(16, -12), "+%d XP" % earned_exp, Color(0.8, 0.4, 1.0))
 
 func _spawn_floating_text(pos: Vector2, text: String, color: Color) -> void:
 	if floating_text_scene == null:

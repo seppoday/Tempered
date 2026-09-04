@@ -15,7 +15,7 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
 [node name="Slot" type="Panel" unique_id=1297978854]
-custom_minimum_size = Vector2(96, 96)
+custom_minimum_size = Vector2(32, 32)
 offset_right = 40.0
 offset_bottom = 40.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_wvhbo")
@@ -40,8 +40,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -23.0
+offset_left = -16.0
+offset_top = -15.0
+offset_right = -3.0
+offset_bottom = 4.0
 grow_horizontal = 0
 grow_vertical = 0
 text = "123"
