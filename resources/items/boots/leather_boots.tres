@@ -6,11 +6,12 @@
 [resource]
 script = ExtResource("2_cqhuf")
 slot = 4
-hp = 10
-armor = 1
+hp = 25
+armor = 3
 dodge = 0.03
-id = "leather_boots"
-name = "Leather Boots"
-description = "Leather Boots"
+id = "hunter_boots"
+name = "Hunter Boots"
+description = "Hunter Boots"
 icon = ExtResource("1_0y6wr")
+rarity = 1
 metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

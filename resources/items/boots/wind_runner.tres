@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://bgfps2d4qsqyi"]
+
+[ext_resource type="Texture2D" uid="uid://brrdeqocjha3i" path="res://assets/items/worn boots.jpeg" id="1_lbng0"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_vmghi"]
+
+[resource]
+script = ExtResource("2_vmghi")
+slot = 4
+hp = 45
+armor = 5
+dodge = 0.06
+id = "wind_runner"
+name = "Wind Runner"
+description = "Wind Runner"
+icon = ExtResource("1_lbng0")
+rarity = 3
+metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

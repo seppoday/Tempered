@@ -6,9 +6,9 @@
 [resource]
 script = ExtResource("2_6esfb")
 slot = 7
-hp = 25
+hp = 15
 attack_speed = -0.05
-armor = 5
+armor = 3
 id = "wooden_shield"
 name = "Wooden Shield"
 description = "Wooden Shield"

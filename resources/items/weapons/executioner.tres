@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://c05svccheegwf"]
+
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="1_2tr77"]
+
+[resource]
+script = ExtResource("1_2tr77")
+dmg = 32.0
+attack_speed = 0.05
+crit_chance = 0.08
+id = "executioner"
+name = "Executioner"
+description = "Executioner"
+rarity = 2
+metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

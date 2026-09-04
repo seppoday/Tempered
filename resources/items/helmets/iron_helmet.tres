@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_gwmff")
 slot = 1
-hp = 15
+hp = 30
 armor = 5
 id = "iron_helmet"
 name = "Iron Helmet"

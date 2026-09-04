@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MaterialDefinition" format=3 uid="uid://3fkcla4p68we"]
+
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="1_bxgpi"]
+[ext_resource type="Script" uid="uid://ca7fwkvbpwp8c" path="res://data/definitions/material_definition.gd" id="2_7m6pa"]
+
+[resource]
+script = ExtResource("2_7m6pa")
+id = "blood_essence"
+name = "Blood Essence"
+description = "Blood Essence"
+icon = ExtResource("1_bxgpi")
+category = 2
+stackable = true
+max_stack_size = 100
+metadata/_custom_type_script = "uid://ca7fwkvbpwp8c"

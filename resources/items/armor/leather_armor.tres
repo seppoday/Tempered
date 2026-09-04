@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://ceuejdknftoi6"]
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://bpyie30ax3hqc"]
 
 [ext_resource type="Texture2D" uid="uid://1uy3olis0w12" path="res://assets/items/chainmail_armor.jpeg" id="1_sln0y"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_e7e4u"]
@@ -6,9 +6,8 @@
 [resource]
 script = ExtResource("2_e7e4u")
 slot = 2
-hp = 35
-armor = 3
-dodge = 0.03
+hp = 45
+armor = 5
 id = "leather_armor"
 name = "Leather Armor"
 description = "Leather Armor"

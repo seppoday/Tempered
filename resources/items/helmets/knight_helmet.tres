@@ -7,7 +7,8 @@
 script = ExtResource("2_1aaew")
 slot = 1
 hp = 45
-armor = 8
+armor = 7
+dodge = 0.01
 id = "knight_helmet"
 name = "Knight Helmet"
 description = "Knight Helmet"

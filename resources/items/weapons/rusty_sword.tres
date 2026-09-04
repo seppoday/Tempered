@@ -6,8 +6,7 @@
 [resource]
 script = ExtResource("2_2f7oi")
 upgrade_curve = ExtResource("3_2f7oi")
-dmg = 8.1
-attack_speed = 0.7
+dmg = 7.0
 id = "rusty_sword"
 name = "Rusty Sword"
 description = "A rusty blade that barely serves its purpose in combat."

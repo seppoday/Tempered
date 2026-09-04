@@ -11,6 +11,7 @@ signal attributes_changed
 signal attribute_points_changed(points: int)
 
 signal hp_changed(current_hp: float, max_hp: float)
+signal damage_taken(damage_amount: float, was_dodged: bool)
 
 # ==========================================
 # POSTAĆ I POSTĘP
@@ -65,13 +66,6 @@ func _ready() -> void:
 	attributes["CON"] = character_definition.starting_con
 
 	current_hp = get_total_stats()["hp"]
-
-func take_damage(amount: float) -> void:
-	print("Player takes damage: ", amount)
-	current_hp = max(0.0, current_hp - amount)
-	hp_changed.emit(current_hp, get_total_stats()["hp"])
-	if current_hp <= 0.0:
-		print("Gracz zginął! (na razie tylko log)")
 
 # ==========================================
 # OBLICZANIE STATYSTYK
@@ -226,3 +220,35 @@ func calculate_attack() -> Dictionary:
 		"color": text_color,
 		"stats": stats
 	}
+
+
+func take_damage(amount: float) -> void:
+	var stats := get_total_stats()
+	
+	# Dodge
+	if RNG.randf() < stats.get("dodge", 0.0):
+		damage_taken.emit(0.0, true)
+		return
+	
+	# Armor reduction
+	var armor: float = stats.get("armor", 0.0)
+	var armor_reduction: float = calculate_armor_reduction(armor)
+	var final_damage: float = amount * (1.0 - armor_reduction)
+	
+	current_hp = max(0.0, current_hp - final_damage)
+	damage_taken.emit(final_damage, false)  # Emituj przed hp_changed
+	hp_changed.emit(current_hp, stats["hp"])
+	
+	if current_hp <= 0.0:
+		print("Gracz zginął!")
+
+
+# Formuła redukcji armor - malejąca skuteczność (jak w większości gier)
+func calculate_armor_reduction(armor: float) -> float:
+	# Formuła: armor / (armor + 100)
+	# Przykłady:
+	# 10 armor  = 9.1% redukcji
+	# 50 armor  = 33% redukcji
+	# 100 armor = 50% redukcji
+	# 200 armor = 66.7% redukcji
+	return armor / (armor + 100.0)

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cdykdlc7cvrlk" path="res://scripts/gameplay/player.gd" id="1_onrkg"]
 [ext_resource type="PackedScene" uid="uid://b5e6onr0nkuv6" path="res://scenes/floating_text.tscn" id="2_hqtel"]
 [ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="2_i3pqv"]
+[ext_resource type="Texture2D" uid="uid://b4wo4lie4vwux" path="res://assets/PNG/2827733024.webp" id="4_dqkch"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a6phw"]
 radius = 11.045361
@@ -15,6 +16,7 @@ collision_mask = 2
 script = ExtResource("1_onrkg")
 floating_text_scene = ExtResource("2_hqtel")
 swing_extension_max = 10.0
+attack_range_margin = 50.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1974758292]
 scale = Vector2(0.2, 0.2)
@@ -29,8 +31,9 @@ collision_mask = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="SwordHitbox" unique_id=880787820]
 position = Vector2(40.400005, 1)
-scale = Vector2(0.2281249, 0.09375)
-texture = ExtResource("2_i3pqv")
+rotation = 0.78118956
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("4_dqkch")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SwordHitbox" unique_id=262130884]
 position = Vector2(39.4, 0.5)

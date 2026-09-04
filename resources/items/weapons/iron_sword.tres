@@ -4,8 +4,7 @@
 
 [resource]
 script = ExtResource("2_3fu4x")
-dmg = 14
-attack_speed = 1.1
+dmg = 14.0
 id = "iron_sword"
 name = "Iron Sword"
 description = "A simple and reliable sword forged from iron."

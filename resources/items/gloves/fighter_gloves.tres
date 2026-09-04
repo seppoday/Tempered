@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://w7rsmdwltump"]
+
+[ext_resource type="Texture2D" uid="uid://d3egwq4bbmt16" path="res://assets/items/leather_helmet.jpeg" id="1_sxuxc"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_vrujj"]
+
+[resource]
+script = ExtResource("2_vrujj")
+slot = 3
+hp = 8
+attack_speed = 0.04
+id = "fighter_gloves"
+name = "Fighter Gloves"
+description = "Fighter Gloves"
+icon = ExtResource("1_sxuxc")
+metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

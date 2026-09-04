@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="WaveDefinition" format=3 uid="uid://cikgnmrqkbrcj"]
+
+[ext_resource type="Script" uid="uid://cpvjw3l1cvyqx" path="res://data/definitions/wave_enemy_entry.gd" id="1_gvvb2"]
+[ext_resource type="Script" uid="uid://b2div1d71srwn" path="res://data/definitions/wave_definition.gd" id="3_bf6vj"]
+
+[resource]
+script = ExtResource("3_bf6vj")
+id = "test_wave_4"
+duration = 100.0
+spawn_rate = 0.55
+hp_multiplier = 1.2
+metadata/_custom_type_script = "uid://b2div1d71srwn"

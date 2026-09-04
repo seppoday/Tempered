@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ConsumableDefinition" format=3 uid="uid://bdo0a1sdk0vx1"]
+
+[ext_resource type="Texture2D" uid="uid://l410ajoklmb6" path="res://assets/PNG/4c09c0d21b09e8d.png" id="1_8ltho"]
+[ext_resource type="Script" uid="uid://hgy0u4kiuki5" path="res://data/definitions/consumable_definition.gd" id="1_jwpa5"]
+
+[resource]
+script = ExtResource("1_jwpa5")
+heal_hp = 40.0
+id = "potion_small"
+name = "Small Healing Piotion"
+icon = ExtResource("1_8ltho")
+category = 0
+stackable = true
+max_stack_size = 10
+metadata/_custom_type_script = "uid://hgy0u4kiuki5"

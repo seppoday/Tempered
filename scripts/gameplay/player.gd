@@ -8,7 +8,7 @@ extends CharacterBody2D
 @export var swing_duration: float = 0.2        # Czas trwania jednego zamachu
 @export var base_swing_interval: float = 0.45  # Przerwa między zamachami
 @export var rotation_speed: float = 10.0       # Szybkość obracania się do wroga
-@export var attack_range_margin: float = 50.0  # Dodatkowy margines na promień wroga/hitboxa
+@export var attack_range_margin: float = 100.0  # Dodatkowy margines na promień wroga/hitboxa
 
 @onready var sword_hitbox: Area2D = $SwordHitbox
 
@@ -35,6 +35,8 @@ var enemies_hit_this_swing: Array[Node2D] = []
 var _combat_active: bool = false
 
 func _ready() -> void:
+	PlayerData.hp_changed.connect(_on_player_hp_changed)
+	PlayerData.damage_taken.connect(_on_player_damage_taken)
 	# 1. Wypisanie receptur
 	var all_recipes := RecipeDatabase.get_all_recipes()
 	print("Liczba przepisów: ", all_recipes.size())
@@ -308,3 +310,12 @@ func _spawn_floating_text(pos: Vector2, text: String, color: Color) -> void:
 	var random_offset := Vector2(randf_range(-4.0, 4.0), randf_range(-6.0, -2.0))
 	text_node.global_position = pos + random_offset
 	text_node.setup(text, color)
+
+func _on_player_hp_changed(current_hp: float, max_hp: float) -> void:
+	pass
+
+func _on_player_damage_taken(damage_amount: float, was_dodged: bool) -> void:
+	if was_dodged:
+		_spawn_floating_text(global_position + Vector2(0, -16), "DODGE!", Color(0.6, 0.6, 0.65))
+	else:
+		_spawn_floating_text(global_position + Vector2(0, -16), "-%d" % int(damage_amount), Color(1.0, 0.3, 0.3))

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://bfpovx61t60tr"]
+
+[ext_resource type="Texture2D" uid="uid://brrdeqocjha3i" path="res://assets/items/worn boots.jpeg" id="1_lqh2l"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_qybv1"]
+
+[resource]
+script = ExtResource("2_qybv1")
+slot = 4
+hp = 10
+armor = 1
+dodge = 0.01
+id = "old_boots"
+name = "Old Boots"
+description = "Old Boots"
+icon = ExtResource("1_lqh2l")
+metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

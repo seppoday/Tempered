@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_83vfe")
 slot = 1
-hp = 8
+hp = 15
 armor = 2
 id = "leather_cap"
 name = "Leather Cap"

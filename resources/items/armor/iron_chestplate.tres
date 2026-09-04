@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://jek0hsk7n0ef"]
+
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_oa4lm"]
+
+[resource]
+script = ExtResource("2_oa4lm")
+slot = 2
+hp = 70
+armor = 10
+id = "iron_chestplate"
+name = "Iron Chestplate"
+description = "Iron Chestplate"
+metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

@@ -12,6 +12,7 @@ class_name ItemDefinition extends InventoryEntry
 @export var magic_dmg: int = 0
 @export var attack_speed: float = 0.0
 @export var armor: int = 0
+@export var block_chance: float = 0.0
 @export var crit_chance: float = 0.0
 @export var crit_damage: float = 0.0
 @export var dodge: float = 0.0
