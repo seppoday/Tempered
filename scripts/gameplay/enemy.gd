@@ -5,7 +5,16 @@ var max_hp: float # Dodane dla spójności z mechaniką execute
 var definition: EnemyDefinition
 var _attack_timer: float = 0.0
 
+var knockback_velocity: Vector2 = Vector2.ZERO
+var knockback_timer: float = 0.0
+
+const KNOCKBACK_DURATION: float = 0.1
+const KNOCKBACK_STRENGTH: float = 50
+
+
 var target_position: Vector2 = Vector2.ZERO
+
+@onready var sprite: Sprite2D = $Sprite2D
 
 # --- BARDZO WAŻNA ZMIENNA OCHRONNA ---
 var _is_spawn_protected: bool = true
@@ -17,8 +26,15 @@ func _ready() -> void:
 	await get_tree().physics_frame
 	_is_spawn_protected = false
 
+	$Label.text = definition.id
 
 func _physics_process(delta: float) -> void:
+	if knockback_timer > 0.0:
+		knockback_timer -= delta
+		velocity = knockback_velocity
+		move_and_slide()
+		return
+
 	var distance_to_target := global_position.distance_to(target_position)
 
 	# Ruch tylko wtedy, gdy wróg jest poza zasięgiem ataku
@@ -36,21 +52,32 @@ func _physics_process(delta: float) -> void:
 
 
 func _perform_attack() -> void:
-	print("Enemy attacking player for %f damage!" % definition.damage)
 	if definition == null:
 		return
-	print("Enemy attacking player for %f damage!" % definition.damage)
+
 	PlayerData.take_damage(definition.damage)
+
 
 func take_damage(amount: float) -> void:
 	# Jeśli wróg dopiero się narodził i fizyka go nie rozstawiła - ignoruj obrażenia!
 	if _is_spawn_protected:
 		return
 
+	_flash()
+
+	knockback_velocity = (global_position - target_position).normalized() * KNOCKBACK_STRENGTH
+	knockback_timer = KNOCKBACK_DURATION
+
 	hp -= amount
 	if hp <= 0.0:
 		die()
 
+func _flash() -> void:
+	sprite.material.set_shader_parameter("flash_amount", 1.0)
+	var tween = get_tree().create_tween()
+	tween.tween_method(
+		func(value): sprite.material.set_shader_parameter("flash_amount", value), 1.0, 0.0, 0.2
+	)
 
 func is_dead() -> bool:
 	return hp <= 0.0 or is_queued_for_deletion()

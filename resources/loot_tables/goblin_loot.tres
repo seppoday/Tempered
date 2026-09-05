@@ -3,17 +3,30 @@
 [ext_resource type="Script" uid="uid://dmw8mcvfjhous" path="res://data/definitions/loot_entry.gd" id="1_jj25l"]
 [ext_resource type="Resource" uid="uid://cys41i4h53vjd" path="res://resources/materials/iron.tres" id="2_exrnc"]
 [ext_resource type="Script" uid="uid://dp0kh2akuu60m" path="res://data/definitions/loot_table.gd" id="2_ydjod"]
+[ext_resource type="Resource" uid="uid://d05poumq2y3b4" path="res://resources/items/amulets/silver_amulet.tres" id="3_b616e"]
+[ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://resources/materials/misc/upgrade_stone.tres" id="4_exrnc"]
 
 [sub_resource type="Resource" id="Resource_pm6a8"]
 script = ExtResource("1_jj25l")
 entry = ExtResource("2_exrnc")
-weight = 90
+weight = 9
+metadata/_custom_type_script = "uid://dmw8mcvfjhous"
+
+[sub_resource type="Resource" id="Resource_w4ww0"]
+script = ExtResource("1_jj25l")
+entry = ExtResource("3_b616e")
+weight = 2
+metadata/_custom_type_script = "uid://dmw8mcvfjhous"
+
+[sub_resource type="Resource" id="Resource_3uuvw"]
+script = ExtResource("1_jj25l")
+entry = ExtResource("4_exrnc")
 metadata/_custom_type_script = "uid://dmw8mcvfjhous"
 
 [resource]
 script = ExtResource("2_ydjod")
 id = "goblin_loot"
-loot_entries = Array[ExtResource("1_jj25l")]([SubResource("Resource_pm6a8")])
+loot_entries = Array[ExtResource("1_jj25l")]([SubResource("Resource_pm6a8"), SubResource("Resource_w4ww0"), SubResource("Resource_3uuvw")])
 gold_min = 2
 gold_max = 4
 metadata/_custom_type_script = "uid://dp0kh2akuu60m"

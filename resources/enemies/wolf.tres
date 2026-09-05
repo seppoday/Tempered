@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="EnemyDefinition" format=3 uid="uid://qirqxv6fkeuy"]
 
-[ext_resource type="Resource" uid="uid://b2pgpsivmuity" path="res://resources/loot_tables/goblin_loot.tres" id="1_qy7xp"]
+[ext_resource type="Resource" uid="uid://brsxm80poffid" path="res://resources/loot_tables/wolf_loot.tres" id="1_qy7xp"]
 [ext_resource type="PackedScene" uid="uid://qri8otp0wvbl" path="res://scenes/wolf.tscn" id="2_qy7xp"]
 [ext_resource type="Script" uid="uid://dfsxlht8w22ue" path="res://data/definitions/enemy_definition.gd" id="3_78dli"]
 

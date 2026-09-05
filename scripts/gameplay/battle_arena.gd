@@ -6,7 +6,7 @@ extends Node2D
 
 @export_group("Drop Settings")
 @export var drop_scene: PackedScene
-@export_range(0.0, 1.0) var drop_chance: float = .05
+@export_range(0.0, 1.0) var drop_chance: float = 0.2
 @export var max_ground_drops: int = 50  
 
 @export_group("Wave Settings")

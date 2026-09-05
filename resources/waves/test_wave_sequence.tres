@@ -7,10 +7,9 @@
 [ext_resource type="Resource" uid="uid://dakppytc78f2l" path="res://resources/waves/test_wave_3.tres" id="5_qh3s7"]
 [ext_resource type="Resource" uid="uid://cikgnmrqkbrcj" path="res://resources/waves/test_wave_4.tres" id="6_g2inb"]
 [ext_resource type="Resource" uid="uid://bov8ec2tvk8n4" path="res://resources/waves/test_wave_5.tres" id="7_5df4t"]
-[ext_resource type="Resource" uid="uid://5niu352klmw" path="res://resources/waves/test_wave_6.tres" id="8_4t3ch"]
 
 [resource]
 script = ExtResource("1_5swok")
 id = "test_wave_seq"
-waves = Array[ExtResource("2_nix47")]([ExtResource("3_euck0"), ExtResource("4_8clmb"), ExtResource("5_qh3s7"), ExtResource("6_g2inb"), ExtResource("7_5df4t"), ExtResource("8_4t3ch")])
+waves = Array[ExtResource("2_nix47")]([ExtResource("3_euck0"), ExtResource("4_8clmb"), ExtResource("5_qh3s7"), ExtResource("6_g2inb"), ExtResource("7_5df4t")])
 metadata/_custom_type_script = "uid://dey65coh8u728"

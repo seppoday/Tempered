@@ -1,7 +1,8 @@
-# drop.gd
 extends Area2D
 
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var sprite: Sprite2D = %Sprite2D
+@onready var visuals: Node2D = %Visuals
+@onready var name_label: Label = %Name
 
 # --- NOWA, LEKKA KONFIGURACJA W INSPEKTORZE ---
 @export_group("Fallback Resource")
@@ -20,6 +21,7 @@ extends Area2D
 
 
 @export var max_sprite_size: float = 64.0 # Maksymalna szerokość lub wysokość w pikselach
+@export var sprite_display_size: Vector2 = Vector2(32, 32)
 
 # Silnie typowana instancja przedmiotu (ustawiana przez spawner LUB z fallback_definition)
 var item_data: ItemInstance = null
@@ -28,10 +30,11 @@ var _tooltip_instance: Control = null
 var _is_collected: bool = false
 var _current_lifetime: float = 0.0 # Licznik czasu leżenia na ziemi
 
-# Ujednolicone mapowanie statystyk z ItemDefinition na etykiety i kolory
+# Ujednolicone mapowanie statystyk – identyczne jak w slot.gd
 const STAT_DISPLAY := {
 	"hp":           ["Max HP", Color(0.2, 0.8, 0.2), "plus_int"],
-	"dmg":          ["Damage", Color(0.95, 0.3, 0.3), "plus_int"],
+	"dmg":          ["Damage", Color(0.95, 0.3, 0.3), "plus_float"],
+	"magic_dmg":    ["Magic Damage", Color(0.0, 0.3, 0.9), "plus_float"],
 	"attack_speed": ["Attack Speed", Color(0.95, 0.95, 0.95), "speed"],
 	"armor":        ["Armor", Color(0.6, 0.6, 0.65), "plus_int"],
 	"crit_chance":  ["Crit Chance", Color(0.9, 0.7, 0.2), "percent"],
@@ -40,10 +43,14 @@ const STAT_DISPLAY := {
 	"lifesteal":    ["Lifesteal", Color(0.85, 0.3, 0.4), "percent"],
 }
 
+const FONT_TITLE := 24
+const FONT_BODY := 12
+
 func _ready() -> void:
 	_setup_item_data()
 	_sync_texture()
-
+	_sync_name_label()
+	_check_rarity()
 	input_pickable = true
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
@@ -55,7 +62,19 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	# 1. Aktualizacja pozycji tooltipa za myszką
 	if is_instance_valid(_tooltip_instance):
-		_tooltip_instance.global_position = get_viewport().get_mouse_position() + Vector2(14, 14)
+		var mouse_pos := get_viewport().get_mouse_position()
+		var offset := Vector2(14, 14)
+		var tooltip_size := _tooltip_instance.size
+		var viewport_size := get_viewport().get_visible_rect().size
+
+		var final_pos := mouse_pos + offset
+		# Trzymaj tooltip w granicach ekranu
+		if final_pos.x + tooltip_size.x > viewport_size.x:
+			final_pos.x = mouse_pos.x - tooltip_size.x - offset.x
+		if final_pos.y + tooltip_size.y > viewport_size.y:
+			final_pos.y = mouse_pos.y - tooltip_size.y - offset.y
+
+		_tooltip_instance.global_position = final_pos
 
 	# 2. Licznik czasu znikania
 	if queue_free_timer and not _is_collected:
@@ -89,7 +108,7 @@ func _show_tooltip() -> void:
 	_tooltip_instance = _build_tooltip_panel()
 	if _tooltip_instance:
 		get_tree().root.add_child(_tooltip_instance)
-		_tooltip_instance.global_position = get_viewport().get_mouse_position()
+		_tooltip_instance.global_position = get_viewport().get_mouse_position() + Vector2(14, 14)
 
 func _hide_tooltip() -> void:
 	if is_instance_valid(_tooltip_instance):
@@ -111,113 +130,232 @@ func on_collected() -> void:
 	queue_free()
 
 # ==========================================
-# SETUP & TOOLTIP BUILDING
+# SETUP
 # ==========================================
 func _setup_item_data() -> void:
 	# Jeśli przedmiot został położony ręcznie i spawner go nie zainicjalizował:
 	if item_data == null and fallback_definition != null:
 		item_data = ItemInstance.new(fallback_definition, 1)
 
-func _sync_texture() -> void:
-	if sprite == null or item_data == null or item_data.definition == null: 
+func _check_rarity() -> void:
+	if item_data == null or item_data.definition == null:
 		return
-		
-	# 1. Przypisanie tekstury z zasobu
+
+	var rarity_color := GameEnums.get_rarity_color(item_data.definition.rarity)
+
+	if item_data.definition.rarity != GameEnums.Rarity.COMMON:
+		%GPUParticles2D.get_process_material().set("color", rarity_color)
+		%GPUParticles2D.emitting = true
+
+func _sync_name_label() -> void:
+	if name_label == null:
+		return
+
+	if item_data == null or item_data.definition == null:
+		name_label.visible = false
+		return
+
+	name_label.text = item_data.definition.name
+	name_label.visible = true
+
+func _sync_texture() -> void:
+	if sprite == null or item_data == null or item_data.definition == null:
+		return
+
 	if item_data.definition.icon:
 		sprite.texture = item_data.definition.icon
 
-	# 2. WYMUSZENIE MAKSYMALNEGO ROZMIARU (MAX SIZE)
 	if sprite.texture:
-		var tex_size = sprite.texture.get_size() # Rozmiar oryginalnej grafiki (np. 128x64)
-		var max_dimension = max(tex_size.x, tex_size.y) # Pobieramy większy bok
-		
-		if max_dimension > max_sprite_size:
-			# Obliczamy współczynnik skalowania (np. 48 / 128 = 0.375)
-			var scale_factor = max_sprite_size / max_dimension
-			sprite.scale = Vector2(scale_factor, scale_factor)
+		var tex_size := sprite.texture.get_size()
+		if tex_size.x > 0.0 and tex_size.y > 0.0:
+			sprite.scale = Vector2(
+				sprite_display_size.x / tex_size.x,
+				sprite_display_size.y / tex_size.y
+			)
 		else:
-			# Jeśli grafika jest mniejsza niż max_sprite_size, zostawiamy oryginalną skalę 1:1
 			sprite.scale = Vector2.ONE
 
+# ==========================================
+# TOOLTIP BUILDING (styl jak w slot.gd)
+# ==========================================
 func _build_tooltip_panel() -> Control:
 	if item_data == null or item_data.definition == null:
 		return null
 
 	var def = item_data.definition
+	var rarity_color := _get_rarity_color()
 
-	var container = PanelContainer.new()
-	var style = StyleBoxFlat.new()
-	style.bg_color = Color(0.08, 0.08, 0.1, 1.0)
-	style.border_color = _get_rarity_color()
+	# ── Root ──────────────────────────────────────────────
+	var container := PanelContainer.new()
+	container.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	container.top_level = true
+
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.05, 0.06, 0.08, 0.96)
+	style.border_color = Color(rarity_color, 0.55)
 	style.set_border_width_all(2)
-	style.set_corner_radius_all(4)
-	style.content_margin_left = 4
-	style.content_margin_top = 4
-	style.content_margin_right = 4
-	style.content_margin_bottom = 4
+	style.set_corner_radius_all(0)
+	style.content_margin_left = 8
+	style.content_margin_top = 8
+	style.content_margin_right = 8
+	style.content_margin_bottom = 8
 	container.add_theme_stylebox_override("panel", style)
 
-	var vbox = VBoxContainer.new()
-	vbox.add_theme_constant_override("separation", 3)
-	container.add_child(vbox)
+	var root := VBoxContainer.new()
+	root.add_theme_constant_override("separation", 8)
+	container.add_child(root)
 
-	# Nazwa przedmiotu
-	var name_label = Label.new()
-	name_label.text = def.name
-	name_label.add_theme_color_override("font_color", _get_rarity_color())
-	name_label.add_theme_font_size_override("font_size", 18)
-	vbox.add_child(name_label)
+	# ── HEADER: ikona + nazwa/kategoria | cena ────────────
+	var header := HBoxContainer.new()
+	header.add_theme_constant_override("separation", 8)
+	root.add_child(header)
 
-	# Rzadkość i Kategoria
-	var rarity_label = Label.new()
-	var rarity_str = GameEnums.Rarity.keys()[def.rarity]
-	var category_str = ItemDefinition.Category.keys()[def.category]
-	rarity_label.text = "[ %s • %s ]" % [rarity_str, category_str]
-	rarity_label.add_theme_color_override("font_color", _get_rarity_color() * 0.8)
-	rarity_label.add_theme_font_size_override("font_size", 14)
-	vbox.add_child(rarity_label)
+	# Ikona przedmiotu
+	if def.icon:
+		var icon_rect := TextureRect.new()
+		icon_rect.texture = def.icon
+		icon_rect.custom_minimum_size = Vector2(22, 22)
+		icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		header.add_child(icon_rect)
 
-	# Linia oddzielająca
-	var line = ColorRect.new()
-	line.custom_minimum_size = Vector2(120, 1)
-	line.color = Color(0.3, 0.3, 0.3, 0.5)
-	vbox.add_child(line)
+	# Nazwa + kategoria
+	var title_box := VBoxContainer.new()
+	title_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title_box.add_theme_constant_override("separation", 0)
+	header.add_child(title_box)
 
-	# Ilość przedmiotu na ziemi (jeśli > 1)
+	var title_label := Label.new()
+	if item_data.upgrade_level > 0:
+		title_label.text = "%.2f %s" % [item_data.upgrade_level, def.name]
+	else:
+		title_label.text = def.name
+	title_label.add_theme_color_override("font_color", Color(0.91, 0.84, 0.58)) # LoL gold
+	title_label.add_theme_font_size_override("font_size", FONT_TITLE)
+	title_box.add_child(title_label)
+
+	var category_label := Label.new()
+	category_label.text = GameEnums.Rarity.keys()[def.rarity].capitalize()
+	category_label.add_theme_color_override("font_color", Color(0.55, 0.52, 0.42))
+	category_label.add_theme_font_size_override("font_size", FONT_BODY)
+	title_box.add_child(category_label)
+
+	# Cena / sell value
+	if def.get("sell_value") != null or def.get("price") != null:
+		var price_box := VBoxContainer.new()
+		price_box.alignment = BoxContainer.ALIGNMENT_CENTER
+		header.add_child(price_box)
+
+		var sell_label := Label.new()
+		var price = def.sell_value if def.get("sell_value") != null else def.price
+		sell_label.text = "Sells: %d" % price
+		sell_label.add_theme_color_override("font_color", Color(0.78, 0.70, 0.40))
+		sell_label.add_theme_font_size_override("font_size", FONT_BODY)
+		sell_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		price_box.add_child(sell_label)
+
+	# Ilość na ziemi (jeśli > 1) — zachowana informacja z drop.gd
 	if item_data.quantity > 1:
-		var count_lbl = Label.new()
-		count_lbl.text = "Ilość: %d" % item_data.quantity
-		count_lbl.add_theme_color_override("font_color", Color(0.8, 0.8, 0.8))
-		count_lbl.add_theme_font_size_override("font_size", 14)
-		vbox.add_child(count_lbl)
+		var qty_label := Label.new()
+		qty_label.text = "x%d" % item_data.quantity
+		qty_label.add_theme_color_override("font_color", Color(0.85, 0.85, 0.85))
+		qty_label.add_theme_font_size_override("font_size", FONT_BODY)
+		qty_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		header.add_child(qty_label)
 
-	# Statystyki generowane automatycznie z definicji
+	# ── Separator ─────────────────────────────────────────
+	root.add_child(_make_separator())
+
+	# ── STATY ─────────────────────────────────────────────
 	var stat_rows := _get_stat_rows()
 	if not stat_rows.is_empty():
-		var stat_spacer = Control.new()
-		stat_spacer.custom_minimum_size = Vector2(0, 4)
-		vbox.add_child(stat_spacer)
-		for row in stat_rows:
-			var stat_lbl = Label.new()
-			stat_lbl.text = row["text"]
-			stat_lbl.add_theme_color_override("font_color", row["color"])
-			stat_lbl.add_theme_font_size_override("font_size", 14)
-			vbox.add_child(stat_lbl)
+		var stats_box := VBoxContainer.new()
+		stats_box.add_theme_constant_override("separation", 0)
+		root.add_child(stats_box)
 
-	# Opis przedmiotu
+		for row in stat_rows:
+			var row_h := HBoxContainer.new()
+			row_h.add_theme_constant_override("separation", 0)
+			stats_box.add_child(row_h)
+
+			if row.has("icon") and row["icon"]:
+				var s_icon := TextureRect.new()
+				s_icon.texture = row["icon"]
+				s_icon.custom_minimum_size = Vector2(12, 12)
+				s_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+				s_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+				s_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+				row_h.add_child(s_icon)
+
+			var stat_lbl := Label.new()
+			stat_lbl.text = row["text"]
+			stat_lbl.add_theme_color_override("font_color", row.get("color", Color(0.85, 0.78, 0.50)))
+			stat_lbl.add_theme_font_size_override("font_size", FONT_BODY)
+			row_h.add_child(stat_lbl)
+
+		root.add_child(_make_separator())
+
+	# ── OPIS / PASYWKI ────────────────────────────────────
 	if not def.description.is_empty():
-		var desc_spacer = Control.new()
-		desc_spacer.custom_minimum_size = Vector2(0, 4)
-		vbox.add_child(desc_spacer)
-		var desc_lbl = Label.new()
-		desc_lbl.text = def.description
-		desc_lbl.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
-		desc_lbl.add_theme_font_size_override("font_size", 14)
-		desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		desc_lbl.custom_minimum_size = Vector2(120, 0)
-		vbox.add_child(desc_lbl)
+		var blocks = def.description.split("\n\n", false)
+		for i in blocks.size():
+			var block: String = blocks[i].strip_edges()
+			if block.is_empty():
+				continue
+
+			var lines := block.split("\n", false)
+			var passive_box := VBoxContainer.new()
+			passive_box.add_theme_constant_override("separation", 2)
+			root.add_child(passive_box)
+
+			if lines.size() >= 2:
+				var p_title := Label.new()
+				p_title.text = lines[0]
+				p_title.add_theme_color_override("font_color", Color(0.91, 0.75, 0.35))
+				p_title.add_theme_font_size_override("font_size", FONT_BODY)
+				passive_box.add_child(p_title)
+
+				var p_desc := RichTextLabel.new()
+				p_desc.bbcode_enabled = true
+				p_desc.fit_content = true
+				p_desc.scroll_active = false
+				p_desc.custom_minimum_size = Vector2(120, 0)
+				p_desc.add_theme_color_override("default_color", Color(0.72, 0.72, 0.70))
+				p_desc.add_theme_font_size_override("normal_font_size", FONT_BODY)
+				p_desc.text = _colorize_numbers("\n".join(lines.slice(1)))
+				passive_box.add_child(p_desc)
+			else:
+				var desc := RichTextLabel.new()
+				desc.bbcode_enabled = true
+				desc.fit_content = true
+				desc.scroll_active = false
+				desc.custom_minimum_size = Vector2(120, 0)
+				desc.add_theme_color_override("default_color", Color(0.72, 0.72, 0.70))
+				desc.add_theme_font_size_override("normal_font_size", FONT_BODY)
+				desc.text = _colorize_numbers(block)
+				passive_box.add_child(desc)
+
+			if i < blocks.size() - 1:
+				var gap := Control.new()
+				gap.custom_minimum_size = Vector2(0, 4)
+				root.add_child(gap)
 
 	return container
+
+
+func _make_separator() -> ColorRect:
+	var line := ColorRect.new()
+	line.custom_minimum_size = Vector2(0, 1)
+	line.color = Color(0.35, 0.32, 0.22, 0.6)
+	return line
+
+
+func _colorize_numbers(text: String) -> String:
+	var regex := RegEx.new()
+	regex.compile(r"(\d+\.?\d*%?)")
+	return regex.sub(text, "[color=#ff8c39]$1[/color]", true)
+
 
 func _get_stat_rows() -> Array[Dictionary]:
 	var rows: Array[Dictionary] = []
@@ -228,39 +366,42 @@ func _get_stat_rows() -> Array[Dictionary]:
 	for property in STAT_DISPLAY.keys():
 		if property in def:
 			var value = def.get(property)
+
+			if item_data.upgrade_level > 0 and def.get("upgrade_curve") != null:
+				var levels = def.upgrade_curve.levels
+				if item_data.upgrade_level <= levels.size():
+					var upgrade: ItemUpgradeLevel = levels[item_data.upgrade_level - 1]
+					if upgrade.stat_name == property:
+						var base_value: float = def.get(property)
+						var bonus: float = base_value * upgrade.bonus_percent
+						value += bonus
+
 			if value == 0 or value == 0.0:
 				continue
-
 			var info = STAT_DISPLAY[property]
-			var label: String = info[0]
-			var color: Color = info[1]
-			var fmt: String = info[2]
-
 			var value_str := ""
-			match fmt:
-				"plus_int":
-					value_str = "+%d" % int(value)
+			match info[2]:
+				"plus_int": value_str = "%d" % int(value)
+				"plus_float": value_str = "%.2f" % value
 				"percent":
 					var pct = int(round(value * 100.0)) if value <= 1.0 else int(round(value))
-					value_str = "+%d%%" % pct
-				"speed":
-					value_str = "%.2f/s" % value
-				_:
-					value_str = str(value)
-
-			rows.append({
-				"text": "%s: %s" % [label, value_str],
-				"color": color,
-			})
+					value_str = "%d%%" % pct
+				"speed": value_str = "%.2f/s" % value
+				_: value_str = str(value)
+			rows.append({"text": "%s %s" % [value_str, info[0]], "color": info[1]})
 	return rows
+
 
 func _get_rarity_color() -> Color:
 	if item_data == null or item_data.definition == null:
 		return Color.WHITE
 	return GameEnums.get_rarity_color(item_data.definition.rarity)
 
+# ==========================================
+# ANIMACJA
+# ==========================================
 func _animate_bounce() -> void:
-	if sprite == null: return
+	if visuals == null: return
 	var random_angle := randf_range(0.0, TAU)
 	var distance := randf_range(min_distance, max_distance)
 	var target_position := global_position + Vector2.RIGHT.rotated(random_angle) * distance
@@ -270,20 +411,20 @@ func _animate_bounce() -> void:
 		.set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 
 	var height_tween := create_tween()
-	height_tween.tween_property(sprite, "position:y", -jump_height, total_duration * 0.3)\
+	height_tween.tween_property(visuals, "position:y", -jump_height, total_duration * 0.3)\
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	height_tween.tween_property(sprite, "position:y", 0.0, total_duration * 0.2)\
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-	
-	height_tween.tween_property(sprite, "position:y", -jump_height * 0.5, total_duration * 0.15)\
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	height_tween.tween_property(sprite, "position:y", 0.0, total_duration * 0.12)\
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-		
-	height_tween.tween_property(sprite, "position:y", -jump_height * 0.2, total_duration * 0.08)\
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	height_tween.tween_property(sprite, "position:y", 0.0, total_duration * 0.07)\
+	height_tween.tween_property(visuals, "position:y", 0.0, total_duration * 0.2)\
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 
-	height_tween.tween_property(sprite, "position:y", -3.0, total_duration * 0.04)
-	height_tween.tween_property(sprite, "position:y", 0.0, total_duration * 0.04)
+	height_tween.tween_property(visuals, "position:y", -jump_height * 0.5, total_duration * 0.15)\
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	height_tween.tween_property(visuals, "position:y", 0.0, total_duration * 0.12)\
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+
+	height_tween.tween_property(visuals, "position:y", -jump_height * 0.2, total_duration * 0.08)\
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	height_tween.tween_property(visuals, "position:y", 0.0, total_duration * 0.07)\
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+
+	height_tween.tween_property(visuals, "position:y", -3.0, total_duration * 0.04)
+	height_tween.tween_property(visuals, "position:y", 0.0, total_duration * 0.04)

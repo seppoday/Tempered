@@ -1,6 +1,12 @@
 [gd_scene format=3 uid="uid://qri8otp0wvbl"]
 
+[ext_resource type="Shader" uid="uid://c7js0bwvl7ydj" path="res://scenes/blink.gdshader" id="1_jrowp"]
 [ext_resource type="Script" uid="uid://ehpvratewg3y" path="res://scripts/gameplay/enemy.gd" id="1_xsq4n"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jrowp"]
+resource_local_to_scene = true
+shader = ExtResource("1_jrowp")
+shader_parameter/flash_amount = 0.0
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_fya1x"]
 load_path = "res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex"
@@ -14,8 +20,18 @@ script = ExtResource("1_xsq4n")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1756268848]
 modulate = Color(0.68937296, 0.55907995, 0, 1)
+material = SubResource("ShaderMaterial_jrowp")
 scale = Vector2(0.2, 0.2)
 texture = SubResource("CompressedTexture2D_fya1x")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1598097328]
 shape = SubResource("CircleShape2D_bixy7")
+
+[node name="HitParticles" type="CPUParticles2D" parent="." unique_id=1474854728]
+unique_name_in_owner = true
+emitting = false
+
+[node name="Label" type="Label" parent="." unique_id=1813806089]
+offset_top = 13.0
+offset_right = 40.0
+offset_bottom = 27.0

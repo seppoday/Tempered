@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="LootTable" format=3 uid="uid://brsxm80poffid"]
+
+[ext_resource type="Script" uid="uid://dmw8mcvfjhous" path="res://data/definitions/loot_entry.gd" id="1_pt8ot"]
+[ext_resource type="Resource" uid="uid://caru3ukrb4tgk" path="res://resources/materials/wolf_fang.tres" id="2_cmu42"]
+[ext_resource type="Resource" uid="uid://bi553ma3ealpt" path="res://resources/items/off hand/spiked_shield.tres" id="3_waqs5"]
+[ext_resource type="Script" uid="uid://dp0kh2akuu60m" path="res://data/definitions/loot_table.gd" id="4_282u7"]
+[ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://resources/materials/misc/upgrade_stone.tres" id="4_ocaxx"]
+
+[sub_resource type="Resource" id="Resource_c1x68"]
+script = ExtResource("1_pt8ot")
+entry = ExtResource("2_cmu42")
+weight = 9
+metadata/_custom_type_script = "uid://dmw8mcvfjhous"
+
+[sub_resource type="Resource" id="Resource_vvmeo"]
+script = ExtResource("1_pt8ot")
+entry = ExtResource("3_waqs5")
+weight = 2
+metadata/_custom_type_script = "uid://dmw8mcvfjhous"
+
+[sub_resource type="Resource" id="Resource_h4w6l"]
+script = ExtResource("1_pt8ot")
+entry = ExtResource("4_ocaxx")
+metadata/_custom_type_script = "uid://dmw8mcvfjhous"
+
+[resource]
+script = ExtResource("4_282u7")
+id = "wolf_loot"
+loot_entries = Array[ExtResource("1_pt8ot")]([SubResource("Resource_c1x68"), SubResource("Resource_vvmeo"), SubResource("Resource_h4w6l")])
+gold_min = 20
+gold_max = 30
+metadata/_custom_type_script = "uid://dp0kh2akuu60m"

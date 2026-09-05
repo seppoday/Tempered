@@ -6,6 +6,7 @@ var item_data: ItemInstance = null
 
 @onready var icon: TextureRect = $Icon
 @onready var count_label: Label = $CountLabel
+@onready var name_label: Label = $Name
 
 signal slot_changed(slot: Panel)
 
@@ -50,7 +51,7 @@ func _gui_input(event: InputEvent) -> void:
 # ==========================================
 # TOOLTIP
 # ==========================================
-const FONT_TITLE := 24
+const FONT_TITLE := 18
 const FONT_BODY := 12
 
 func _make_custom_tooltip(_for_text: String) -> Control:
@@ -186,7 +187,7 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 				p_desc.bbcode_enabled = true
 				p_desc.fit_content = true
 				p_desc.scroll_active = false
-				p_desc.custom_minimum_size = Vector2(220, 0)
+				p_desc.custom_minimum_size = Vector2(120, 0)
 				p_desc.add_theme_color_override("default_color", Color(0.72, 0.72, 0.70))
 				p_desc.add_theme_font_size_override("normal_font_size", FONT_BODY)
 				p_desc.text = _colorize_numbers("\n".join(lines.slice(1)))
@@ -196,7 +197,7 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 				desc.bbcode_enabled = true
 				desc.fit_content = true
 				desc.scroll_active = false
-				desc.custom_minimum_size = Vector2(220, 0)
+				desc.custom_minimum_size = Vector2(120, 0)
 				desc.add_theme_color_override("default_color", Color(0.72, 0.72, 0.70))
 				desc.add_theme_font_size_override("normal_font_size", FONT_BODY)
 				desc.text = _colorize_numbers(block)
@@ -402,6 +403,7 @@ func _update_visual() -> void:
 		icon.texture = null
 		icon.visible = false
 		count_label.text = ""
+		name_label.text = ""
 		_apply_slot_style(BASE_BG, BASE_BORDER)
 	else:
 		tooltip_text = "use_custom"
@@ -409,6 +411,7 @@ func _update_visual() -> void:
 		icon.texture = def.icon
 		icon.visible = icon.texture != null
 		count_label.text = str(item_data.quantity) if item_data.quantity >= 1 else ""
+		name_label.text = str(item_data.definition.name) if item_data.definition.name  else ""
 
 		var rarity_color := _get_rarity_color()
 		_apply_slot_style(BASE_BG.lerp(rarity_color, 0.08), BASE_BORDER.lerp(rarity_color, 0.55))
