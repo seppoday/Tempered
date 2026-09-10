@@ -18,11 +18,12 @@ func start_wave(wave_definition: WaveDefinition) -> void:
 func start_sequence(sequence: WaveSequence) -> void:
 	current_sequence = sequence
 	_sequence_index = -1
-	_advance_to_next_wave()
+	advance_to_next_wave()
 
-func _advance_to_next_wave() -> void:
+# Publiczna, bo teraz woła ją EKRAN WYNIKÓW (z zewnątrz), nie ta klasa sama siebie.
+func advance_to_next_wave() -> void:
 	_sequence_index += 1
-	if _sequence_index >= current_sequence.waves.size():
+	if current_sequence == null or _sequence_index >= current_sequence.waves.size():
 		sequence_completed.emit()
 		current_sequence = null
 		current_wave = null
@@ -36,8 +37,8 @@ func _process(delta: float) -> void:
 
 	_time_remaining -= delta
 	if _time_remaining <= 0.0:
+		current_wave = null  # zatrzymuje _process, dopóki ktoś nie zawoła advance_to_next_wave()
 		wave_completed.emit()
-		_advance_to_next_wave()
 		return
 
 	_spawn_timer -= delta
@@ -47,8 +48,6 @@ func _process(delta: float) -> void:
 
 func _try_spawn() -> void:
 	var wave_enemy_entry: WaveEnemyEntry = RNG.weighted_pick(current_wave.enemies)
-
 	if wave_enemy_entry == null:
 		return
-
 	enemy_spawn_requested.emit(wave_enemy_entry.enemy, current_wave.hp_multiplier)

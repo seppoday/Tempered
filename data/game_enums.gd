@@ -9,6 +9,8 @@ enum Rarity {
 	MYTHIC
 }
 
+const DICE_PROGRESSION: Array[int] = [4, 6, 8, 10, 12, 16, 20]
+
 static func get_rarity_color(rarity: Rarity) -> Color:
 	match rarity:
 		Rarity.COMMON: return Color(0.7, 0.7, 0.7)

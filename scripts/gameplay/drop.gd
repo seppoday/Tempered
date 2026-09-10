@@ -10,10 +10,10 @@ extends Area2D
 @export var fallback_definition: ItemDefinition
 
 @export_group("Bounce Settings")
-@export var min_distance: float = 40.0
-@export var max_distance: float = 100.0
-@export var jump_height: float = 35.0
-@export var total_duration: float = 1.0
+@export var min_distance: float = 360.0
+@export var max_distance: float = 480.0
+@export var jump_height: float = 50.0
+@export var total_duration: float = 1.5
 
 @export_group("Despawn Settings")
 @export var queue_free_timer: bool = true   # Czy ma znikać po czasie?
@@ -21,7 +21,7 @@ extends Area2D
 
 
 @export var max_sprite_size: float = 64.0 # Maksymalna szerokość lub wysokość w pikselach
-@export var sprite_display_size: Vector2 = Vector2(32, 32)
+@export var sprite_display_size: Vector2 = Vector2(80, 80)
 
 # Silnie typowana instancja przedmiotu (ustawiana przez spawner LUB z fallback_definition)
 var item_data: ItemInstance = null
@@ -58,6 +58,8 @@ func _ready() -> void:
 
 	await get_tree().process_frame
 	_animate_bounce()
+	_current_lifetime = 0.0
+	modulate.a = 1.0
 
 func _process(delta: float) -> void:
 	# 1. Aktualizacja pozycji tooltipa za myszką
@@ -143,7 +145,7 @@ func _check_rarity() -> void:
 
 	var rarity_color := GameEnums.get_rarity_color(item_data.definition.rarity)
 
-	if item_data.definition.rarity != GameEnums.Rarity.COMMON:
+	if item_data.definition.rarity != GameEnums.Rarity.COMMON and item_data.definition.rarity != GameEnums.Rarity.UNCOMMON:
 		%GPUParticles2D.get_process_material().set("color", rarity_color)
 		%GPUParticles2D.emitting = true
 

@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dslmjuxfshvq7" path="res://scripts/ui/equipment_slot.gd" id="1_optkv"]
 
 [node name="EquipmentSlot" type="Panel" unique_id=1626732313]
-custom_minimum_size = Vector2(32, 32)
+custom_minimum_size = Vector2(80, 80)
 script = ExtResource("1_optkv")
 
 [node name="Icon" type="TextureRect" parent="." unique_id=1240173784]
@@ -36,6 +36,5 @@ offset_bottom = 14.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = -3
 theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 6
 text = "small healing potion"
 autowrap_mode = 2

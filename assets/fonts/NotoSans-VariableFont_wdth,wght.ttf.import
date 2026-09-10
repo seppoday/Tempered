@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://clxwu6mlaek4a"
-path="res://.godot/imported/retro-pixel-petty-5x5.ttf-3b6fb575cfda1b8f4c5b7dc5dfa81631.fontdata"
+uid="uid://cw6jlg7vfgssk"
+path="res://.godot/imported/NotoSans-VariableFont_wdth,wght.ttf-6e69723876ef46b25a34982217246272.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/petty-5x5/retro-pixel-petty-5x5.ttf"
-dest_files=["res://.godot/imported/retro-pixel-petty-5x5.ttf-3b6fb575cfda1b8f4c5b7dc5dfa81631.fontdata"]
+source_file="res://assets/fonts/NotoSans-VariableFont_wdth,wght.ttf"
+dest_files=["res://.godot/imported/NotoSans-VariableFont_wdth,wght.ttf-6e69723876ef46b25a34982217246272.fontdata"]
 
 [params]
 

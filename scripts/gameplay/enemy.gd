@@ -9,7 +9,7 @@ var knockback_velocity: Vector2 = Vector2.ZERO
 var knockback_timer: float = 0.0
 
 const KNOCKBACK_DURATION: float = 0.1
-const KNOCKBACK_STRENGTH: float = 50
+const KNOCKBACK_STRENGTH: float = 150
 
 
 var target_position: Vector2 = Vector2.ZERO

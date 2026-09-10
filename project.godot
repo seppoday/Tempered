@@ -29,15 +29,21 @@ RecipeDatabase="*uid://n6u31r2q82g3"
 EnemyDatabase="*uid://cuf30qpjf65it"
 LootTableDatabase="*uid://wkffv8ro0n06"
 WaveDatabase="*uid://c31j52364cspq"
+GameFlow="*uid://cqw2ywle5psy8"
+SkillDatabase="*uid://byyiemdr4dxpt"
+
+[debug]
+
+wave_manager/override_duration=10.0
+wave_manager/override_spawn_rate=3.0
 
 [display]
 
-window/size/viewport_width=640
-window/size/viewport_height=360
+window/size/viewport_width=1920
+window/size/viewport_height=1080
 window/size/mode=2
-window/size/window_width_override=1920
-window/size/window_height_override=1080
 window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [global_group]
 
@@ -78,7 +84,6 @@ jump={
 
 [rendering]
 
-textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

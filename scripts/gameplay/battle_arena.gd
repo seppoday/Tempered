@@ -2,11 +2,11 @@ extends Node2D
 
 # Opcjonalnie: Panel UI areny
 @export var arena_ui_panel: Control
-@export var spawn_margin: float = 40.0
+@export var spawn_margin: float = 120.0
 
 @export_group("Drop Settings")
 @export var drop_scene: PackedScene
-@export_range(0.0, 1.0) var drop_chance: float = 0.2
+@export_range(0.0, 1.0) var drop_chance: float = 0.5
 @export var max_ground_drops: int = 50  
 
 @export_group("Wave Settings")
@@ -22,8 +22,12 @@ extends Node2D
 
 func _ready() -> void:
 	EventBus.enemy_died.connect(_on_enemy_died)
+	wave_manager.start_sequence(wave_sequence)  # tymczasowo, żeby ominąć brakujący ekran wyboru broni
 	wave_manager.enemy_spawn_requested.connect(_on_enemy_spawn_requested)
-	wave_manager.start_sequence(wave_sequence)
+	wave_manager.wave_completed.connect(_on_wave_completed)
+
+func _on_wave_completed() -> void:
+	GameFlow.set_state(GameFlow.State.RESULTS)
 
 func _spawn_enemy(enemy_definition: EnemyDefinition, hp_multiplier: float) -> void:
 	if enemy_definition.scene == null or player == null:

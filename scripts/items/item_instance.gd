@@ -9,13 +9,11 @@ enum UpgradeResult {
 
 var definition: InventoryEntry
 var quantity: int = 1
-var upgrade_level: int = 0
-
+var slot_assignments: Dictionary = {}
 
 func _init(item_definition: InventoryEntry, amount: int = 1, level: int = 0) -> void:
 	definition = item_definition
 	quantity = amount
-	upgrade_level = level
 
 
 func is_stackable() -> bool:
@@ -25,22 +23,10 @@ func is_stackable() -> bool:
 func get_max_stack_size() -> int:
 	return definition.max_stack_size
 
-func attempt_upgrade() -> UpgradeResult:
-	if definition.upgrade_curve == null:
-		return UpgradeResult.NO_CURVE
+func attempt_upgrade() -> void:
+	pass
 
-	var levels = definition.upgrade_curve.levels
-	if upgrade_level >= levels.size():
-		return UpgradeResult.MAX_LEVEL_REACHED
-
-	var next_level :ItemUpgradeLevel = levels[upgrade_level]
-	var chance :float = next_level.success_chance
-	var roll :float = RNG.randf()
-	if roll <= chance:
-		upgrade_level += 1
-		return UpgradeResult.SUCCESS
-	else:
-		return UpgradeResult.FAILURE
+	# TODO: Do przepisania na dice, ale chyba pójdziemy w upgrade zawsze 100% dla uproszczenia rozgrywki
 
 
 func use() -> void:

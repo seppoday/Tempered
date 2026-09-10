@@ -20,7 +20,7 @@ extends PanelContainer
 # Wolne punkty
 @onready var points_label: Label = get_node_or_null("%PointsLabel")
 
-const FONT_SIZE: int = 12
+const FONT_SIZE: int = 16
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
@@ -30,8 +30,6 @@ func _ready() -> void:
 		PlayerData.stats_changed.connect(_on_stats_changed)
 		PlayerData.exp_changed.connect(_update_exp_bar)
 		PlayerData.hp_changed.connect(_update_hp_bar)
-		PlayerData.attributes_changed.connect(_update_attributes_ui)
-		PlayerData.attribute_points_changed.connect(_on_attribute_points_changed)
 
 	_setup_button(str_button, "STR")
 	_setup_button(int_button, "INT")
@@ -42,8 +40,6 @@ func _ready() -> void:
 	_update_exp_bar()
 	var totals := PlayerData.get_total_stats()
 	_update_hp_bar(PlayerData.current_hp, totals.get("hp", 0))
-	_update_attributes_ui()
-	_on_attribute_points_changed(PlayerData.attribute_points)
 
 func _setup_button(btn: Button, attr_name: String) -> void:
 	if not btn: return
@@ -53,24 +49,6 @@ func _setup_button(btn: Button, attr_name: String) -> void:
 		
 	btn.pressed.connect(func(): PlayerData.add_attribute(attr_name))
 
-# ==========================================
-# OBSŁUGA ATRYBUTÓW (LEWY PANEL)
-# ==========================================
-func _update_attributes_ui() -> void:
-	if str_label: str_label.text = str(PlayerData.attributes["STR"])
-	if int_label: int_label.text = str(PlayerData.attributes["INT"])
-	if dex_label: dex_label.text = str(PlayerData.attributes["DEX"])
-	if con_label: con_label.text = str(PlayerData.attributes["CON"])
-
-func _on_attribute_points_changed(points: int) -> void:
-	var has_points := points > 0
-	if str_button: str_button.disabled = not has_points
-	if int_button: int_button.disabled = not has_points
-	if dex_button: dex_button.disabled = not has_points
-	if con_button: con_button.disabled = not has_points
-
-	if points_label:
-		points_label.text = "Wolne punkty: %d" % points
 
 # ==========================================
 # DYNAMICZNE GENEROWANIE UI (PRAWY PANEL)

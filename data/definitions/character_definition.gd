@@ -10,6 +10,12 @@ class_name CharacterDefinition extends Resource
 @export var starting_int: int = 10
 @export var starting_con: int = 10
 
+@export_category("Growth Rates")
+@export var str_growth: float = 1.0
+@export var dex_growth: float = 1.0
+@export var int_growth: float = 1.0
+@export var con_growth: float = 1.0
+
 @export_category("Base Stats")
 @export var base_hp: float = 100.0
 @export var base_dmg: float = 10.0

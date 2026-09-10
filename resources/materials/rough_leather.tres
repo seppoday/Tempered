@@ -10,7 +10,6 @@ name = "Rough Leather"
 description = "Rough Leather"
 icon = ExtResource("1_r7a78")
 category = 2
-rarity = 5
 stackable = true
 max_stack_size = 100
 metadata/_custom_type_script = "uid://ca7fwkvbpwp8c"

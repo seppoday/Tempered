@@ -8,7 +8,6 @@ signal level_up(new_level: int)
 signal gold_changed(new_gold_amount: int)
 
 signal attributes_changed
-signal attribute_points_changed(points: int)
 
 signal hp_changed(current_hp: float, max_hp: float)
 signal damage_taken(damage_amount: float, was_dodged: bool)
@@ -26,7 +25,6 @@ var character_stats: Dictionary = {
 }
 
 var points_per_level: int = 3  # Ile punktów dostajemy co poziom
-var attribute_points: int = 0  # Punkty na start
 
 var gold: int = 0
 
@@ -111,36 +109,7 @@ func get_total_stats() -> Dictionary:
 		totals["dodge"] += def.dodge
 		totals["lifesteal"] += def.lifesteal
 
-		# SEKCJA ULEPSZEŃ (Zoptymalizowana)
-		var curve = def.upgrade_curve
-		var level = item.upgrade_level
-
-		if level > 0 and curve != null and level <= curve.levels.size():
-			var upgrade: ItemUpgradeLevel = curve.levels[level - 1]
-			var base_value: float = def.get(upgrade.stat_name)
-			var bonus: float = base_value * upgrade.bonus_percent
-			
-			totals[upgrade.stat_name] = totals.get(upgrade.stat_name, 0.0) + bonus
-
 	return totals
-
-# ==========================================
-# ROZDAWANIE PUNKTÓW ATRYBUTÓW
-# ==========================================
-func can_add_attribute() -> bool:
-	return attribute_points > 0
-
-func add_attribute(attr_name: String) -> bool:
-	if attribute_points <= 0 or not attributes.has(attr_name):
-		return false
-
-	attributes[attr_name] += 1
-	attribute_points -= 1
-
-	attributes_changed.emit()
-	attribute_points_changed.emit(attribute_points)
-	stats_changed.emit(attr_name)
-	return true
 
 # ==========================================
 # EKONOMIA I LEVELOWANIE
@@ -154,13 +123,11 @@ func add_exp(amount: int) -> void:
 		character_stats["level"] += 1
 		character_stats["exp_to_next"] = int(character_stats["exp_to_next"] * 1.45)
 		
-		attribute_points += points_per_level
 		leveled = true
 
 	exp_changed.emit()
 	if leveled:
 		level_up.emit(character_stats["level"])
-		attribute_points_changed.emit(attribute_points)
 		stats_changed.emit("level")
 
 func add_gold(amount: int) -> void:

@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://34vypc21v6xg"]
+
+[ext_resource type="FontFile" uid="uid://cw6jlg7vfgssk" path="res://assets/fonts/NotoSans-VariableFont_wdth,wght.ttf" id="1_d1w63"]
+
+[resource]
+default_font = ExtResource("1_d1w63")
+default_font_size = 16

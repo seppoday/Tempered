@@ -3,9 +3,9 @@ extends PanelContainer
 
 @onready var grid: GridContainer = $MarginContainer/GridContainer
 
-const SLOT_COUNT: int = 32
-const SLOT_GAP: int = 2
-const GRID_COLUMNS: int = 4
+const SLOT_COUNT: int = 48
+const SLOT_GAP: int = 4
+const GRID_COLUMNS: int = 6
 
 # Jedyna linijka potrzebna do tworzenia slotów:
 const SlotScene: PackedScene = preload("res://scenes/slot.tscn")
@@ -23,6 +23,9 @@ func _ready() -> void:
 			add_item(ItemInstance.new(definition, quantity))
 
 func _create_slots() -> void:
+	for existing_slot in grid.get_children():
+		existing_slot.free()
+
 	for i in range(SLOT_COUNT):
 		var slot: Panel = SlotScene.instantiate()
 		slot.slot_changed.connect(_on_slot_changed)

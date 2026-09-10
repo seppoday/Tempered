@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://cp71fy72w0ly"]
+
+[ext_resource type="Texture2D" uid="uid://cs1d6a64te2u7" path="res://test/dice.png" id="1_1k1lx"]
+[ext_resource type="Script" uid="uid://bgvxu6p2g6t2q" path="res://test/dice.gd" id="1_23yfi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wvhbo"]
+size = Vector2(113, 112)
+
+[node name="Dice" type="StaticBody2D" unique_id=262477411]
+input_pickable = true
+script = ExtResource("1_23yfi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=301181581]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_wvhbo")
+
+[node name="Faces" type="Node2D" parent="." unique_id=427387391]
+
+[node name="1" type="Sprite2D" parent="Faces" unique_id=1566429077]
+texture_filter = 1
+scale = Vector2(7, 7)
+texture = ExtResource("1_1k1lx")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="2" type="Sprite2D" parent="Faces" unique_id=729821115]
+visible = false
+texture_filter = 1
+scale = Vector2(7, 7)
+texture = ExtResource("1_1k1lx")
+region_enabled = true
+region_rect = Rect2(16, 0, 16, 16)
+
+[node name="3" type="Sprite2D" parent="Faces" unique_id=576101895]
+visible = false
+texture_filter = 1
+scale = Vector2(7, 7)
+texture = ExtResource("1_1k1lx")
+region_enabled = true
+region_rect = Rect2(32, 0, 16, 16)
+
+[node name="4" type="Sprite2D" parent="Faces" unique_id=2019536654]
+visible = false
+texture_filter = 1
+scale = Vector2(7, 7)
+texture = ExtResource("1_1k1lx")
+region_enabled = true
+region_rect = Rect2(48, 0, 16, 16)
+
+[node name="5" type="Sprite2D" parent="Faces" unique_id=1410037008]
+visible = false
+texture_filter = 1
+scale = Vector2(7, 7)
+texture = ExtResource("1_1k1lx")
+region_enabled = true
+region_rect = Rect2(64, 0, 16, 16)
+
+[node name="6" type="Sprite2D" parent="Faces" unique_id=796984519]
+visible = false
+texture_filter = 1
+scale = Vector2(7, 7)
+texture = ExtResource("1_1k1lx")
+region_enabled = true
+region_rect = Rect2(80, 0, 16, 16)
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]

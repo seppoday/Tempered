@@ -51,8 +51,9 @@ func _gui_input(event: InputEvent) -> void:
 # ==========================================
 # TOOLTIP
 # ==========================================
-const FONT_TITLE := 18
-const FONT_BODY := 12
+const FONT_TITLE := 24
+const FONT_BODY := 16
+const TOOLTIP_WIDTH := 300
 
 func _make_custom_tooltip(_for_text: String) -> Control:
 	if is_empty() or not item_data.definition:
@@ -187,7 +188,7 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 				p_desc.bbcode_enabled = true
 				p_desc.fit_content = true
 				p_desc.scroll_active = false
-				p_desc.custom_minimum_size = Vector2(120, 0)
+				p_desc.custom_minimum_size = Vector2(300, 0)
 				p_desc.add_theme_color_override("default_color", Color(0.72, 0.72, 0.70))
 				p_desc.add_theme_font_size_override("normal_font_size", FONT_BODY)
 				p_desc.text = _colorize_numbers("\n".join(lines.slice(1)))
@@ -197,7 +198,7 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 				desc.bbcode_enabled = true
 				desc.fit_content = true
 				desc.scroll_active = false
-				desc.custom_minimum_size = Vector2(120, 0)
+				desc.custom_minimum_size = Vector2(300, 0)
 				desc.add_theme_color_override("default_color", Color(0.72, 0.72, 0.70))
 				desc.add_theme_font_size_override("normal_font_size", FONT_BODY)
 				desc.text = _colorize_numbers(block)

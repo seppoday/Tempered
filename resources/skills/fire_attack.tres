@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://m362bnj4e4i2"]
+
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="1_agr2b"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions/skill_definition.gd" id="2_5vrb4"]
+
+[resource]
+script = ExtResource("2_5vrb4")
+id = "fire_attack"
+skill_name = "Fire Attack"
+description = "Fire Attack"
+icon = ExtResource("1_agr2b")
+damage_element = 1
+metadata/_custom_type_script = "uid://dgjg1vlcvdtpi"

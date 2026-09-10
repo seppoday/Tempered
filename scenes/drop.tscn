@@ -18,31 +18,28 @@ offsets = PackedFloat32Array(0.3081571, 0.6676737)
 gradient = SubResource("Gradient_guncg")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ifow5"]
+resource_local_to_scene = true
 particle_flag_disable_z = true
 angle_min = 1.0728835e-05
 angle_max = 360.00003
 gravity = Vector3(0, 0, 0)
-scale_min = 0.29999998
-scale_max = 0.39999998
+scale_min = 0.79999995
 color_ramp = SubResource("GradientTexture1D_abi3o")
 hue_variation_min = 0.019999977
 hue_variation_max = 0.09999997
 anim_offset_max = 1.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wvhbo"]
-radius = 11.0
+radius = 28.01785
 
 [node name="Drop" type="Area2D" unique_id=689540874]
 script = ExtResource("1_f4jv2")
-total_duration = 1.5
-despawn_time = 15.0
 
 [node name="Visuals" type="Node2D" parent="." unique_id=545231408]
 unique_name_in_owner = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Visuals" unique_id=512379759]
 unique_name_in_owner = true
-scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_n3sop")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="Visuals" unique_id=268789752]
@@ -66,7 +63,6 @@ offset_right = 20.0
 offset_bottom = 8.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 6
 text = "name"
 horizontal_alignment = 1
 vertical_alignment = 1

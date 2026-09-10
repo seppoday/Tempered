@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://1j5t66y8bc2w"
-path="res://.godot/imported/lanapixel.ttf-98283e9874a3386eaefb3a56ef077b98.fontdata"
+uid="uid://bayn11g0q0ii5"
+path="res://.godot/imported/NotoSans-Italic-VariableFont_wdth,wght.ttf-5c920ee795fb222e7123e9c273703b41.fontdata"
 
 [deps]
 
-source_file="res://assets/PNG/lanapixel.ttf"
-dest_files=["res://.godot/imported/lanapixel.ttf-98283e9874a3386eaefb3a56ef077b98.fontdata"]
+source_file="res://assets/fonts/NotoSans-Italic-VariableFont_wdth,wght.ttf"
+dest_files=["res://.godot/imported/NotoSans-Italic-VariableFont_wdth,wght.ttf-5c920ee795fb222e7123e9c273703b41.fontdata"]
 
 [params]
 
