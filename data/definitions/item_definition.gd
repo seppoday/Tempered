@@ -16,5 +16,4 @@ class_name ItemDefinition extends InventoryEntry
 @export var lifesteal: float = 0.0
 
 @export_category("Combat Roll")
-@export_range(0, 6, 1) var dice_level = 0
 @export var default_skill: SkillDefinition

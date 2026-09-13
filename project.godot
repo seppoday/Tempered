@@ -41,7 +41,6 @@ wave_manager/override_spawn_rate=3.0
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/mode=2
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
@@ -49,6 +48,7 @@ window/stretch/aspect="expand"
 
 player=""
 enemies=""
+dices=""
 
 [gui]
 

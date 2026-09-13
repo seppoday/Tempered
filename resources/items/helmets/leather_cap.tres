@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://dqmfwjkan2chc"]
 
+[ext_resource type="Resource" uid="uid://7ky5kymujpm0" path="res://resources/skills/heal.tres" id="1_85xgi"]
 [ext_resource type="Texture2D" uid="uid://d3egwq4bbmt16" path="res://assets/items/leather_helmet.jpeg" id="1_qdw6k"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_83vfe"]
 
@@ -8,6 +9,7 @@ script = ExtResource("2_83vfe")
 slot = 1
 hp = 15
 armor = 2
+default_skill = ExtResource("1_85xgi")
 id = "leather_cap"
 name = "Leather Cap"
 description = "A simple leather cap offering minimal protection from blows."

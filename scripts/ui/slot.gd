@@ -104,8 +104,9 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 	header.add_child(title_box)
 
 	var name_label := Label.new()
-	if item_data.upgrade_level > 0:
-		name_label.text = "%.2f %s" % [item_data.upgrade_level, def.name]
+	if item_data.dice_level >= 0:
+		var dice_size := GameEnums.DICE_PROGRESSION[item_data.dice_level]
+		name_label.text = "%s (d%d)" % [def.name, dice_size]
 	else:
 		name_label.text = def.name
 	name_label.add_theme_color_override("font_color", Color(0.91, 0.84, 0.58)) # LoL gold
@@ -239,15 +240,6 @@ func _get_stat_rows() -> Array[Dictionary]:
 		if property in def:
 			var value = def.get(property)
 
-			if item_data.upgrade_level > 0 and def.upgrade_curve != null:
-				var levels = def.upgrade_curve.levels
-				if item_data.upgrade_level <= levels.size():
-					var upgrade: ItemUpgradeLevel = levels[item_data.upgrade_level - 1]
-					if upgrade.stat_name == property:
-						var base_value: float = def.get(property)
-						var bonus: float = base_value * upgrade.bonus_percent
-						value += bonus
-
 			if value == 0 or value == 0.0:
 				continue
 			var info = STAT_DISPLAY[property]
@@ -323,20 +315,31 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	var drag_count: int = data["drag_count"]
 	var is_partial: bool = data["is_partial"]
 
-	if not is_empty() and dragged_instance.definition.category == InventoryEntry.Category.UPGRADE_STONE:
-		if item_data.definition is ItemDefinition and item_data.definition.upgrade_curve != null:
-			var upgrade_result: ItemInstance.UpgradeResult = item_data.attempt_upgrade()
 
-			if upgrade_result == ItemInstance.UpgradeResult.SUCCESS or upgrade_result == ItemInstance.UpgradeResult.FAILURE:
+	if not self.is_empty() and dragged_instance.definition is MaterialDefinition and dragged_instance.definition.category == InventoryEntry.Category.UPGRADE_STONE:
+		if not item_data.definition is ItemDefinition:
+			return
+
+		var try_upgrade = self.item_data.attempt_upgrade(dragged_instance.definition)
+		match try_upgrade:
+			ItemInstance.UpgradeResult.SUCCESS:
 				source_slot.item_data.quantity -= 1
 				if source_slot.item_data.quantity <= 0:
 					source_slot.clear()
-				else:
-					source_slot._update_visual()
-				_update_visual()
 
-			slot_changed.emit(self)
-			source_slot.slot_changed.emit(source_slot)
+				source_slot._update_visual()
+				_update_visual()
+				print("success")
+
+			ItemInstance.UpgradeResult.WRONG_DIE:
+				print("wrong die")
+
+			ItemInstance.UpgradeResult.MAX_LEVEL_REACHED:
+				print("max level")
+			
+
+		slot_changed.emit(self)
+		source_slot.slot_changed.emit(source_slot)
 
 		return
 

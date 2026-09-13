@@ -1,14 +1,14 @@
-[gd_scene format=3 uid="uid://cp71fy72w0ly"]
+[gd_scene format=3 uid="uid://5xf327getqxc"]
 
-[ext_resource type="Texture2D" uid="uid://cs1d6a64te2u7" path="res://test/dice.png" id="1_1k1lx"]
-[ext_resource type="Script" uid="uid://bgvxu6p2g6t2q" path="res://test/dice.gd" id="1_23yfi"]
+[ext_resource type="Script" uid="uid://bgvxu6p2g6t2q" path="res://test/dice.gd" id="1_afwu0"]
+[ext_resource type="Texture2D" uid="uid://cs1d6a64te2u7" path="res://test/dice.png" id="2_ikv4i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wvhbo"]
 size = Vector2(113, 112)
 
 [node name="Dice" type="StaticBody2D" unique_id=262477411]
 input_pickable = true
-script = ExtResource("1_23yfi")
+script = ExtResource("1_afwu0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=301181581]
 position = Vector2(-0.5, 0)
@@ -19,7 +19,7 @@ shape = SubResource("RectangleShape2D_wvhbo")
 [node name="1" type="Sprite2D" parent="Faces" unique_id=1566429077]
 texture_filter = 1
 scale = Vector2(7, 7)
-texture = ExtResource("1_1k1lx")
+texture = ExtResource("2_ikv4i")
 region_enabled = true
 region_rect = Rect2(0, 0, 16, 16)
 
@@ -27,7 +27,7 @@ region_rect = Rect2(0, 0, 16, 16)
 visible = false
 texture_filter = 1
 scale = Vector2(7, 7)
-texture = ExtResource("1_1k1lx")
+texture = ExtResource("2_ikv4i")
 region_enabled = true
 region_rect = Rect2(16, 0, 16, 16)
 
@@ -35,7 +35,7 @@ region_rect = Rect2(16, 0, 16, 16)
 visible = false
 texture_filter = 1
 scale = Vector2(7, 7)
-texture = ExtResource("1_1k1lx")
+texture = ExtResource("2_ikv4i")
 region_enabled = true
 region_rect = Rect2(32, 0, 16, 16)
 
@@ -43,7 +43,7 @@ region_rect = Rect2(32, 0, 16, 16)
 visible = false
 texture_filter = 1
 scale = Vector2(7, 7)
-texture = ExtResource("1_1k1lx")
+texture = ExtResource("2_ikv4i")
 region_enabled = true
 region_rect = Rect2(48, 0, 16, 16)
 
@@ -51,7 +51,7 @@ region_rect = Rect2(48, 0, 16, 16)
 visible = false
 texture_filter = 1
 scale = Vector2(7, 7)
-texture = ExtResource("1_1k1lx")
+texture = ExtResource("2_ikv4i")
 region_enabled = true
 region_rect = Rect2(64, 0, 16, 16)
 
@@ -59,7 +59,7 @@ region_rect = Rect2(64, 0, 16, 16)
 visible = false
 texture_filter = 1
 scale = Vector2(7, 7)
-texture = ExtResource("1_1k1lx")
+texture = ExtResource("2_ikv4i")
 region_enabled = true
 region_rect = Rect2(80, 0, 16, 16)
 

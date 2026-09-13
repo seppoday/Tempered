@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://cp71fy72w0ly"]
+
+[ext_resource type="Script" uid="uid://bgvxu6p2g6t2q" path="res://test/dice.gd" id="1_23yfi"]
+[ext_resource type="Texture2D" uid="uid://c8kwaejvlwtga" path="res://test/d6/d6_black_1.png" id="2_gkeo8"]
+[ext_resource type="Texture2D" uid="uid://cmu08l5s1cttx" path="res://test/d6/d6_black_2.png" id="3_4vfme"]
+[ext_resource type="Texture2D" uid="uid://gaijyapg8vp" path="res://test/d6/d6_black_3.png" id="4_7juso"]
+[ext_resource type="Texture2D" uid="uid://clwwnajfq2gbe" path="res://test/d6/d6_black_4.png" id="5_l8ufk"]
+[ext_resource type="Texture2D" uid="uid://b02tle6fj244i" path="res://test/d6/d6_black_5.png" id="6_d5ua2"]
+[ext_resource type="Texture2D" uid="uid://btdjxoln6uxag" path="res://test/d6/d6_black_6.png" id="7_kxy2k"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wvhbo"]
+size = Vector2(109, 100)
+
+[node name="Dice" type="StaticBody2D" unique_id=262477411]
+input_pickable = true
+script = ExtResource("1_23yfi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=301181581]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_wvhbo")
+
+[node name="Faces" type="Node2D" parent="." unique_id=427387391]
+
+[node name="1" type="Sprite2D" parent="Faces" unique_id=1566429077]
+texture_filter = 1
+texture = ExtResource("2_gkeo8")
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="2" type="Sprite2D" parent="Faces" unique_id=1577640663]
+visible = false
+texture_filter = 1
+texture = ExtResource("3_4vfme")
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="3" type="Sprite2D" parent="Faces" unique_id=865166974]
+visible = false
+texture_filter = 1
+texture = ExtResource("4_7juso")
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="4" type="Sprite2D" parent="Faces" unique_id=1835995074]
+visible = false
+texture_filter = 1
+texture = ExtResource("5_l8ufk")
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="5" type="Sprite2D" parent="Faces" unique_id=1036370388]
+visible = false
+texture_filter = 1
+texture = ExtResource("6_d5ua2")
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="6" type="Sprite2D" parent="Faces" unique_id=1411977692]
+visible = false
+texture_filter = 1
+texture = ExtResource("7_kxy2k")
+region_rect = Rect2(0, 0, 16, 16)
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]

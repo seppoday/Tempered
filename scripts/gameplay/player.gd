@@ -35,16 +35,6 @@ var enemies_hit_this_swing: Array[Node2D] = []
 var _combat_active: bool = false
 
 func _ready() -> void:
-	var skill := SkillDatabase.get_skill_definition("fire_attack")
-	if skill:
-		print("Skill znaleziony: ", skill.skill_name, ", base_value: ", skill.base_value)
-
-	var fake_skill := SkillDatabase.get_skill_definition("nieistniejacy")
-	if fake_skill:
-		print(fake_skill.skill_name)
-	else:
-		print("Skill nie istnieje, program się nie wywalił")
-
 	GameFlow.state_changed.connect(func(new_state): print("GameFlow zmienił stan na: ", new_state))
 
 	PlayerData.hp_changed.connect(_on_player_hp_changed)

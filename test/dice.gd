@@ -1,32 +1,54 @@
 extends StaticBody2D
 
-signal roll_done(index: int)
+signal roll_done(value: int)
 
-@onready var faces = $Faces
+@export var dice_name: String = "D6"
+
+@onready var faces: Node2D = $Faces
 
 var is_rolling: bool = false
 var current_index: int = 0
 
-func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if event is InputEventMouseButton and event.pressed:
-		_roll_dice()
+func _ready() -> void:
+	_show_only(current_index)
 
-func _roll_dice() -> void:
-	var duration: float = 1.0
+func roll_to(target_value: int) -> void:
+	if is_rolling:
+		return
+	_animate_to(target_value)
 
+func _animate_to(target_value: int) -> void:
 	is_rolling = true
+	var face_count := faces.get_child_count()
+	if face_count == 0:
+		is_rolling = false
+		return
 
-	while duration > 0.0:
-		var new_index = faces.get_children().pick_random().get_index()
-		faces.get_child(current_index).visible = false
-		faces.get_child(new_index).visible = true
+	var steps := 12
+	var base_delay := 0.05
 
-		await get_tree().create_timer(0.1).timeout
+	for i in steps:
+		var is_last_step := i == steps - 1
+		var new_index: int
 
+		if is_last_step:
+			new_index = target_value - 1  # docelowa ścianka, ZNANA z zewnątrz
+		else:
+			new_index = RNG.randi_range(0, face_count - 1)  # czysto wizualne "miganie"
+
+		_show_only(new_index)
 		current_index = new_index
-		duration -= 0.1
-	
-	is_rolling = false
 
-	roll_done.emit(current_index + 1)
-	print(current_index + 1)
+		var t := float(i) / float(steps)
+		var delay := base_delay + t * t * 0.15
+		await get_tree().create_timer(delay).timeout
+
+	is_rolling = false
+	roll_done.emit(target_value)
+	print("%s → %d" % [dice_name, target_value])
+
+func _show_only(index: int) -> void:
+	for c in faces.get_children():
+		c.visible = false
+	if index >= 0 and index < faces.get_child_count():
+		faces.get_child(index).visible = true

@@ -2,18 +2,19 @@ class_name ItemInstance extends RefCounted
 
 enum UpgradeResult {
 	SUCCESS,
-	FAILURE,
-	NO_CURVE,
+	WRONG_DIE,
 	MAX_LEVEL_REACHED,
 }
 
 var definition: InventoryEntry
 var quantity: int = 1
 var slot_assignments: Dictionary = {}
+var dice_level: int = 0
 
 func _init(item_definition: InventoryEntry, amount: int = 1, level: int = 0) -> void:
 	definition = item_definition
 	quantity = amount
+	dice_level = level
 
 
 func is_stackable() -> bool:
@@ -23,11 +24,30 @@ func is_stackable() -> bool:
 func get_max_stack_size() -> int:
 	return definition.max_stack_size
 
-func attempt_upgrade() -> void:
-	pass
+func attempt_upgrade(dice_item: MaterialDefinition) -> UpgradeResult:
+	if dice_level >= GameEnums.DICE_PROGRESSION.size() - 1:
+		return UpgradeResult.MAX_LEVEL_REACHED
+	
+	if dice_item.dice_index != dice_level + 1:
+		return UpgradeResult.WRONG_DIE
+	
+	dice_level += 1
+	return UpgradeResult.SUCCESS
+	
+func roll_skill() -> Dictionary:
+	if not definition is ItemDefinition:
+		return {}
 
-	# TODO: Do przepisania na dice, ale chyba pójdziemy w upgrade zawsze 100% dla uproszczenia rozgrywki
+	var item_def := definition as ItemDefinition
+	var max_face: int = GameEnums.DICE_PROGRESSION[dice_level]
+	var face: int = RNG.randi_range(1, max_face)
+	var skill: SkillDefinition = slot_assignments.get(face, item_def.default_skill)
 
+	return {
+		"face": face,
+		"skill": skill,
+		"multiplier": GameEnums.DICE_PROGRESSION[dice_level]
+	}
 
 func use() -> void:
 	if definition is ConsumableDefinition:

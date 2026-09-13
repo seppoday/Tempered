@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MaterialDefinition" format=3 uid="uid://dtnpnnyo0kyjn"]
+
+[ext_resource type="Texture2D" uid="uid://bvuq5unbh0l0w" path="res://test/d8/d8_black_8.png" id="1_b71gl"]
+[ext_resource type="Script" uid="uid://ca7fwkvbpwp8c" path="res://data/definitions/material_definition.gd" id="2_fx0da"]
+
+[resource]
+script = ExtResource("2_fx0da")
+dice_index = 2
+id = "upgrade_dice_d8"
+name = "Dice D8"
+description = "Upgrade Dice D8"
+icon = ExtResource("1_b71gl")
+category = 3
+stackable = true
+max_stack_size = 100
+metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

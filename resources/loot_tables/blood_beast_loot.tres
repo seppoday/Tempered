@@ -5,7 +5,7 @@
 [ext_resource type="Resource" uid="uid://gxa5nyxfh74q" path="res://resources/items/helmets/knight_helmet.tres" id="3_aynvt"]
 [ext_resource type="Script" uid="uid://dp0kh2akuu60m" path="res://data/definitions/loot_table.gd" id="4_aynvt"]
 [ext_resource type="Resource" uid="uid://c05svccheegwf" path="res://resources/items/weapons/executioner.tres" id="4_me3hv"]
-[ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://resources/materials/misc/upgrade_stone.tres" id="5_bhbi7"]
+[ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://resources/materials/misc/upgrade_dice_d6.tres" id="5_bhbi7"]
 
 [sub_resource type="Resource" id="Resource_fw8jc"]
 script = ExtResource("1_rph4y")

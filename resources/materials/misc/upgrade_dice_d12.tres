@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MaterialDefinition" format=3 uid="uid://dsduls0bi6xud"]
+
+[ext_resource type="Texture2D" uid="uid://cp771urubexrb" path="res://test/d12/d12_black_12.png" id="1_501w7"]
+[ext_resource type="Script" uid="uid://ca7fwkvbpwp8c" path="res://data/definitions/material_definition.gd" id="2_nacex"]
+
+[resource]
+script = ExtResource("2_nacex")
+dice_index = 4
+id = "upgrade_dice_d12"
+name = "Dice D12"
+description = "Upgrade Dice D12"
+icon = ExtResource("1_501w7")
+category = 3
+stackable = true
+max_stack_size = 100
+metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

@@ -1,12 +1,20 @@
 [gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://c0juciddabsbt"]
 
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions/skill_definition.gd" id="1_d3tqt"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="1_g0l1o"]
+
+[sub_resource type="Resource" id="Resource_g0l1o"]
+script = ExtResource("1_d3tqt")
+id = "poison"
+skill_name = "poison"
+metadata/_custom_type_script = "uid://dgjg1vlcvdtpi"
 
 [resource]
 script = ExtResource("1_g0l1o")
 slot = 2
 hp = 105
 armor = 16
+default_skill = SubResource("Resource_g0l1o")
 id = "knight_armor"
 name = "Knight Armor"
 description = "Iron Chestplate"

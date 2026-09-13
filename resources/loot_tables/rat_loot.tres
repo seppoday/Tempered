@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://bdo0a1sdk0vx1" path="res://resources/consumable/potion_small.tres" id="2_jfrrb"]
 [ext_resource type="Resource" uid="uid://dwkkti5y8v234" path="res://resources/materials/rough_leather.tres" id="3_j2the"]
 [ext_resource type="Script" uid="uid://dp0kh2akuu60m" path="res://data/definitions/loot_table.gd" id="4_378ne"]
-[ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://resources/materials/misc/upgrade_stone.tres" id="4_j2the"]
+[ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://resources/materials/misc/upgrade_dice_d6.tres" id="4_j2the"]
 
 [sub_resource type="Resource" id="Resource_me3hv"]
 script = ExtResource("1_jfrrb")

@@ -229,8 +229,9 @@ func _build_tooltip_panel() -> Control:
 	header.add_child(title_box)
 
 	var title_label := Label.new()
-	if item_data.upgrade_level > 0:
-		title_label.text = "%.2f %s" % [item_data.upgrade_level, def.name]
+	if item_data.dice_level >= 0:
+		var dice_size := GameEnums.DICE_PROGRESSION[item_data.dice_level]
+		title_label.text = "%s (d%d)" % [def.name, dice_size]
 	else:
 		title_label.text = def.name
 	title_label.add_theme_color_override("font_color", Color(0.91, 0.84, 0.58)) # LoL gold
@@ -368,15 +369,6 @@ func _get_stat_rows() -> Array[Dictionary]:
 	for property in STAT_DISPLAY.keys():
 		if property in def:
 			var value = def.get(property)
-
-			if item_data.upgrade_level > 0 and def.get("upgrade_curve") != null:
-				var levels = def.upgrade_curve.levels
-				if item_data.upgrade_level <= levels.size():
-					var upgrade: ItemUpgradeLevel = levels[item_data.upgrade_level - 1]
-					if upgrade.stat_name == property:
-						var base_value: float = def.get(property)
-						var bonus: float = base_value * upgrade.bonus_percent
-						value += bonus
 
 			if value == 0 or value == 0.0:
 				continue

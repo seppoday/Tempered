@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dgjd0violgcho"]
+
+[ext_resource type="Script" uid="uid://d2r52mye8l8ld" path="res://test_dice.gd" id="1_4pnl5"]
+[ext_resource type="PackedScene" uid="uid://cp71fy72w0ly" path="res://test/dice_d6.tscn" id="2_aydw0"]
+
+[node name="Node2D" type="Node2D" unique_id=530701692]
+script = ExtResource("1_4pnl5")
+
+[node name="Dice" parent="." unique_id=262477411 instance=ExtResource("2_aydw0")]
+position = Vector2(557, 322)

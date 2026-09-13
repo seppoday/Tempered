@@ -17,6 +17,8 @@ signal damage_taken(damage_amount: float, was_dodged: bool)
 # ==========================================
 var character_definition : CharacterDefinition
 
+var picks_per_cycle: int = 3
+
 var character_stats: Dictionary = {
 	"name": "Kowal",
 	"level": 1,

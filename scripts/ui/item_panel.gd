@@ -23,6 +23,18 @@ extends PanelContainer
 const FONT_SIZE: int = 16
 
 func _ready() -> void:
+	var sword_def := ItemDatabase.get_item_definition("rusty_sword")  # albo dowolny inny, jaki masz
+	PlayerData.equip_item(ItemInstance.new(sword_def, 1, 1))
+
+	var amulet_def := ItemDatabase.get_item_definition("silver_amulet")  # albo dowolny inny, jaki masz
+	PlayerData.equip_item(ItemInstance.new(amulet_def, 1, 2))
+	
+	var gloves_def := ItemDatabase.get_item_definition("leather_gloves")  # albo dowolny inny, jaki masz
+	PlayerData.equip_item(ItemInstance.new(gloves_def, 1, 6))
+	
+
+	var helmet_def := ItemDatabase.get_item_definition("leather_cap")  # jeśli masz coś na inny slot
+	PlayerData.equip_item(ItemInstance.new(helmet_def, 1, 4))
 	mouse_filter = Control.MOUSE_FILTER_STOP
 
 	# Podłączamy sygnały z Autoloada PlayerData

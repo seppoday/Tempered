@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://c8xljgcaaqyi5"]
+
+[ext_resource type="Script" uid="uid://bgvxu6p2g6t2q" path="res://test/dice.gd" id="1_v7jn0"]
+[ext_resource type="Texture2D" uid="uid://cajq032t3gag0" path="res://test/d12/d12_black_1.png" id="2_vdri4"]
+[ext_resource type="Texture2D" uid="uid://dfs7vm6q4n74b" path="res://test/d12/d12_black_2.png" id="3_26a30"]
+[ext_resource type="Texture2D" uid="uid://b3n32q44oug4i" path="res://test/d12/d12_black_3.png" id="4_ivamw"]
+[ext_resource type="Texture2D" uid="uid://rx8kp6da5qc1" path="res://test/d12/d12_black_4.png" id="5_7kvn0"]
+[ext_resource type="Texture2D" uid="uid://b8lvlk883wek3" path="res://test/d12/d12_black_5.png" id="6_67e58"]
+[ext_resource type="Texture2D" uid="uid://ccftjvu3o4pw" path="res://test/d12/d12_black_6.png" id="7_0vxqi"]
+[ext_resource type="Texture2D" uid="uid://c0ndvjbs4cca0" path="res://test/d12/d12_black_7.png" id="8_grno6"]
+[ext_resource type="Texture2D" uid="uid://bvwilm56ecgbc" path="res://test/d12/d12_black_8.png" id="9_7d6y2"]
+[ext_resource type="Texture2D" uid="uid://bnj0jgip7twxv" path="res://test/d12/d12_black_9.png" id="10_wcbkp"]
+[ext_resource type="Texture2D" uid="uid://c1ys03s2crtex" path="res://test/d12/d12_black_10.png" id="11_pa084"]
+[ext_resource type="Texture2D" uid="uid://dm1hbgrorp615" path="res://test/d12/d12_black_11.png" id="12_n0isu"]
+[ext_resource type="Texture2D" uid="uid://cp771urubexrb" path="res://test/d12/d12_black_12.png" id="13_7wm4p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wvhbo"]
+size = Vector2(1057, 1040)
+
+[node name="Dice" type="StaticBody2D" unique_id=262477411]
+input_pickable = true
+script = ExtResource("1_v7jn0")
+sides = 12
+dice_name = "D12"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=301181581]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_wvhbo")
+
+[node name="Faces" type="Node2D" parent="." unique_id=427387391]
+
+[node name="1" type="Sprite2D" parent="Faces" unique_id=1687813363]
+texture = ExtResource("2_vdri4")
+
+[node name="2" type="Sprite2D" parent="Faces" unique_id=1951504543]
+texture = ExtResource("3_26a30")
+
+[node name="3" type="Sprite2D" parent="Faces" unique_id=1384773083]
+texture = ExtResource("4_ivamw")
+
+[node name="4" type="Sprite2D" parent="Faces" unique_id=1809592451]
+texture = ExtResource("5_7kvn0")
+
+[node name="5" type="Sprite2D" parent="Faces" unique_id=1432047032]
+texture = ExtResource("6_67e58")
+
+[node name="6" type="Sprite2D" parent="Faces" unique_id=2034094428]
+texture = ExtResource("7_0vxqi")
+
+[node name="7" type="Sprite2D" parent="Faces" unique_id=883673586]
+texture = ExtResource("8_grno6")
+
+[node name="8" type="Sprite2D" parent="Faces" unique_id=267072235]
+texture = ExtResource("9_7d6y2")
+
+[node name="9" type="Sprite2D" parent="Faces" unique_id=892696826]
+texture = ExtResource("10_wcbkp")
+
+[node name="10" type="Sprite2D" parent="Faces" unique_id=1965278681]
+texture = ExtResource("11_pa084")
+
+[node name="11" type="Sprite2D" parent="Faces" unique_id=1391149536]
+texture = ExtResource("12_n0isu")
+
+[node name="12" type="Sprite2D" parent="Faces" unique_id=47168870]
+texture = ExtResource("13_7wm4p")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=789097244]
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]

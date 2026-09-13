@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MaterialDefinition" format=3 uid="uid://cufr2r1ewv6c6"]
+
+[ext_resource type="Texture2D" uid="uid://d36ijvbhu3dn3" path="res://assets/items/dragon_eye.png" id="1_avs3i"]
+[ext_resource type="Script" uid="uid://ca7fwkvbpwp8c" path="res://data/definitions/material_definition.gd" id="2_xn3br"]
+
+[resource]
+script = ExtResource("2_xn3br")
+dice_index = 3
+id = "upgrade_dice_d10"
+name = "Dice D10"
+description = "Upgrade Dice D10"
+icon = ExtResource("1_avs3i")
+category = 3
+stackable = true
+max_stack_size = 100
+metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

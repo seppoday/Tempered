@@ -3,7 +3,7 @@ extends PanelContainer
 
 @onready var grid: GridContainer = $MarginContainer/GridContainer
 
-const SLOT_COUNT: int = 48
+const SLOT_COUNT: int = 36
 const SLOT_GAP: int = 4
 const GRID_COLUMNS: int = 6
 
