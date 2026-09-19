@@ -2,11 +2,15 @@ extends Node
 
 signal state_changed(new_state: State)
 
-enum State {
+enum State { 
+	INTRO, 
 	WEAPON_SELECT,
-	COMBAT,
-	RESULTS
-}
+	PLAYER_TURN, 
+	RESOLVING, 
+	ENEMY_TURN, 
+	WAVE_CLEARED, 
+	GAME_OVER, 
+	VICTORY }
 
 var current_state: State = State.WEAPON_SELECT
 

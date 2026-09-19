@@ -35,6 +35,7 @@ SkillDatabase="*uid://byyiemdr4dxpt"
 AudioManager="*uid://ds2cvb4djus4j"
 UIAnim="*uid://df6y53u8nyheq"
 AudioLibrary="*uid://cpsk86ml2tmsk"
+CombatManager="*uid://6uhbbfy05lko"
 
 [debug]
 

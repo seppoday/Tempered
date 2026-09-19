@@ -9,13 +9,11 @@ signal gold_changed(new_gold_amount: int)
 
 signal attributes_changed
 
-signal hp_changed(current_hp: float, max_hp: float)
-signal damage_taken(damage_amount: float, was_dodged: bool)
-
 # ==========================================
 # POSTAĆ I POSTĘP
 # ==========================================
 var character_definition : CharacterDefinition
+var health: Health
 
 var picks_per_cycle: int = 3
 
@@ -27,7 +25,6 @@ var character_stats: Dictionary = {
 
 var gold: int = 0
 
-var current_hp: float = 0.0
 var pending_block: float = 0.0
 var pending_dodge_bonus: float = 0.0
 
@@ -80,20 +77,21 @@ func give_debug_gear() -> void:
 
 func _ready() -> void:
 	give_debug_gear()
-
+	
 	character_definition = CharacterDatabase.get_by_id("warrior") # chwilowe, tylko debug
-
+	
 	if character_definition == null:
 		push_warning("Nie znaleziono character definition w pliku Player_Data")
 		return
-
+		
 	attributes["STR"] = character_definition.starting_str
 	attributes["DEX"] = character_definition.starting_dex
 	attributes["INT"] = character_definition.starting_int
 	attributes["CON"] = character_definition.starting_con
 
-	current_hp = get_total_stats()["hp"]
-
+	health = Health.new(get_total_stats()["hp"])
+	health.died.connect(_on_player_died)
+	
 # ==========================================
 # OBLICZANIE STATYSTYK
 # ==========================================
@@ -216,28 +214,6 @@ func calculate_attack() -> Dictionary:
 		"stats": stats
 	}
 
-
-func take_damage(amount: float) -> void:
-	var stats := get_total_stats()
-	var effective_dodge: float = stats.get("dodge", 0.0) + pending_dodge_bonus
-	pending_dodge_bonus = 0.0
-
-	if RNG.randf() < effective_dodge:
-		damage_taken.emit(0.0, true)
-		return
-
-	var mitigated: float = max(0.0, amount - pending_block)
-	pending_block = 0.0
-
-	var armor: float = stats.get("armor", 0.0)
-	var armor_reduction: float = calculate_armor_reduction(armor)
-	var final_damage: float = mitigated * (1.0 - armor_reduction)
-
-	current_hp = max(0.0, current_hp - final_damage)
-	damage_taken.emit(final_damage, false)
-	hp_changed.emit(current_hp, stats["hp"])
-
-
 # Formuła redukcji armor - malejąca skuteczność (jak w większości gier)
 func calculate_armor_reduction(armor: float) -> float:
 	# Formuła: armor / (armor + 100)
@@ -248,13 +224,11 @@ func calculate_armor_reduction(armor: float) -> float:
 	# 200 armor = 66.7% redukcji
 	return armor / (armor + 100.0)
 
-func heal(amount: float) -> void:
-	var stats := get_total_stats()
-	current_hp = min(stats["hp"], current_hp + amount)
-	hp_changed.emit(current_hp, stats["hp"])
-
 func add_block(amount: float) -> void:
 	pending_block += amount
 
 func add_dodge_bonus(amount: float) -> void:
 	pending_dodge_bonus += amount
+
+func _on_player_died() -> void:
+	print("DEAD")

@@ -3,11 +3,12 @@ class_name AudioKeys
 extends RefCounted
 
 # MUSIC
+const MUSIC_TEST: StringName = &"test"
 
 # SFX
-const SFX_ROLL: StringName = &"roll"
 const SFX_POP: StringName = &"pop"
+const SFX_ROLL: StringName = &"roll"
 const SFX_SWOOSH: StringName = &"swoosh"
 
 # UI
-const SFX_CLICK: StringName = &"click"
+const UI_CLICK: StringName = &"click"

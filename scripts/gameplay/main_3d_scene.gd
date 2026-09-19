@@ -2,11 +2,14 @@ extends Node3D
 
 @export var dice_tag_scene: PackedScene
 @export var roll_button: Button
+@export var confirm_button: Button
 @export var result_label: Label
 @export var dice_roller: DiceRoller
+@export var enemy_scene: PackedScene
 
 @onready var camera = $Camera3D
 @onready var canvas_layer = %MainSceneCanvasLayer
+@onready var enemy_spawn_point: Node3D = $EnemySpawnPoint
 
 var active_tags: Array[Control] = []
 var selected_tags: Array[PanelContainer] = []
@@ -17,10 +20,41 @@ var update_tags := false
 
 func _ready() -> void:
 	roll_button.pressed.connect(_on_roll_button_pressed)
+	confirm_button.pressed.connect(_on_confirm_button_pressed)
 	dice_roller.dice_spawned.connect(_on_dice_spawned)
 	dice_roller.dice_settled.connect(_on_dice_settled)
 	result_label.text = "Naciśnij RZUĆ"
+	confirm_button.disabled = true
+	CombatManager.effect_applied.connect(_on_combat_effect_applied)
+	CombatManager.enemy_died.connect(_on_enemy_died)
+	CombatManager.player_died.connect(_on_player_died)
 
+	_spawn_enemy()
+
+
+func _spawn_enemy() -> void:
+	var enemy := enemy_scene.instantiate() as EnemyInstance
+	enemy_spawn_point.add_child(enemy)
+	CombatManager.set_enemy(enemy)
+
+
+func _on_enemy_died(_enemy: EnemyInstance) -> void:
+	if CombatManager.is_game_over:
+		return
+	_spawn_enemy()
+
+
+func _on_player_died() -> void:
+	roll_button.disabled = true
+	confirm_button.disabled = true
+	result_label.text = "PRZEGRANA"
+
+
+func _on_combat_effect_applied(skill: SkillDefinition, value: int, target: String) -> void:
+	if target == "enemy":
+		result_label.text = "%s: -%d wrogowi" % [skill.skill_name, value]
+	else:
+		result_label.text = "%s: +%d graczowi" % [skill.skill_name, value]
 
 func _process(delta: float) -> void:
 	if update_tags:
@@ -82,10 +116,11 @@ func _update_all_tag_positions(delta: float) -> void:
 
 func _on_roll_button_pressed() -> void:
 	UIAnim.pop(roll_button)
-	if is_rolling: return
+	if is_rolling or CombatManager.is_game_over: return
 	is_rolling = true
 	update_tags = false
 	roll_button.disabled = true
+	confirm_button.disabled = true
 	result_label.text = "Toczenie kości..."
 	dice_roller.roll()
 
@@ -107,6 +142,37 @@ func _on_dice_settled(results: Array[Dictionary]) -> void:
 	update_tags = true
 	await _reveal_results()
 
+	if not CombatManager.is_game_over:
+		confirm_button.disabled = false
+
+
+func _on_confirm_button_pressed() -> void:
+	if selected_tags.is_empty() or CombatManager.is_game_over:
+		return
+
+	confirm_button.disabled = true
+
+	var selected_results: Array[Dictionary] = []
+	for card in selected_tags:
+		var index := active_tags.find(card)
+		if index != -1:
+			selected_results.append(pending_results[index])
+
+	await CombatManager.resolve_player_attack(selected_results)
+
+	if CombatManager.is_game_over:
+		_clear_previous_tags()
+		return
+
+	if CombatManager.current_enemy != null:
+		CombatManager.enemy_take_turn()
+
+	_clear_previous_tags()
+
+	if not CombatManager.is_game_over:
+		roll_button.disabled = false
+		result_label.text = "Naciśnij RZUĆ"
+
 
 func _on_card_toggled(card: PanelContainer, wants_selected: bool) -> void:
 	if wants_selected:
@@ -115,11 +181,11 @@ func _on_card_toggled(card: PanelContainer, wants_selected: bool) -> void:
 			return
 		selected_tags.append(card)
 		card.set_selected(true)
-		AudioManager.play_sfx(AudioLibrary.get_ui(AudioKeys.SFX_CLICK), -5.0)
+		AudioManager.play_sfx(AudioLibrary.get_ui(AudioKeys.UI_CLICK), -5.0)
 	else:
 		selected_tags.erase(card)
 		card.set_selected(false)
-		AudioManager.play_sfx(AudioLibrary.get_ui(AudioKeys.SFX_CLICK), -5.0)
+		AudioManager.play_sfx(AudioLibrary.get_ui(AudioKeys.UI_CLICK), -5.0)
 
 
 func _clear_previous_tags() -> void:
@@ -134,21 +200,21 @@ func _reveal_results() -> void:
 		var tag := active_tags[i]
 		var result: Dictionary = pending_results[i]
 
-		tag.set_value(result["face"], result["item"].definition.name)
+		tag.set_value(result["max_face"], result["item"].definition.name)
 		tag.set_icon(result["skill"].icon)
 		_update_all_tag_positions(0.016)
 		tag.show()
 		tag.pop_in(0.0)
 
-		await get_tree().create_timer(0.08).timeout
-		AudioManager.play_sfx_random_pitch(AudioLibrary.get_sfx(AudioKeys.SFX_POP), -6.0, 0.5, 1.5)
+		AudioManager.play_sfx_random_pitch(AudioLibrary.get_sfx(AudioKeys.SFX_POP), -6.0, 0.75, 1.25)
+		await get_tree().create_timer(0.18).timeout
 
 	update_tags = false
 	await _align_tags_to_center_line()
 
-	result_label.text = "Wybierz karty"
+	if not CombatManager.is_game_over:
+		result_label.text = "Wybierz karty"
 	is_rolling = false
-	roll_button.disabled = false
 
 
 func _align_tags_to_center_line() -> void:

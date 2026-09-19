@@ -33,7 +33,8 @@ func _spawn_dice_for_equipped_items() -> void:
 		var max_face: int = GameEnums.DICE_PROGRESSION[item.dice_level]
 		var roll_result := item.roll_skill()
 		if roll_result.is_empty():
-			roll_result = {"skill": "Pasywny", "multiplier": 1.0, "face": randi_range(1, max_face)}
+			push_warning("Pomijam przedmiot '%s' — roll_skill() zwrócił pusty wynik (sprawdź default_skill)" % item.definition.name)
+			continue
 
 		var die_scene: PackedScene = die_scenes.get(max_face)
 		if die_scene == null:

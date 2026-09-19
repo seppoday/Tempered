@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://ckvbsvfexndh8"]
+
+[ext_resource type="Script" uid="uid://bs284m27d4kr5" path="res://scripts/enemies/enemy_instance.gd" id="1_fcftc"]
+[ext_resource type="Resource" uid="uid://8uf3l7cr560u" path="res://definitions/enemies/goblin2.tres" id="2_lu5c6"]
+[ext_resource type="Shader" uid="uid://nkalaqk8xile" path="res://shaders/test_clip_sprite3d.gdshader" id="3_nb6gf"]
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="4_jt03m"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_5rl3n"]
+size = Vector3(8, 0.1, 4.157837)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wvhbo"]
+render_priority = 0
+shader = ExtResource("3_nb6gf")
+shader_parameter/sprite_texture = ExtResource("4_jt03m")
+shader_parameter/reveal = 1.0
+
+[node name="Enemy" type="MeshInstance3D" unique_id=1304486158]
+mesh = SubResource("BoxMesh_5rl3n")
+script = ExtResource("1_fcftc")
+definition = ExtResource("2_lu5c6")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1034343478]
+transform = Transform3D(2.9182663, 0, 0, 0, -8.697111e-08, 1, 0, -2.9182663, -2.9802322e-08, 0, 0.20844366, -6.212105e-09)
+material_override = SubResource("ShaderMaterial_wvhbo")
+texture = ExtResource("4_jt03m")
