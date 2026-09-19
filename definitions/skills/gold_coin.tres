@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://cv34ffkbxiqrd"]
+
+[ext_resource type="Texture2D" uid="uid://d2bx1aee0jsx" path="res://assets/icons/coin.svg" id="1_ui8la"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions/skill_definition.gd" id="2_nahdi"]
+
+[resource]
+script = ExtResource("2_nahdi")
+id = "gold_coin"
+skill_name = "Gold Coin"
+icon = ExtResource("1_ui8la")
+description = "Gold Coin"
+effect_type = 2
+target_type = 3
+damage_element = 4
+metadata/_custom_type_script = "uid://dgjg1vlcvdtpi"

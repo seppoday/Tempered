@@ -1,14 +1,13 @@
 class_name SkillDefinition extends Resource
 
-enum EffectType {DAMAGE, HEAL, BLOCK, DODGE, STATUS}
-enum DamageElement {PHYSICAL, FIRE, ICE, POISON}
-
 @export var id: String
 @export var skill_name: String
-@export_multiline var description: String
 @export var icon: Texture2D
+@export_multiline var description: String
 
 @export_category("Effect")
-@export var effect_type: EffectType = EffectType.DAMAGE
-@export var damage_element: DamageElement = DamageElement.PHYSICAL
+@export var effect_type: GameEnums.SkillEffect = GameEnums.SkillEffect.DAMAGE
+@export var target_type: GameEnums.SkillTarget = GameEnums.SkillTarget.SINGLE_ENEMY
 @export var base_value: float = 1.0
+@export var damage_element: GameEnums.DamageElement = GameEnums.DamageElement.PHYSICAL
+@export var duration_rounds: int = 1

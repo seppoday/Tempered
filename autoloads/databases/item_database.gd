@@ -4,7 +4,12 @@ var _resource_database:= ResourceDatabase.new()
 
 func _ready() -> void:
 	# Przykład użycia ResourceDatabase
-	_resource_database.load_folder("res://resources/items", ItemDefinition)
+	_resource_database.load_folder("res://definitions/items", ItemDefinition)
 
-func get_item_definition(id: String) -> ItemDefinition:
+func get_by_id(id: String) -> ItemDefinition:
 	return _resource_database.get_entry(id)
+
+func get_all() -> Array[ItemDefinition]:
+	var result: Array[ItemDefinition] = []
+	result.assign(_resource_database.get_entries())
+	return result

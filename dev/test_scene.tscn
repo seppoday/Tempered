@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://dpo4x4yp5yfc"]
-
-[ext_resource type="Script" uid="uid://bd5jd72g3kuwk" path="res://autoloads/databases/item_database.gd" id="1_0fqnt"]
-
-[node name="TestScene" type="Node2D" unique_id=1593403136]
-script = ExtResource("1_0fqnt")

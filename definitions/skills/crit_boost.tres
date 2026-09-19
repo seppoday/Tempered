@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://868qluknvm0"]
+
+[ext_resource type="Texture2D" uid="uid://bb3hgpllu76to" path="res://assets/icons/stars.svg" id="1_5fkpt"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions/skill_definition.gd" id="2_0nyp6"]
+
+[resource]
+script = ExtResource("2_0nyp6")
+id = "crit_boost"
+skill_name = "Crit Boost"
+icon = ExtResource("1_5fkpt")
+description = "Crit Boost"
+effect_type = 4
+target_type = 3
+base_value = 0.1
+damage_element = 4
+metadata/_custom_type_script = "uid://dgjg1vlcvdtpi"

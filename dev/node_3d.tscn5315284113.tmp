@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://1pidiltj3ht1"]
+
+[ext_resource type="Script" uid="uid://dghgfhx46tlvq" path="res://dev/node_3d.gd" id="1_5s36i"]
+[ext_resource type="Script" uid="uid://6h8wbybm4kyh" path="res://node_3d.gd" id="1_22bvn"]
+[ext_resource type="PackedScene" uid="uid://bn11cv261ev1n" path="res://dev/dice_1.tscn" id="3_42ada"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_42ada"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_encxg"]
+sky_material = SubResource("ProceduralSkyMaterial_42ada")
+
+[sub_resource type="Environment" id="Environment_iww05"]
+background_mode = 2
+sky = SubResource("Sky_encxg")
+
+[sub_resource type="BoxMesh" id="BoxMesh_wvhbo"]
+size = Vector3(1, 24.200195, 25.985352)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ifow5"]
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="Node3D" type="Node3D" unique_id=1297864963]
+script = ExtResource("1_5s36i")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=136906028]
+environment = SubResource("Environment_iww05")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=324396247]
+transform = Transform3D(-0.9999714, 0.006549865, -0.003781587, 2.7805946e-08, 0.49999994, 0.86602545, 0.007563144, 0.86600065, -0.4999857, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1986272033]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 12.244335, 2.1200728, 0.110097885)
+projection = 1
+size = 8.165
+
+[node name="DiceSpinner" type="Node3D" parent="." unique_id=1809619576 node_paths=PackedStringArray("dice")]
+script = ExtResource("1_22bvn")
+dice = [NodePath("../Dice1"), NodePath("../Dice2"), NodePath("../Dice3"), NodePath("../Dice4"), NodePath("../Dice5"), NodePath("../Dice6"), NodePath("../Dice7"), NodePath("../Dice8"), NodePath("../Dice9")]
+enable_hover = false
+
+[node name="Roll" type="Button" parent="." unique_id=2075207947]
+offset_left = 170.0
+offset_top = 176.0
+offset_right = 203.0
+offset_bottom = 207.0
+text = "roll
+"
+
+[node name="Dice1" parent="." unique_id=363901392 instance=ExtResource("3_42ada")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.019659996, 0, 4.4196596)
+
+[node name="Dice2" parent="." unique_id=2077260921 instance=ExtResource("3_42ada")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.019659996, 0, 3.3196597)
+
+[node name="Dice3" parent="." unique_id=1269929609 instance=ExtResource("3_42ada")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.019659996, 0, 2.2063465)
+
+[node name="Dice4" parent="." unique_id=1993555022 instance=ExtResource("3_42ada")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.019659996, 0, 1.1063467)
+
+[node name="Dice5" parent="." unique_id=2099090440 instance=ExtResource("3_42ada")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.019659996, 0, 0.019659996)
+
+[node name="Dice6" parent="." unique_id=1011287724 instance=ExtResource("3_42ada")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.019659996, 0, -1.08034)
+
+[node name="Dice7" parent="." unique_id=813418138 instance=ExtResource("3_42ada")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.019659996, 0, -2.1803398)
+
+[node name="Dice8" parent="." unique_id=1984343116 instance=ExtResource("3_42ada")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.019659996, 0, -3.2803397)
+
+[node name="Dice9" parent="." unique_id=1526514130 instance=ExtResource("3_42ada")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.019659996, 0, -4.3803396)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1986510788]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8953384, 0, 0)
+mesh = SubResource("BoxMesh_wvhbo")
+surface_material_override/0 = SubResource("StandardMaterial3D_ifow5")
+
+[connection signal="pressed" from="Roll" to="." method="_on_roll_pressed"]

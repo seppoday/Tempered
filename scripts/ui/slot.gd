@@ -10,6 +10,7 @@ var item_data: ItemInstance = null
 
 signal slot_changed(slot: Panel)
 
+const SkillFacePickerScene := preload("res://scenes/UI/skill_face_picker.tscn")
 const STAT_DISPLAY := {
 	"hp":           ["Max HP", Color(0.2, 0.8, 0.2), "plus_int"],
 	"dmg":          ["Damage", Color(0.95, 0.3, 0.3), "plus_float"],
@@ -104,7 +105,7 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 	header.add_child(title_box)
 
 	var name_label := Label.new()
-	if item_data.dice_level >= 0:
+	if item_data.definition is ItemDefinition and item_data.dice_level >= 0:
 		var dice_size := GameEnums.DICE_PROGRESSION[item_data.dice_level]
 		name_label.text = "%s (d%d)" % [def.name, dice_size]
 	else:
@@ -164,7 +165,50 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 			row_h.add_child(stat_lbl)
 
 		root.add_child(_make_separator())
+	
+	# ── SKILLE NA KOŚCI ───────────────────────────────────
+	if item_data.definition is ItemDefinition and item_data.dice_level >= 0:
+		var item_def: ItemDefinition = item_data.definition
+		var max_face: int = GameEnums.DICE_PROGRESSION[item_data.dice_level]
 
+		var skills_box := VBoxContainer.new()
+		skills_box.add_theme_constant_override("separation", 2)
+		root.add_child(skills_box)
+
+		var skills_title := Label.new()
+		skills_title.text = "Skille (d%d)" % max_face
+		skills_title.add_theme_color_override("font_color", Color(0.91, 0.75, 0.35))
+		skills_title.add_theme_font_size_override("font_size", FONT_BODY)
+		skills_box.add_child(skills_title)
+
+		for face in range(1, max_face + 1):
+			var assigned: SkillDefinition = item_data.slot_assignments.get(face)
+			var row := HBoxContainer.new()
+			row.add_theme_constant_override("separation", 4)
+			skills_box.add_child(row)
+
+			var face_lbl := Label.new()
+			face_lbl.text = "%d:" % face
+			face_lbl.custom_minimum_size = Vector2(18, 0)
+			face_lbl.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
+			face_lbl.add_theme_font_size_override("font_size", FONT_BODY)
+			row.add_child(face_lbl)
+
+			var skill_lbl := Label.new()
+			if assigned:
+				skill_lbl.text = assigned.skill_name
+				skill_lbl.add_theme_color_override("font_color", Color(0.85, 0.78, 0.50))
+			elif item_def.default_skill:
+				skill_lbl.text = "%s (domyślny)" % item_def.default_skill.skill_name
+				skill_lbl.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5))
+			else:
+				skill_lbl.text = "—"
+				skill_lbl.add_theme_color_override("font_color", Color(0.4, 0.4, 0.4))
+			skill_lbl.add_theme_font_size_override("font_size", FONT_BODY)
+			row.add_child(skill_lbl)
+
+		root.add_child(_make_separator())
+	
 	# ── OPIS / PASYWKI ────────────────────────────────────
 	if not def.description.is_empty():
 		var blocks = def.description.split("\n\n", false)
@@ -314,7 +358,9 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	var dragged_instance: ItemInstance = data["item_instance"]
 	var drag_count: int = data["drag_count"]
 	var is_partial: bool = data["is_partial"]
-
+	if not is_empty() and dragged_instance.definition is SkillItemDefinition and item_data.definition is ItemDefinition:
+		_open_skill_face_picker(dragged_instance.definition.skill, source_slot)
+		return
 
 	if not self.is_empty() and dragged_instance.definition is MaterialDefinition and dragged_instance.definition.category == InventoryEntry.Category.UPGRADE_STONE:
 		if not item_data.definition is ItemDefinition:
@@ -329,7 +375,6 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 
 				source_slot._update_visual()
 				_update_visual()
-				print("success")
 
 			ItemInstance.UpgradeResult.WRONG_DIE:
 				print("wrong die")
@@ -378,6 +423,24 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 			source_slot.set_item(temp_instance)
 
 	slot_changed.emit(self)
+	source_slot.slot_changed.emit(source_slot)
+
+func _open_skill_face_picker(skill: SkillDefinition, source_slot: Panel) -> void:
+	var picker := SkillFacePickerScene.instantiate()
+	get_tree().root.add_child(picker)
+	picker.assignment_confirmed.connect(_on_skill_assignment_confirmed.bind(source_slot))
+	picker.setup(item_data, skill)
+
+func _on_skill_assignment_confirmed(face: int, skill: SkillDefinition, source_slot: Panel) -> void:
+	item_data.slot_assignments[face] = skill
+	_update_visual()
+
+	# zużywamy 1 sztukę skilla ze slotu źródłowego
+	source_slot.item_data.quantity -= 1
+	if source_slot.item_data.quantity <= 0:
+		source_slot.clear()
+	else:
+		source_slot._update_visual()
 	source_slot.slot_changed.emit(source_slot)
 
 # ==========================================

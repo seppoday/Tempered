@@ -32,6 +32,7 @@ func _scan_folder(path: String, expected_type) -> void:
 				print("Plik nie jest oczekiwanym typem: ", full_path)
 			pass
 		
+		print(file_name) # Chwilowo dodane do testów
 		file_name = dir.get_next()
 
 func get_entry(id: String) -> Resource:

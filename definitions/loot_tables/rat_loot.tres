@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="LootTable" format=3 uid="uid://cs6xmyupnk1g4"]
+
+[ext_resource type="Script" uid="uid://dmw8mcvfjhous" path="res://data/definitions/loot_entry.gd" id="1_jfrrb"]
+[ext_resource type="Resource" uid="uid://bdo0a1sdk0vx1" path="res://definitions/consumable/potion_small.tres" id="2_jfrrb"]
+[ext_resource type="Resource" uid="uid://dwkkti5y8v234" path="res://definitions/materials/rough_leather.tres" id="3_j2the"]
+[ext_resource type="Script" uid="uid://dp0kh2akuu60m" path="res://data/definitions/loot_table.gd" id="4_378ne"]
+[ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://definitions/materials/misc/upgrade_dice_d6.tres" id="4_j2the"]
+
+[sub_resource type="Resource" id="Resource_me3hv"]
+script = ExtResource("1_jfrrb")
+entry = ExtResource("2_jfrrb")
+weight = 2
+metadata/_custom_type_script = "uid://dmw8mcvfjhous"
+
+[sub_resource type="Resource" id="Resource_bhbi7"]
+script = ExtResource("1_jfrrb")
+entry = ExtResource("3_j2the")
+weight = 9
+metadata/_custom_type_script = "uid://dmw8mcvfjhous"
+
+[sub_resource type="Resource" id="Resource_3uuvw"]
+script = ExtResource("1_jfrrb")
+entry = ExtResource("4_j2the")
+metadata/_custom_type_script = "uid://dmw8mcvfjhous"
+
+[resource]
+script = ExtResource("4_378ne")
+id = "rat_loot"
+loot_entries = Array[ExtResource("1_jfrrb")]([SubResource("Resource_me3hv"), SubResource("Resource_bhbi7"), SubResource("Resource_3uuvw")])
+gold_min = 1
+gold_max = 2
+metadata/_custom_type_script = "uid://dp0kh2akuu60m"

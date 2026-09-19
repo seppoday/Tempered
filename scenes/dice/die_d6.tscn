@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://bkmu5apsdlwbt"]
+
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="1_kesym"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_a5i42"]
+friction = 0.7
+rough = true
+bounce = 0.3
+
+[sub_resource type="BoxMesh" id="BoxMesh_ifow5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5s3sv"]
+
+[node name="Dice2" type="RigidBody3D" unique_id=876574851]
+mass = 0.75
+physics_material_override = SubResource("PhysicsMaterial_a5i42")
+linear_damp = 0.5
+angular_damp = 1.5
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=921374089]
+mesh = SubResource("BoxMesh_ifow5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2092250279]
+shape = SubResource("BoxShape3D_5s3sv")
+
+[node name="Decal" type="Decal" parent="." unique_id=2124474018]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.49990618, 0)
+size = Vector3(1.2431641, 0.02923584, 1.2431641)
+texture_albedo = ExtResource("1_kesym")
+normal_fade = 0.999

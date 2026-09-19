@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="LootTable" format=3 uid="uid://b7dqf7dfvkkkb"]
+
+[ext_resource type="Script" uid="uid://dmw8mcvfjhous" path="res://data/definitions/loot_entry.gd" id="1_3kyl5"]
+[ext_resource type="Resource" uid="uid://cys41i4h53vjd" path="res://definitions/materials/iron.tres" id="2_a7pur"]
+[ext_resource type="Resource" uid="uid://diiwnmylykliq" path="res://definitions/items/weapons/mercenery_blade.tres" id="3_a7pur"]
+[ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://definitions/materials/misc/upgrade_dice_d6.tres" id="4_g4m8i"]
+[ext_resource type="Script" uid="uid://dp0kh2akuu60m" path="res://data/definitions/loot_table.gd" id="4_gljn5"]
+
+[sub_resource type="Resource" id="Resource_gljn5"]
+script = ExtResource("1_3kyl5")
+entry = ExtResource("2_a7pur")
+weight = 9
+metadata/_custom_type_script = "uid://dmw8mcvfjhous"
+
+[sub_resource type="Resource" id="Resource_vv521"]
+script = ExtResource("1_3kyl5")
+entry = ExtResource("3_a7pur")
+weight = 2
+metadata/_custom_type_script = "uid://dmw8mcvfjhous"
+
+[sub_resource type="Resource" id="Resource_1337d"]
+script = ExtResource("1_3kyl5")
+entry = ExtResource("4_g4m8i")
+metadata/_custom_type_script = "uid://dmw8mcvfjhous"
+
+[resource]
+script = ExtResource("4_gljn5")
+id = "goblin_warrior_loot"
+loot_entries = Array[ExtResource("1_3kyl5")]([SubResource("Resource_gljn5"), SubResource("Resource_vv521"), SubResource("Resource_1337d")])
+gold_min = 5
+gold_max = 10
+metadata/_custom_type_script = "uid://dp0kh2akuu60m"

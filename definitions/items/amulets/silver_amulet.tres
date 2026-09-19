@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://d05poumq2y3b4"]
+
+[ext_resource type="Texture2D" uid="uid://c7675vp32ev6d" path="res://assets/items/jade_amulet.jpeg" id="1_e5cqw"]
+[ext_resource type="Resource" uid="uid://cv34ffkbxiqrd" path="res://definitions/skills/gold_coin.tres" id="1_qbeww"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_qpsv8"]
+
+[resource]
+script = ExtResource("2_qpsv8")
+slot = 5
+hp = 10
+dodge = 0.02
+default_skill = ExtResource("1_qbeww")
+id = "silver_amulet"
+name = "Silver Amulet"
+description = "Silver Amulet"
+icon = ExtResource("1_e5cqw")
+metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

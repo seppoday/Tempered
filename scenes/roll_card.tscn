@@ -1,42 +1,114 @@
 [gd_scene format=3 uid="uid://dab7n6msl1buh"]
 
-[ext_resource type="Script" uid="uid://3qrxt7iq3ixu" path="res://scenes/roll_card.gd" id="1_1d6at"]
 [ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="1_nj3a2"]
 
+[sub_resource type="GDScript" id="GDScript_nj3a2"]
+script/source = "extends PanelContainer
+
+signal toggled(card: PanelContainer, is_selected: bool)
+
+@onready var item_label: Label = %ItemLabel
+@onready var skill_label: Label = %SkillLabel
+@onready var multiplier_label: Label = %MultiplierLabel
+
+var result_data: Dictionary
+var is_selected: bool = false
+var is_hovering: bool = false  # Śledzimy, czy myszka jest nad kartą
+
+# Poprawiłem prawdopodobną pomyłkę w nazwach plików (normal -> normal, hover -> hover)
+const STYLE_NORMAL = preload(\"res://assets/styles/roll_panel_normal.tres\")
+const STYLE_HOVER = preload(\"res://assets/styles/roll_panel_hover.tres\")
+const STYLE_SELECTED = preload(\"res://assets/styles/roll_panel_selected.tres\")
+
+func _ready() -> void:
+	# Automatycznie łączymy sygnały myszy, aby mieć pewność, że działają
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
+	_update_style()
+
+
+func setup(data: Dictionary) -> void:
+	result_data = data
+	item_label.text = result_data[\"item\"].definition.name
+	skill_label.text = result_data[\"skill\"].skill_name
+	multiplier_label.text = str(result_data[\"multiplier\"])
+	
+	
+	# TODO: wypełnij Labelki na podstawie result_data[\"item\"]/[\"skill\"]/[\"multiplier\"]
+
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		toggled.emit(self, not is_selected)
+
+func _on_mouse_entered() -> void:
+	is_hovering = true
+	_update_style()
+
+func _on_mouse_exited() -> void:
+	is_hovering = false
+	_update_style()
+
+func set_selected(value: bool) -> void:
+	is_selected = value
+	_update_style()
+
+# Centralna funkcja zarządzająca wyglądem
+func _update_style() -> void:
+	if is_selected:
+		_apply_style(STYLE_SELECTED)
+	elif is_hovering:
+		_apply_style(STYLE_HOVER)
+	else:
+		_apply_style(STYLE_NORMAL)
+
+# Funkcja aplikująca styl do PanelContainer
+func _apply_style(style: StyleBox) -> void:
+	add_theme_stylebox_override(\"panel\", style)
+"
+
 [node name="PanelContainer" type="PanelContainer" unique_id=911280962]
-custom_minimum_size = Vector2(300, 96)
+custom_minimum_size = Vector2(150, 300)
+custom_maximum_size = Vector2(150, 300)
 offset_right = 300.0
 offset_bottom = 96.0
 offset_transform_enabled = true
-script = ExtResource("1_1d6at")
+script = SubResource("GDScript_nj3a2")
 
-[node name="BoxContainer" type="BoxContainer" parent="." unique_id=2081034328]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1023476239]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="BoxContainer" type="BoxContainer" parent="MarginContainer" unique_id=2081034328]
 layout_mode = 2
 theme_override_constants/separation = 12
+vertical = true
 
-[node name="TextureRect" type="TextureRect" parent="BoxContainer" unique_id=312106042]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/BoxContainer" unique_id=312106042]
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("1_nj3a2")
-expand_mode = 2
+expand_mode = 4
 
-[node name="VBoxContainer" type="BoxContainer" parent="BoxContainer" unique_id=141545576]
+[node name="VBoxContainer" type="BoxContainer" parent="MarginContainer/BoxContainer" unique_id=141545576]
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 vertical = true
 
-[node name="ItemLabel" type="Label" parent="BoxContainer/VBoxContainer" unique_id=1727988063]
+[node name="ItemLabel" type="Label" parent="MarginContainer/BoxContainer/VBoxContainer" unique_id=1727988063]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Attack Name"
 
-[node name="SkillLabel" type="Label" parent="BoxContainer/VBoxContainer" unique_id=1818248231]
+[node name="SkillLabel" type="Label" parent="MarginContainer/BoxContainer/VBoxContainer" unique_id=1818248231]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Attack Name"
 
-[node name="MultiplierLabel" type="Label" parent="BoxContainer/VBoxContainer" unique_id=996391779]
+[node name="MultiplierLabel" type="Label" parent="MarginContainer/BoxContainer/VBoxContainer" unique_id=996391779]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Multiplier"

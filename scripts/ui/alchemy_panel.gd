@@ -92,7 +92,7 @@ func _collect_slot_contents():
 	print(slot_content)
 
 func find_matching_recipe() -> RecipeDefinition:
-	var all_recipes := RecipeDatabase.get_all_recipes()
+	var all_recipes := RecipeDatabase.get_all()
 
 	for recipe in all_recipes:
 		if _recipe_matches(recipe):

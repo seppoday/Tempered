@@ -20,17 +20,16 @@ var character_definition : CharacterDefinition
 var picks_per_cycle: int = 3
 
 var character_stats: Dictionary = {
-	"name": "Kowal",
 	"level": 1,
 	"exp": 0,
 	"exp_to_next": 100,
 }
 
-var points_per_level: int = 3  # Ile punktów dostajemy co poziom
-
 var gold: int = 0
 
 var current_hp: float = 0.0
+var pending_block: float = 0.0
+var pending_dodge_bonus: float = 0.0
 
 # ==========================================
 # BAZOWE ATRYBUTY
@@ -42,7 +41,6 @@ var attributes: Dictionary = {
 	"CON": 10,
 }
 
-# Słownik przechowuje teraz obiekty ItemInstance (lub null)
 var equipped_items: Dictionary = {
 	EquipmentSlot.Type.WEAPON: null,
 	EquipmentSlot.Type.HELMET: null,
@@ -51,14 +49,43 @@ var equipped_items: Dictionary = {
 	EquipmentSlot.Type.BOOTS: null,
 	EquipmentSlot.Type.AMULET: null,
 	EquipmentSlot.Type.RING: null,
-	EquipmentSlot.Type.OFF_HAND: null,
+	EquipmentSlot.Type.ADDITIONAL: null,
 }
 
+
+# DEBUG
+const DEBUG_START_GEAR: Array[Dictionary] = [
+	# [id, count, level (0-6)]
+	{"id": "rusty_sword",    "count": 1, "level": 1},
+	{"id": "iron_shield",    "count": 1, "level": 1},
+	{"id": "silver_amulet",  "count": 1, "level": 6},
+	{"id": "knight_armor",   "count": 1, "level": 6},
+	{"id": "leather_gloves", "count": 1, "level": 6},
+	{"id": "hunter_boots",   "count": 1, "level": 6},
+	{"id": "leather_cap",    "count": 1, "level": 6},
+]
+
+func give_debug_gear() -> void:
+	for item in DEBUG_START_GEAR:
+		var item_definition := ItemDatabase.get_by_id(item.id)
+
+		if item_definition == null:
+			push_warning("give_debug_gear: nie znaleziono przedmiotu o ID: %s" % item.id)
+			continue
+
+		var count: int = item.get("count", 1)
+		var level: int = item.get("level", 1)
+
+		equip_item(ItemInstance.new(item_definition, count, level))
+
 func _ready() -> void:
-	character_definition = CharacterDatabase.get_character_definition("warrior")
+	give_debug_gear()
+
+	character_definition = CharacterDatabase.get_by_id("warrior") # chwilowe, tylko debug
 
 	if character_definition == null:
-		character_definition = CharacterDefinition.new()
+		push_warning("Nie znaleziono character definition w pliku Player_Data")
+		return
 
 	attributes["STR"] = character_definition.starting_str
 	attributes["DEX"] = character_definition.starting_dex
@@ -151,7 +178,6 @@ func equip_item(item_instance: ItemInstance) -> ItemInstance:
 	
 	stats_changed.emit(EquipmentSlot.Type.keys()[slot_type])
 	item_equipped.emit(slot_type, item_instance)
-	print("Equipped item emitted: ", item_instance.definition.name, " in slot: ", slot_type)
 	return previous
 
 
@@ -193,23 +219,23 @@ func calculate_attack() -> Dictionary:
 
 func take_damage(amount: float) -> void:
 	var stats := get_total_stats()
-	
-	# Dodge
-	if RNG.randf() < stats.get("dodge", 0.0):
+	var effective_dodge: float = stats.get("dodge", 0.0) + pending_dodge_bonus
+	pending_dodge_bonus = 0.0
+
+	if RNG.randf() < effective_dodge:
 		damage_taken.emit(0.0, true)
 		return
-	
-	# Armor reduction
+
+	var mitigated: float = max(0.0, amount - pending_block)
+	pending_block = 0.0
+
 	var armor: float = stats.get("armor", 0.0)
 	var armor_reduction: float = calculate_armor_reduction(armor)
-	var final_damage: float = amount * (1.0 - armor_reduction)
-	
+	var final_damage: float = mitigated * (1.0 - armor_reduction)
+
 	current_hp = max(0.0, current_hp - final_damage)
-	damage_taken.emit(final_damage, false)  # Emituj przed hp_changed
+	damage_taken.emit(final_damage, false)
 	hp_changed.emit(current_hp, stats["hp"])
-	
-	if current_hp <= 0.0:
-		print("Gracz zginął!")
 
 
 # Formuła redukcji armor - malejąca skuteczność (jak w większości gier)
@@ -226,3 +252,9 @@ func heal(amount: float) -> void:
 	var stats := get_total_stats()
 	current_hp = min(stats["hp"], current_hp + amount)
 	hp_changed.emit(current_hp, stats["hp"])
+
+func add_block(amount: float) -> void:
+	pending_block += amount
+
+func add_dodge_bonus(amount: float) -> void:
+	pending_dodge_bonus += amount

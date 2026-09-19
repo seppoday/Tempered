@@ -1,0 +1,514 @@
+[gd_scene format=3 uid="uid://b7geclixrytt3"]
+
+[ext_resource type="Script" uid="uid://rhwee7ilv64" path="res://scripts/ui/item_panel.gd" id="1_1bvp3"]
+[ext_resource type="Script" uid="uid://0wut03xwyp7d" path="res://scripts/gameplay/main.gd" id="1_2cqfq"]
+[ext_resource type="Script" uid="uid://cpns5yr2xh0ev" path="res://scripts/ui/inventory.gd" id="1_h2yge"]
+[ext_resource type="Script" uid="uid://dpyk5dj1dlqss" path="res://scripts/ui/gold_label.gd" id="1_seu75"]
+[ext_resource type="Script" uid="uid://ciakkvnknrtrw" path="res://scripts/ui/alchemy_panel.gd" id="2_0xm2m"]
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="2_1bvp3"]
+[ext_resource type="Script" uid="uid://jh7mp0gvavyy" path="res://scenes/dice_container.gd" id="2_2wyq8"]
+[ext_resource type="PackedScene" uid="uid://x4spoxodgh4x" path="res://scenes/equipment_slot.tscn" id="3_dg77c"]
+[ext_resource type="PackedScene" uid="uid://cm0pwye2hbeox" path="res://dev/test_dice_3d.tscn" id="3_fv21b"]
+[ext_resource type="Texture2D" uid="uid://pmr7r7crsrb" path="res://assets/styles/skeleton.png" id="3_vxglm"]
+[ext_resource type="Texture2D" uid="uid://ygdvvwu2iiq5" path="res://assets/ui/amulet.png" id="14_yaehf"]
+[ext_resource type="Texture2D" uid="uid://bp8alctflgmd7" path="res://assets/ui/helmet.png" id="15_5q0nq"]
+[ext_resource type="Texture2D" uid="uid://cp1hwkfgl84rj" path="res://assets/ui/weapon.png" id="15_074og"]
+[ext_resource type="Texture2D" uid="uid://dftmcck2to81" path="res://assets/ui/ring.png" id="16_dgi5k"]
+[ext_resource type="Texture2D" uid="uid://b4jtn8mldxqyf" path="res://assets/ui/armor.png" id="18_j8jky"]
+[ext_resource type="Texture2D" uid="uid://doswu3pxkpcf6" path="res://assets/ui/shield.png" id="19_kmb1v"]
+[ext_resource type="Script" uid="uid://dyvxaabqf72dk" path="res://data/definitions/inventory_entry.gd" id="19_yc10j"]
+[ext_resource type="Texture2D" uid="uid://hckl245r3g2f" path="res://assets/ui/boots.png" id="20_fuf3a"]
+[ext_resource type="Resource" uid="uid://c0juciddabsbt" path="res://resources/items/armor/knight_armor.tres" id="23_pm3ni"]
+[ext_resource type="Resource" uid="uid://bdo0a1sdk0vx1" path="res://resources/consumable/potion_small.tres" id="23_y6deb"]
+[ext_resource type="Resource" uid="uid://cl0cq55cuw0hb" path="res://resources/skills/skill_item_fire_attack.tres" id="24_2f3dj"]
+[ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://resources/materials/misc/upgrade_dice_d6.tres" id="24_og1vs"]
+[ext_resource type="PackedScene" uid="uid://bbadchds7qm5n" path="res://scenes/slot.tscn" id="24_y6deb"]
+[ext_resource type="Resource" uid="uid://dtnpnnyo0kyjn" path="res://resources/materials/misc/upgrade_dice_d8.tres" id="25_fv21b"]
+[ext_resource type="Resource" uid="uid://cufr2r1ewv6c6" path="res://resources/materials/misc/upgrade_dice_d10.tres" id="26_tel4y"]
+[ext_resource type="Script" uid="uid://dijm1kj65bqyc" path="res://scenes/cards_controller.gd" id="27_2f3dj"]
+[ext_resource type="Resource" uid="uid://dsduls0bi6xud" path="res://resources/materials/misc/upgrade_dice_d12.tres" id="27_qkpxi"]
+[ext_resource type="Resource" uid="uid://d34h5uwlsdqvl" path="res://resources/materials/misc/upgrade_dice_d16.tres" id="28_5q0nq"]
+[ext_resource type="Resource" uid="uid://dk3ixuqlc7qyg" path="res://resources/materials/misc/upgrade_dice_d20.tres" id="29_dgi5k"]
+[ext_resource type="PackedScene" uid="uid://dab7n6msl1buh" path="res://scenes/roll_card.tscn" id="29_yq6so"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ifow5"]
+bg_color = Color(0.103743516, 0.103743546, 0.10374347, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kmb1v"]
+bg_color = Color(0.6431373, 0.09411765, 0, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fuf3a"]
+bg_color = Color(0.2816801, 0.60469335, 0.9927555, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="Main" type="Node2D" unique_id=206172842]
+script = ExtResource("1_2cqfq")
+
+[node name="DiceContainer" type="Node2D" parent="." unique_id=1630663277]
+script = ExtResource("2_2wyq8")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=176301771]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=211961604]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="MainWindow" type="BoxContainer" parent="CanvasLayer/MarginContainer" unique_id=251606534]
+layout_mode = 2
+alignment = 2
+
+[node name="MiddlePanel" type="BoxContainer" parent="CanvasLayer/MarginContainer/MainWindow" unique_id=2126571782]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="InventorySection" type="BoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel" unique_id=920328019]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+offset_transform_enabled = true
+offset_transform_position = Vector2(-1900, 0)
+offset_transform_visual_only = false
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="BoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection" unique_id=1587470251]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+vertical = true
+
+[node name="Equipment" type="PanelContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer" unique_id=1078332561]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ifow5")
+script = ExtResource("1_1bvp3")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment" unique_id=85847800]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="EquipmentGrid" type="GridContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer" unique_id=139815665]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+columns = 3
+
+[node name="AmuletSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1593952919 instance=ExtResource("3_dg77c")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 5
+placeholder_texture = ExtResource("14_yaehf")
+
+[node name="HelmetSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=315832620 instance=ExtResource("3_dg77c")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 1
+placeholder_texture = ExtResource("15_5q0nq")
+
+[node name="RingSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1299274000 instance=ExtResource("3_dg77c")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 6
+placeholder_texture = ExtResource("16_dgi5k")
+
+[node name="WeaponSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1626732313 instance=ExtResource("3_dg77c")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = null
+placeholder_texture = ExtResource("15_074og")
+
+[node name="ArmorSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=427080641 instance=ExtResource("3_dg77c")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 2
+placeholder_texture = ExtResource("18_j8jky")
+
+[node name="ShieldSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=44661284 instance=ExtResource("3_dg77c")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 7
+placeholder_texture = ExtResource("19_kmb1v")
+
+[node name="GlovesSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1219771909 instance=ExtResource("3_dg77c")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 3
+placeholder_texture = ExtResource("2_1bvp3")
+
+[node name="BootsSlot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1576719944 instance=ExtResource("3_dg77c")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 4
+placeholder_texture = ExtResource("20_fuf3a")
+
+[node name="BootsSlot2" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=897550988 instance=ExtResource("3_dg77c")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 4
+placeholder_texture = ExtResource("20_fuf3a")
+
+[node name="Stats" type="PanelContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer" unique_id=688894949]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ifow5")
+script = ExtResource("1_1bvp3")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Stats" unique_id=323181302]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="StatsBox" type="VBoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Stats/MarginContainer" unique_id=815937749]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InventoryPanel" type="VBoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection" unique_id=1748168337]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 12
+
+[node name="Alchemy" type="PanelContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel" unique_id=865049812]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ifow5")
+script = ExtResource("2_0xm2m")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy" unique_id=162177359]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer" unique_id=345366625]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer" unique_id=1820349696]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="AlchemyGrid" type="GridContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2001586315]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 5
+
+[node name="AlchemyGridResults" type="GridContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1755035230]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CraftButton" type="Button" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer" unique_id=820951479]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Połącz składniki"
+
+[node name="Inventory" type="PanelContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel" unique_id=1023669752]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ifow5")
+script = ExtResource("1_h2yge")
+base_items = Dictionary[ExtResource("19_yc10j"), int]({
+ExtResource("23_y6deb"): 5,
+ExtResource("23_pm3ni"): 1,
+ExtResource("24_og1vs"): 5,
+ExtResource("25_fv21b"): 5,
+ExtResource("26_tel4y"): 5,
+ExtResource("27_qkpxi"): 5,
+ExtResource("28_5q0nq"): 5,
+ExtResource("29_dgi5k"): 5,
+ExtResource("24_2f3dj"): 5
+})
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory" unique_id=809901435]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer" unique_id=1134863120]
+layout_mode = 2
+columns = 6
+
+[node name="Slot" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer/GridContainer" unique_id=1297978854 instance=ExtResource("24_y6deb")]
+layout_mode = 2
+
+[node name="Slot2" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer/GridContainer" unique_id=436625030 instance=ExtResource("24_y6deb")]
+layout_mode = 2
+
+[node name="Slot3" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer/GridContainer" unique_id=670041694 instance=ExtResource("24_y6deb")]
+layout_mode = 2
+
+[node name="Slot4" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer/GridContainer" unique_id=1158955203 instance=ExtResource("24_y6deb")]
+layout_mode = 2
+
+[node name="Slot5" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer/GridContainer" unique_id=290718526 instance=ExtResource("24_y6deb")]
+layout_mode = 2
+
+[node name="Slot6" parent="CanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer/GridContainer" unique_id=1646084016 instance=ExtResource("24_y6deb")]
+layout_mode = 2
+
+[node name="RollCards" type="CanvasLayer" parent="." unique_id=501486646]
+
+[node name="TopPanel" type="PanelContainer" parent="RollCards" unique_id=741333311]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -74.0
+offset_right = 416.0
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_ifow5")
+
+[node name="MarginContainer" type="MarginContainer" parent="RollCards/TopPanel" unique_id=1598694986]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RollCards/TopPanel/MarginContainer" unique_id=1906673140]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="HBoxContainer" type="BoxContainer" parent="RollCards/TopPanel/MarginContainer/HBoxContainer" unique_id=904977546]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+vertical = true
+
+[node name="ExpBox" type="BoxContainer" parent="RollCards/TopPanel/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1984892666]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="RollCards/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/ExpBox" unique_id=635124935]
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 2
+text = "EXP"
+
+[node name="ExpCurrent" type="Label" parent="RollCards/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/ExpBox" unique_id=1254606541]
+layout_mode = 2
+text = "0"
+
+[node name="ExpProgressBar" type="ProgressBar" parent="RollCards/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/ExpBox" unique_id=498474180]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -1.6)
+theme_override_styles/fill = SubResource("StyleBoxFlat_kmb1v")
+value = 11.05
+show_percentage = false
+
+[node name="ExpMax" type="Label" parent="RollCards/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/ExpBox" unique_id=1515582693]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "100"
+
+[node name="HpBox" type="BoxContainer" parent="RollCards/TopPanel/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1405562181]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="RollCards/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/HpBox" unique_id=1270091180]
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 2
+text = "HP"
+vertical_alignment = 1
+
+[node name="HpCurrent" type="Label" parent="RollCards/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/HpBox" unique_id=1832846405]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "0"
+vertical_alignment = 1
+
+[node name="HpProgressBar" type="ProgressBar" parent="RollCards/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/HpBox" unique_id=654604108]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 4)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -1.6)
+theme_override_styles/fill = SubResource("StyleBoxFlat_fuf3a")
+value = 11.05
+show_percentage = false
+
+[node name="HpMax" type="Label" parent="RollCards/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/HpBox" unique_id=1998639809]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "100"
+
+[node name="ManaBox" type="BoxContainer" parent="RollCards/TopPanel/MarginContainer/HBoxContainer/HBoxContainer" unique_id=321935131]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RollCards/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/ManaBox" unique_id=146813683]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+text = "MANA: "
+
+[node name="ManaProgressBar" type="ProgressBar" parent="RollCards/TopPanel/MarginContainer/HBoxContainer/HBoxContainer/ManaBox" unique_id=1411875886]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(-1, 16)
+layout_mode = 2
+value = 11.05
+
+[node name="GoldLabel" type="Label" parent="RollCards/TopPanel/MarginContainer/HBoxContainer" unique_id=1692207773]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 10
+offset_transform_enabled = true
+text = "Gold: 1235$"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("1_seu75")
+
+[node name="MarginContainer" type="MarginContainer" parent="RollCards" unique_id=308017346]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -162.0
+offset_top = -120.0
+offset_right = 162.0
+grow_horizontal = 2
+grow_vertical = 0
+offset_transform_position = Vector2(0, -120)
+offset_transform_visual_only = false
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="CardsContainer" type="BoxContainer" parent="RollCards/MarginContainer" unique_id=1273788154]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+script = ExtResource("27_2f3dj")
+
+[node name="PanelContainer" parent="RollCards/MarginContainer/CardsContainer" unique_id=911280962 instance=ExtResource("29_yq6so")]
+layout_mode = 2
+
+[node name="ConfirmButton" type="Button" parent="RollCards" unique_id=854689431]
+unique_name_in_owner = true
+offset_left = 245.0
+offset_top = 960.0
+offset_right = 253.0
+offset_bottom = 968.0
+disabled = true
+text = "test"
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="RollCards" unique_id=1540122442]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="RollCards/CanvasLayer2" unique_id=1986748742]
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SubViewport" type="SubViewport" parent="RollCards/CanvasLayer2/SubViewportContainer" unique_id=1237172815]
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="Node3D" parent="RollCards/CanvasLayer2/SubViewportContainer/SubViewport" unique_id=417046850 instance=ExtResource("3_fv21b")]
+
+[node name="Panel" type="PanelContainer" parent="RollCards/CanvasLayer2" unique_id=1354911092]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -639.0
+offset_right = 639.0
+offset_bottom = 400.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ifow5")
+
+[node name="MarginContainer" type="MarginContainer" parent="RollCards/CanvasLayer2/Panel" unique_id=1393097381]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="BoxContainer" type="BoxContainer" parent="RollCards/CanvasLayer2/Panel/MarginContainer" unique_id=916850224]
+custom_minimum_size = Vector2(256, 0)
+custom_maximum_size = Vector2(256, -1)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 48
+alignment = 1
+vertical = true
+
+[node name="TextureRect" type="TextureRect" parent="RollCards/CanvasLayer2/Panel/MarginContainer/BoxContainer" unique_id=1540800128]
+custom_maximum_size = Vector2(256, 256)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("3_vxglm")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Hp" type="BoxContainer" parent="RollCards/CanvasLayer2/Panel/MarginContainer/BoxContainer" unique_id=1627382087]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="RollCards/CanvasLayer2/Panel/MarginContainer/BoxContainer/Hp" unique_id=1823488414]
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "HP"
+
+[node name="ExpCurrent" type="Label" parent="RollCards/CanvasLayer2/Panel/MarginContainer/BoxContainer/Hp" unique_id=2042762091]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "0"
+
+[node name="ExpProgressBar" type="ProgressBar" parent="RollCards/CanvasLayer2/Panel/MarginContainer/BoxContainer/Hp" unique_id=1565498528]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -1.6)
+theme_override_styles/fill = SubResource("StyleBoxFlat_kmb1v")
+value = 100.0
+show_percentage = false
+
+[node name="ExpMax" type="Label" parent="RollCards/CanvasLayer2/Panel/MarginContainer/BoxContainer/Hp" unique_id=1634119984]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "100"

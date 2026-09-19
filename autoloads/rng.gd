@@ -14,6 +14,9 @@ func set_seed(seed: int) -> void:
 func randi_range(min: int, max: int) -> int:
 	return _generator.randi_range(min, max)
 
+func randf_range(min: float, max: float) -> float:
+	return _generator.randf_range(min, max)
+
 func weighted_pick(entries: Array) -> Variant:
 	if entries.is_empty():
 		return null
@@ -31,6 +34,9 @@ func weighted_pick(entries: Array) -> Variant:
 			return entry
 	
 	return null
+
+func randi() -> float:
+	return _generator.randi()
 
 func randf() -> float:
 	return _generator.randf()

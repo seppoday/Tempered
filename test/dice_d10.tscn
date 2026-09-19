@@ -11,8 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://bvwilm56ecgbc" path="res://test/d12/d12_black_8.png" id="9_7d6y2"]
 [ext_resource type="Texture2D" uid="uid://bnj0jgip7twxv" path="res://test/d12/d12_black_9.png" id="10_wcbkp"]
 [ext_resource type="Texture2D" uid="uid://c1ys03s2crtex" path="res://test/d12/d12_black_10.png" id="11_pa084"]
-[ext_resource type="Texture2D" uid="uid://dm1hbgrorp615" path="res://test/d12/d12_black_11.png" id="12_n0isu"]
-[ext_resource type="Texture2D" uid="uid://cp771urubexrb" path="res://test/d12/d12_black_12.png" id="13_7wm4p"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wvhbo"]
 size = Vector2(1057, 1040)
@@ -20,8 +18,7 @@ size = Vector2(1057, 1040)
 [node name="Dice" type="StaticBody2D" unique_id=262477411]
 input_pickable = true
 script = ExtResource("1_v7jn0")
-sides = 12
-dice_name = "D12"
+dice_name = "D10"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=301181581]
 position = Vector2(-0.5, 0)
@@ -58,12 +55,6 @@ texture = ExtResource("10_wcbkp")
 
 [node name="10" type="Sprite2D" parent="Faces" unique_id=1965278681]
 texture = ExtResource("11_pa084")
-
-[node name="11" type="Sprite2D" parent="Faces" unique_id=1391149536]
-texture = ExtResource("12_n0isu")
-
-[node name="12" type="Sprite2D" parent="Faces" unique_id=47168870]
-texture = ExtResource("13_7wm4p")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=789097244]
 

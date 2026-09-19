@@ -15,22 +15,26 @@ run/main_scene="uid://b7geclixrytt3"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[audio]
+
+buses/default_bus_layout="uid://jxm05fnbr37j"
+
 [autoload]
 
 RNG="*uid://t87xmd5kuqdc"
 GameManager="*uid://cn6mg6lu8ybnx"
 CharacterDatabase="*uid://dijwlqmfj15qv"
 ItemDatabase="*uid://bd5jd72g3kuwk"
-ForgeSystem="*uid://bmnsfyefhmqxn"
 EventBus="*uid://djqyjqh76fg4j"
 PlayerData="*uid://bj574n8hpsceu"
 MaterialDatabase="*uid://crk3ixjega3wf"
 RecipeDatabase="*uid://n6u31r2q82g3"
 EnemyDatabase="*uid://cuf30qpjf65it"
 LootTableDatabase="*uid://wkffv8ro0n06"
-WaveDatabase="*uid://c31j52364cspq"
-GameFlow="*uid://cqw2ywle5psy8"
 SkillDatabase="*uid://byyiemdr4dxpt"
+AudioManager="*uid://ds2cvb4djus4j"
+UIAnim="*uid://df6y53u8nyheq"
+AudioLibrary="*uid://cpsk86ml2tmsk"
 
 [debug]
 
@@ -49,10 +53,6 @@ window/stretch/aspect="expand"
 player=""
 enemies=""
 dices=""
-
-[gui]
-
-theme/custom="uid://34vypc21v6xg"
 
 [input]
 
@@ -85,5 +85,4 @@ jump={
 [rendering]
 
 rendering_device/driver.windows="d3d12"
-renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

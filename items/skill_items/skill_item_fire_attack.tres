@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SkillItemDefinition" format=3 uid="uid://cl0cq55cuw0hb"]
+
+[ext_resource type="Script" uid="uid://bhmpxj5svtjsp" path="res://data/definitions/skill_item_definition.gd" id="1_xhqmn"]
+[ext_resource type="Resource" uid="uid://m362bnj4e4i2" path="res://definitions/skills/fire_attack.tres" id="2_4wp1s"]
+
+[resource]
+script = ExtResource("1_xhqmn")
+skill = ExtResource("2_4wp1s")
+metadata/_custom_type_script = "uid://bhmpxj5svtjsp"

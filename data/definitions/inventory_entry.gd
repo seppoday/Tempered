@@ -4,7 +4,8 @@ enum Category {
 	CONSUMABLE,
 	EQUIPMENT,
 	MATERIAL,
-	UPGRADE_STONE
+	UPGRADE_STONE,
+	SKILL,
 }
 
 @export var id: String

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://dffx18w2nqoo1"]
+
+[ext_resource type="Texture2D" uid="uid://brrdeqocjha3i" path="res://assets/items/worn boots.jpeg" id="1_0y6wr"]
+[ext_resource type="Resource" uid="uid://7ky5kymujpm0" path="res://definitions/skills/heal.tres" id="1_rov60"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_cqhuf"]
+
+[resource]
+script = ExtResource("2_cqhuf")
+slot = 4
+hp = 25
+armor = 3
+dodge = 0.03
+default_skill = ExtResource("1_rov60")
+id = "hunter_boots"
+name = "Hunter Boots"
+description = "Hunter Boots"
+icon = ExtResource("1_0y6wr")
+rarity = 1
+metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

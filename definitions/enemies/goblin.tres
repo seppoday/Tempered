@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3 uid="uid://beuml7s1oqpqj"]
+
+[ext_resource type="PackedScene" uid="uid://b1s7u3s7uxodv" path="res://scenes/goblin.tscn" id="1_8t8dg"]
+[ext_resource type="Resource" uid="uid://b2pgpsivmuity" path="res://definitions/loot_tables/goblin_loot.tres" id="1_bxi3o"]
+[ext_resource type="Script" uid="uid://dfsxlht8w22ue" path="res://data/definitions/enemy_definition.gd" id="1_ttibx"]
+
+[resource]
+script = ExtResource("1_ttibx")
+id = "goblin"
+enemy_name = "Goblin"
+scene = ExtResource("1_8t8dg")
+max_hp = 25
+movement_speed = 240.0
+damage = 4.0
+attack_range = 90.0
+attack_interval = 2.0
+loot_table = ExtResource("1_bxi3o")
+metadata/_custom_type_script = "uid://dfsxlht8w22ue"

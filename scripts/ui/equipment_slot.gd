@@ -10,7 +10,8 @@ enum Type {
 	BOOTS,
 	AMULET,
 	RING,
-	OFF_HAND
+	SHIELD,
+	ADDITIONAL
 }
 
 ## Which equipment slot this UI slot represents. Set per-instance in the Inspector
@@ -33,18 +34,14 @@ func _ready() -> void:
 		super.clear() # lub po prostu _update_visual()
 
 func _on_item_equipped(equipped_slot_type: Type, item_instance: ItemInstance) -> void:
-	print("EquipmentSlot received item_equipped signal for slot ", equipped_slot_type, " with item: ", item_instance)
 	if equipped_slot_type != slot_type:
-		print("Slot ", slot_type, " received item_equipped signal for slot ", equipped_slot_type, ". Ignoring.")
 		return
 	
 	else:
 		if item_instance == null:
 			super.clear()
-			print("Slot ", slot_type, " cleared.")
 		else:
 			super.set_item(item_instance)
-			print("Slot ", slot_type, " equipped with: ", item_instance.definition.name)
 
 # ==========================================
 # DRAG & DROP (restricted to matching equipment)
@@ -59,11 +56,24 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	if def == null:
 		return false
 
-	# Only equipment can go in an equipment slot, and only in its matching slot type.
-	return def.category == ItemDefinition.Category.EQUIPMENT and def.slot == slot_type or dragged_instance.definition.category == InventoryEntry.Category.UPGRADE_STONE
+	if def is SkillItemDefinition:
+		return not is_empty() and item_data.definition is ItemDefinition
+
+	if def is MaterialDefinition:
+		return def.category == InventoryEntry.Category.UPGRADE_STONE
+
+	if def is ItemDefinition:
+		return def.category == InventoryEntry.Category.EQUIPMENT and def.slot == slot_type
+
+	return false
 
 func _drop_data(_at_position: Vector2, data: Variant) -> void:
+	var dragged_instance: ItemInstance = data["item_instance"]
 	super._drop_data(_at_position, data)
+
+	if dragged_instance.definition is SkillItemDefinition:
+		return  # picker sam ogarnia resztę, nic do "equipnięcia"
+
 	PlayerData.equip_item(item_data)
 
 # ==========================================

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://csljdigk7bkki"]
+
+[ext_resource type="Texture2D" uid="uid://dr26utdo8rlqh" path="res://assets/icons/shield.svg" id="1_8gli0"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions/skill_definition.gd" id="2_pbkqh"]
+
+[resource]
+script = ExtResource("2_pbkqh")
+id = "shield"
+skill_name = "Shield"
+icon = ExtResource("1_8gli0")
+description = "Shield"
+effect_type = 3
+target_type = 0
+damage_element = 4
+metadata/_custom_type_script = "uid://dgjg1vlcvdtpi"

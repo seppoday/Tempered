@@ -1,21 +1,6 @@
 extends PanelContainer
 
 @onready var stats_box: VBoxContainer = %StatsBox
-@onready var level_label: Label = %Label
-@onready var exp_bar: ProgressBar = %ExpProgressBar
-@onready var hp_bar: ProgressBar = %HpProgressBar
-@onready var avatar: TextureRect = %TextureRect
-
-# === REFERENCJE DO LEWEGO PANELU ATRYBUTÓW ===
-@onready var str_button: Button = %STRButton
-@onready var int_button: Button = %INTButton
-@onready var dex_button: Button = %DEXButton
-@onready var con_button: Button = %CONButton
-
-@onready var str_label: Label = %STRLabel
-@onready var int_label: Label = %INTLabel
-@onready var dex_label: Label = %DEXLabel
-@onready var con_label: Label = %CONLabel
 
 # Wolne punkty
 @onready var points_label: Label = get_node_or_null("%PointsLabel")
@@ -23,35 +8,14 @@ extends PanelContainer
 const FONT_SIZE: int = 16
 
 func _ready() -> void:
-	var sword_def := ItemDatabase.get_item_definition("rusty_sword")  # albo dowolny inny, jaki masz
-	PlayerData.equip_item(ItemInstance.new(sword_def, 1, 1))
-
-	var amulet_def := ItemDatabase.get_item_definition("silver_amulet")  # albo dowolny inny, jaki masz
-	PlayerData.equip_item(ItemInstance.new(amulet_def, 1, 2))
-	
-	var gloves_def := ItemDatabase.get_item_definition("leather_gloves")  # albo dowolny inny, jaki masz
-	PlayerData.equip_item(ItemInstance.new(gloves_def, 1, 6))
-	
-
-	var helmet_def := ItemDatabase.get_item_definition("leather_cap")  # jeśli masz coś na inny slot
-	PlayerData.equip_item(ItemInstance.new(helmet_def, 1, 4))
 	mouse_filter = Control.MOUSE_FILTER_STOP
 
 	# Podłączamy sygnały z Autoloada PlayerData
 	if not PlayerData.stats_changed.is_connected(_on_stats_changed):
 		PlayerData.stats_changed.connect(_on_stats_changed)
-		PlayerData.exp_changed.connect(_update_exp_bar)
-		PlayerData.hp_changed.connect(_update_hp_bar)
-
-	_setup_button(str_button, "STR")
-	_setup_button(int_button, "INT")
-	_setup_button(dex_button, "DEX")
-	_setup_button(con_button, "CON")
 
 	_update_ui()
-	_update_exp_bar()
 	var totals := PlayerData.get_total_stats()
-	_update_hp_bar(PlayerData.current_hp, totals.get("hp", 0))
 
 func _setup_button(btn: Button, attr_name: String) -> void:
 	if not btn: return
@@ -82,7 +46,7 @@ func _update_ui(changed_stat: String = "") -> void:
 	for child in stats_box.get_children():
 		child.queue_free()
 
-	_add_label("%s (Level %d)" % [char_info["name"], char_info["level"]], Color(0.95, 0.75, 0.2), FONT_SIZE, "level")
+	_add_label("Level %d" % char_info["level"], Color(0.95, 0.75, 0.2), FONT_SIZE, "level")
 	_add_spacer()
 
 	# Mapowanie statystyk z PlayerData (Zalecane ujednolicenie nazw z ItemDefinition)
@@ -144,29 +108,3 @@ func _pop_label(label: Label) -> void:
 	tween.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.tween_property(label, "scale", Vector2(1.25, 1.25), 0.08)
 	tween.tween_property(label, "scale", Vector2.ONE, 0.15)
-
-func _update_exp_bar() -> void:
-	var info := PlayerData.character_stats
-	exp_bar.max_value = info["exp_to_next"]
-	exp_bar.value = info["exp"]
-	level_label.text = "%s (Level %d)" % [info["name"], info["level"]]
-
-func _update_hp_bar(current_hp: float, max_hp: float) -> void:
-	var totals := PlayerData.get_total_stats()
-	if totals.has("hp"):
-		hp_bar.max_value = max_hp
-		hp_bar.value = current_hp
-	
-	var hp_percentage := 0.0
-	var hp_bar_stylebox = hp_bar.get_theme_stylebox("fill", "ProgressBar")
-	hp_percentage = hp_bar.value / hp_bar.max_value if hp_bar.max_value > 0 else 0.0
-
-	if hp_percentage > 0.5:
-		hp_bar_stylebox.bg_color = Color(0.4, 0.8, 0.4) # Zielony
-	elif hp_percentage > 0.2:
-		hp_bar_stylebox.bg_color = Color(1.0, 0.85, 0.2) # Żółty
-	else:
-		hp_bar_stylebox.bg_color = Color(0.85, 0.3, 0.4) # Czerwony
-
-func set_avatar(tex: Texture2D) -> void:
-	avatar.texture = tex

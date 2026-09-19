@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://dw0cugqwhkga1"]
+
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions/skill_definition.gd" id="1_d17f2"]
+[ext_resource type="Texture2D" uid="uid://cfpc1o1s3vehh" path="res://assets/icons/sword.svg" id="1_rst5n"]
+
+[resource]
+script = ExtResource("1_d17f2")
+id = "basic_attack"
+skill_name = "Basic Attack"
+description = "Basic Attack"
+icon = ExtResource("1_rst5n")
+metadata/_custom_type_script = "uid://dgjg1vlcvdtpi"

@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://dei603y45frkh"]
+
+[ext_resource type="Script" uid="uid://gom6cpdggn8p" path="res://scripts/UI/dicetag.gd" id="1_54fgk"]
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="2_vnf6y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d34oe"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_mjkwc"]
+font_size = 48
+outline_size = 12
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_fwldo"]
+font_size = 12
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[node name="PanelContainer" type="PanelContainer" unique_id=95318190]
+offset_right = 97.0
+offset_bottom = 64.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_d34oe")
+script = ExtResource("1_54fgk")
+
+[node name="Icon" type="TextureRect" parent="." unique_id=689231955]
+custom_maximum_size = Vector2(128, 128)
+layout_mode = 2
+texture = ExtResource("2_vnf6y")
+
+[node name="ValueLabel" type="Label" parent="." unique_id=447793444]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+text = "test"
+label_settings = SubResource("LabelSettings_mjkwc")
+
+[node name="ItemLabel" type="Label" parent="." unique_id=1472837659]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 0
+text = "test"
+label_settings = SubResource("LabelSettings_fwldo")
