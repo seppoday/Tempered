@@ -29,22 +29,7 @@ func _ready() -> void:
 	result_label.text = "Naciśnij RZUĆ"
 	confirm_button.disabled = true
 	CombatManager.effect_applied.connect(_on_combat_effect_applied)
-	CombatManager.enemy_died.connect(_on_enemy_died)
 	CombatManager.player_died.connect(_on_player_died)
-
-	_spawn_enemy()
-
-
-func _spawn_enemy() -> void:
-	var enemy := enemy_scene.instantiate() as EnemyInstance
-	enemy_spawn_point.add_child(enemy)
-	CombatManager.set_enemy(enemy)
-
-
-func _on_enemy_died(_enemy: EnemyInstance) -> void:
-	if CombatManager.is_game_over:
-		return
-	_spawn_enemy()
 
 
 func _on_player_died() -> void:

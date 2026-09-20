@@ -13,6 +13,7 @@ script = ExtResource("1_fcftc")
 definition = ExtResource("2_lu5c6")
 
 [node name="Sprite3D" type="Sprite3D" parent="." unique_id=1034343478]
-transform = Transform3D(1.146374, 0, 0, 0, -5.15503e-08, 0.47, 0, -1.1793333, -2.0544352e-08, 0, 0.20844366, -6.212105e-09)
-texture_filter = 0
+transform = Transform3D(0.1, 0, 0, 0, -4.371139e-09, 0.1, 0, -0.1, -4.371139e-09, 0, 0.20844366, -6.212105e-09)
+billboard = 1
+texture_filter = 1
 texture = ExtResource("4_jt03m")

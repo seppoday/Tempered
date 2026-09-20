@@ -91,8 +91,8 @@ func _throw_all_dice() -> void:
 
 		die.rotation = Vector3(randf_range(0, TAU), randf_range(0, TAU), randf_range(0, TAU))
 
-		var push_force = Vector3(randf_range(-1.0, 1.0), randf_range(1.0, 2.0), randf_range(-1.0, 1.0))
-		var torque = Vector3(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0), randf_range(-1.0, 1.0))
+		var push_force = Vector3(randf_range(-1.0, 1.5), randf_range(1.0, 2.5), randf_range(-1.0, 1.5))
+		var torque = Vector3(randf_range(-1.0, 1.5), randf_range(-1.0, 1.5), randf_range(-1.0, 1.5))
 
 		die.apply_central_impulse(push_force)
 		die.apply_torque_impulse(torque)
@@ -173,5 +173,5 @@ func calculate_grid_positions(total_count: int, columns: int, spacing: float) ->
 		var row = i / columns
 		var x = (col * spacing) - offset_x
 		var z = (row * spacing) - offset_z
-		positions.append(Vector3(x, 0.6, z))
+		positions.append(Vector3(x, 0.1, z))
 	return positions

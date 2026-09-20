@@ -5,10 +5,11 @@ signal died(enemy: EnemyInstance)
 signal attack_declared(pattern: EnemyAttackPattern)
 signal attack_finished
 
+@onready var sprite_3d: Sprite3D = $Sprite3D
+
 @export var definition: EnemyDefinition
 
 var health: Health
-
 
 func _ready() -> void:
 	if definition == null:
@@ -17,6 +18,8 @@ func _ready() -> void:
 
 	health = Health.new(definition.max_hp)
 	health.died.connect(_on_died)
+	
+	sprite_3d.texture = definition.sprite
 
 
 ## Wywoływane przez GameStateManager/CombatManager na początku tury wroga.

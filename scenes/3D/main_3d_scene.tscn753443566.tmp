@@ -76,13 +76,13 @@ adjustment_saturation = 1.27
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_xr32f"]
 dof_blur_near_distance = 10.05
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_a5i42"]
-size = Vector3(64.085, 0.5, 35.673)
-
 [sub_resource type="BoxMesh" id="BoxMesh_wvhbo"]
 size = Vector3(8, 0.1, 4.3)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rqbel"]
+size = Vector3(8, 0.1, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a5i42"]
 size = Vector3(8, 0.1, 3)
 
 [sub_resource type="BoxMesh" id="BoxMesh_rqbel"]
@@ -273,29 +273,6 @@ transform = Transform3D(-4.371139e-08, -0.74024993, 0.6723318, 0, 0.6723318, 0.7
 fov = 29.862835
 size = 0.1
 
-[node name="BoxBlocker" type="StaticBody3D" parent="." unique_id=1011580798]
-transform = Transform3D(-2.1855695e-09, 0, 0.05, 0, 0.05, 0, -0.05, 0, -2.1855695e-09, 0.0049730632, 1.1412127, -0.06945217)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BoxBlocker" unique_id=1826459755]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5218506, 0, -0.14074887)
-shape = SubResource("BoxShape3D_a5i42")
-
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="BoxBlocker" unique_id=222034921]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -1.5218506, -7.711655e-07, 17.501461)
-shape = SubResource("BoxShape3D_a5i42")
-
-[node name="CollisionShape3D3" type="CollisionShape3D" parent="BoxBlocker" unique_id=1036565746]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -1.5218506, -2.3209368e-06, -17.953175)
-shape = SubResource("BoxShape3D_a5i42")
-
-[node name="CollisionShape3D4" type="CollisionShape3D" parent="BoxBlocker" unique_id=1623994409]
-transform = Transform3D(-4.371139e-08, 1, -4.371139e-08, -1.323489e-22, -4.371139e-08, -1, -1, -4.371139e-08, 1.9106863e-15, 30.082962, 0, -0.22585729)
-shape = SubResource("BoxShape3D_a5i42")
-
-[node name="CollisionShape3D5" type="CollisionShape3D" parent="BoxBlocker" unique_id=319931625]
-transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 1.323489e-22, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106863e-15, -33.564915, -1.9073486e-06, -0.22585705)
-shape = SubResource("BoxShape3D_a5i42")
-
 [node name="Box" type="Node3D" parent="." unique_id=718227720]
 transform = Transform3D(-2.1855695e-09, 0, 0.05, 0, 0.05, 0, -0.05, 0, -2.1855695e-09, 0, 0, 1.5029671)
 visible = false
@@ -307,6 +284,16 @@ mesh = SubResource("BoxMesh_wvhbo")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Box/Floor/StaticBody3D" unique_id=295069957]
 shape = SubResource("BoxShape3D_rqbel")
+
+[node name="Floor2" type="MeshInstance3D" parent="Box" unique_id=390744282]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8790698, 0.09946263)
+visible = false
+mesh = SubResource("BoxMesh_wvhbo")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Box/Floor2" unique_id=1011580798]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box/Floor2/StaticBody3D" unique_id=1826459755]
+shape = SubResource("BoxShape3D_a5i42")
 
 [node name="Wall" type="MeshInstance3D" parent="Box" unique_id=789475113]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.6, 2.25)
@@ -391,7 +378,7 @@ mesh = SubResource("BoxMesh_a5i42")
 shape = SubResource("BoxShape3D_a0yx4")
 
 [node name="DiceContainer" type="Node3D" parent="." unique_id=933139626]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, -0.19943744, 0.00018310547)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0.040262517, 0.00018310547)
 script = ExtResource("5_kamvo")
 
 [node name="Props" type="Node3D" parent="." unique_id=1649492425]

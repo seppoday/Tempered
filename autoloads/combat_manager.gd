@@ -37,7 +37,13 @@ func resolve_player_attack(selected_results: Array[Dictionary]) -> void:
 	if is_game_over:
 		return
 
+	var target: = current_enemy
+
 	for result in selected_results:
+		# Sprawdź czy wróg nie zmienił się w trakcie lub nie zginął lub gra się nie skończyła, aby nie przechodził atak na kolejnego enemy
+		if is_game_over or current_enemy == null or current_enemy != target:
+			break
+			
 		var skill: SkillDefinition = result["skill"]
 		var max_face: int = result["max_face"]
 		var value := roundi(skill.base_value * max_face)
@@ -81,8 +87,8 @@ func _apply_heal_to_player(skill: SkillDefinition, value: int) -> void:
 
 func _on_current_enemy_died(enemy: EnemyInstance) -> void:
 	print("Wróg pokonany: %s" % enemy.definition.enemy_name)
-	enemy_died.emit(enemy)
 	current_enemy = null
+	enemy_died.emit(enemy)
 
 
 func _on_player_died() -> void:
