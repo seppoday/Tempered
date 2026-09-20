@@ -1,0 +1,271 @@
+[gd_scene format=3 uid="uid://b603jd6jgv7yj"]
+
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="1_lhyd0"]
+[ext_resource type="Script" uid="uid://rhwee7ilv64" path="res://scripts/UI/item_panel.gd" id="2_3pyoa"]
+[ext_resource type="PackedScene" uid="uid://x4spoxodgh4x" path="res://scenes/equipment_slot.tscn" id="3_vjrio"]
+[ext_resource type="Texture2D" uid="uid://ygdvvwu2iiq5" path="res://assets/ui/amulet_slot_placeholder.png" id="4_ya0yf"]
+[ext_resource type="Texture2D" uid="uid://bp8alctflgmd7" path="res://assets/ui/helmet_slot_placeholder.png" id="5_jqmly"]
+[ext_resource type="Texture2D" uid="uid://dftmcck2to81" path="res://assets/ui/ring_slot_placeholder.png" id="6_feca5"]
+[ext_resource type="Texture2D" uid="uid://cp1hwkfgl84rj" path="res://assets/ui/weapon_slot_placeholder.png" id="7_ayde0"]
+[ext_resource type="Texture2D" uid="uid://b4jtn8mldxqyf" path="res://assets/ui/armor_slot_placeholder.png" id="8_pt71u"]
+[ext_resource type="Texture2D" uid="uid://doswu3pxkpcf6" path="res://assets/ui/shield_slot_placeholder.png" id="9_t077t"]
+[ext_resource type="Texture2D" uid="uid://hckl245r3g2f" path="res://assets/ui/boots_slot_placeholder.png" id="10_noosx"]
+[ext_resource type="Script" uid="uid://ciakkvnknrtrw" path="res://scripts/UI/alchemy_panel.gd" id="11_hqhi7"]
+[ext_resource type="Script" uid="uid://cpns5yr2xh0ev" path="res://scripts/UI/inventory.gd" id="12_60tpx"]
+[ext_resource type="Script" uid="uid://dyvxaabqf72dk" path="res://data/definitions/inventory_entry.gd" id="13_y2y3y"]
+[ext_resource type="Resource" uid="uid://bdo0a1sdk0vx1" path="res://definitions/consumable/potion_small.tres" id="14_8g54w"]
+[ext_resource type="Resource" uid="uid://c0juciddabsbt" path="res://definitions/items/armor/knight_armor.tres" id="15_6p4l3"]
+[ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://definitions/materials/misc/upgrade_dice_d6.tres" id="16_p4vqy"]
+[ext_resource type="Resource" uid="uid://dtnpnnyo0kyjn" path="res://definitions/materials/misc/upgrade_dice_d8.tres" id="17_wij1r"]
+[ext_resource type="Resource" uid="uid://cufr2r1ewv6c6" path="res://definitions/materials/misc/upgrade_dice_d10.tres" id="18_qsr5v"]
+[ext_resource type="Resource" uid="uid://dsduls0bi6xud" path="res://definitions/materials/misc/upgrade_dice_d12.tres" id="19_adse8"]
+[ext_resource type="Resource" uid="uid://d34h5uwlsdqvl" path="res://definitions/materials/misc/upgrade_dice_d16.tres" id="20_78wb8"]
+[ext_resource type="Resource" uid="uid://dk3ixuqlc7qyg" path="res://definitions/materials/misc/upgrade_dice_d20.tres" id="21_k1yji"]
+[ext_resource type="Resource" uid="uid://cl0cq55cuw0hb" path="res://items/skill_items/skill_item_fire_attack.tres" id="22_fg2vn"]
+[ext_resource type="PackedScene" uid="uid://bbadchds7qm5n" path="res://scenes/slot.tscn" id="23_lv0ea"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tpase"]
+bg_color = Color(0.103743516, 0.103743546, 0.10374347, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="Control" type="Control" unique_id=719906479]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1767829271]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_lhyd0")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2026394441]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="MainWindow" type="BoxContainer" parent="MarginContainer" unique_id=933473051]
+layout_mode = 2
+alignment = 2
+
+[node name="MiddlePanel" type="BoxContainer" parent="MarginContainer/MainWindow" unique_id=1416639008]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="InventorySection" type="BoxContainer" parent="MarginContainer/MainWindow/MiddlePanel" unique_id=1261619802]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+offset_transform_enabled = true
+offset_transform_visual_only = false
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="BoxContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection" unique_id=1300975628]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+vertical = true
+
+[node name="Equipment" type="PanelContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer" unique_id=1393604983]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_tpase")
+script = ExtResource("2_3pyoa")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment" unique_id=1871844910]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="EquipmentGrid" type="GridContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer" unique_id=1430421499]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+columns = 3
+
+[node name="AmuletSlot" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1626732313 instance=ExtResource("3_vjrio")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 5
+placeholder_texture = ExtResource("4_ya0yf")
+
+[node name="HelmetSlot" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=560705429 instance=ExtResource("3_vjrio")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 1
+placeholder_texture = ExtResource("5_jqmly")
+
+[node name="RingSlot" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1633492845 instance=ExtResource("3_vjrio")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 6
+placeholder_texture = ExtResource("6_feca5")
+
+[node name="WeaponSlot" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=956792805 instance=ExtResource("3_vjrio")]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_texture = ExtResource("7_ayde0")
+
+[node name="ArmorSlot" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1104476082 instance=ExtResource("3_vjrio")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 2
+placeholder_texture = ExtResource("8_pt71u")
+
+[node name="ShieldSlot" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1485843933 instance=ExtResource("3_vjrio")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 7
+placeholder_texture = ExtResource("9_t077t")
+
+[node name="GlovesSlot" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=245585816 instance=ExtResource("3_vjrio")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 3
+placeholder_texture = ExtResource("1_lhyd0")
+
+[node name="BootsSlot" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=2009520378 instance=ExtResource("3_vjrio")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 4
+placeholder_texture = ExtResource("10_noosx")
+
+[node name="Additional" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1277186913 instance=ExtResource("3_vjrio")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 8
+placeholder_texture = ExtResource("10_noosx")
+
+[node name="Stats" type="PanelContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer" unique_id=1285859700]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_tpase")
+script = ExtResource("2_3pyoa")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Stats" unique_id=803720260]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="StatsBox" type="VBoxContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Stats/MarginContainer" unique_id=1347559356]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InventoryPanel" type="VBoxContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection" unique_id=376729365]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 12
+
+[node name="Alchemy" type="PanelContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel" unique_id=1171174198]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tpase")
+script = ExtResource("11_hqhi7")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy" unique_id=1799707289]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer" unique_id=573675746]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer" unique_id=1059073781]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="AlchemyGrid" type="GridContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1283414580]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 5
+
+[node name="AlchemyGridResults" type="GridContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer/HBoxContainer" unique_id=784857977]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CraftButton" type="Button" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer" unique_id=4910709]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Połącz składniki"
+
+[node name="Inventory" type="PanelContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel" unique_id=625927030]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_tpase")
+script = ExtResource("12_60tpx")
+base_items = Dictionary[ExtResource("13_y2y3y"), int]({
+ExtResource("14_8g54w"): 5,
+ExtResource("15_6p4l3"): 1,
+ExtResource("16_p4vqy"): 5,
+ExtResource("17_wij1r"): 5,
+ExtResource("18_qsr5v"): 5,
+ExtResource("19_adse8"): 5,
+ExtResource("20_78wb8"): 5,
+ExtResource("21_k1yji"): 5,
+ExtResource("22_fg2vn"): 5
+})
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory" unique_id=720807219]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer" unique_id=796838607]
+layout_mode = 2
+columns = 6
+
+[node name="Slot" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer/GridContainer" unique_id=1297978854 instance=ExtResource("23_lv0ea")]
+layout_mode = 2
+
+[node name="Slot2" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer/GridContainer" unique_id=230796878 instance=ExtResource("23_lv0ea")]
+layout_mode = 2
+
+[node name="Slot3" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer/GridContainer" unique_id=531405922 instance=ExtResource("23_lv0ea")]
+layout_mode = 2
+
+[node name="Slot4" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer/GridContainer" unique_id=417922055 instance=ExtResource("23_lv0ea")]
+layout_mode = 2
+
+[node name="Slot5" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer/GridContainer" unique_id=459523754 instance=ExtResource("23_lv0ea")]
+layout_mode = 2
+
+[node name="Slot6" parent="MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer/GridContainer" unique_id=1299130592 instance=ExtResource("23_lv0ea")]
+layout_mode = 2

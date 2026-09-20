@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Tempered"
-run/main_scene="uid://b7geclixrytt3"
+run/main_scene="uid://cm0pwye2hbeox"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -36,6 +36,7 @@ AudioManager="*uid://ds2cvb4djus4j"
 UIAnim="*uid://df6y53u8nyheq"
 AudioLibrary="*uid://cpsk86ml2tmsk"
 CombatManager="*uid://6uhbbfy05lko"
+SceneTransition="*uid://db2lmw3wdtyjd"
 
 [debug]
 
@@ -82,6 +83,7 @@ jump={
 [physics]
 
 3d/physics_engine="Jolt Physics"
+3d/main_scene="uid://cm0pwye2hbeox"
 
 [rendering]
 

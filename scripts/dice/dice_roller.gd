@@ -45,7 +45,7 @@ func _spawn_dice_for_equipped_items() -> void:
 
 		var die := die_scene.instantiate() as RigidBody3D
 		add_child(die)
-
+		print(die.global_position)
 		die.freeze = true
 		die.linear_damp = 0.2
 		die.angular_damp = 0.2
@@ -69,7 +69,7 @@ func _clear_previous_dice() -> void:
 
 
 func _throw_all_dice() -> void:
-	var spawn_positions := calculate_grid_positions(dice_group.size(), 3, 1.8)
+	var spawn_positions := calculate_grid_positions(dice_group.size(), 3, 0.2)
 
 	for i in range(dice_group.size()):
 		var die := dice_group[i]
@@ -77,7 +77,7 @@ func _throw_all_dice() -> void:
 
 		die.freeze = false
 
-		var random_offset = Vector3(randf_range(-0.15, 0.15), randf_range(0.0, 0.2), randf_range(-0.15, 0.15))
+		var random_offset = Vector3(randf_range(-0.05, 0.05), randf_range(0.0, 0.02), randf_range(-0.05, 0.05))
 		die.global_position = spawn_positions[i] + random_offset
 
 		die.linear_velocity = Vector3.ZERO
@@ -91,8 +91,8 @@ func _throw_all_dice() -> void:
 
 		die.rotation = Vector3(randf_range(0, TAU), randf_range(0, TAU), randf_range(0, TAU))
 
-		var push_force = Vector3(randf_range(-4.0, 4.0), randf_range(4.0, 6.0), randf_range(-4.0, 4.0))
-		var torque = Vector3(randf_range(-15.0, 15.0), randf_range(-15.0, 15.0), randf_range(-15.0, 15.0))
+		var push_force = Vector3(randf_range(-1.0, 1.0), randf_range(1.0, 2.0), randf_range(-1.0, 1.0))
+		var torque = Vector3(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0), randf_range(-1.0, 1.0))
 
 		die.apply_central_impulse(push_force)
 		die.apply_torque_impulse(torque)
@@ -119,7 +119,7 @@ func _throw_all_dice() -> void:
 		var start_q = die.global_basis.get_rotation_quaternion().normalized()
 		var end_q = (correction_q * start_q).normalized()
 
-		var safe_floor_y = 0.5 if pending_results[i]["max_face"] <= 6 else 0.58
+		var safe_floor_y = 0.01 if pending_results[i]["max_face"] <= 6 else 0.02
 		var target_pos = Vector3(die.global_position.x, safe_floor_y, die.global_position.z)
 
 		var tween = create_tween().set_parallel(true)

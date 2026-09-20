@@ -39,14 +39,16 @@ var attributes: Dictionary = {
 }
 
 var equipped_items: Dictionary = {
-	EquipmentSlot.Type.WEAPON: null,
-	EquipmentSlot.Type.HELMET: null,
-	EquipmentSlot.Type.CHEST: null,
-	EquipmentSlot.Type.GLOVES: null,
-	EquipmentSlot.Type.BOOTS: null,
 	EquipmentSlot.Type.AMULET: null,
+	EquipmentSlot.Type.HELMET: null,
 	EquipmentSlot.Type.RING: null,
-	EquipmentSlot.Type.ADDITIONAL: null,
+	EquipmentSlot.Type.WEAPON: null,
+	EquipmentSlot.Type.CHEST: null,
+	EquipmentSlot.Type.SHIELD: null,
+	EquipmentSlot.Type.GLOVES: null,
+	EquipmentSlot.Type.LEGS: null,
+	EquipmentSlot.Type.BOOTS: null,
+	EquipmentSlot.Type.BACKPACK: null,
 }
 
 
@@ -56,7 +58,7 @@ const DEBUG_START_GEAR: Array[Dictionary] = [
 	{"id": "rusty_sword",    "count": 1, "level": 1},
 	{"id": "iron_shield",    "count": 1, "level": 1},
 	{"id": "silver_amulet",  "count": 1, "level": 6},
-	{"id": "knight_armor",   "count": 1, "level": 6},
+	{"id": "knight_armor",   "count": 1, "level": 1},
 	{"id": "leather_gloves", "count": 1, "level": 6},
 	{"id": "hunter_boots",   "count": 1, "level": 6},
 	{"id": "leather_cap",    "count": 1, "level": 6},

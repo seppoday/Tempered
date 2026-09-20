@@ -8,7 +8,7 @@ extends Node3D
 @export var enemy_scene: PackedScene
 
 @onready var camera = $Camera3D
-@onready var canvas_layer = %MainSceneCanvasLayer
+@onready var canvas_layer = %MainSceneUICanvasLayer
 @onready var enemy_spawn_point: Node3D = $EnemySpawnPoint
 
 var active_tags: Array[Control] = []
@@ -17,8 +17,11 @@ var pending_results: Array[Dictionary] = []
 var is_rolling := false
 var update_tags := false
 
+var dice_tag_cration_wait_time: float = 0.08
+
 
 func _ready() -> void:
+	AudioManager.play_music(AudioLibrary.get_music(AudioKeys.MUSIC_TEST), -10.0)
 	roll_button.pressed.connect(_on_roll_button_pressed)
 	confirm_button.pressed.connect(_on_confirm_button_pressed)
 	dice_roller.dice_spawned.connect(_on_dice_spawned)
@@ -66,7 +69,7 @@ func _update_all_tag_positions(delta: float) -> void:
 	if count == 0: return
 
 	var viewport_size = get_viewport().get_visible_rect().size
-	var margin = 16.0
+	var margin = 2.0
 	var tag_rects: Array[Rect2] = []
 
 	for i in range(count):
@@ -77,7 +80,7 @@ func _update_all_tag_positions(delta: float) -> void:
 			tag_rects.append(Rect2())
 			continue
 
-		var world_pos = die.global_position + Vector3(0, 1.2, 0)
+		var world_pos = die.global_position + Vector3(0, 0.2, 0)
 		if camera.is_position_behind(world_pos):
 			tag_rects.append(Rect2())
 			continue
@@ -111,7 +114,7 @@ func _update_all_tag_positions(delta: float) -> void:
 		if not tag.visible or tag.position == Vector2.ZERO:
 			tag.position = target_pos
 		else:
-			tag.position = tag.position.lerp(target_pos, delta * 18.0)
+			tag.position = tag.position.lerp(target_pos, delta * 1.8)
 
 
 func _on_roll_button_pressed() -> void:
@@ -207,7 +210,7 @@ func _reveal_results() -> void:
 		tag.pop_in(0.0)
 
 		AudioManager.play_sfx_random_pitch(AudioLibrary.get_sfx(AudioKeys.SFX_POP), -6.0, 0.75, 1.25)
-		await get_tree().create_timer(0.18).timeout
+		await get_tree().create_timer(dice_tag_cration_wait_time).timeout
 
 	update_tags = false
 	await _align_tags_to_center_line()
@@ -259,3 +262,7 @@ func _align_tags_to_center_line() -> void:
 		current_x += tag_widths[i] + spacing
 
 	await align_tween.finished
+	
+func _unhandled_input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("ui_accept"):
+		PlayerData.health.take_damage(15)

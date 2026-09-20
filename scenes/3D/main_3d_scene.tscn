@@ -1,11 +1,36 @@
-[gd_scene format=3 uid="uid://cm0pwye2hbeox"]
+[gd_scene format=4 uid="uid://cm0pwye2hbeox"]
 
 [ext_resource type="Script" uid="uid://b2tk28s7m5b0s" path="res://scripts/gameplay/main_3d_scene.gd" id="1_8ngun"]
 [ext_resource type="PackedScene" uid="uid://dei603y45frkh" path="res://scenes/UI/dicetag.tscn" id="2_rqbel"]
 [ext_resource type="Texture2D" uid="uid://ccnj0242llxhy" path="res://assets/hdri.exr" id="3_yvypd"]
 [ext_resource type="PackedScene" uid="uid://ckvbsvfexndh8" path="res://scenes/enemies/enemy.tscn" id="4_yvypd"]
 [ext_resource type="Script" uid="uid://4h22nrdhg6oe" path="res://scripts/dice/dice_roller.gd" id="5_kamvo"]
+[ext_resource type="Script" uid="uid://lsq25y02lat2" path="res://scripts/UI/main_ui.gd" id="7_ap16l"]
 [ext_resource type="Script" uid="uid://d17lfr8pb8lfj" path="res://scripts/gameplay/wave_manager.gd" id="7_avuin"]
+[ext_resource type="Script" uid="uid://dpyk5dj1dlqss" path="res://scripts/UI/gold_label.gd" id="8_ice7a"]
+[ext_resource type="Script" uid="uid://rhwee7ilv64" path="res://scripts/UI/item_panel.gd" id="9_xr32f"]
+[ext_resource type="PackedScene" uid="uid://x4spoxodgh4x" path="res://scenes/equipment_slot.tscn" id="10_sj3ib"]
+[ext_resource type="Texture2D" uid="uid://ygdvvwu2iiq5" path="res://assets/ui/amulet_slot_placeholder.png" id="11_lw8pt"]
+[ext_resource type="Texture2D" uid="uid://bp8alctflgmd7" path="res://assets/ui/helmet_slot_placeholder.png" id="12_hgf45"]
+[ext_resource type="Texture2D" uid="uid://dftmcck2to81" path="res://assets/ui/ring_slot_placeholder.png" id="13_6ydfj"]
+[ext_resource type="Texture2D" uid="uid://cp1hwkfgl84rj" path="res://assets/ui/weapon_slot_placeholder.png" id="14_2r5wi"]
+[ext_resource type="Texture2D" uid="uid://b4jtn8mldxqyf" path="res://assets/ui/armor_slot_placeholder.png" id="15_j5tbv"]
+[ext_resource type="Texture2D" uid="uid://doswu3pxkpcf6" path="res://assets/ui/shield_slot_placeholder.png" id="16_hgqcf"]
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="17_82cka"]
+[ext_resource type="Texture2D" uid="uid://hckl245r3g2f" path="res://assets/ui/boots_slot_placeholder.png" id="18_ufuvc"]
+[ext_resource type="Script" uid="uid://ciakkvnknrtrw" path="res://scripts/UI/alchemy_panel.gd" id="19_8r76n"]
+[ext_resource type="Script" uid="uid://cpns5yr2xh0ev" path="res://scripts/UI/inventory.gd" id="20_q0ack"]
+[ext_resource type="Script" uid="uid://dyvxaabqf72dk" path="res://data/definitions/inventory_entry.gd" id="21_50bjb"]
+[ext_resource type="Resource" uid="uid://bdo0a1sdk0vx1" path="res://definitions/consumable/potion_small.tres" id="22_lhg76"]
+[ext_resource type="Resource" uid="uid://c0juciddabsbt" path="res://definitions/items/armor/knight_armor.tres" id="23_amdh2"]
+[ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://definitions/materials/misc/upgrade_dice_d6.tres" id="24_mpvc3"]
+[ext_resource type="Resource" uid="uid://dtnpnnyo0kyjn" path="res://definitions/materials/misc/upgrade_dice_d8.tres" id="25_g7q3g"]
+[ext_resource type="Resource" uid="uid://cufr2r1ewv6c6" path="res://definitions/materials/misc/upgrade_dice_d10.tres" id="26_52jij"]
+[ext_resource type="Resource" uid="uid://dsduls0bi6xud" path="res://definitions/materials/misc/upgrade_dice_d12.tres" id="27_4aqfo"]
+[ext_resource type="Resource" uid="uid://d34h5uwlsdqvl" path="res://definitions/materials/misc/upgrade_dice_d16.tres" id="28_ct24d"]
+[ext_resource type="Resource" uid="uid://dk3ixuqlc7qyg" path="res://definitions/materials/misc/upgrade_dice_d20.tres" id="29_4psnp"]
+[ext_resource type="Resource" uid="uid://cl0cq55cuw0hb" path="res://items/skill_items/skill_item_fire_attack.tres" id="30_ev28f"]
+[ext_resource type="PackedScene" uid="uid://bbadchds7qm5n" path="res://scenes/slot.tscn" id="31_ifyqo"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_wvhbo"]
 panorama = ExtResource("3_yvypd")
@@ -44,6 +69,9 @@ adjustment_brightness = 1.15
 adjustment_contrast = 1.105
 adjustment_saturation = 1.27
 
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_xr32f"]
+dof_blur_near_distance = 10.05
+
 [sub_resource type="BoxMesh" id="BoxMesh_wvhbo"]
 size = Vector3(8, 0.1, 4.3)
 
@@ -79,18 +107,18 @@ albedo_color = Color(0.32544088, 0.3254409, 0.32544088, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_5s3sv"]
 material = SubResource("StandardMaterial3D_5rl3n")
-size = Vector3(33.15332, 0.1, 22.108398)
+size = Vector3(330, 1, 290)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xr32f"]
+size = Vector3(330, 1, 290)
 
 [sub_resource type="BoxMesh" id="BoxMesh_5rl3n"]
-size = Vector3(8, 0.1, 4.157837)
+size = Vector3(8.0802, 0.1, 4.157837)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_a0yx4"]
 size = Vector3(3, 0.1, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_wvhbo"]
-top_radius = 0.94433594
-bottom_radius = 0.94433594
-height = 2.6914063
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_abi3o"]
 albedo_color = Color(1, 0.7254902, 0.29803923, 1)
@@ -102,19 +130,122 @@ bottom_radius = 0.4272461
 height = 0.12402344
 
 [sub_resource type="BoxMesh" id="BoxMesh_ifow5"]
-size = Vector3(2.8417969, 1, 2.7385254)
+size = Vector3(4.4379883, 1, 2.7385254)
 
 [sub_resource type="BoxMesh" id="BoxMesh_a0yx4"]
-size = Vector3(5.649292, 1, 3.6744385)
 
-[node name="Main3DScene" type="Node3D" unique_id=417046850 node_paths=PackedStringArray("dice_roller")]
+[sub_resource type="LabelSettings" id="LabelSettings_6qjdx"]
+font_size = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fdv13"]
+bg_color = Color(0.6431373, 0.09411765, 0, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dwi8f"]
+bg_color = Color(0.2816801, 0.60469335, 0.9927555, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3w64d"]
+bg_color = Color(0.103743516, 0.103743546, 0.10374347, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ke5is"]
+resource_name = "Material"
+cull_mode = 2
+albedo_color = Color(0.9063318, 0.9063318, 0.9063318, 1)
+roughness = 0.5
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_gtwia"]
+_surfaces = [{
+"aabb": AABB(-0.9, -0.25, -1.6, 1.8, 0.5, 3.2),
+"format": 34359742465,
+"index_count": 108,
+"index_data": PackedByteArray("AAABAAEAAAAAAAEAAAACAAEAAQACAAMAAwACAAQAAAAEAAIAAwAEAAUABgAFAAQABgAEAAAABwADAAUAAQADAAcABwAFAAYAAQABAAcAAQAHAAcABgAAAAAABgAGAAAAAQAIAAAABwAGAAYABwAHAAYABwAJAAEAAQAJAAgABgAKAAcABwAKAAkAAAALAAYAAAAIAAsABgALAAoADAAJAAoADQALAAgADgAIAAkADgANAAgADAAOAAkADQAPAAsADwAKAAsADwANAA4ADwAMAAoADwAOAAwA"),
+"name": "Material",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 16,
+"vertex_data": PackedByteArray("EX1YvwAAgD4sb8A/EX1YPwAAgD4sb8A/EX1YP9DsP74sb8A/EX1YP9DsP74sb8C/EX1Yv9DsP74sb8A/EX1Yv9DsP74sb8C/EX1YvwAAgD4sb8C/EX1YPwAAgD4sb8C/ZmZmvwAAgD7NzMw/ZmZmPwAAgD7NzMw/ZmZmPwAAgD7NzMy/ZmZmvwAAgD7NzMy/ZmZmPwAAgL7NzMy/ZmZmvwAAgL7NzMw/ZmZmPwAAgL7NzMw/ZmZmvwAAgL7NzMy/")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_tau5g"]
+resource_name = "Box_Cube"
+_surfaces = [{
+"aabb": AABB(-0.9, -0.25, -1.6, 1.8, 0.5, 3.2),
+"attribute_data": PackedByteArray("XhFeP0Tdgz6h7iE/RN2DPqHuIT9E3YM+oO4hP74i/D5eEV4/RN2DPgAAYD8AAIA+AABgPwAAAD8AACA/AACAPl8RXj/AIvw+XxFeP8Ai/D4AACA/AAAAP6DuIT++Ivw+AADAPgAAgD4AACA/AAAAAAAAID8AAIA+AADAPgAAAAAAAMA+AACAPwAAID8AAEA/AAAgPwAAgD8AAMA+AABAPwAAAD4AAAA/AADAPgAAgD4AAMA+AAAAPwAAAD4AAIA+AADAPgAAAD8AACA/AACAPgAAID8AAAA/AADAPgAAgD4AAMA+AABAPwAAID8AAAA/AAAgPwAAQD8AAMA+AAAAP6DuIT++Ivw+XxFeP8Ai/D5fEV4/wCL8PqDuIT++Ivw+oO4hP74i/D5eEV4/RN2DPl8RXj/AIvw+oe4hP0Tdgz6h7iE/RN2DPqDuIT++Ivw+oO4hP74i/D6h7iE/RN2DPl8RXj/AIvw+XhFeP0Tdgz5eEV4/RN2DPl8RXj/AIvw+XhFeP0Tdgz6h7iE/RN2DPqHuIT9E3YM+XhFeP0Tdgz4="),
+"format": 34359742487,
+"index_count": 108,
+"index_data": PackedByteArray("AAABAAIAAgABAAMAAAAEAAEAAgAFAAAAAAAFAAYAAgAHAAUACAAEAAAAAAAGAAgACAAJAAQACAAGAAoACwADAAkACwAJAAgAAgADAAsACAAKAAsACwAHAAIACwAKAAcADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAVABYAFAAXABUAGAAZABoAGAAbABkAHAAdAB4AHAAfAB0AIAAhACIAIAAjACEAJAAlACYAJAAnACUAKAApACoAKAArACkALAAtAC4ALAAvAC0AMAAxADIAMAAzADEA"),
+"material": SubResource("StandardMaterial3D_ke5is"),
+"name": "Material",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 52,
+"vertex_data": PackedByteArray("EX1YvwAAgD4sb8A/EX1YPwAAgD4sb8A/EX1YPwAAgD4sb8A/EX1YPwAAgD4sb8C/EX1YvwAAgD4sb8A/ZmZmvwAAgD7NzMw/ZmZmvwAAgD7NzMy/ZmZmPwAAgD7NzMw/EX1YvwAAgD4sb8C/EX1YvwAAgD4sb8C/ZmZmPwAAgD7NzMy/EX1YPwAAgD4sb8C/ZmZmPwAAgL7NzMw/ZmZmvwAAgD7NzMw/ZmZmPwAAgD7NzMw/ZmZmvwAAgL7NzMw/ZmZmvwAAgL7NzMw/ZmZmvwAAgD7NzMy/ZmZmvwAAgD7NzMw/ZmZmvwAAgL7NzMy/ZmZmvwAAgL7NzMy/ZmZmPwAAgL7NzMw/ZmZmPwAAgL7NzMy/ZmZmvwAAgL7NzMw/ZmZmPwAAgL7NzMy/ZmZmPwAAgD7NzMw/ZmZmPwAAgD7NzMy/ZmZmPwAAgL7NzMw/ZmZmvwAAgL7NzMy/ZmZmPwAAgD7NzMy/ZmZmvwAAgD7NzMy/ZmZmPwAAgL7NzMy/EX1YPwAAgD4sb8C/EX1Yv9DsP74sb8C/EX1YvwAAgD4sb8C/EX1YP9DsP74sb8C/EX1YP9DsP74sb8C/EX1Yv9DsP74sb8A/EX1Yv9DsP74sb8C/EX1YP9DsP74sb8A/EX1YPwAAgD4sb8A/EX1YP9DsP74sb8C/EX1YPwAAgD4sb8C/EX1YP9DsP74sb8A/EX1YvwAAgD4sb8C/EX1Yv9DsP74sb8A/EX1YvwAAgD4sb8A/EX1Yv9DsP74sb8C/EX1YvwAAgD4sb8A/EX1YP9DsP74sb8A/EX1YPwAAgD4sb8A/EX1Yv9DsP74sb8A//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3//f/9/////f/9//3////9//3//f////3//f/9///8AAP9//3///wAA/3//f///AAD/f/9///8AAP9//3////9/AAD///+//38AAP///7//fwAA////v/9/AAD///+/////f/9///////9//3///////3//f///////f/9//////////3//////////f/////////9//////////3////9//3////8//3//f////z//f/9/////P/9//3////8//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/78AAP9/////vwAA/3////+/AAD/f////78AAP9/////v////3////+/////f////7////9/////v////3////+//////////z//////////P/////////8//////////z8=")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_gtwia")
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_jncqg"]
+data = PackedVector3Array(-0.84565836, 0.25, 1.5033927, 0.84565836, 0.25, 1.5033927, 0.84565836, 0.25, 1.5033927, -0.84565836, 0.25, 1.5033927, -0.84565836, 0.25, 1.5033927, 0.84565836, 0.25, 1.5033927, 0.9, -0.25, 1.6, -0.9, 0.25, 1.6, 0.9, 0.25, 1.6, 0.9, -0.25, 1.6, -0.9, -0.25, 1.6, -0.9, 0.25, 1.6, -0.9, -0.25, 1.6, -0.9, 0.25, -1.6, -0.9, 0.25, 1.6, -0.9, -0.25, 1.6, -0.9, -0.25, -1.6, -0.9, 0.25, -1.6, -0.9, -0.25, -1.6, 0.9, -0.25, 1.6, 0.9, -0.25, -1.6, -0.9, -0.25, -1.6, -0.9, -0.25, 1.6, 0.9, -0.25, 1.6, 0.9, -0.25, -1.6, 0.9, 0.25, 1.6, 0.9, 0.25, -1.6, 0.9, -0.25, -1.6, 0.9, -0.25, 1.6, 0.9, 0.25, 1.6, -0.9, -0.25, -1.6, 0.9, 0.25, -1.6, -0.9, 0.25, -1.6, -0.9, -0.25, -1.6, 0.9, -0.25, -1.6, 0.9, 0.25, -1.6, 0.84565836, 0.25, 1.5033927, -0.9, 0.25, 1.6, -0.84565836, 0.25, 1.5033927, 0.84565836, 0.25, 1.5033927, 0.9, 0.25, 1.6, -0.9, 0.25, 1.6, 0.84565836, 0.25, -1.5033927, 0.9, 0.25, 1.6, 0.84565836, 0.25, 1.5033927, 0.84565836, 0.25, -1.5033927, 0.9, 0.25, -1.6, 0.9, 0.25, 1.6, -0.84565836, 0.25, 1.5033927, -0.9, 0.25, -1.6, -0.84565836, 0.25, -1.5033927, -0.84565836, 0.25, 1.5033927, -0.9, 0.25, 1.6, -0.9, 0.25, -1.6, -0.84565836, 0.25, -1.5033927, 0.9, 0.25, -1.6, 0.84565836, 0.25, -1.5033927, -0.84565836, 0.25, -1.5033927, -0.9, 0.25, -1.6, 0.9, 0.25, -1.6, 0.84565836, 0.25, -1.5033927, -0.84565836, -0.1874268, -1.5033927, -0.84565836, 0.25, -1.5033927, 0.84565836, 0.25, -1.5033927, 0.84565836, -0.1874268, -1.5033927, -0.84565836, -0.1874268, -1.5033927, 0.84565836, 0.25, -1.5033927, -0.84565836, 0.25, -1.5033927, -0.84565836, 0.25, -1.5033927, 0.84565836, 0.25, -1.5033927, 0.84565836, 0.25, -1.5033927, -0.84565836, 0.25, -1.5033927, 0.84565836, 0.25, 1.5033927, 0.84565836, 0.25, -1.5033927, 0.84565836, 0.25, -1.5033927, 0.84565836, 0.25, 1.5033927, 0.84565836, 0.25, 1.5033927, 0.84565836, 0.25, -1.5033927, -0.84565836, 0.25, -1.5033927, -0.84565836, 0.25, 1.5033927, -0.84565836, 0.25, 1.5033927, -0.84565836, 0.25, -1.5033927, -0.84565836, 0.25, -1.5033927, -0.84565836, 0.25, 1.5033927, 0.84565836, -0.1874268, -1.5033927, -0.84565836, -0.1874268, 1.5033927, -0.84565836, -0.1874268, -1.5033927, 0.84565836, -0.1874268, -1.5033927, 0.84565836, -0.1874268, 1.5033927, -0.84565836, -0.1874268, 1.5033927, 0.84565836, 0.25, 1.5033927, 0.84565836, -0.1874268, -1.5033927, 0.84565836, 0.25, -1.5033927, 0.84565836, 0.25, 1.5033927, 0.84565836, -0.1874268, 1.5033927, 0.84565836, -0.1874268, -1.5033927, -0.84565836, 0.25, -1.5033927, -0.84565836, -0.1874268, 1.5033927, -0.84565836, 0.25, 1.5033927, -0.84565836, 0.25, -1.5033927, -0.84565836, -0.1874268, -1.5033927, -0.84565836, -0.1874268, 1.5033927, -0.84565836, 0.25, 1.5033927, 0.84565836, -0.1874268, 1.5033927, 0.84565836, 0.25, 1.5033927, -0.84565836, 0.25, 1.5033927, -0.84565836, -0.1874268, 1.5033927, 0.84565836, -0.1874268, 1.5033927)
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_xemqj"]
+_surfaces = [{
+"aabb": AABB(0, 0, -1.5999999, 1.8, 0.16, 3.1999998),
+"format": 34359742465,
+"index_count": 84,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAACAAEABQAAAAIABAAFAAIABQAGAAAABgADAAAABwABAAMABgAHAAMABwAEAAEACAAGAAUACQAHAAYACQAGAAgACgAHAAkACgAEAAcACwAFAAQACwAEAAoACAAFAAsACQAMAAoACwANAAgACAAOAAkACQAOAAwACAANAA4ACgAMAA8ACgAPAAsADwAMAA4ACwAPAA0ADwAOAA0A"),
+"name": "Material",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 16,
+"vertex_data": PackedByteArray("ZmbmPwrXIz7MzMy/AAAAAArXIz7MzMw/AAAAAArXIz7MzMy/ZmbmPwrXIz7MzMw/AAAAAAAAAADMzMw/AAAAAAAAAADMzMy/ZmbmPwAAAADMzMy/ZmbmPwAAAADMzMw/FUrgPwAAAADK78G/FUrgPwAAAADK78E/HYpDPQAAAADK78E/HYpDPQAAAADK78G/HYpDPW670D3K78E/FUrgP2670D3K78G/FUrgP2670D3K78E/HYpDPW670D3K78G/")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_ktmsg"]
+resource_name = "Box_Cube_001"
+_surfaces = [{
+"aabb": AABB(0, 0, -1.5999999, 1.8, 0.16, 3.1999998),
+"attribute_data": PackedByteArray("AAAgPwAAAD8AAGA/AACAPgAAYD8AAAA/AAAgPwAAgD4AAMA+AACAPgAAID8AAAAAAAAgPwAAgD4AAMA+AAAAAAAAwD4AAIA/AAAgPwAAQD8AACA/AACAPwAAwD4AAEA/8Jq8PhBlgz4hygY+EGWDPiHKBj4QZYM+8Jq8PhBlgz4AAMA+AAAAPwAAID8AAIA+AAAgPwAAAD8AAMA+AACAPgAAwD4AAEA/AAAgPwAAAD8AACA/AABAPwAAwD4AAAA/IcoGPvCa/D4AAAA+AACAPiHKBj4QZYM+AADAPgAAgD4AAAA+AAAAP/CavD4QZYM+8Zq8Pu6a/D4AAMA+AAAAPyHKBj7wmvw+8Jq8PhBlgz7xmrw+7pr8PiHKBj4QZYM+IcoGPhBlgz4hygY+8Jr8PiHKBj7wmvw+IcoGPhBlgz7xmrw+7pr8PvCavD4QZYM+8Jq8PhBlgz7xmrw+7pr8PiHKBj7wmvw+8Zq8Pu6a/D7xmrw+7pr8PiHKBj7wmvw+"),
+"format": 34359742487,
+"index_count": 84,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAVABYAFAAXABUAGAAZABoAGgAZABsAGAAcABkAGgAbAB0AHgAcABgAHQAbAB8AHgAfABwAHQAfAB4AIAAhACIAIAAjACEAJAAlACYAJAAnACUAKAApACoAKAArACkALAAtAC4ALAAvAC0A"),
+"material": SubResource("StandardMaterial3D_ke5is"),
+"name": "Material",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 48,
+"vertex_data": PackedByteArray("ZmbmPwrXIz7MzMy/AAAAAArXIz7MzMw/AAAAAArXIz7MzMy/ZmbmPwrXIz7MzMw/ZmbmPwAAAADMzMw/AAAAAArXIz7MzMw/ZmbmPwrXIz7MzMw/AAAAAAAAAADMzMw/AAAAAAAAAADMzMw/AAAAAArXIz7MzMy/AAAAAArXIz7MzMw/AAAAAAAAAADMzMy/FUrgPwAAAADK78E/HYpDPW670D3K78E/HYpDPQAAAADK78E/FUrgP2670D3K78E/ZmbmPwAAAADMzMy/ZmbmPwrXIz7MzMw/ZmbmPwrXIz7MzMy/ZmbmPwAAAADMzMw/AAAAAAAAAADMzMy/ZmbmPwrXIz7MzMy/AAAAAArXIz7MzMy/ZmbmPwAAAADMzMy/HYpDPQAAAADK78G/AAAAAAAAAADMzMw/HYpDPQAAAADK78E/ZmbmPwAAAADMzMw/AAAAAAAAAADMzMy/FUrgPwAAAADK78E/FUrgPwAAAADK78G/ZmbmPwAAAADMzMy/HYpDPW670D3K78G/FUrgP2670D3K78E/FUrgP2670D3K78G/HYpDPW670D3K78E/HYpDPQAAAADK78E/HYpDPW670D3K78G/HYpDPQAAAADK78G/HYpDPW670D3K78E/FUrgPwAAAADK78G/FUrgP2670D3K78E/FUrgPwAAAADK78E/FUrgP2670D3K78G/HYpDPQAAAADK78G/FUrgP2670D3K78G/FUrgPwAAAADK78G/HYpDPW670D3K78G//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f/9//3////9//3//f////3//f/9/////f/9//3///wAA/3//f///AAD/f/9///8AAP9//3///wAA/3//f////////////z//////////P/////////8//////////z////9//3///////3//f///////f/9///////9//3//////////f/////////9//////////3//////////f////38AAP///7//fwAA////v/9/AAD///+//38AAP///7//fwAA////v/9/AAD///+//38AAP///7//fwAA////v/9/AAD///+//38AAP///7//fwAA////v/9/AAD///+/////f////7////9/////v////3////+/////f////78AAP9/////vwAA/3////+/AAD/f////78AAP9/////v/9//3////8//3//f////z//f/9/////P/9//3////8/")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_xemqj")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_lquvc"]
+size = Vector2(1.92, 1.08)
+
+[node name="Main3DScene" type="Node3D" unique_id=417046850 node_paths=PackedStringArray("roll_button", "confirm_button", "result_label", "dice_roller")]
 script = ExtResource("1_8ngun")
 dice_tag_scene = ExtResource("2_rqbel")
+roll_button = NodePath("MainSceneUICanvasLayer/MarginContainer/VBoxContainer/RollButton")
+confirm_button = NodePath("MainSceneUICanvasLayer/MarginContainer/VBoxContainer/ConfirmButton")
+result_label = NodePath("MainSceneUICanvasLayer/MarginContainer/ResultLabel")
 dice_roller = NodePath("DiceContainer")
 enemy_scene = ExtResource("4_yvypd")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1158641627]
 environment = SubResource("Environment_rqbel")
+camera_attributes = SubResource("CameraAttributesPractical_xr32f")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1860131644]
 transform = Transform3D(-0.86602545, -0.43747962, 0.2420983, 0, 0.4841966, 0.8749593, -0.5000001, 0.7577369, -0.4193265, 0, 0, 0)
@@ -129,12 +260,13 @@ shadow_opacity = 0.99
 shadow_blur = 3.576
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1228112281]
-transform = Transform3D(1, 0, 0, 0, 0.45783183, 0.88903886, 0, -0.88903886, 0.45783183, 0, 17.23034, 6.8568854)
-fov = 30.0
+transform = Transform3D(-4.371139e-08, -0.74024993, 0.6723318, 0, 0.6723318, 0.74024993, -1, 3.2357352e-08, -2.9388557e-08, 4.2191253, 5.755158, -1.8442381e-07)
+fov = 29.862835
 size = 0.1
 
 [node name="Box" type="Node3D" parent="." unique_id=718227720]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.25)
+transform = Transform3D(-2.1855695e-09, 0, 0.05, 0, 0.05, 0, -0.05, 0, -2.1855695e-09, 0, 0, 1.5029671)
+visible = false
 
 [node name="Floor" type="MeshInstance3D" parent="Box" unique_id=96267952]
 mesh = SubResource("BoxMesh_wvhbo")
@@ -195,38 +327,39 @@ transform = Transform3D(1, 0, 0, 0, 1, 8.351872e-23, 0, 8.351872e-23, 1, 0, 0, 0
 shape = SubResource("BoxShape3D_vd2wl")
 
 [node name="Table" type="MeshInstance3D" parent="." unique_id=2053845825]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.26035833, 0.25)
+transform = Transform3D(-2.1855695e-09, 0, 0.05, 0, 0.05, 0, -0.05, 0, -2.1855695e-09, 0, -0.27237177, 0.076562494)
 mesh = SubResource("BoxMesh_5s3sv")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Table" unique_id=435575490]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Table/StaticBody3D" unique_id=455343655]
-shape = SubResource("BoxShape3D_rqbel")
-
-[node name="EnemyBackplate" type="MeshInstance3D" parent="." unique_id=1608702957]
-transform = Transform3D(1, 0, 0, 0, 0.8660254, -0.5, 0, 0.5, 0.8660254, 0.013428688, 1.2163198, -4.2273912)
-mesh = SubResource("BoxMesh_5rl3n")
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Table/StaticBody3D" unique_id=1677362064]
+shape = SubResource("BoxShape3D_xr32f")
 
 [node name="EnemySpawnPoint" type="Marker3D" parent="." unique_id=446138479]
-transform = Transform3D(1, 0, 0, 0, 0.8660254, -0.5, 0, 0.5, 0.8660254, 0.013428688, 1.2163198, -4.2273912)
+transform = Transform3D(-4.371139e-08, 0.5705834, 0.82123965, 0, 0.82123965, -0.5705834, -1, -2.4940993e-08, -3.5897525e-08, -1.6574966, 0.691186, 4.268252e-08)
 
 [node name="BoxTop" type="Node3D" parent="." unique_id=655316211]
-transform = Transform3D(1, 1.3027009e-15, 3.5527137e-15, 0, 0.49999997, 0.8660254, 3.5527137e-15, -0.8660254, 0.49999997, 0.013428688, 0.7503941, -2.2203848)
+transform = Transform3D(-2.1855695e-09, -0.04330127, 0.025000004, 0, 0.025000004, 0.04330127, -0.05, 1.8927586e-09, -1.0927849e-09, 0.013428688, 1.1751683, -5.7940874)
+visible = false
+
+[node name="EnemyBackplate" type="MeshInstance3D" parent="BoxTop" unique_id=1608702957]
+transform = Transform3D(1, -3.5526986e-15, -2.2500128e-15, 0, -2.9802322e-08, -1, 0, 1, -2.9802322e-08, 0.040100098, 1.936276, -1.2699159)
+mesh = SubResource("BoxMesh_5rl3n")
 
 [node name="Wall5" type="MeshInstance3D" parent="BoxTop" unique_id=235949749]
-transform = Transform3D(1, -1.3027007e-15, -3.5527135e-15, 3.0767402e-15, 1, 0, -1.7763567e-15, 0, 1, 0, 2.3841858e-07, -5.9604645e-08)
+transform = Transform3D(1, -1.3027007e-15, -3.5527135e-15, 3.0767402e-15, 1, 0, -1.7763567e-15, 0, 1, 2.0537214e-15, 2.3841858e-07, -0.5780713)
 mesh = SubResource("BoxMesh_rqbel")
 
 [node name="Wall6" type="MeshInstance3D" parent="BoxTop" unique_id=421051974]
-transform = Transform3D(1, -1.3027007e-15, -3.5527135e-15, 3.0767402e-15, 1, 0, -1.7763567e-15, 0, 1, 0, 4, 2.9802322e-07)
+transform = Transform3D(1, -1.3027007e-15, -3.5527135e-15, 3.0767402e-15, 1, 0, -1.7763567e-15, 0, 1, 2.0537214e-15, 4, -0.57807094)
 mesh = SubResource("BoxMesh_rqbel")
 
 [node name="Wall7" type="MeshInstance3D" parent="BoxTop" unique_id=840693734]
-transform = Transform3D(-4.3711392e-08, -1, -4.3711392e-08, 1, -4.3711392e-08, -2.9802322e-08, 2.9802322e-08, -4.3711392e-08, 1, 4.008583, 1.8725348, -1.7881393e-07)
+transform = Transform3D(-4.3711392e-08, -1, -4.3711392e-08, 1, -4.3711392e-08, -2.9802322e-08, 2.9802322e-08, -4.3711392e-08, 1, 4.008583, 1.8725348, -0.5780714)
 mesh = SubResource("BoxMesh_4uwfm")
 
 [node name="Wall8" type="MeshInstance3D" parent="BoxTop" unique_id=710918998]
-transform = Transform3D(-4.3711392e-08, -1, -4.3711392e-08, 1, -4.3711392e-08, -2.9802322e-08, 2.9802322e-08, -4.3711392e-08, 1, -3.991417, 1.8725338, -5.9604645e-08)
+transform = Transform3D(-4.3711392e-08, -1, -4.3711392e-08, 1, -4.3711392e-08, -2.9802322e-08, 2.9802322e-08, -4.3711392e-08, 1, -3.991417, 1.8725338, -0.5780713)
 mesh = SubResource("BoxMesh_a5i42")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="BoxTop/Wall8" unique_id=299398784]
@@ -235,38 +368,437 @@ mesh = SubResource("BoxMesh_a5i42")
 shape = SubResource("BoxShape3D_a0yx4")
 
 [node name="DiceContainer" type="Node3D" parent="." unique_id=933139626]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0.040262517, 0.00018310547)
 script = ExtResource("5_kamvo")
 
 [node name="Props" type="Node3D" parent="." unique_id=1649492425]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Props" unique_id=1130420043]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.7864904, 0.9756608, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.157814, 0.7526282, 0.65428966)
 mesh = SubResource("CylinderMesh_wvhbo")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="Props" unique_id=1180479643]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.3861055, 0.9756608, 3.0563917)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.88242, 0.7526281, -1.7747266)
 mesh = SubResource("CylinderMesh_wvhbo")
 
 [node name="MeshInstance3D5" type="MeshInstance3D" parent="Props" unique_id=417963231]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9780912, -0.117572784, 0.7349491)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5801115, -0.18536007, 0.9343791)
 mesh = SubResource("CylinderMesh_l3r7w")
 
 [node name="MeshInstance3D7" type="MeshInstance3D" parent="Props" unique_id=900675602]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2946277, -0.117572784, 1.5774169)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.896648, -0.18536007, 1.7768469)
 mesh = SubResource("CylinderMesh_l3r7w")
 
 [node name="MeshInstance3D6" type="MeshInstance3D" parent="Props" unique_id=2008974576]
-transform = Transform3D(0.98358154, -0.18046412, 0, 0.18046412, 0.98358154, 0, 0, 0, 1, -6.419022, -0.037905112, 0.7349491)
+transform = Transform3D(0.98358154, -0.18046412, 0, 0.18046412, 0.98358154, 0, 0, 0, 1, -3.0210423, -0.10927549, 0.9343791)
 mesh = SubResource("CylinderMesh_l3r7w")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="Props" unique_id=381559824]
-transform = Transform3D(0.8660254, 0, -0.5, 0, 1, 0, 0.5, 0, 0.8660254, -7.4849105, 0.9756608, -2.1203623)
+transform = Transform3D(0.8660254, 0, -0.5, 0, 1, 0, 0.5, 0, 0.8660254, -4.902467, 0.25262856, -2.1767836)
+mesh = SubResource("BoxMesh_ifow5")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="Props" unique_id=1989308225]
+transform = Transform3D(0.8660254, 0, -0.5, 0, 1, 0, 0.5, 0, 0.8660254, -4.0181756, 8.778902, 5.5071664)
 mesh = SubResource("BoxMesh_ifow5")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="Props" unique_id=768184311]
-transform = Transform3D(0.64778465, 0, -0.7618235, 0, 1, 0, 0.7618235, 0, 0.64778465, 8.232346, 0.9756608, -6.5406313)
+transform = Transform3D(0.64778465, 0, -0.7618235, 0, 1, 0, 0.7618235, 0, 0.64778465, -1.4670243, 0.25262833, 2.737987)
 mesh = SubResource("BoxMesh_a0yx4")
 
 [node name="WaveManager" type="Node" parent="." unique_id=1545171642]
 script = ExtResource("7_avuin")
+
+[node name="MainSceneUICanvasLayer" type="CanvasLayer" parent="." unique_id=507339266]
+unique_name_in_owner = true
+script = ExtResource("7_ap16l")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainSceneUICanvasLayer" unique_id=1930253621]
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="ResultLabel" type="Label" parent="MainSceneUICanvasLayer/MarginContainer" unique_id=376320681]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+label_settings = SubResource("LabelSettings_6qjdx")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainSceneUICanvasLayer/MarginContainer" unique_id=1383841492]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/separation = 24
+
+[node name="HBoxContainer" type="BoxContainer" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer" unique_id=485729519]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+vertical = true
+
+[node name="ExpBox" type="BoxContainer" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1574266076]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ExpBox" unique_id=131132722]
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 2
+text = "EXP"
+
+[node name="ExpCurrent" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ExpBox" unique_id=2145037364]
+layout_mode = 2
+text = "0"
+
+[node name="ExpProgressBar" type="ProgressBar" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ExpBox" unique_id=305907779]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -1.6)
+theme_override_styles/fill = SubResource("StyleBoxFlat_fdv13")
+value = 11.05
+show_percentage = false
+
+[node name="ExpMax" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ExpBox" unique_id=1589386613]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "100"
+
+[node name="HpBox" type="BoxContainer" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1955519889]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/HpBox" unique_id=1871555241]
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 2
+text = "HP"
+vertical_alignment = 1
+
+[node name="HpCurrent" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/HpBox" unique_id=701309585]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "0"
+vertical_alignment = 1
+
+[node name="HpProgressBar" type="ProgressBar" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/HpBox" unique_id=54554829]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 4)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -1.6)
+theme_override_styles/fill = SubResource("StyleBoxFlat_dwi8f")
+value = 11.05
+show_percentage = false
+
+[node name="HpMax" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/HpBox" unique_id=1363107852]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "100"
+
+[node name="ManaBox" type="BoxContainer" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1890788036]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ManaBox" unique_id=577927676]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+text = "MANA: "
+
+[node name="ManaProgressBar" type="ProgressBar" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ManaBox" unique_id=1406694630]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(-1, 16)
+layout_mode = 2
+value = 11.05
+
+[node name="GoldLabel" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer" unique_id=368449364]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 10
+offset_transform_enabled = true
+text = "Gold: 1235$"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("8_ice7a")
+
+[node name="VBoxContainer" type="BoxContainer" parent="MainSceneUICanvasLayer/MarginContainer" unique_id=1531179192]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/separation = 24
+
+[node name="RollButton" type="Button" parent="MainSceneUICanvasLayer/MarginContainer/VBoxContainer" unique_id=1335128765]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "ROLL"
+
+[node name="ConfirmButton" type="Button" parent="MainSceneUICanvasLayer/MarginContainer/VBoxContainer" unique_id=664425350]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "CONFIRM SELECTED DICES"
+
+[node name="EquipmentCanvasLayer" type="CanvasLayer" parent="." unique_id=219155604]
+unique_name_in_owner = true
+visible = false
+
+[node name="MarginContainer" type="MarginContainer" parent="EquipmentCanvasLayer" unique_id=2128135305]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="MainWindow" type="BoxContainer" parent="EquipmentCanvasLayer/MarginContainer" unique_id=274226341]
+layout_mode = 2
+alignment = 2
+
+[node name="MiddlePanel" type="BoxContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow" unique_id=1728357801]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="InventorySection" type="BoxContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel" unique_id=335522048]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+offset_transform_enabled = true
+offset_transform_position = Vector2(900, 0)
+offset_transform_visual_only = false
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="BoxContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection" unique_id=205459265]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+vertical = true
+
+[node name="Equipment" type="PanelContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer" unique_id=856071807]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_3w64d")
+script = ExtResource("9_xr32f")
+
+[node name="MarginContainer" type="MarginContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment" unique_id=2026303553]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="EquipmentGrid" type="GridContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer" unique_id=413871814]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+columns = 3
+
+[node name="AmuletSlot" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1626732313 instance=ExtResource("10_sj3ib")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 5
+placeholder_texture = ExtResource("11_lw8pt")
+
+[node name="HelmetSlot" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=2133731764 instance=ExtResource("10_sj3ib")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 1
+placeholder_texture = ExtResource("12_hgf45")
+
+[node name="RingSlot" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=143110602 instance=ExtResource("10_sj3ib")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 6
+placeholder_texture = ExtResource("13_6ydfj")
+
+[node name="WeaponSlot" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1196668936 instance=ExtResource("10_sj3ib")]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_texture = ExtResource("14_2r5wi")
+
+[node name="ArmorSlot" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1580699172 instance=ExtResource("10_sj3ib")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 2
+placeholder_texture = ExtResource("15_j5tbv")
+
+[node name="ShieldSlot" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=882899261 instance=ExtResource("10_sj3ib")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 7
+placeholder_texture = ExtResource("16_hgqcf")
+
+[node name="GlovesSlot" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1698877738 instance=ExtResource("10_sj3ib")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 3
+placeholder_texture = ExtResource("17_82cka")
+
+[node name="BootsSlot" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1105090111 instance=ExtResource("10_sj3ib")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 4
+placeholder_texture = ExtResource("18_ufuvc")
+
+[node name="Additional" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=286919428 instance=ExtResource("10_sj3ib")]
+unique_name_in_owner = true
+layout_mode = 2
+slot_type = 8
+placeholder_texture = ExtResource("18_ufuvc")
+
+[node name="Stats" type="PanelContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer" unique_id=2117071596]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_3w64d")
+script = ExtResource("9_xr32f")
+
+[node name="MarginContainer" type="MarginContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Stats" unique_id=795250180]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="StatsBox" type="VBoxContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/HBoxContainer/Stats/MarginContainer" unique_id=1443945344]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InventoryPanel" type="VBoxContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection" unique_id=1006279600]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 12
+
+[node name="Alchemy" type="PanelContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel" unique_id=400516213]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3w64d")
+script = ExtResource("19_8r76n")
+
+[node name="MarginContainer" type="MarginContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy" unique_id=1984864666]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer" unique_id=65821584]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer" unique_id=1484391163]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="AlchemyGrid" type="GridContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1947638411]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 5
+
+[node name="AlchemyGridResults" type="GridContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2034450895]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CraftButton" type="Button" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Alchemy/MarginContainer/VBoxContainer" unique_id=833887909]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Połącz składniki"
+
+[node name="Inventory" type="PanelContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel" unique_id=40240336]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_3w64d")
+script = ExtResource("20_q0ack")
+base_items = Dictionary[ExtResource("21_50bjb"), int]({
+ExtResource("22_lhg76"): 5,
+ExtResource("23_amdh2"): 1,
+ExtResource("24_mpvc3"): 5,
+ExtResource("25_g7q3g"): 5,
+ExtResource("26_52jij"): 5,
+ExtResource("27_4aqfo"): 5,
+ExtResource("28_ct24d"): 5,
+ExtResource("29_4psnp"): 5,
+ExtResource("30_ev28f"): 5
+})
+
+[node name="MarginContainer" type="MarginContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory" unique_id=385520042]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="GridContainer" type="GridContainer" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer" unique_id=2008475645]
+layout_mode = 2
+columns = 6
+
+[node name="Slot" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer/GridContainer" unique_id=1297978854 instance=ExtResource("31_ifyqo")]
+layout_mode = 2
+
+[node name="Slot2" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer/GridContainer" unique_id=488561244 instance=ExtResource("31_ifyqo")]
+layout_mode = 2
+
+[node name="Slot3" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer/GridContainer" unique_id=1593830369 instance=ExtResource("31_ifyqo")]
+layout_mode = 2
+
+[node name="Slot4" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer/GridContainer" unique_id=1233719657 instance=ExtResource("31_ifyqo")]
+layout_mode = 2
+
+[node name="Slot5" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer/GridContainer" unique_id=132459772 instance=ExtResource("31_ifyqo")]
+layout_mode = 2
+
+[node name="Slot6" parent="EquipmentCanvasLayer/MarginContainer/MainWindow/MiddlePanel/InventorySection/InventoryPanel/Inventory/MarginContainer/GridContainer" unique_id=1638161058 instance=ExtResource("31_ifyqo")]
+layout_mode = 2
+
+[node name="Box2" type="Node3D" parent="." unique_id=27817797]
+
+[node name="Box" type="MeshInstance3D" parent="Box2" unique_id=2040764136]
+mesh = SubResource("ArrayMesh_tau5g")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Box2/Box" unique_id=747997826]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box2/Box/StaticBody3D" unique_id=746651843]
+shape = SubResource("ConcavePolygonShape3D_jncqg")
+
+[node name="Lid" type="MeshInstance3D" parent="Box2" unique_id=267524290]
+transform = Transform3D(-0.819152, -0.5735764, 0, 0.5735764, -0.819152, 0, 0, 0, 1, -0.9, 0.25, 0)
+mesh = SubResource("ArrayMesh_ktmsg")
+metadata/extras = {
+"booleans": {}
+}
+
+[node name="LidScreen" type="MeshInstance3D" parent="Box2" unique_id=1704107719]
+transform = Transform3D(-6.943691e-08, 0.5638256, 1.2795155, -1.6562484e-09, 0.80522645, -0.89592636, -1.562, -2.5918029e-08, -5.59294e-08, -1.6713868, 0.7008368, 4.3289685e-08)
+mesh = SubResource("PlaneMesh_lquvc")
+metadata/extras = {
+"booleans": {}
+}
