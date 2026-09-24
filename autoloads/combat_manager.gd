@@ -45,8 +45,10 @@ func resolve_player_attack(selected_results: Array[Dictionary]) -> void:
 			break
 			
 		var skill: SkillDefinition = result["skill"]
-		var max_face: int = result["max_face"]
-		var value := roundi(skill.base_value * max_face)
+		var dice_level_on_item: int = result["dice_level_on_item"]
+		var rolled_face: int = result["face"]
+		var value := roundi(skill.base_value * rolled_face)
+		Log.print(value)
 
 		match skill.effect_type:
 			GameEnums.SkillEffect.DAMAGE:
@@ -54,7 +56,7 @@ func resolve_player_attack(selected_results: Array[Dictionary]) -> void:
 			GameEnums.SkillEffect.HEAL:
 				_apply_heal_to_player(skill, value)
 			_:
-				push_warning("CombatManager: nieobsłużony effect_type %s dla skilla '%s'" % [skill.effect_type, skill.skill_name])
+				Log.warning("CombatManager: nieobsłużony effect_type %s dla skilla '%s'" % [skill.effect_type, skill.skill_name])
 				continue
 
 		if delay_between_effects > 0.0:
@@ -67,14 +69,14 @@ func enemy_take_turn() -> void:
 	if is_game_over:
 		return
 	if current_enemy == null:
-		push_warning("CombatManager: brak current_enemy, pomijam turę wroga")
+		Log.warning("CombatManager: brak current_enemy, pomijam turę wroga")
 		return
 	current_enemy.take_turn()
 
 
 func _apply_damage_to_enemy(skill: SkillDefinition, value: int) -> void:
 	if current_enemy == null:
-		push_warning("CombatManager: brak current_enemy, pomijam %d obrażeń ze skilla '%s'" % [value, skill.skill_name])
+		Log.warning("CombatManager: brak current_enemy, pomijam %d obrażeń ze skilla '%s'" % [value, skill.skill_name])
 		return
 	current_enemy.health.take_damage(value)
 	effect_applied.emit(skill, value, "enemy")
@@ -86,7 +88,7 @@ func _apply_heal_to_player(skill: SkillDefinition, value: int) -> void:
 
 
 func _on_current_enemy_died(enemy: EnemyInstance) -> void:
-	print("Wróg pokonany: %s" % enemy.definition.enemy_name)
+	Log.print("Wróg pokonany: %s" % enemy.definition.enemy_name)
 	current_enemy = null
 	enemy_died.emit(enemy)
 
@@ -95,5 +97,5 @@ func _on_player_died() -> void:
 	if is_game_over:
 		return
 	is_game_over = true
-	print("PRZEGRANA — gracz zginął")
+	Log.print("PRZEGRANA — gracz zginął")
 	player_died.emit()

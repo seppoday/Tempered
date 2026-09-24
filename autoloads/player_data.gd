@@ -7,7 +7,7 @@ signal exp_changed
 signal level_up(new_level: int)
 signal gold_changed(new_gold_amount: int)
 
-signal attributes_changed
+signal attributes_changed # Na razie nie używane nigdzie
 
 # ==========================================
 # POSTAĆ I POSTĘP
@@ -48,7 +48,7 @@ var equipped_items: Dictionary = {
 	EquipmentSlot.Type.GLOVES: null,
 	EquipmentSlot.Type.LEGS: null,
 	EquipmentSlot.Type.BOOTS: null,
-	EquipmentSlot.Type.BACKPACK: null,
+	#EquipmentSlot.Type.BACKPACK: null,
 }
 
 
@@ -58,10 +58,11 @@ const DEBUG_START_GEAR: Array[Dictionary] = [
 	{"id": "rusty_sword",    "count": 1, "level": 1},
 	{"id": "iron_shield",    "count": 1, "level": 1},
 	{"id": "silver_amulet",  "count": 1, "level": 6},
-	{"id": "knight_armor",   "count": 1, "level": 1},
-	{"id": "leather_gloves", "count": 1, "level": 6},
-	{"id": "hunter_boots",   "count": 1, "level": 6},
-	{"id": "leather_cap",    "count": 1, "level": 6},
+	#{"id": "knight_armor",   "count": 1, "level": 1},
+	#{"id": "leather_gloves", "count": 1, "level": 6},
+	#{"id": "hunter_boots",   "count": 1, "level": 6},
+	#{"id": "leather_cap",    "count": 1, "level": 6},
+	#{"id": "iron_ring",      "count": 1, "level": 6},
 ]
 
 func give_debug_gear() -> void:
@@ -69,7 +70,7 @@ func give_debug_gear() -> void:
 		var item_definition := ItemDatabase.get_by_id(item.id)
 
 		if item_definition == null:
-			push_warning("give_debug_gear: nie znaleziono przedmiotu o ID: %s" % item.id)
+			Log.warning("give_debug_gear: nie znaleziono przedmiotu o ID: %s" % item.id)
 			continue
 
 		var count: int = item.get("count", 1)
@@ -83,7 +84,7 @@ func _ready() -> void:
 	character_definition = CharacterDatabase.get_by_id("warrior") # chwilowe, tylko debug
 	
 	if character_definition == null:
-		push_warning("Nie znaleziono character definition w pliku Player_Data")
+		Log.warning("Nie znaleziono character definition w pliku Player_Data")
 		return
 		
 	attributes["STR"] = character_definition.starting_str
@@ -201,7 +202,7 @@ func calculate_attack() -> Dictionary:
 		if weapon.definition.magic_dmg > 0:
 			raw_damage += stats["magic_dmg"]
 
-	var is_crit: bool = randf() < stats.get("crit_chance", 0.0)
+	var is_crit: bool = RNG.randf() < stats.get("crit_chance", 0.0)
 	if is_crit:
 		raw_damage *= stats.get("crit_damage", 1.5)
 		
@@ -233,4 +234,4 @@ func add_dodge_bonus(amount: float) -> void:
 	pending_dodge_bonus += amount
 
 func _on_player_died() -> void:
-	print("DEAD")
+	Log.print("DEAD")

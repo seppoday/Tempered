@@ -46,13 +46,13 @@ func _advance_and_spawn() -> void:
 
 func start_next_wave() -> void:
 	wave_started.emit(current_wave)
-	print("next wave")
+	Log.print("next wave")
 	pass
 
 
 func _spawn_current_enemy() -> void:
 	if waves.is_empty() or waves[current_wave].enemies_list.is_empty():
-		push_warning("Brak fal lub wrogów w Wave Manager")
+		Log.warning("Brak fal lub wrogów w Wave Manager")
 		return
 		
 	var enemy_def = waves[current_wave].enemies_list[current_enemy]

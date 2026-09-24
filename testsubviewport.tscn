@@ -21,7 +21,7 @@
 [ext_resource type="Resource" uid="uid://dsduls0bi6xud" path="res://definitions/materials/misc/upgrade_dice_d12.tres" id="19_adse8"]
 [ext_resource type="Resource" uid="uid://d34h5uwlsdqvl" path="res://definitions/materials/misc/upgrade_dice_d16.tres" id="20_78wb8"]
 [ext_resource type="Resource" uid="uid://dk3ixuqlc7qyg" path="res://definitions/materials/misc/upgrade_dice_d20.tres" id="21_k1yji"]
-[ext_resource type="Resource" uid="uid://cl0cq55cuw0hb" path="res://items/skill_items/skill_item_fire_attack.tres" id="22_fg2vn"]
+[ext_resource type="Resource" uid="uid://cl0cq55cuw0hb" path="res://definitions/skill_items/skill_item_fire_attack.tres" id="22_fg2vn"]
 [ext_resource type="PackedScene" uid="uid://bbadchds7qm5n" path="res://scenes/slot.tscn" id="23_lv0ea"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tpase"]

@@ -43,8 +43,7 @@ func _update_ui(changed_stat: String = "") -> void:
 	var totals := PlayerData.get_total_stats()
 	var char_info := PlayerData.character_stats
 
-	for child in stats_box.get_children():
-		child.queue_free()
+	Utilities.clear_children(stats_box)
 
 	_add_label("Level %d" % char_info["level"], Color(0.95, 0.75, 0.2), FONT_SIZE, "level")
 	_add_spacer()
@@ -103,7 +102,7 @@ func _pop_stat_label(stat_key: String) -> void:
 			_pop_label(child)
 
 func _pop_label(label: Label) -> void:
-	label.pivot_offset = label.size * 0.5
+	Utilities.center_pivot(label)
 	var tween := create_tween()
 	tween.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.tween_property(label, "scale", Vector2(1.25, 1.25), 0.08)

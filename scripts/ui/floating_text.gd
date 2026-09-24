@@ -23,7 +23,7 @@ func setup(text: String, color: Color = Color.WHITE) -> void:
 	_update_pivot()
 
 func _update_pivot() -> void:
-	label.pivot_offset = label.size * 0.5
+	Utilities.center_pivot(label)
 	label.position = -label.size * 0.5
 
 func _animate() -> void:

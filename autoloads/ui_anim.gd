@@ -39,7 +39,7 @@ func kill_all(node: Node) -> void:
 
 func scale_to(control: Control, target: Vector2, duration: float = 0.12, key: StringName = &"scale") -> Tween:
 	# pivot w środku, inaczej skaluje się od lewego-górnego rogu
-	control.pivot_offset = control.size * 0.5
+	Utilities.center_pivot(control)
 
 	if control.has_meta(key):
 		var old := control.get_meta(key) as Tween
@@ -79,8 +79,8 @@ func shake(node: CanvasItem, intensity: float = 6.0, duration: float = 0.3, kill
 
 	for i in steps:
 		var offset := Vector2(
-			randf_range(-intensity, intensity),
-			randf_range(-intensity, intensity)
+			RNG.randf_range(-intensity, intensity),
+			RNG.randf_range(-intensity, intensity)
 		)
 		t.tween_property(node, "position", original + offset, 0.03)
 

@@ -8,14 +8,14 @@ func _ready() -> void:
 	_generator.randomize()
 	current_seed = _generator.seed
 
-func set_seed(seed: int) -> void:
-	_generator.seed = seed
+func set_seed(_seed: int) -> void:
+	_generator.seed = _seed
 
-func randi_range(min: int, max: int) -> int:
-	return _generator.randi_range(min, max)
+func randi_range(_min: int, _max: int) -> int:
+	return _generator.randi_range(_min, _max)
 
-func randf_range(min: float, max: float) -> float:
-	return _generator.randf_range(min, max)
+func randf_range(_min: float, _max: float) -> float:
+	return _generator.randf_range(_min, _max)
 
 func weighted_pick(entries: Array) -> Variant:
 	if entries.is_empty():

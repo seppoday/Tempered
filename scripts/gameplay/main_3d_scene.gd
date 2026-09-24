@@ -9,7 +9,9 @@ extends Node3D
 
 @onready var camera = $Camera3D
 @onready var canvas_layer = %MainSceneUICanvasLayer
+@onready var equipment_canvas_layer: CanvasLayer = %EquipmentCanvasLayer
 @onready var enemy_spawn_point: Node3D = $EnemySpawnPoint
+@export var floating_text: PackedScene
 
 var active_tags: Array[Control] = []
 var selected_tags: Array[PanelContainer] = []
@@ -21,6 +23,7 @@ var dice_tag_cration_wait_time: float = 0.08
 
 
 func _ready() -> void:
+	#Log.warning("test")
 	AudioManager.play_music(AudioLibrary.get_music(AudioKeys.MUSIC_TEST), -10.0)
 	roll_button.pressed.connect(_on_roll_button_pressed)
 	confirm_button.pressed.connect(_on_confirm_button_pressed)
@@ -36,12 +39,24 @@ func _on_player_died() -> void:
 	roll_button.disabled = true
 	confirm_button.disabled = true
 	result_label.text = "PRZEGRANA"
+	equipment_canvas_layer.show()
+	
 
 
 func _on_combat_effect_applied(skill: SkillDefinition, value: int, target: String) -> void:
 	if target == "enemy":
+		var f_text = floating_text.instantiate()
+		f_text.setup("-%d" % value, Color.RED)
+		f_text.global_position = camera.unproject_position(%EnemySpawnPoint.global_transform.origin)
+		%MainSceneUICanvasLayer.add_child(f_text)
+		AudioManager.play_sfx(AudioLibrary.get_ui(AudioKeys.UI_BUP))
 		result_label.text = "%s: -%d wrogowi" % [skill.skill_name, value]
 	else:
+		var f_text = floating_text.instantiate()
+		f_text.setup("-%d" % value, Color.GREEN)
+		f_text.global_position = %HpProgressBar.global_position
+		%MainSceneUICanvasLayer.add_child(f_text)
+		AudioManager.play_sfx(AudioLibrary.get_ui(AudioKeys.UI_BUP))
 		result_label.text = "%s: +%d graczowi" % [skill.skill_name, value]
 
 func _process(delta: float) -> void:
@@ -178,7 +193,8 @@ func _on_card_toggled(card: PanelContainer, wants_selected: bool) -> void:
 
 func _clear_previous_tags() -> void:
 	for tag in active_tags:
-		if is_instance_valid(tag): tag.queue_free()
+		Utilities.safe_free(tag)
+		#if is_instance_valid(tag): tag.queue_free()
 	active_tags.clear()
 	selected_tags.clear()
 
@@ -188,7 +204,7 @@ func _reveal_results() -> void:
 		var tag := active_tags[i]
 		var result: Dictionary = pending_results[i]
 
-		tag.set_value(result["max_face"], result["item"].definition.name)
+		tag.set_value(result["face"], result["item"].definition.name)
 		tag.set_icon(result["skill"].icon)
 		_update_all_tag_positions(0.016)
 		tag.show()
@@ -240,9 +256,7 @@ func _align_tags_to_center_line() -> void:
 		var tag_height = tag.size.y if tag.size.y > 0 else 50.0
 		var target_pos = Vector2(current_x, target_y - (tag_height * 0.5))
 
-		align_tween.tween_property(tag, "position", target_pos, 0.65)\
-			.set_trans(Tween.TRANS_CUBIC)\
-			.set_ease(Tween.EASE_OUT)
+		align_tween.tween_property(tag, "position", target_pos, 0.65).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 		current_x += tag_widths[i] + spacing
 

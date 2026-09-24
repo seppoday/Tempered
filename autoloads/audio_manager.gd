@@ -25,7 +25,7 @@ func _ready() -> void:
 
 func play_music(stream: AudioStream, volume_db: float = 0.0) -> void:
 	if stream == null:
-		push_warning("AudioManager: Nie ma podpiętego streama do playera Music")
+		Log.warning("AudioManager: Nie ma podpiętego streama do playera Music")
 		return
 	if _music_player.stream == stream and _music_player.playing:
 		return
@@ -43,7 +43,7 @@ func set_bus_volume_db(bus_index: int = 0, volume: float = 0.0) -> void:
 # Generalna metoda
 func play_sound(stream: AudioStream, bus_name: String, volume_db: float = 0.0, pitch_scale: float = 1.0) -> AudioStreamPlayer:
 	if stream == null:
-		push_warning("AudioManager: przekazano pusty AudioStream.")
+		Log.warning("AudioManager: przekazano pusty AudioStream.")
 		return null
 
 	var player := _get_available_player()
@@ -59,7 +59,7 @@ func play_sound(stream: AudioStream, bus_name: String, volume_db: float = 0.0, p
 
 
 func play_sound_random_pitch(stream: AudioStream, bus_name: String, volume_db: float = 0.0, min_pitch: float = 0.9, max_pitch: float = 1.1) -> AudioStreamPlayer:
-	return play_sound(stream, bus_name, volume_db, randf_range(min_pitch, max_pitch))
+	return play_sound(stream, bus_name, volume_db, RNG.randf_range(min_pitch, max_pitch))
 
 
 # Skróty per kategoria

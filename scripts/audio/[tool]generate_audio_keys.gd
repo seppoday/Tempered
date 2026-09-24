@@ -30,18 +30,18 @@ func _run() -> void:
 	if not DirAccess.dir_exists_absolute(dir_path):
 		var err := DirAccess.make_dir_recursive_absolute(dir_path)
 		if err != OK:
-			push_error("Nie udało się utworzyć folderu: %s (błąd %d)" % [dir_path, err])
+			Log.error("Nie udało się utworzyć folderu: %s (błąd %d)" % [dir_path, err])
 			return
 
 	var file := FileAccess.open(OUTPUT_PATH, FileAccess.WRITE)
 	if file == null:
-		push_error("Nie udało się otworzyć pliku do zapisu: %s (błąd %d)" % [OUTPUT_PATH, FileAccess.get_open_error()])
+		Log.error("Nie udało się otworzyć pliku do zapisu: %s (błąd %d)" % [OUTPUT_PATH, FileAccess.get_open_error()])
 		return
 
 	file.store_string("\n".join(lines))
 	file.close()
 
-	print("AudioKeys wygenerowane: ", OUTPUT_PATH)
+	Log.print("AudioKeys wygenerowane: ", OUTPUT_PATH)
 
 
 func _scan_names(path: String) -> Array[String]:

@@ -13,7 +13,7 @@ var health: Health
 
 func _ready() -> void:
 	if definition == null:
-		push_error("EnemyInstance: brak przypisanego EnemyDefinition")
+		Log.error("EnemyInstance: brak przypisanego EnemyDefinition")
 		return
 
 	health = Health.new(definition.max_hp)
@@ -38,22 +38,23 @@ func take_turn() -> void:
 
 func _pick_attack_pattern() -> EnemyAttackPattern:
 	var patterns := definition.attack_patterns
-	if patterns.is_empty():
-		push_warning("EnemyInstance: brak attack_patterns w definicji %s" % definition.enemy_name)
-		return null
-
-	var total_weight := 0.0
-	for p in patterns:
-		total_weight += p.weight
-
-	var roll := randf() * total_weight
-	var cumulative := 0.0
-	for p in patterns:
-		cumulative += p.weight
-		if roll <= cumulative:
-			return p
-
-	return patterns[-1]  # fallback na wypadek błędów zaokrągleń
+	return RNG.weighted_pick(patterns)
+	#if patterns.is_empty():
+		#Log.warning("EnemyInstance: brak attack_patterns w definicji %s" % definition.enemy_name)
+		#return null
+#
+	#var total_weight := 0.0
+	#for p in patterns:
+		#total_weight += p.weight
+#
+	#var roll := RNG.randf() * total_weight
+	#var cumulative := 0.0
+	#for p in patterns:
+		#cumulative += p.weight
+		#if roll <= cumulative:
+			#return p
+#
+	#return patterns[-1]  # fallback na wypadek błędów zaokrągleń
 
 
 func _on_died() -> void:

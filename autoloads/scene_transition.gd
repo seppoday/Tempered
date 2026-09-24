@@ -1,12 +1,12 @@
 extends CanvasLayer
 
-@onready var color_rect: ColorRect = $ColorRect
+@onready var color_rect: ColorRect
 
 func _ready() -> void:
-	return
-	layer = 999  # zawsze na wierzchu wszystkiego innego
-	color_rect.color.a = 0.0
-	color_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if false:
+		layer = 999  # zawsze na wierzchu wszystkiego innego
+		color_rect.color.a = 0.0
+		color_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func fade_to_scene(scene_path: String, fade_duration: float = 0.3) -> void:
 	color_rect.mouse_filter = Control.MOUSE_FILTER_STOP  # blokuj klikanie w trakcie fade'u

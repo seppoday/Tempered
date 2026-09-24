@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://bhu0r73v58n47"]
+
+[ext_resource type="Script" uid="uid://of63ajwy1qr6" path="res://debug_console.gd" id="1_gpuxc"]
+
+[node name="DebugConsole" type="CanvasLayer" unique_id=750551913]
+script = ExtResource("1_gpuxc")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=2066590224]
+custom_minimum_size = Vector2(0, 250)
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 35.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=514067493]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer" unique_id=1495970427]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Output" type="RichTextLabel" parent="PanelContainer/VBoxContainer/ScrollContainer" unique_id=573679702]
+unique_name_in_owner = true
+layout_mode = 2
+bbcode_enabled = true
+
+[node name="Input" type="LineEdit" parent="PanelContainer/VBoxContainer" unique_id=2140985697]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "wpisz komendę..."

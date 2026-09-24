@@ -37,7 +37,7 @@ func attempt_upgrade(dice_item: MaterialDefinition) -> UpgradeResult:
 
 func roll_skill() -> Dictionary:
 	if not definition is ItemDefinition:
-		push_error("ItemInstance.roll_skill(): definition nie jest ItemDefinition (%s)" % definition)
+		Log.error("ItemInstance.roll_skill(): definition nie jest ItemDefinition (%s)" % definition)
 		return {}
 
 	var item_def := definition as ItemDefinition
@@ -46,13 +46,13 @@ func roll_skill() -> Dictionary:
 	var skill: SkillDefinition = slot_assignments.get(face, item_def.default_skill)
 
 	if skill == null:
-		push_error("ItemInstance.roll_skill(): brak skilla dla ścianki %d i brak default_skill w '%s'" % [face, item_def.name])
+		Log.error("ItemInstance.roll_skill(): brak skilla dla ścianki %d i brak default_skill w '%s'" % [face, item_def.name])
 		return {}
 
 	return {
 		"face": face,
 		"skill": skill,
-		"multiplier": GameEnums.DICE_PROGRESSION[dice_level]
+		"dice_level_on_item": GameEnums.DICE_PROGRESSION[dice_level]
 	}
 
 func use() -> void:

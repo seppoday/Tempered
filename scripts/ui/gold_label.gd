@@ -11,7 +11,7 @@ func _update_gold_display(new_amount: int) -> void:
 
 # Efekt soczystego "podskoczenia" napisu przy zdobyciu złota
 func _pop_animation() -> void:
-	pivot_offset = size * 0.5
+	Utilities.center_pivot(self)
 	var tween := create_tween()
 	tween.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "offset_transform_scale", Vector2(1.25, 1.25), 0.08)

@@ -181,7 +181,7 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 		skills_title.add_theme_font_size_override("font_size", FONT_BODY)
 		skills_box.add_child(skills_title)
 
-		for face in range(1, max_face + 1):
+		for face in range(1, 6):
 			var assigned: SkillDefinition = item_data.slot_assignments.get(face)
 			var row := HBoxContainer.new()
 			row.add_theme_constant_override("separation", 4)
@@ -369,6 +369,7 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 		var try_upgrade = self.item_data.attempt_upgrade(dragged_instance.definition)
 		match try_upgrade:
 			ItemInstance.UpgradeResult.SUCCESS:
+				FloatingTextManager.spawn_screen("Level Up!", global_position + (size / 2), Color.GREEN)
 				source_slot.item_data.quantity -= 1
 				if source_slot.item_data.quantity <= 0:
 					source_slot.clear()
@@ -377,10 +378,12 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 				_update_visual()
 
 			ItemInstance.UpgradeResult.WRONG_DIE:
-				print("wrong die")
+				FloatingTextManager.spawn_screen("Wrong Die", global_position + (size / 2))
+				Log.print("wrong die")
 
 			ItemInstance.UpgradeResult.MAX_LEVEL_REACHED:
-				print("max level")
+				FloatingTextManager.spawn_screen("Max Level Reached", global_position + (size / 2))
+				Log.print("max level")
 			
 
 		slot_changed.emit(self)

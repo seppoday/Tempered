@@ -43,13 +43,13 @@ func _create_slots() -> void:
 
 func _on_slot_changed(slot: Panel) -> void:
 	if slot.item_data:
-		print("[ALCHEMY] Slot: ", slot.item_data.definition.name, " x", slot.item_data.quantity)
+		Log.print("[ALCHEMY] Slot: ", slot.item_data.definition.name, " x", slot.item_data.quantity)
 	else:
-		print("[ALCHEMY] Slot cleared")
+		Log.print("[ALCHEMY] Slot cleared")
 	
 	_collect_slot_contents()
 	_update_craft_button_state()
-	print("Pasujący przepis: ", find_matching_recipe())
+	Log.print("Pasujący przepis: ", find_matching_recipe())
 
 
 func _on_craft_button_pressed() -> void:
@@ -59,12 +59,12 @@ func _on_craft_button_pressed() -> void:
 	
 	var consume = _consume_ingredients(recipe)
 	if consume == false:
-		print("[ALCHEMY] Not enough ingredients to craft.")
+		Log.print("[ALCHEMY] Not enough ingredients to craft.")
 		return
 	
 	var final_result = ItemDatabase.get_item_definition(recipe.result_item_id)
 	if final_result == null:
-		print("[ALCHEMY] Result item not found in database.")
+		Log.print("[ALCHEMY] Result item not found in database.")
 	else:
 		result_slot.set_item(ItemInstance.new(final_result, recipe.result_item_amount))
 		_update_craft_button_state()
@@ -89,7 +89,7 @@ func _collect_slot_contents():
 			else:
 				slot_content[slot.item_data.definition.id] = slot.item_data.quantity
 
-	print(slot_content)
+	Log.print(slot_content)
 
 func find_matching_recipe() -> RecipeDefinition:
 	var all_recipes := RecipeDatabase.get_all()

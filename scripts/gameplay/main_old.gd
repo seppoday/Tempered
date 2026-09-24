@@ -5,7 +5,7 @@ extends Node
 func _ready() -> void:
 	var test = CharacterDatabase.get_all()
 	AudioManager.play_music(AudioLibrary.get_music(AudioKeys.MUSIC_TEST), -10.0)
-	print(test)
+	Log.print(test)
 
 func hide_panel(node) -> void:
 	var tween := create_tween()

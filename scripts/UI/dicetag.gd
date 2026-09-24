@@ -38,7 +38,7 @@ func pop_in(delay: float = 0.0):
 	show()
 	
 	# Ustawiamy punkt obrotu na środek panelu (żeby powiększał się ze środka)
-	pivot_offset = size / 2.0
+	Utilities.center_pivot(self)
 	scale = Vector2.ZERO
 	modulate.a = 0.0
 

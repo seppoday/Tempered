@@ -11,4 +11,5 @@ const SFX_ROLL: StringName = &"roll"
 const SFX_SWOOSH: StringName = &"swoosh"
 
 # UI
+const UI_BUP: StringName = &"bup"
 const UI_CLICK: StringName = &"click"

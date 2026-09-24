@@ -29,7 +29,7 @@ func get_music(key: StringName) -> AudioStream:
 
 func _get_or_warn(dict: Dictionary, key: StringName, category: String) -> AudioStream:
 	if not dict.has(key):
-		push_warning("AudioLibrary: brak '%s' w kategorii '%s'" % [key, category])
+		Log.warning("AudioLibrary: brak '%s' w kategorii '%s'" % [key, category])
 		return null
 	return dict[key]
 
@@ -38,7 +38,7 @@ func _scan_directory(path: String) -> Dictionary:
 	var result := {}
 	var dir := DirAccess.open(path)
 	if dir == null:
-		push_warning("AudioLibrary: nie mogę otworzyć %s" % path)
+		Log.warning("AudioLibrary: nie mogę otworzyć %s" % path)
 		return result
 
 	dir.list_dir_begin()

@@ -45,7 +45,7 @@ func _animate_to(target_value: int) -> void:
 
 	is_rolling = false
 	roll_done.emit(target_value)
-	print("%s → %d" % [dice_name, target_value])
+	Log.print("%s → %d" % [dice_name, target_value])
 
 func _show_only(index: int) -> void:
 	for c in faces.get_children():

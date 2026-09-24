@@ -35,7 +35,7 @@ var enemies_hit_this_swing: Array[Node2D] = []
 var _combat_active: bool = false
 
 func _ready() -> void:
-	GameManager.state_changed.connect(func(new_state): print("GameFlow zmienił stan na: ", new_state))
+	GameManager.state_changed.connect(func(new_state): Log.print("GameFlow zmienił stan na: ", new_state))
 
 	PlayerData.hp_changed.connect(_on_player_hp_changed)
 	PlayerData.damage_taken.connect(_on_player_damage_taken)
@@ -125,7 +125,7 @@ func _spawn_floating_text(pos: Vector2, text: String, color: Color) -> void:
 	else:
 		get_tree().current_scene.add_child(text_node)
 		
-	var random_offset := Vector2(randf_range(-4.0, 4.0), randf_range(-6.0, -2.0))
+	var random_offset := Vector2(RNG.randf_range(-4.0, 4.0), RNG.randf_range(-6.0, -2.0))
 	text_node.global_position = pos + random_offset
 	text_node.setup(text, color)
 

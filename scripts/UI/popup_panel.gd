@@ -14,11 +14,10 @@ func setup(target_item: ItemInstance, skill: SkillDefinition) -> void:
 	popup_centered()
 
 func _rebuild_grid() -> void:
-	for child in faces_grid.get_children():
-		child.queue_free()
+	Utilities.clear_children(faces_grid)
 
 	var max_face: int = GameEnums.DICE_PROGRESSION[_target_item.dice_level]
-	for face in range(1, max_face + 1):
+	for face in range(1, 6):
 		var assigned: SkillDefinition = _target_item.slot_assignments.get(face)
 		var btn := Button.new()
 		btn.custom_minimum_size = Vector2(128, 128)

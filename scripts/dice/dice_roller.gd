@@ -33,19 +33,19 @@ func _spawn_dice_for_equipped_items() -> void:
 		var max_face: int = GameEnums.DICE_PROGRESSION[item.dice_level]
 		var roll_result := item.roll_skill()
 		if roll_result.is_empty():
-			push_warning("Pomijam przedmiot '%s' — roll_skill() zwrócił pusty wynik (sprawdź default_skill)" % item.definition.name)
+			Log.warning("Pomijam przedmiot '%s' — roll_skill() zwrócił pusty wynik (sprawdź default_skill)" % item.definition.name)
 			continue
 
 		var die_scene: PackedScene = die_scenes.get(max_face)
 		if die_scene == null:
-			push_warning("Brak modelu kości d%d — używam d6 dla %s" % [max_face, item.definition.name])
+			Log.warning("Brak modelu kości d%d — używam d6 dla %s" % [max_face, item.definition.name])
 			die_scene = die_scenes.get(6)
 
 		if die_scene == null: continue
 
 		var die := die_scene.instantiate() as RigidBody3D
 		add_child(die)
-		print(die.global_position)
+		Log.print(die.global_position)
 		die.freeze = true
 		die.linear_damp = 0.2
 		die.angular_damp = 0.2
@@ -54,9 +54,8 @@ func _spawn_dice_for_equipped_items() -> void:
 		pending_results.append({
 			"item": item,
 			"skill": roll_result["skill"],
-			"multiplier": roll_result["multiplier"],
+			"dice_level_on_item": roll_result["dice_level_on_item"],
 			"face": roll_result["face"],
-			"max_face": max_face,
 		})
 
 	dice_spawned.emit(dice_group, pending_results)
@@ -64,7 +63,8 @@ func _spawn_dice_for_equipped_items() -> void:
 
 func _clear_previous_dice() -> void:
 	for die in dice_group:
-		if is_instance_valid(die): die.queue_free()
+		Utilities.safe_free(die)
+		#if is_instance_valid(die): die.queue_free()
 	dice_group.clear()
 
 
@@ -77,22 +77,22 @@ func _throw_all_dice() -> void:
 
 		die.freeze = false
 
-		var random_offset = Vector3(randf_range(-0.05, 0.05), randf_range(0.0, 0.02), randf_range(-0.05, 0.05))
+		var random_offset = Vector3(RNG.randf_range(-0.1, 0.1), RNG.randf_range(0.0, 0.02), RNG.randf_range(-0.1, 0.1))
 		die.global_position = spawn_positions[i] + random_offset
 
 		die.linear_velocity = Vector3.ZERO
 		die.angular_velocity = Vector3.ZERO
 
-		var local_up: Vector3 = DiceFaceMapper.get_local_up(result["max_face"], result["face"])
+		var local_up: Vector3 = DiceFaceMapper.get_local_up(result["dice_level_on_item"], result["face"])
 
 		die.center_of_mass_mode = RigidBody3D.CENTER_OF_MASS_MODE_CUSTOM
-		var weight_strength = 0.18 if result["max_face"] >= 10 else 0.12
+		var weight_strength = 0.18 if result["dice_level_on_item"] >= 10 else 0.12
 		die.center_of_mass = -local_up * weight_strength
 
-		die.rotation = Vector3(randf_range(0, TAU), randf_range(0, TAU), randf_range(0, TAU))
+		die.rotation = Vector3(RNG.randf_range(0, TAU), RNG.randf_range(0, TAU), RNG.randf_range(0, TAU))
 
-		var push_force = Vector3(randf_range(-1.0, 1.5), randf_range(1.0, 2.5), randf_range(-1.0, 1.5))
-		var torque = Vector3(randf_range(-1.0, 1.5), randf_range(-1.0, 1.5), randf_range(-1.0, 1.5))
+		var push_force = Vector3(RNG.randf_range(-1.5, 3), RNG.randf_range(-1.5, 1), RNG.randf_range(-1.5, 3))
+		var torque = Vector3(RNG.randf_range(-1.0, 1.5), RNG.randf_range(-1.0, 1.5), RNG.randf_range(-1.0, 1.5))
 
 		die.apply_central_impulse(push_force)
 		die.apply_torque_impulse(torque)
@@ -108,10 +108,10 @@ func _throw_all_dice() -> void:
 		die.angular_velocity = Vector3.ZERO
 		die.freeze = true
 
-		var landed_face = DiceFaceMapper.get_landed_face(die, pending_results[i]["max_face"])
+		var landed_face = DiceFaceMapper.get_landed_face(die, pending_results[i]["dice_level_on_item"])
 		pending_results[i]["face"] = landed_face
 
-		var local_up: Vector3 = DiceFaceMapper.get_local_up(pending_results[i]["max_face"], landed_face)
+		var local_up: Vector3 = DiceFaceMapper.get_local_up(pending_results[i]["dice_level_on_item"], landed_face)
 
 		var current_world_up = (die.global_basis * local_up).normalized()
 		var correction_q = Quaternion(current_world_up, Vector3.UP)
@@ -119,7 +119,7 @@ func _throw_all_dice() -> void:
 		var start_q = die.global_basis.get_rotation_quaternion().normalized()
 		var end_q = (correction_q * start_q).normalized()
 
-		var safe_floor_y = 0.01 if pending_results[i]["max_face"] <= 6 else 0.02
+		var safe_floor_y = 0.01 if pending_results[i]["dice_level_on_item"] <= 6 else 0.02
 		var target_pos = Vector3(die.global_position.x, safe_floor_y, die.global_position.z)
 
 		var tween = create_tween().set_parallel(true)

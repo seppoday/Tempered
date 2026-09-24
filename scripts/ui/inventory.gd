@@ -13,7 +13,7 @@ const SlotScene: PackedScene = preload("res://scenes/slot.tscn")
 @export var base_items: Dictionary[InventoryEntry, int] = {}
 
 func _ready() -> void:
-	EventBus.item_pickup_requested.connect(_on_item_pickup_requested)
+	add_to_group("inventory")
 	_setup_grid()
 	_create_slots()
 	
@@ -81,7 +81,7 @@ func add_item(item: ItemInstance) -> bool:
 				break
 
 		if empty_slot == null:
-			print("[INVENTORY] Full! Remaining: ", item.quantity)
+			Log.print("[INVENTORY] Full! Remaining: ", item.quantity)
 			return false
 
 		if item.is_stackable():
@@ -128,9 +128,9 @@ func get_all_items() -> Array[ItemInstance]:
 
 func _on_slot_changed(slot: Panel) -> void:
 	if slot.item_data:
-		print("[INVENTORY] Slot: ", slot.item_data.definition.name, " x", slot.item_data.quantity)
+		Log.print("[INVENTORY] Slot: ", slot.item_data.definition.name, " x", slot.item_data.quantity)
 	else:
-		print("[INVENTORY] Slot cleared")
+		Log.print("[INVENTORY] Slot cleared")
 
 func _on_item_pickup_requested(item_instance: ItemInstance, drop_node: Node) -> void:
 	if add_item(item_instance):

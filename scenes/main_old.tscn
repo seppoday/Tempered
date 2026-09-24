@@ -19,7 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://hckl245r3g2f" path="res://assets/ui/boots_slot_placeholder.png" id="20_fuf3a"]
 [ext_resource type="Resource" uid="uid://c0juciddabsbt" path="res://definitions/items/armor/knight_armor.tres" id="23_pm3ni"]
 [ext_resource type="Resource" uid="uid://bdo0a1sdk0vx1" path="res://definitions/consumable/potion_small.tres" id="23_y6deb"]
-[ext_resource type="Resource" uid="uid://cl0cq55cuw0hb" path="res://items/skill_items/skill_item_fire_attack.tres" id="24_2f3dj"]
+[ext_resource type="Resource" uid="uid://cl0cq55cuw0hb" path="res://definitions/skill_items/skill_item_fire_attack.tres" id="24_2f3dj"]
 [ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://definitions/materials/misc/upgrade_dice_d6.tres" id="24_og1vs"]
 [ext_resource type="PackedScene" uid="uid://bbadchds7qm5n" path="res://scenes/slot.tscn" id="24_y6deb"]
 [ext_resource type="Resource" uid="uid://dtnpnnyo0kyjn" path="res://definitions/materials/misc/upgrade_dice_d8.tres" id="25_fv21b"]
