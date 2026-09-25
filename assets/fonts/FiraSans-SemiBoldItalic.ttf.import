@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://bayn11g0q0ii5"
-path="res://.godot/imported/NotoSans-Italic-VariableFont_wdth,wght.ttf-5c920ee795fb222e7123e9c273703b41.fontdata"
+uid="uid://cboxr4hqdnr1n"
+path="res://.godot/imported/FiraSans-SemiBoldItalic.ttf-0fc29272afe5adf4240efcb0ffe03d81.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/NotoSans-Italic-VariableFont_wdth,wght.ttf"
-dest_files=["res://.godot/imported/NotoSans-Italic-VariableFont_wdth,wght.ttf-5c920ee795fb222e7123e9c273703b41.fontdata"]
+source_file="res://assets/fonts/FiraSans-SemiBoldItalic.ttf"
+dest_files=["res://.godot/imported/FiraSans-SemiBoldItalic.ttf-0fc29272afe5adf4240efcb0ffe03d81.fontdata"]
 
 [params]
 

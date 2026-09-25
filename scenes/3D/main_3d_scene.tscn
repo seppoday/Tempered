@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b5e6onr0nkuv6" path="res://scenes/floating_text.tscn" id="4_hgf45"]
 [ext_resource type="PackedScene" uid="uid://ckvbsvfexndh8" path="res://scenes/enemies/enemy.tscn" id="4_yvypd"]
 [ext_resource type="Script" uid="uid://4h22nrdhg6oe" path="res://scripts/dice/dice_roller.gd" id="5_kamvo"]
+[ext_resource type="Script" uid="uid://ben0ee225yp5g" path="res://scripts/fireplace.gd" id="6_hgf45"]
 [ext_resource type="Script" uid="uid://lsq25y02lat2" path="res://scripts/UI/main_ui.gd" id="7_ap16l"]
 [ext_resource type="Script" uid="uid://d17lfr8pb8lfj" path="res://scripts/gameplay/wave_manager.gd" id="7_avuin"]
 [ext_resource type="Script" uid="uid://isk6xjs47cxp" path="res://data/definitions/wave_sequence.gd" id="7_lw8pt"]
@@ -30,82 +31,48 @@
 [ext_resource type="Resource" uid="uid://dtnpnnyo0kyjn" path="res://definitions/materials/misc/upgrade_dice_d8.tres" id="25_g7q3g"]
 [ext_resource type="Resource" uid="uid://cufr2r1ewv6c6" path="res://definitions/materials/misc/upgrade_dice_d10.tres" id="26_52jij"]
 [ext_resource type="Resource" uid="uid://dsduls0bi6xud" path="res://definitions/materials/misc/upgrade_dice_d12.tres" id="27_4aqfo"]
-[ext_resource type="Resource" uid="uid://m362bnj4e4i2" path="res://definitions/skills/fire_attack.tres" id="27_hgf45"]
-[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="28_6ydfj"]
 [ext_resource type="Resource" uid="uid://d34h5uwlsdqvl" path="res://definitions/materials/misc/upgrade_dice_d16.tres" id="28_ct24d"]
 [ext_resource type="Resource" uid="uid://dk3ixuqlc7qyg" path="res://definitions/materials/misc/upgrade_dice_d20.tres" id="29_4psnp"]
-[ext_resource type="Resource" uid="uid://cl0cq55cuw0hb" path="res://definitions/skill_items/skill_item_fire_attack.tres" id="30_ev28f"]
 [ext_resource type="PackedScene" uid="uid://bbadchds7qm5n" path="res://scenes/slot.tscn" id="31_ifyqo"]
+[ext_resource type="Resource" uid="uid://lqt0rt3daif5" path="res://definitions/skill_items/skill_item_fire_attack.tres" id="33_lw8pt"]
+[ext_resource type="VoxelGIData" uid="uid://cjgs3mam0qcsa" path="res://main_3d_scene.VoxelGI_data.res" id="36_hgf45"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_wvhbo"]
 panorama = ExtResource("3_yvypd")
-energy_multiplier = 0.2
+energy_multiplier = 5.7
 
 [sub_resource type="Sky" id="Sky_4uwfm"]
 sky_material = SubResource("PanoramaSkyMaterial_wvhbo")
 
 [sub_resource type="Environment" id="Environment_rqbel"]
 background_mode = 2
-background_energy_multiplier = 2.07
 sky = SubResource("Sky_4uwfm")
+sky_rotation = Vector3(-1.9896754, -0.31415927, 0)
 ambient_light_source = 3
-ambient_light_color = Color(0.40221527, 0.43498304, 0.51350784, 1)
+ambient_light_color = Color(0.76240367, 0.76240367, 0.76240367, 1)
+ambient_light_sky_contribution = 0.54
+ambient_light_energy = 6.2
 reflected_light_source = 2
 tonemap_mode = 3
-tonemap_exposure = 0.59
+tonemap_exposure = 0.52
 ssr_enabled = true
-ssr_fade_in = 0.20490587
 ssao_enabled = true
-ssao_radius = 2.48
-ssao_intensity = 3.15
-ssao_power = 0.9559184
-ssao_horizon = 0.24
-ssao_sharpness = 0.35
-ssao_light_affect = 0.09
 ssil_enabled = true
-ssil_radius = 2.69
-ssil_intensity = 0.92
-ssil_sharpness = 0.78
-glow_enabled = true
+ssil_radius = 0.14
+ssil_intensity = 0.83
+ssil_sharpness = 0.14
+sdfgi_read_sky_light = false
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.0861
+volumetric_fog_emission = Color(0.1148968, 0.11489681, 0.1148968, 1)
+volumetric_fog_gi_inject = 1.17
 adjustment_enabled = true
 adjustment_brightness = 1.15
 adjustment_contrast = 1.105
 adjustment_saturation = 1.27
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_xr32f"]
-dof_blur_near_distance = 10.05
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_a5i42"]
 size = Vector3(64.085, 0.5, 35.673)
-
-[sub_resource type="BoxMesh" id="BoxMesh_wvhbo"]
-size = Vector3(8, 0.1, 4.3)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_rqbel"]
-size = Vector3(8, 0.1, 3)
-
-[sub_resource type="BoxMesh" id="BoxMesh_rqbel"]
-size = Vector3(8, 0.1, 1.2)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_5s3sv"]
-size = Vector3(8, 0.1, 2.9)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_5rl3n"]
-size = Vector3(8, 0.1, 3)
-
-[sub_resource type="BoxMesh" id="BoxMesh_4uwfm"]
-size = Vector3(4.3, 0.1, 1.2)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_l3r7w"]
-size = Vector3(4.3, 0.1, 3)
-
-[sub_resource type="BoxMesh" id="BoxMesh_a5i42"]
-size = Vector3(4.3, 0.1, 1.2)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_vd2wl"]
-size = Vector3(4.3, 0.1, 3)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5rl3n"]
 albedo_color = Color(0.32544088, 0.3254409, 0.32544088, 1)
@@ -120,13 +87,25 @@ size = Vector3(330, 1, 290)
 [sub_resource type="BoxMesh" id="BoxMesh_5rl3n"]
 size = Vector3(8.0802, 0.1, 4.157837)
 
+[sub_resource type="BoxMesh" id="BoxMesh_rqbel"]
+size = Vector3(8, 0.1, 1.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4uwfm"]
+size = Vector3(4.3, 0.1, 1.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_a5i42"]
+size = Vector3(4.3, 0.1, 1.2)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_a0yx4"]
 size = Vector3(3, 0.1, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_wvhbo"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_abi3o"]
-albedo_color = Color(1, 0.7254902, 0.29803923, 1)
+albedo_color = Color(0.9563518, 0.88003916, 0.7647266, 1)
+metallic = 1.0
+roughness = 0.35
+clearcoat = 0.4
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_l3r7w"]
 material = SubResource("StandardMaterial3D_abi3o")
@@ -147,15 +126,15 @@ metadata/_custom_type_script = "uid://isk6xjs47cxp"
 [sub_resource type="LabelSettings" id="LabelSettings_6qjdx"]
 font_size = 30
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fdv13"]
-bg_color = Color(0.6431373, 0.09411765, 0, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dwi8f"]
+bg_color = Color(0.2816801, 0.60469335, 0.9927555, 1)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dwi8f"]
-bg_color = Color(0.2816801, 0.60469335, 0.9927555, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ydfj"]
+bg_color = Color(0.5708804, 0.5984392, 0.6757671, 1)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
@@ -167,17 +146,6 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
-
-[sub_resource type="Resource" id="Resource_2r5wi"]
-script = ExtResource("28_6ydfj")
-slot = 2
-hp = 105
-armor = 16
-default_skill = ExtResource("27_hgf45")
-id = "knight_armor"
-name = "Knight Armor"
-description = "Iron Chestplate"
-metadata/_custom_type_script = "uid://c8gwocrlh6aa7"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ke5is"]
 resource_name = "Material"
@@ -216,6 +184,10 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_gtwia")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hgf45"]
+albedo_color = Color(0.83273095, 0.71255535, 0.6523186, 1)
+ao_enabled = true
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_jncqg"]
 data = PackedVector3Array(-0.84565836, 0.25, 1.5033927, 0.84565836, 0.25, 1.5033927, 0.84565836, 0.25, 1.5033927, -0.84565836, 0.25, 1.5033927, -0.84565836, 0.25, 1.5033927, 0.84565836, 0.25, 1.5033927, 0.9, -0.25, 1.6, -0.9, 0.25, 1.6, 0.9, 0.25, 1.6, 0.9, -0.25, 1.6, -0.9, -0.25, 1.6, -0.9, 0.25, 1.6, -0.9, -0.25, 1.6, -0.9, 0.25, -1.6, -0.9, 0.25, 1.6, -0.9, -0.25, 1.6, -0.9, -0.25, -1.6, -0.9, 0.25, -1.6, -0.9, -0.25, -1.6, 0.9, -0.25, 1.6, 0.9, -0.25, -1.6, -0.9, -0.25, -1.6, -0.9, -0.25, 1.6, 0.9, -0.25, 1.6, 0.9, -0.25, -1.6, 0.9, 0.25, 1.6, 0.9, 0.25, -1.6, 0.9, -0.25, -1.6, 0.9, -0.25, 1.6, 0.9, 0.25, 1.6, -0.9, -0.25, -1.6, 0.9, 0.25, -1.6, -0.9, 0.25, -1.6, -0.9, -0.25, -1.6, 0.9, -0.25, -1.6, 0.9, 0.25, -1.6, 0.84565836, 0.25, 1.5033927, -0.9, 0.25, 1.6, -0.84565836, 0.25, 1.5033927, 0.84565836, 0.25, 1.5033927, 0.9, 0.25, 1.6, -0.9, 0.25, 1.6, 0.84565836, 0.25, -1.5033927, 0.9, 0.25, 1.6, 0.84565836, 0.25, 1.5033927, 0.84565836, 0.25, -1.5033927, 0.9, 0.25, -1.6, 0.9, 0.25, 1.6, -0.84565836, 0.25, 1.5033927, -0.9, 0.25, -1.6, -0.84565836, 0.25, -1.5033927, -0.84565836, 0.25, 1.5033927, -0.9, 0.25, 1.6, -0.9, 0.25, -1.6, -0.84565836, 0.25, -1.5033927, 0.9, 0.25, -1.6, 0.84565836, 0.25, -1.5033927, -0.84565836, 0.25, -1.5033927, -0.9, 0.25, -1.6, 0.9, 0.25, -1.6, 0.84565836, 0.25, -1.5033927, -0.84565836, -0.1874268, -1.5033927, -0.84565836, 0.25, -1.5033927, 0.84565836, 0.25, -1.5033927, 0.84565836, -0.1874268, -1.5033927, -0.84565836, -0.1874268, -1.5033927, 0.84565836, 0.25, -1.5033927, -0.84565836, 0.25, -1.5033927, -0.84565836, 0.25, -1.5033927, 0.84565836, 0.25, -1.5033927, 0.84565836, 0.25, -1.5033927, -0.84565836, 0.25, -1.5033927, 0.84565836, 0.25, 1.5033927, 0.84565836, 0.25, -1.5033927, 0.84565836, 0.25, -1.5033927, 0.84565836, 0.25, 1.5033927, 0.84565836, 0.25, 1.5033927, 0.84565836, 0.25, -1.5033927, -0.84565836, 0.25, -1.5033927, -0.84565836, 0.25, 1.5033927, -0.84565836, 0.25, 1.5033927, -0.84565836, 0.25, -1.5033927, -0.84565836, 0.25, -1.5033927, -0.84565836, 0.25, 1.5033927, 0.84565836, -0.1874268, -1.5033927, -0.84565836, -0.1874268, 1.5033927, -0.84565836, -0.1874268, -1.5033927, 0.84565836, -0.1874268, -1.5033927, 0.84565836, -0.1874268, 1.5033927, -0.84565836, -0.1874268, 1.5033927, 0.84565836, 0.25, 1.5033927, 0.84565836, -0.1874268, -1.5033927, 0.84565836, 0.25, -1.5033927, 0.84565836, 0.25, 1.5033927, 0.84565836, -0.1874268, 1.5033927, 0.84565836, -0.1874268, -1.5033927, -0.84565836, 0.25, -1.5033927, -0.84565836, -0.1874268, 1.5033927, -0.84565836, 0.25, 1.5033927, -0.84565836, 0.25, -1.5033927, -0.84565836, -0.1874268, -1.5033927, -0.84565836, -0.1874268, 1.5033927, -0.84565836, 0.25, 1.5033927, 0.84565836, -0.1874268, 1.5033927, 0.84565836, 0.25, 1.5033927, -0.84565836, 0.25, 1.5033927, -0.84565836, -0.1874268, 1.5033927, 0.84565836, -0.1874268, 1.5033927)
@@ -267,19 +239,63 @@ floating_text = ExtResource("4_hgf45")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1158641627]
 environment = SubResource("Environment_rqbel")
-camera_attributes = SubResource("CameraAttributesPractical_xr32f")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1711157845]
+transform = Transform3D(1, 0, 1.4901159e-08, 0, 1, 0, -1.4901161e-08, -2.220446e-16, 1, -2.2515533, 2.3033702, 2.3755436)
+light_color = Color(0.8762429, 0.57962984, 0.2702956, 1)
+light_energy = 1.5
+light_indirect_energy = 5.0
+light_specular = 3.894
+shadow_enabled = true
+omni_range = 4.264661
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="." unique_id=1660852739]
+transform = Transform3D(1, 0, 1.4901159e-08, 0, 1, 0, -1.4901161e-08, -2.220446e-16, 1, -1.5343673, 4.706835, -2.859455)
+light_color = Color(0.94002473, 0.7853216, 0.75679135, 1)
+light_volumetric_fog_energy = 1.5
+shadow_enabled = true
+omni_range = 6.53439
+
+[node name="Fireplace" type="Node3D" parent="." unique_id=1213902131]
+transform = Transform3D(1, -3.3087225e-24, 1.4901161e-08, 0, 1, 2.220446e-16, -1.4901161e-08, -2.220446e-16, 1, -1.5343673, 4.706835, -2.859455)
+script = ExtResource("6_hgf45")
+
+[node name="Fireplace" type="OmniLight3D" parent="Fireplace" unique_id=1769017744]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.9757814, -1.3886747, -0.44192004)
+light_color = Color(0.65284353, 0.36337972, 0.06475722, 1)
+light_energy = 2.0
+light_indirect_energy = 5.0
+light_volumetric_fog_energy = 0.5
+omni_range = 10.0
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="." unique_id=1741501354]
+transform = Transform3D(1, 0, 1.4901159e-08, 0, 1, 0, -1.4901161e-08, -2.220446e-16, 1, 2.0786383, 6.43104, -4.9210076)
+light_color = Color(1.2513996e-06, 0.4492331, 0.63927615, 1)
+light_energy = 6.091
+shadow_enabled = true
+omni_range = 26.449955
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=215799819]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 4.9906764, -2.181494e-07)
+light_color = Color(1, 0.9164254, 0.8648736, 1)
+light_indirect_energy = 3.0
+light_specular = 2.0
+spot_range = 7.3213553
+spot_angle = 35.80511
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1860131644]
 transform = Transform3D(-0.86602545, -0.43747962, 0.2420983, 0, 0.4841966, 0.8749593, -0.5000001, 0.7577369, -0.4193265, 0, 0, 0)
-light_color = Color(0.9529412, 0.78431374, 0.58431375, 1)
-light_energy = 0.515
-light_indirect_energy = 3.02
+visible = false
+light_color = Color(0.7914346, 0.5706923, 0.22428262, 1)
+light_energy = 0.3
 shadow_enabled = true
-shadow_bias = 3.636
-shadow_normal_bias = 5.586
-shadow_transmittance_bias = -2.697
-shadow_opacity = 0.99
-shadow_blur = 3.576
+shadow_normal_bias = 0.0
+shadow_transmittance_bias = 0.858
+shadow_opacity = 0.8
+directional_shadow_blend_splits = true
+directional_shadow_fade_start = 0.648
+directional_shadow_max_distance = 18.6
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1228112281]
 transform = Transform3D(-4.371139e-08, -0.74024993, 0.6723318, 0, 0.6723318, 0.74024993, -1, 3.2357352e-08, -2.9388557e-08, 4.2191253, 5.755158, -1.8442381e-07)
@@ -290,7 +306,7 @@ size = 0.1
 transform = Transform3D(-2.1855695e-09, 0, 0.05, 0, 0.05, 0, -0.05, 0, -2.1855695e-09, 0.0049730632, 1.1412127, -0.06945217)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BoxBlocker" unique_id=1826459755]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5218506, 0, -0.14074887)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5218507, -12.149294, -0.14074887)
 shape = SubResource("BoxShape3D_a5i42")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="BoxBlocker" unique_id=222034921]
@@ -309,58 +325,6 @@ shape = SubResource("BoxShape3D_a5i42")
 transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 1.323489e-22, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106863e-15, -33.564915, -1.9073486e-06, -0.22585705)
 shape = SubResource("BoxShape3D_a5i42")
 
-[node name="Box" type="Node3D" parent="." unique_id=718227720]
-transform = Transform3D(-2.1855695e-09, 0, 0.05, 0, 0.05, 0, -0.05, 0, -2.1855695e-09, 0, 0, 1.5029671)
-visible = false
-
-[node name="Floor" type="MeshInstance3D" parent="Box" unique_id=96267952]
-mesh = SubResource("BoxMesh_wvhbo")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Box/Floor" unique_id=329709153]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Box/Floor/StaticBody3D" unique_id=295069957]
-shape = SubResource("BoxShape3D_rqbel")
-
-[node name="Wall" type="MeshInstance3D" parent="Box" unique_id=789475113]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.6, 2.25)
-mesh = SubResource("BoxMesh_rqbel")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Box/Wall" unique_id=1971275678]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Box/Wall/StaticBody3D" unique_id=1438560842]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.95000005)
-shape = SubResource("BoxShape3D_5s3sv")
-
-[node name="Wall2" type="MeshInstance3D" parent="Box" unique_id=672571015]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.6000001, -2.25)
-mesh = SubResource("BoxMesh_rqbel")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Box/Wall2" unique_id=115457946]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Box/Wall2/StaticBody3D" unique_id=967566053]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.3841858e-07, 1.0000001)
-shape = SubResource("BoxShape3D_5rl3n")
-
-[node name="Wall3" type="MeshInstance3D" parent="Box" unique_id=98011386]
-transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 4.008583, 0.59999996, 0.02746582)
-mesh = SubResource("BoxMesh_4uwfm")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Box/Wall3" unique_id=11622361]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Box/Wall3/StaticBody3D" unique_id=454086936]
-transform = Transform3D(1, 0, 0, 0, 1, 8.351872e-23, 0, 8.351872e-23, 1, 0, 0, 1)
-shape = SubResource("BoxShape3D_l3r7w")
-
-[node name="Wall4" type="MeshInstance3D" parent="Box" unique_id=1959428059]
-transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, -3.991417, 0.6, 0.027466297)
-mesh = SubResource("BoxMesh_a5i42")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Box/Wall4" unique_id=529363079]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Box/Wall4/StaticBody3D" unique_id=508028987]
-transform = Transform3D(1, 0, 0, 0, 1, 8.351872e-23, 0, 8.351872e-23, 1, 0, 0, 0.8999997)
-shape = SubResource("BoxShape3D_vd2wl")
-
 [node name="Table" type="MeshInstance3D" parent="." unique_id=2053845825]
 transform = Transform3D(-2.1855695e-09, 0, 0.05, 0, 0.05, 0, -0.05, 0, -2.1855695e-09, 0, -0.27237177, 0.076562494)
 mesh = SubResource("BoxMesh_5s3sv")
@@ -370,9 +334,13 @@ mesh = SubResource("BoxMesh_5s3sv")
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="Table/StaticBody3D" unique_id=1677362064]
 shape = SubResource("BoxShape3D_xr32f")
 
-[node name="EnemySpawnPoint" type="Marker3D" parent="." unique_id=446138479]
+[node name="ThrowOrigin" type="Marker3D" parent="." unique_id=1677203189]
 unique_name_in_owner = true
-transform = Transform3D(-4.371139e-08, 0.5705834, 0.82123965, 0, 0.82123965, -0.5705834, -1, -2.4940993e-08, -3.5897525e-08, -1.6574966, 0.691186, 4.268252e-08)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28463566, 0.11371899, 0.00018310547)
+
+[node name="ThrowLanding" type="Marker3D" parent="." unique_id=1227997681]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5844341, -0.19943744, 0.00018310547)
 
 [node name="BoxTop" type="Node3D" parent="." unique_id=655316211]
 transform = Transform3D(-2.1855695e-09, -0.04330127, 0.025000004, 0, 0.025000004, 0.04330127, -0.05, 1.8927586e-09, -1.0927849e-09, 0.013428688, 1.1751683, -5.7940874)
@@ -403,10 +371,19 @@ mesh = SubResource("BoxMesh_a5i42")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BoxTop/Wall8/StaticBody3D" unique_id=1985918166]
 shape = SubResource("BoxShape3D_a0yx4")
 
-[node name="DiceContainer" type="Node3D" parent="." unique_id=933139626]
+[node name="DiceContainer" type="Node3D" parent="." unique_id=933139626 node_paths=PackedStringArray("throw_origin", "landing_center")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, -0.19943744, 0.00018310547)
 script = ExtResource("5_kamvo")
-die_scenes = null
+throw_origin = NodePath("../ThrowOrigin")
+landing_center = NodePath("../ThrowLanding")
+hand_cluster_spacing = 0.8
+throw_strength_min = 4.5
+throw_strength_max = 6.0
+arc_height_min = 0.1
+arc_height_max = 1.5
+throw_spread = 0.8
+torque_min = Vector3(-0.5, -0.5, -0.5)
+torque_max = Vector3(1.2, 1.2, 1.2)
 
 [node name="Props" type="Node3D" parent="." unique_id=1649492425]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
@@ -484,34 +461,6 @@ size_flags_vertical = 8
 alignment = 1
 vertical = true
 
-[node name="ExpBox" type="BoxContainer" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1574266076]
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ExpBox" unique_id=131132722]
-custom_minimum_size = Vector2(36, 0)
-layout_mode = 2
-text = "EXP"
-
-[node name="ExpCurrent" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ExpBox" unique_id=2145037364]
-layout_mode = 2
-text = "0"
-
-[node name="ExpProgressBar" type="ProgressBar" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ExpBox" unique_id=305907779]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-offset_transform_enabled = true
-offset_transform_position = Vector2(0, -1.6)
-theme_override_styles/fill = SubResource("StyleBoxFlat_fdv13")
-value = 11.05
-show_percentage = false
-
-[node name="ExpMax" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ExpBox" unique_id=1589386613]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "100"
-
 [node name="HpBox" type="BoxContainer" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1955519889]
 layout_mode = 2
 
@@ -546,21 +495,39 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "100"
 
-[node name="ManaBox" type="BoxContainer" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1890788036]
-visible = false
+[node name="ShieldBox" type="BoxContainer" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer" unique_id=91889068]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ManaBox" unique_id=577927676]
-custom_minimum_size = Vector2(64, 0)
+[node name="Label2" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ShieldBox" unique_id=749575843]
+custom_minimum_size = Vector2(36, 0)
 layout_mode = 2
-text = "MANA: "
+text = "HP"
+vertical_alignment = 1
 
-[node name="ManaProgressBar" type="ProgressBar" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ManaBox" unique_id=1406694630]
+[node name="ShieldCurrent" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ShieldBox" unique_id=502018597]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
-custom_maximum_size = Vector2(-1, 16)
 layout_mode = 2
+size_flags_horizontal = 4
+text = "0"
+vertical_alignment = 1
+
+[node name="ShieldProgressBar" type="ProgressBar" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ShieldBox" unique_id=960721487]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 4)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -1.6)
+theme_override_styles/fill = SubResource("StyleBoxFlat_6ydfj")
 value = 11.05
+show_percentage = false
+
+[node name="ShieldMax" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ShieldBox" unique_id=2059704989]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "100"
 
 [node name="GoldLabel" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer" unique_id=368449364]
 visible = false
@@ -596,6 +563,7 @@ text = "CONFIRM SELECTED DICES"
 
 [node name="EquipmentCanvasLayer" type="CanvasLayer" parent="." unique_id=219155604]
 unique_name_in_owner = true
+visible = false
 
 [node name="ColorRect" type="ColorRect" parent="EquipmentCanvasLayer" unique_id=1037858027]
 anchors_preset = 15
@@ -782,14 +750,13 @@ size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_3w64d")
 script = ExtResource("20_q0ack")
 base_items = Dictionary[ExtResource("21_50bjb"), int]({
-SubResource("Resource_2r5wi"): 1,
 ExtResource("24_mpvc3"): 5,
 ExtResource("25_g7q3g"): 5,
 ExtResource("26_52jij"): 5,
 ExtResource("27_4aqfo"): 5,
 ExtResource("28_ct24d"): 5,
 ExtResource("29_4psnp"): 5,
-ExtResource("30_ev28f"): 5
+ExtResource("33_lw8pt"): 2
 })
 
 [node name="MarginContainer" type="MarginContainer" parent="EquipmentCanvasLayer/MarginContainer/MiddlePanel/InventorySection/InventoryPanel/Inventory" unique_id=385520042]
@@ -825,26 +792,36 @@ layout_mode = 2
 layout_mode = 2
 text = "Next Wave"
 
-[node name="Box2" type="Node3D" parent="." unique_id=27817797]
+[node name="Box" type="Node3D" parent="." unique_id=27817797]
+unique_name_in_owner = true
 
-[node name="Box" type="MeshInstance3D" parent="Box2" unique_id=2040764136]
+[node name="Mesh" type="MeshInstance3D" parent="Box" unique_id=2040764136]
 mesh = SubResource("ArrayMesh_tau5g")
+surface_material_override/0 = SubResource("StandardMaterial3D_hgf45")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Box2/Box" unique_id=747997826]
+[node name="StaticBody3D" type="StaticBody3D" parent="Box/Mesh" unique_id=747997826]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Box2/Box/StaticBody3D" unique_id=746651843]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box/Mesh/StaticBody3D" unique_id=746651843]
 shape = SubResource("ConcavePolygonShape3D_jncqg")
 
-[node name="Lid" type="MeshInstance3D" parent="Box2" unique_id=267524290]
-transform = Transform3D(-0.819152, -0.5735764, 0, 0.5735764, -0.819152, 0, 0, 0, 1, -0.9, 0.25, 0)
+[node name="Lid" type="MeshInstance3D" parent="Box" unique_id=267524290]
+unique_name_in_owner = true
+transform = Transform3D(0.9999961, 0.002756115, 0, -0.002756115, 0.9999961, 0, 0, 0, 1, -0.9, 0.25, 0)
 mesh = SubResource("ArrayMesh_ktmsg")
 metadata/extras = {
 "booleans": {}
 }
 
-[node name="LidScreen" type="MeshInstance3D" parent="Box2" unique_id=1704107719]
-transform = Transform3D(-6.943691e-08, 0.5638256, 1.2795155, -1.6562484e-09, 0.80522645, -0.89592636, -1.562, -2.5918029e-08, -5.59294e-08, -1.6713868, 0.7008368, 4.3289685e-08)
+[node name="EnemySpawnPoint" type="Marker3D" parent="Box/Lid" unique_id=446138479]
+unique_name_in_owner = true
+transform = Transform3D(4.371139e-08, -3.8213714e-15, -1.0000001, -8.742278e-08, -1.0000001, 0, -1, 8.7422784e-08, -4.3711392e-08, 0.9, 0.1, 0)
+
+[node name="LidScreen" type="MeshInstance3D" parent="Box/Lid" unique_id=1704107719]
+transform = Transform3D(5.5929405e-08, 0, -1.5620002, 4.1184094e-08, -0.98300004, 0, -1.562, -2.5918029e-08, -5.59294e-08, 0.89047265, 0.07314545, 4.3289685e-08)
 mesh = SubResource("PlaneMesh_lquvc")
 metadata/extras = {
 "booleans": {}
 }
+
+[node name="VoxelGI" type="VoxelGI" parent="." unique_id=1025382049]
+data = ExtResource("36_hgf45")

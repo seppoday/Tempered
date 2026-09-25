@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://doyuee4t73gkp" path="res://data/definitions/enemy_attack_pattern.gd" id="1_amobi"]
 [ext_resource type="Script" uid="uid://dfsxlht8w22ue" path="res://data/definitions/enemy_definition.gd" id="2_2tb2m"]
-[ext_resource type="Texture2D" uid="uid://bf1coygh0o48r" path="res://assets/items/copper_ring.png" id="3_578fl"]
+[ext_resource type="Texture2D" uid="uid://bftlcbgr8bch7" path="res://assets/enemies/enemy.jpg" id="3_amobi"]
 
 [sub_resource type="Resource" id="Resource_0daba"]
 script = ExtResource("1_amobi")
-damage = 200
+damage = 2000
 hits = 2
 metadata/_custom_type_script = "uid://doyuee4t73gkp"
 
@@ -14,7 +14,6 @@ metadata/_custom_type_script = "uid://doyuee4t73gkp"
 script = ExtResource("2_2tb2m")
 id = "goblin"
 enemy_name = "Goblin"
-sprite = ExtResource("3_578fl")
-max_hp = 10
+sprite = ExtResource("3_amobi")
 attack_patterns = Array[ExtResource("1_amobi")]([SubResource("Resource_0daba")])
 metadata/_custom_type_script = "uid://dfsxlht8w22ue"

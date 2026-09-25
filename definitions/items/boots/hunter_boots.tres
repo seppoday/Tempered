@@ -1,18 +1,25 @@
 [gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://cf5mwgokmedm7"]
 
 [ext_resource type="Texture2D" uid="uid://brrdeqocjha3i" path="res://assets/items/worn boots.jpeg" id="1_a7osl"]
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_ferye"]
 [ext_resource type="Resource" uid="uid://868qluknvm0" path="res://definitions/skills/crit_boost.tres" id="1_ysbrt"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_b3qms"]
 
 [resource]
 script = ExtResource("2_b3qms")
 slot = 4
-hp = 20
-armor = 2
-dodge = 0.02
 default_skill = ExtResource("1_ysbrt")
-id = "leather_boots"
-name = "Leather Boots"
-description = "Leather Boots"
+dmg = 4.0
+magic = 1.0
+def = 3.0
+vit = 4.0
+speed = 15.0
+luck = 7.0
+status = 3.0
+crit = 6.0
+id = "hunter_boots"
+name = "Hunter Boots"
+description = "Hunter Boots"
 icon = ExtResource("1_a7osl")
+rarity = 4
 metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

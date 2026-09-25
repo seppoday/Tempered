@@ -1,12 +1,30 @@
 [gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://dw0cugqwhkga1"]
 
 [ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions/skill_definition.gd" id="1_d17f2"]
-[ext_resource type="Texture2D" uid="uid://cfpc1o1s3vehh" path="res://assets/icons/sword.svg" id="1_rst5n"]
+[ext_resource type="Texture2D" uid="uid://cfpc1o1s3vehh" path="res://assets/icons/stats/sword.svg" id="1_rst5n"]
+[ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="2_x44ks"]
+
+[sub_resource type="Resource" id="Resource_g7d3i"]
+script = ExtResource("2_x44ks")
+metadata/_custom_type_script = "uid://oma4qvx1pxtp"
+
+[sub_resource type="Resource" id="Resource_d27jr"]
+script = ExtResource("2_x44ks")
+stat = 7
+weight = 0.2
+metadata/_custom_type_script = "uid://oma4qvx1pxtp"
+
+[sub_resource type="Resource" id="Resource_ppoig"]
+script = ExtResource("2_x44ks")
+stat = 4
+weight = 0.1
+metadata/_custom_type_script = "uid://oma4qvx1pxtp"
 
 [resource]
 script = ExtResource("1_d17f2")
 id = "basic_attack"
 skill_name = "Basic Attack"
-description = "Basic Attack"
 icon = ExtResource("1_rst5n")
+description = "Basic Attack"
+scalings = Array[ExtResource("2_x44ks")]([SubResource("Resource_g7d3i"), SubResource("Resource_d27jr"), SubResource("Resource_ppoig")])
 metadata/_custom_type_script = "uid://dgjg1vlcvdtpi"

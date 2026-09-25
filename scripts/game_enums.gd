@@ -9,6 +9,8 @@ enum Rarity {
 	MYTHIC
 }
 
+enum Stat { DMG, MAGIC, DEF, VIT, SPEED, LUCK, STATUS, CRIT }
+
 enum DamageElement {
 	PHYSICAL, 
 	FIRE, 

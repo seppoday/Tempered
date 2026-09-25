@@ -2,7 +2,7 @@ extends CanvasLayer
 
 @onready var panel: PanelContainer = $PanelContainer
 @onready var output: RichTextLabel = %Output
-@onready var scroll: ScrollContainer = $PanelContainer/VBoxContainer/ScrollContainer
+@onready var scroll: ScrollContainer = %ScrollContainer
 @onready var input: LineEdit = %Input
 
 var _commands: Dictionary = {}
@@ -15,6 +15,7 @@ func _ready() -> void:
 
 	register_command("help", _cmd_help, "help — lista komend")
 	register_command("additem", _cmd_additem, "additem <id> [ilość] — dodaje item do plecaka po ID")
+	register_command("listitems", _cmd_list_items, "listitems [filtr] — wypisuje dostępne ID przedmiotów")
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -37,6 +38,14 @@ func _set_open(value: bool) -> void:
 func register_command(name: String, callable: Callable, usage: String = "") -> void:
 	_commands[name] = {"callable": callable, "usage": usage}
 
+func unregister_command(name: String, callable: Callable = Callable()) -> void:
+	if not _commands.has(name):
+		return
+	# Jeśli podano callable i nie zgadza się z aktualnie zarejestrowanym,
+	# to znaczy że ktoś inny już przejął tę nazwę — nie usuwaj cudzej komendy.
+	if callable.is_valid() and _commands[name]["callable"] != callable:
+		return
+	_commands.erase(name)
 
 func _on_submitted(text: String) -> void:
 	input.clear()
@@ -91,13 +100,39 @@ func _cmd_additem(args: Array) -> String:
 	return "[color=red]Plecak pełny[/color]"
 
 
+func _cmd_list_items(args: Array) -> String:
+	var filter: String = args[0].to_lower() if args.size() > 0 else ""
+	var lines: Array[String] = []
+
+	for category in _inventory_databases():
+		var database = _inventory_databases()[category]
+		for entry: InventoryEntry in database.get_all():
+			var matches := filter.is_empty() \
+				or filter in entry.id.to_lower() \
+				or filter in entry.name.to_lower()
+			if matches:
+				lines.append("[color=gray]%s[/color]  %s — %s" % [category, entry.id, entry.name])
+
+	if lines.is_empty():
+		return "[color=red]Brak wyników dla '%s'[/color]" % filter
+
+	lines.sort()
+	return "\n".join(lines)
+
+
+## Wspólne źródło dla additem i listitems — jedno miejsce, jeśli kiedyś dojdzie kolejna baza.
+func _inventory_databases() -> Dictionary:
+	return {
+		"item": ItemDatabase,
+		"material": MaterialDatabase,
+		"consumable": ConsumableDatabase,
+		"skill_item": SkillItemDatabase,
+	}
+
+
 func _find_entry(id: String) -> InventoryEntry:
-	var found: InventoryEntry = ItemDatabase.get_by_id(id)
-	if found: return found
-	found = MaterialDatabase.get_by_id(id)
-	if found: return found
-	found = ConsumableDatabase.get_by_id(id)
-	if found: return found
-	found = SkillItemDatabase.get_by_id(id)
-	if found: return found
+	for database in _inventory_databases().values():
+		var found: InventoryEntry = database.get_by_id(id)
+		if found:
+			return found
 	return null

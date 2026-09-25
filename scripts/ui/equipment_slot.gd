@@ -12,7 +12,7 @@ enum Type {
 	RING,
 	SHIELD,
 	BACKPACK,
-	LEGS,
+	LEGS,i
 }
 
 ## Which equipment slot this UI slot represents. Set per-instance in the Inspector

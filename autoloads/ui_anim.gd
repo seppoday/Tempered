@@ -40,7 +40,8 @@ func kill_all(node: Node) -> void:
 func scale_to(control: Control, target: Vector2, duration: float = 0.12, key: StringName = &"scale") -> Tween:
 	# pivot w środku, inaczej skaluje się od lewego-górnego rogu
 	Utilities.center_pivot(control)
-
+	control.offset_transform_enabled = true
+	
 	if control.has_meta(key):
 		var old := control.get_meta(key) as Tween
 		if old and old.is_valid():
@@ -48,7 +49,7 @@ func scale_to(control: Control, target: Vector2, duration: float = 0.12, key: St
 
 	var tween := control.create_tween()
 	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(control, "scale", target, duration)
+	tween.tween_property(control, "offset_transform_scale", target, duration)
 	control.set_meta(key, tween)
 	return tween
 
@@ -56,13 +57,15 @@ func scale_to(control: Control, target: Vector2, duration: float = 0.12, key: St
 func pop(node: CanvasItem, scale_amount: float = 1.2, duration: float = 0.2, kill_existing: bool = true) -> Tween:
 	if kill_existing:
 		kill_all(node)
+	
+	node.offset_transform_enabled = true
 
 	var original: Vector2 = node.scale
 	var big: Vector2 = original * scale_amount
 
 	var t := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-	t.tween_property(node, "scale", big, duration * 0.4)
-	t.tween_property(node, "scale", original, duration * 0.6) \
+	t.tween_property(node, "offset_transform_scale", big, duration * 0.4)
+	t.tween_property(node, "offset_transform_scale", original, duration * 0.6) \
 		.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_ELASTIC)
 
 	return _register(node, t)
@@ -141,14 +144,15 @@ func slide_out(node: CanvasItem, direction: Vector2 = Vector2.RIGHT, distance: f
 ## Pulsowanie skali (nieskończone, np. "kliknij mnie!").
 func pulse(node: CanvasItem, scale_amount: float = 1.08, duration: float = 0.8) -> Tween:
 	kill_all(node)
-
+	node.offset_transform_enabled = true
+	
 	var original: Vector2 = node.scale
 	var big: Vector2 = original * scale_amount
 
 	var t := create_tween().set_loops()
-	t.tween_property(node, "scale", big, duration * 0.5) \
+	t.tween_property(node, "offset_transform_scale", big, duration * 0.5) \
 		.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
-	t.tween_property(node, "scale", original, duration * 0.5) \
+	t.tween_property(node, "offset_transform_scale", original, duration * 0.5) \
 		.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
 	return _register(node, t)
 

@@ -9,10 +9,10 @@ static func _build_face_maps() -> Dictionary:
 	return {
 		6: {
 			1: Vector3.DOWN,
-			2: Vector3.LEFT,
-			3: Vector3.BACK,
-			4: Vector3.FORWARD,
-			5: Vector3.RIGHT,
+			2: Vector3.BACK,
+			3: Vector3.LEFT,
+			4: Vector3.RIGHT,
+			5: Vector3.FORWARD,
 			6: Vector3.UP,
 		},
 		20: {

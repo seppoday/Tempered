@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SkillItemDefinition" format=3 uid="uid://lqt0rt3daif5"]
+
+[ext_resource type="Script" uid="uid://bhmpxj5svtjsp" path="res://data/definitions/skill_item_definition.gd" id="1_g4a8d"]
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="1_p04xh"]
+[ext_resource type="Resource" uid="uid://m362bnj4e4i2" path="res://definitions/skills/fire_attack.tres" id="3_j5jxv"]
+
+[resource]
+script = ExtResource("1_g4a8d")
+skill = ExtResource("3_j5jxv")
+id = "skill_item_fire_attack"
+name = "Fire Attack"
+description = "Fire Attack"
+icon = ExtResource("1_p04xh")
+category = 4
+stackable = true
+max_stack_size = 100
+metadata/_custom_type_script = "uid://bhmpxj5svtjsp"

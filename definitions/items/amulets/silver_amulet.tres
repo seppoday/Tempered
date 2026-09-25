@@ -1,15 +1,18 @@
 [gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://d05poumq2y3b4"]
 
 [ext_resource type="Texture2D" uid="uid://c7675vp32ev6d" path="res://assets/items/jade_amulet.jpeg" id="1_e5cqw"]
-[ext_resource type="Resource" uid="uid://cv34ffkbxiqrd" path="res://definitions/skills/gold_coin.tres" id="1_qbeww"]
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_ik7ff"]
+[ext_resource type="Resource" uid="uid://7ky5kymujpm0" path="res://definitions/skills/heal.tres" id="2_c2tts"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_qpsv8"]
 
 [resource]
 script = ExtResource("2_qpsv8")
 slot = 5
-hp = 10
-dodge = 0.02
-default_skill = ExtResource("1_qbeww")
+default_skill = ExtResource("2_c2tts")
+magic = 12.0
+vit = 6.0
+luck = 7.0
+status = 8.0
 id = "silver_amulet"
 name = "Silver Amulet"
 description = "Silver Amulet"

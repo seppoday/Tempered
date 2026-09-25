@@ -1,41 +1,99 @@
 [gd_scene format=3 uid="uid://dei603y45frkh"]
 
 [ext_resource type="Script" uid="uid://gom6cpdggn8p" path="res://scripts/UI/dicetag.gd" id="1_54fgk"]
+[ext_resource type="Texture2D" uid="uid://7beia3st4uaw" path="res://assets/test.webp" id="1_vnf6y"]
 [ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="2_vnf6y"]
+[ext_resource type="FontFile" uid="uid://ksubfguv2mi1" path="res://assets/fonts/FiraSans-ExtraBold.ttf" id="4_s5h31"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d34oe"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wvhbo"]
+texture = ExtResource("1_vnf6y")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+region_rect = Rect2(2, 2, 130, 132)
 
 [sub_resource type="LabelSettings" id="LabelSettings_mjkwc"]
-font_size = 48
-outline_size = 12
+font_size = 24
+outline_size = 6
 outline_color = Color(0, 0, 0, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54fgk"]
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+shadow_color = Color(0.29954746, 0.29954746, 0.29954743, 0.6)
+shadow_size = 6
+
 [sub_resource type="LabelSettings" id="LabelSettings_fwldo"]
-font_size = 12
 outline_size = 6
 outline_color = Color(0, 0, 0, 1)
 
 [node name="PanelContainer" type="PanelContainer" unique_id=95318190]
-offset_right = 97.0
-offset_bottom = 64.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_d34oe")
+offset_right = 162.0
+offset_bottom = 164.0
+pivot_offset_ratio = Vector2(0.5, 0.5)
+offset_transform_enabled = true
+theme_override_styles/panel = SubResource("StyleBoxTexture_wvhbo")
 script = ExtResource("1_54fgk")
 
-[node name="Icon" type="TextureRect" parent="." unique_id=689231955]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1557987852]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="BoxContainer" type="BoxContainer" parent="MarginContainer" unique_id=857229474]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+vertical = true
+
+[node name="Icon" type="TextureRect" parent="MarginContainer/BoxContainer" unique_id=689231955]
+unique_name_in_owner = true
 custom_maximum_size = Vector2(128, 128)
 layout_mode = 2
+size_flags_horizontal = 4
 texture = ExtResource("2_vnf6y")
 
-[node name="ValueLabel" type="Label" parent="." unique_id=447793444]
+[node name="SkillNameLabel" type="Label" parent="MarginContainer/BoxContainer" unique_id=1683641356]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 text = "test"
 label_settings = SubResource("LabelSettings_mjkwc")
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="ItemLabel" type="Label" parent="." unique_id=1472837659]
+[node name="ValueLabel" type="Label" parent="MarginContainer/BoxContainer" unique_id=447793444]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 2
-size_flags_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("4_s5h31")
+theme_override_font_sizes/font_size = 32
+text = "test"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=730571463]
+custom_minimum_size = Vector2(32, 32)
+custom_maximum_size = Vector2(32, 32)
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-32, -32)
+theme_override_styles/panel = SubResource("StyleBoxFlat_54fgk")
+
+[node name="RollDetailLabel" type="Label" parent="PanelContainer" unique_id=1472837659]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
 text = "test"
 label_settings = SubResource("LabelSettings_fwldo")
+horizontal_alignment = 1
+vertical_alignment = 1

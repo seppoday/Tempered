@@ -6,7 +6,7 @@
 script = ExtResource("1_gpuxc")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=2066590224]
-custom_minimum_size = Vector2(0, 250)
+custom_minimum_size = Vector2(0, 500)
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 35.0
@@ -16,15 +16,19 @@ grow_horizontal = 2
 layout_mode = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer" unique_id=1495970427]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Output" type="RichTextLabel" parent="PanelContainer/VBoxContainer/ScrollContainer" unique_id=573679702]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 bbcode_enabled = true
 
 [node name="Input" type="LineEdit" parent="PanelContainer/VBoxContainer" unique_id=2140985697]
 unique_name_in_owner = true
 layout_mode = 2
 placeholder_text = "wpisz komendę..."
+keep_editing_on_text_submit = true

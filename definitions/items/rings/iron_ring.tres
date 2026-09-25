@@ -1,13 +1,24 @@
 [gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://cbmn2ojp41inn"]
 
+[ext_resource type="Resource" uid="uid://7ky5kymujpm0" path="res://definitions/skills/heal.tres" id="1_buu14"]
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_p2ptn"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_kr464"]
+[ext_resource type="Texture2D" uid="uid://bf1coygh0o48r" path="res://assets/items/copper_ring.png" id="3_qdubs"]
 
 [resource]
 script = ExtResource("2_kr464")
 slot = 6
-hp = 15
-armor = 3
+default_skill = ExtResource("1_buu14")
+dmg = 4.0
+magic = 8.0
+def = 5.0
+vit = 5.0
+speed = 2.0
+luck = 10.0
+status = 4.0
+crit = 5.0
 id = "iron_ring"
 name = "Iron Ring"
 description = "Iron Ring"
+icon = ExtResource("3_qdubs")
 metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

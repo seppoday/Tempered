@@ -18,10 +18,20 @@ func _ready() -> void:
 
 	health = Health.new(definition.max_hp)
 	health.died.connect(_on_died)
-	
 	sprite_3d.texture = definition.sprite
 
+	DebugConsole.register_command("damage", _cmd_damage, "damage [ilość] - atakuje obecnego przeciwnika o X dmg")
+	
+func _exit_tree() -> void:
+	DebugConsole.unregister_command("damage", _cmd_damage)
 
+func _cmd_damage(args: Array) -> String:
+	if args.size() <= 0:
+		return "[color=red]Użycie: damage <ilość>[/color]"
+	var amount: int = int(args[0])
+	health.take_damage(amount)
+	return "[color=green]Enemy dostał obrażenia warte %d[/color]" % amount
+	
 ## Wywoływane przez GameStateManager/CombatManager na początku tury wroga.
 func take_turn() -> void:
 	if health.is_dead():
@@ -31,7 +41,7 @@ func take_turn() -> void:
 	attack_declared.emit(pattern)
 
 	for i in range(pattern.hits):
-		PlayerData.health.take_damage(pattern.damage)
+		PlayerData.take_damage(pattern.damage)
 
 	attack_finished.emit()
 
@@ -39,22 +49,6 @@ func take_turn() -> void:
 func _pick_attack_pattern() -> EnemyAttackPattern:
 	var patterns := definition.attack_patterns
 	return RNG.weighted_pick(patterns)
-	#if patterns.is_empty():
-		#Log.warning("EnemyInstance: brak attack_patterns w definicji %s" % definition.enemy_name)
-		#return null
-#
-	#var total_weight := 0.0
-	#for p in patterns:
-		#total_weight += p.weight
-#
-	#var roll := RNG.randf() * total_weight
-	#var cumulative := 0.0
-	#for p in patterns:
-		#cumulative += p.weight
-		#if roll <= cumulative:
-			#return p
-#
-	#return patterns[-1]  # fallback na wypadek błędów zaokrągleń
 
 
 func _on_died() -> void:

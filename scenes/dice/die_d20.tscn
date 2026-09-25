@@ -1,8 +1,8 @@
 [gd_scene format=4 uid="uid://dg4qey0lvwj0y"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_a5i42"]
-friction = 0.9
-bounce = 0.15
+friction = 0.5
+bounce = 0.2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_opdrl"]
 resource_name = "D20"
@@ -56,7 +56,7 @@ points = PackedVector3Array(0.009500561, -0.0016196282, 0.0043821996, 0.00949498
 mass = 2.0
 physics_material_override = SubResource("PhysicsMaterial_a5i42")
 linear_damp = 1.2
-angular_damp = 2.0
+angular_damp = 1.0
 
 [node name="D20" type="MeshInstance3D" parent="." unique_id=312466070]
 transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)

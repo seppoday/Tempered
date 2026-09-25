@@ -55,9 +55,9 @@ var equipped_items: Dictionary = {
 # DEBUG
 const DEBUG_START_GEAR: Array[Dictionary] = [
 	# [id, count, level (0-6)]
-	{"id": "rusty_sword",    "count": 1, "level": 1},
+	{"id": "iron_sword",    "count": 1, "level": 1},
 	{"id": "iron_shield",    "count": 1, "level": 1},
-	{"id": "silver_amulet",  "count": 1, "level": 6},
+	{"id": "silver_amulet",  "count": 1, "level": 1},
 	#{"id": "knight_armor",   "count": 1, "level": 1},
 	#{"id": "leather_gloves", "count": 1, "level": 6},
 	#{"id": "hunter_boots",   "count": 1, "level": 6},
@@ -81,6 +81,8 @@ func give_debug_gear() -> void:
 func _ready() -> void:
 	give_debug_gear()
 	
+	DebugConsole.register_command("heal", _cmd_heal, "heal [ilość] - leczy gracza (bez argumentu: pełne HP)")
+	
 	character_definition = CharacterDatabase.get_by_id("warrior") # chwilowe, tylko debug
 	
 	if character_definition == null:
@@ -94,50 +96,39 @@ func _ready() -> void:
 
 	health = Health.new(get_total_stats()["hp"])
 	health.died.connect(_on_player_died)
-	
+
+func _cmd_heal(args: Array) -> String:
+	var amount: int = int(args[0]) if args.size() > 0 else health.max_hp
+	health.heal(amount)
+	return "[color=green]Wyleczono do %d/%d HP[/color]" % [health.current, health.max_hp]
+
 # ==========================================
 # OBLICZANIE STATYSTYK
 # ==========================================
 func get_total_stats() -> Dictionary:
-	var totals: Dictionary = {}
+	var totals: Dictionary = {
+		"dmg": character_definition.base_dmg + (attributes["STR"] * 1.0),
+		"magic": character_definition.base_magic + (attributes["INT"] * 1.0),
+		"def": character_definition.base_def,
+		"vit": character_definition.base_vit + (attributes["CON"] * 5.0),
+		"speed": character_definition.base_speed + (attributes["DEX"] * 1.0),
+		"luck": character_definition.base_luck,
+		"status": character_definition.base_status,
+		"crit": character_definition.base_crit,
+	}
 
-	# 1. PRZELICZAMY BAZOWE ATRYBUTY NA STATYSTYKI BOJOWE
-	# (Nazwy kluczy są teraz identyczne z polami w ItemDefinition!)
-	totals["dmg"]           = character_definition.base_dmg + (attributes["STR"] * 1.0)
-	totals["magic_dmg"]     = character_definition.base_magic_dmg + (attributes["INT"] * 1.0)
-	totals["crit_damage"]   = character_definition.base_crit_damage + (attributes["STR"] * 0.02) + (attributes["INT"] * 0.01)
-	
-	totals["attack_speed"]  = character_definition.base_attack_speed + (attributes["DEX"] * 0.01)
-	totals["crit_chance"]   = character_definition.base_crit_chance + (attributes["DEX"] * 0.005)
-	totals["dodge"]         = character_definition.base_dodge + (attributes["DEX"] * 0.002)
-	
-	totals["hp"]            = character_definition.base_hp + (attributes["CON"] * 5.0)
-	totals["armor"]         = character_definition.base_armor  # Bazowo brak armora
-	totals["lifesteal"]     = 0.0  # Bazowo brak lifestealu
-	
-	# Pozostałe statystyki mechaniczne gry
-	totals["block_chance"]  = 0.0 + (attributes["CON"] * 0.005)
-	totals["attack_range"]  = 1.0
-	totals["target_count"]  = 10
-
-	# 2. DODAJEMY EFEKTY Z EKWIPUNKU
 	for slot_type in equipped_items:
 		var item: ItemInstance = equipped_items[slot_type]
-		
 		if item == null or item.definition == null:
 			continue
-			
+
 		var def: ItemDefinition = item.definition
-		
-		totals["hp"] += def.hp
-		totals["dmg"] += def.dmg
-		totals["magic_dmg"] += def.magic_dmg
-		totals["attack_speed"] += def.attack_speed
-		totals["armor"] += def.armor
-		totals["crit_chance"] += def.crit_chance
-		totals["crit_damage"] += def.crit_damage
-		totals["dodge"] += def.dodge
-		totals["lifesteal"] += def.lifesteal
+		for stat in GameEnums.Stat.values():
+			var key: String = GameEnums.Stat.keys()[stat].to_lower()
+			totals[key] += def.get_stat(stat)
+
+	totals["hp"] = totals["vit"]
+	totals["dodge"] = totals["speed"] / (totals["speed"] + 100.0)
 
 	return totals
 
@@ -217,6 +208,25 @@ func calculate_attack() -> Dictionary:
 		"stats": stats
 	}
 
+# player_data.gd — nowa funkcja, PlayerData jako pośrednik przed Health
+func take_damage(raw_amount: int) -> void:
+	var stats := get_total_stats()
+
+	var dodge_chance: float = stats.get("dodge", 0.0) + pending_dodge_bonus
+	pending_dodge_bonus = 0.0
+	if RNG.randf() < dodge_chance:
+		Log.print("Dodged Enemy Attack.")
+		return
+
+	var mitigated: float = max(0.0, raw_amount - pending_block)
+	pending_block = 0.0
+
+	var reduction: float = calculate_armor_reduction(stats.get("def", 0.0))
+	var final_amount: int = int(round(mitigated * (1.0 - reduction)))
+	
+	EventBus.player_damaged.emit(final_amount)
+	health.take_damage(final_amount)
+
 # Formuła redukcji armor - malejąca skuteczność (jak w większości gier)
 func calculate_armor_reduction(armor: float) -> float:
 	# Formuła: armor / (armor + 100)
@@ -234,4 +244,4 @@ func add_dodge_bonus(amount: float) -> void:
 	pending_dodge_bonus += amount
 
 func _on_player_died() -> void:
-	Log.print("DEAD")
+	pass

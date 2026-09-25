@@ -1,7 +1,7 @@
 class_name DiceRoller
 extends Node3D
 
-signal dice_spawned(dice: Array[RigidBody3D], results: Array[Dictionary])
+signal dice_spawned(dice: Array[RigidBody3D])
 signal dice_settled(results: Array[Dictionary])
 
 @export var die_scenes: Dictionary = {
@@ -9,47 +9,100 @@ signal dice_settled(results: Array[Dictionary])
 	20: preload("res://scenes/dice/die_d20.tscn"),
 }
 
-const DICE_ROLL = preload("uid://r47f1p7ggf02")
+@export_group("Rzut z ręki")
+@export var throw_origin: Node3D  ## Marker3D symulujący dłoń — umieść go z boku/nad stołem, z dala od strefy lądowania.
+@export var landing_center: Node3D  ## Opcjonalnie: punkt, w który celujemy rzutem. Puste = Vector3.ZERO.
+@export var hand_cluster_spacing: float = 0.15  ## Odstęp między kośćmi w dłoni, żeby się nie nakładały przy starcie rzutu.
+@export var throw_strength_min: float = 2.0
+@export var throw_strength_max: float = 3.5
+@export var arc_height_min: float = 1.5
+@export var arc_height_max: float = 2.5
+@export var throw_spread: float = 0.6  ## Losowe odchylenie na boki, żeby rzut nie leciał idealnie po linii.
+
+@export_group("Siła obrotu")
+@export var torque_min: Vector3 = Vector3(-1.0, -1.0, -1.0)
+@export var torque_max: Vector3 = Vector3(1.5, 1.5, 1.5)
+
+@export_group("Środek masy (kontrola lądowania)")
+@export var center_of_mass_weight_small: float = 0.12
+@export var center_of_mass_weight_large: float = 0.18
+@export var large_dice_threshold: int = 10
 
 var dice_group: Array[RigidBody3D] = []
+var dice_items: Array[ItemInstance] = []
 var pending_results: Array[Dictionary] = []
 
 
-## Wywoływane z zewnątrz, żeby rozpocząć cały cykl: spawn + rzut.
-func roll() -> void:
-	AudioManager.play_sfx(AudioLibrary.get_sfx(AudioKeys.SFX_ROLL))
+func _ready() -> void:
+	pass  # spawn wołany jawnie z main_3d_scene, PO podłączeniu sygnałów
+
+func spawn_dice() -> void:
 	_spawn_dice_for_equipped_items()
+
+
+func roll() -> void:
+	_roll_results_for_equipped_items()
+	AudioManager.play_sfx(AudioLibrary.get_sfx(AudioKeys.SFX_ROLL))
 	await _throw_all_dice()
+
+
+func resync_with_equipment() -> void:
+	_spawn_dice_for_equipped_items()
 
 
 func _spawn_dice_for_equipped_items() -> void:
 	_clear_previous_dice()
-	pending_results.clear()
 
+	var equipped_dice_items: Array[ItemInstance] = []
 	for slot_type in PlayerData.equipped_items:
 		var item: ItemInstance = PlayerData.equipped_items[slot_type]
-		if item == null or not item.definition is ItemDefinition: continue
+		if item != null and item.definition is ItemDefinition:
+			equipped_dice_items.append(item)
 
+	var rest_positions := calculate_grid_positions(equipped_dice_items.size(), 2, 0.5)
+
+	for i in range(equipped_dice_items.size()):
+		var item := equipped_dice_items[i]
 		var max_face: int = GameEnums.DICE_PROGRESSION[item.dice_level]
-		var roll_result := item.roll_skill()
-		if roll_result.is_empty():
-			Log.warning("Pomijam przedmiot '%s' — roll_skill() zwrócił pusty wynik (sprawdź default_skill)" % item.definition.name)
-			continue
 
 		var die_scene: PackedScene = die_scenes.get(max_face)
 		if die_scene == null:
 			Log.warning("Brak modelu kości d%d — używam d6 dla %s" % [max_face, item.definition.name])
 			die_scene = die_scenes.get(6)
-
-		if die_scene == null: continue
+		if die_scene == null:
+			continue
 
 		var die := die_scene.instantiate() as RigidBody3D
 		add_child(die)
-		Log.print(die.global_position)
-		die.freeze = true
+		die.freeze = false
 		die.linear_damp = 0.2
 		die.angular_damp = 0.2
+		die.global_position = rest_positions[i]
+
 		dice_group.append(die)
+		dice_items.append(item)
+
+	dice_spawned.emit(dice_group)
+
+
+func _clear_previous_dice() -> void:
+	for die in dice_group:
+		Utilities.safe_free(die)
+	dice_group.clear()
+	dice_items.clear()
+
+
+func _roll_results_for_equipped_items() -> void:
+	pending_results.clear()
+
+	for i in range(dice_group.size()):
+		var item := dice_items[i]
+		var roll_result := item.roll_skill()
+
+		if roll_result.is_empty():
+			Log.warning("Pomijam przedmiot '%s' — roll_skill() zwrócił pusty wynik (sprawdź default_skill)" % item.definition.name)
+			pending_results.append({})
+			continue
 
 		pending_results.append({
 			"item": item,
@@ -58,41 +111,45 @@ func _spawn_dice_for_equipped_items() -> void:
 			"face": roll_result["face"],
 		})
 
-	dice_spawned.emit(dice_group, pending_results)
-
-
-func _clear_previous_dice() -> void:
-	for die in dice_group:
-		Utilities.safe_free(die)
-		#if is_instance_valid(die): die.queue_free()
-	dice_group.clear()
-
 
 func _throw_all_dice() -> void:
-	var spawn_positions := calculate_grid_positions(dice_group.size(), 3, 0.2)
+	var origin: Vector3 = throw_origin.global_position if throw_origin else Vector3(0.0, 1.5, -1.0)
+	var target_center: Vector3 = landing_center.global_position if landing_center else Vector3.ZERO
+	var hand_offsets := calculate_grid_positions(dice_group.size(), 2, hand_cluster_spacing)
 
 	for i in range(dice_group.size()):
 		var die := dice_group[i]
 		var result := pending_results[i]
+		if result.is_empty():
+			continue
 
-		die.freeze = false
-
-		var random_offset = Vector3(RNG.randf_range(-0.1, 0.1), RNG.randf_range(0.0, 0.02), RNG.randf_range(-0.1, 0.1))
-		die.global_position = spawn_positions[i] + random_offset
-
+		# Zamrożony teleport do "dłoni" — bezpieczny nawet jeśli kość leżała daleko od tego miejsca.
+		die.freeze = true
+		die.global_position = origin + hand_offsets[i]
 		die.linear_velocity = Vector3.ZERO
 		die.angular_velocity = Vector3.ZERO
+		die.rotation = Vector3(RNG.randf_range(0, TAU), RNG.randf_range(0, TAU), RNG.randf_range(0, TAU))
+		die.freeze = false
 
 		var local_up: Vector3 = DiceFaceMapper.get_local_up(result["dice_level_on_item"], result["face"])
-
 		die.center_of_mass_mode = RigidBody3D.CENTER_OF_MASS_MODE_CUSTOM
-		var weight_strength = 0.18 if result["dice_level_on_item"] >= 10 else 0.12
+		var weight_strength = center_of_mass_weight_large if result["dice_level_on_item"] >= large_dice_threshold else center_of_mass_weight_small
 		die.center_of_mass = -local_up * weight_strength
 
-		die.rotation = Vector3(RNG.randf_range(0, TAU), RNG.randf_range(0, TAU), RNG.randf_range(0, TAU))
+		# Kierunek: od dłoni w stronę środka stołu, plus łuk w górę i lekki rozrzut na boki.
+		var to_target := target_center - die.global_position
+		to_target.y = 0.0
+		var throw_dir := to_target.normalized() if to_target.length() > 0.01 else Vector3.FORWARD
 
-		var push_force = Vector3(RNG.randf_range(-1.5, 3), RNG.randf_range(-1.5, 1), RNG.randf_range(-1.5, 3))
-		var torque = Vector3(RNG.randf_range(-1.0, 1.5), RNG.randf_range(-1.0, 1.5), RNG.randf_range(-1.0, 1.5))
+		var push_force := throw_dir * RNG.randf_range(throw_strength_min, throw_strength_max)
+		push_force.y = RNG.randf_range(arc_height_min, arc_height_max)
+		push_force += throw_dir.cross(Vector3.UP) * RNG.randf_range(-throw_spread, throw_spread)
+
+		var torque = Vector3(
+			RNG.randf_range(torque_min.x, torque_max.x),
+			RNG.randf_range(torque_min.y, torque_max.y),
+			RNG.randf_range(torque_min.z, torque_max.z)
+		)
 
 		die.apply_central_impulse(push_force)
 		die.apply_torque_impulse(torque)
@@ -102,7 +159,7 @@ func _throw_all_dice() -> void:
 	var tweens: Array[Tween] = []
 	for i in range(dice_group.size()):
 		var die := dice_group[i]
-		if not is_instance_valid(die): continue
+		if not is_instance_valid(die) or pending_results[i].is_empty(): continue
 
 		die.linear_velocity = Vector3.ZERO
 		die.angular_velocity = Vector3.ZERO
@@ -119,7 +176,7 @@ func _throw_all_dice() -> void:
 		var start_q = die.global_basis.get_rotation_quaternion().normalized()
 		var end_q = (correction_q * start_q).normalized()
 
-		var safe_floor_y = 0.01 if pending_results[i]["dice_level_on_item"] <= 6 else 0.02
+		var safe_floor_y = 0.001 if pending_results[i]["dice_level_on_item"] <= 6 else 0.002
 		var target_pos = Vector3(die.global_position.x, safe_floor_y, die.global_position.z)
 
 		var tween = create_tween().set_parallel(true)
@@ -173,5 +230,5 @@ func calculate_grid_positions(total_count: int, columns: int, spacing: float) ->
 		var row = i / columns
 		var x = (col * spacing) - offset_x
 		var z = (row * spacing) - offset_z
-		positions.append(Vector3(x, 0.1, z))
+		positions.append(Vector3(x, 0.02, z))
 	return positions

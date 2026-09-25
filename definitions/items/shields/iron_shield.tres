@@ -1,19 +1,25 @@
 [gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://doctrs027ahn3"]
 
 [ext_resource type="Resource" uid="uid://csljdigk7bkki" path="res://definitions/skills/shield.tres" id="1_7r03k"]
-[ext_resource type="Texture2D" uid="uid://jrau58b8cdsr" path="res://assets/items/steel_sword.jpg" id="1_a38n2"]
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_km3s3"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_yb4mm"]
+[ext_resource type="Texture2D" uid="uid://dyuor5gq0y08d" path="res://assets/items/iron_shield.jpeg" id="3_km3s3"]
 
 [resource]
 script = ExtResource("2_yb4mm")
 slot = 7
-hp = 30
-attack_speed = -0.1
-armor = 7
 default_skill = ExtResource("1_7r03k")
+dmg = 2.0
+magic = 1.0
+def = 15.0
+vit = 8.0
+speed = 1.0
+luck = 1.0
+status = 3.0
+crit = 1.0
 id = "iron_shield"
 name = "Iron Shield"
 description = "Iron Shield"
-icon = ExtResource("1_a38n2")
+icon = ExtResource("3_km3s3")
 rarity = 1
 metadata/_custom_type_script = "uid://c8gwocrlh6aa7"
