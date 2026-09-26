@@ -11,12 +11,10 @@ extends Node3D
 @onready var canvas_layer = %MainSceneUICanvasLayer
 @onready var equipment_canvas_layer: CanvasLayer = %EquipmentCanvasLayer
 @onready var enemy_spawn_point: Node3D = %EnemySpawnPoint
-@export var floating_text: PackedScene
-
-@onready var lid: MeshInstance3D = %Lid
 @onready var box: Node3D = %Box
-
 @onready var hp_progress_bar: ProgressBar = %HpProgressBar
+
+@export var floating_text: PackedScene
 
 var active_tags: Array[Control] = []
 var selected_tags: Array[PanelContainer] = []
@@ -24,7 +22,6 @@ var pending_results: Array[Dictionary] = []
 var resolving_tags: Array[Control] = []
 var is_rolling := false
 var update_tags := false
-var lid_opening_time := .5
 
 var dice_tag_cration_wait_time: float = 0.08
 
@@ -42,94 +39,7 @@ func _ready() -> void:
 	EventBus.player_damaged.connect(_on_player_damaged)
 	
 	dice_roller.spawn_dice()
-	shake_box()
-	
-
-func shake_box(duration: float = 1.5, max_intensity: float = 0.15, lift_height: float = 1.0, fov_zoom: float = 4.0) -> void:
-	var original_pos: Vector3 = box.position
-	var original_rot: Vector3 = box.rotation
-	
-	# Pobieramy kamerę (zakładamy, że %Camera3D istnieje w scenie)
-	var camera: Camera3D = %Camera3D
-	var original_fov: float = camera.fov
-	
-	# Tworzymy równoległy tween
-	var shake_tween := create_tween().set_parallel(true)
-	
-	# Podział czasu na fazy
-	var lift_duration: float = duration * 0.5   # 20% czasu na uniesienie
-	var fall_duration: float = duration * 0.05   # 15% czasu na gwałtowny spadek
-	var shake_duration: float = duration - lift_duration - fall_duration # reszta na trzęsienie
-	var fall_start_time: float = lift_duration + shake_duration
-	
-	# --- FAZA 1: UNIESIENIE (Start) ---
-	shake_tween.tween_property(box, "position:y", original_pos.y + lift_height, lift_duration)\
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	shake_tween.tween_property(box, "rotation", original_rot + Vector3(0.05, 0.02, -0.05), lift_duration)\
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	
-	# [KAMERA] Powolne przybliżanie (zmniejszanie FOV) przez cały czas uniesienia i trzęsienia
-	var total_zoom_duration: float = lift_duration + shake_duration
-	shake_tween.tween_property(camera, "fov", original_fov - fov_zoom, total_zoom_duration)\
-		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	
-	# --- FAZA 2: TRZĘSIENIE (W powietrzu) ---
-	var shake_count: int = 12
-	var step_duration: float = shake_duration / shake_count
-	
-	for i in range(shake_count):
-		var progress: float = float(i) / float(shake_count)
-		var current_intensity: float = lerp(0.3, 1.0, progress) * max_intensity
-		
-		var random_offset := Vector3(
-			randf_range(-current_intensity, current_intensity),
-			0,
-			randf_range(-current_intensity, current_intensity)
-		)
-		var random_rot := Vector3(
-			randf_range(-current_intensity * 2.0, current_intensity * 2.0),
-			randf_range(-current_intensity * 1.5, current_intensity * 1.5),
-			randf_range(-current_intensity * 2.0, current_intensity * 2.0)
-		)
-		
-		var t: float = lift_duration + (i * step_duration)
-		var target_pos := Vector3(original_pos.x + random_offset.x, original_pos.y + lift_height, original_pos.z + random_offset.z)
-		
-		shake_tween.tween_property(box, "position", target_pos, step_duration)\
-			.set_delay(t).set_trans(Tween.TRANS_SINE)
-		shake_tween.tween_property(box, "rotation", original_rot + random_rot, step_duration)\
-			.set_delay(t).set_trans(Tween.TRANS_SINE)
-			
-	# --- FAZA 3: OPUSZCZENIE / UPADEK (Koniec) ---
-	# Gwałtowny powrót boxa na stół
-	shake_tween.tween_property(box, "position", original_pos, fall_duration)\
-		.set_delay(fall_start_time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	shake_tween.tween_property(box, "rotation", original_rot, fall_duration)\
-		.set_delay(fall_start_time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-		
-	# [KAMERA] Błyskawiczny powrót FOV do normy w momencie uderzenia (daje "kopnięcie" kamery)
-	shake_tween.tween_property(camera, "fov", original_fov, fall_duration)\
-		.set_delay(fall_start_time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-		
-	# --- EFEKT UDERZENIA (Micro-bounce) ---
-	var bounce_time: float = 0.05
-	var bounce_height: float = lift_height * 0.25
-	
-	# Lekki odskok boxa w górę
-	shake_tween.tween_property(box, "position:y", original_pos.y + bounce_height, bounce_time)\
-		.set_delay(fall_start_time + fall_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	# Ostateczny powrót boxa na stół
-	shake_tween.tween_property(box, "position:y", original_pos.y, bounce_time)\
-		.set_delay(fall_start_time + fall_duration + bounce_time).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
-
-	# Czekamy na zakończenie wszystkich animacji (w tym ostatniego bounce)
-	await shake_tween.finished
-	open_lid()
-
-func open_lid() -> void:
-	var tween = get_tree().create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BOUNCE)
-	tween.tween_property(lid, "global_rotation_degrees", Vector3(0.0, 0.0, 145.0), lid_opening_time)
-
+	box.shake(camera)
 
 func _on_player_died() -> void:
 	roll_button.disabled = true
@@ -148,8 +58,8 @@ func _on_combat_effect_applied(skill: SkillDefinition, value: int, target: Strin
 		tag = resolving_tags.pop_front()
 
 	# Jeśli karta istnieje, czekamy na szczyt jej uderzenia
-	if is_instance_valid(tag):
-		await _play_strike_animation(tag)
+	if is_instance_valid(tag) and tag.has_method("play_strike_animation"):
+		await tag.play_strike_animation()
 
 	# --- MOMENT UDERZENIA (Impact Frame) ---
 	if target == "enemy":
@@ -466,21 +376,3 @@ func _animate_selection_and_centering() -> void:
 	for tag in unselected_tags:
 		if is_instance_valid(tag):
 			tag.hide()
-
-
-func _play_strike_animation(tag: Control) -> void:
-	var orig_pos = tag.position
-	
-	AudioManager.play_sfx_random_pitch(AudioLibrary.get_sfx(AudioKeys.SFX_POP), -4.0, 1.1, 1.3)
-	
-	var strike_up = create_tween()
-	strike_up.tween_property(tag, "position", orig_pos + Vector2(0, -65), 0.08)\
-		.set_trans(Tween.TRANS_QUAD)\
-		.set_ease(Tween.EASE_OUT)
-		
-	await strike_up.finished
-	
-	var fall_down = create_tween()
-	fall_down.tween_property(tag, "position", orig_pos, 0.12)\
-		.set_trans(Tween.TRANS_BACK)\
-		.set_ease(Tween.EASE_OUT)
