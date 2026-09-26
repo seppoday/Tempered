@@ -39,6 +39,7 @@ func _cmd_kill_enemy(_args: Array) -> String:
 
 func set_enemy(enemy: EnemyInstance) -> void:
 	current_enemy = enemy
+	Log.print("Następny wróg: %s" % current_enemy.definition.enemy_name)
 
 
 func resolve_player_attack(selected_results: Array[Dictionary]) -> void:
@@ -85,8 +86,20 @@ func calculate_effect_value(skill: SkillDefinition, item: ItemDefinition, dice_r
 		item_scaling += item.get_stat(scaling.stat) * scaling.weight
 
 	var affinity_multiplier: float = item.get_affinity_multiplier(skill.damage_element)
-
-	return skill.base_value * dice_roll * item_scaling * affinity_multiplier
+	var final_value = skill.base_value * dice_roll * item_scaling * affinity_multiplier
+	
+	Log.print(
+	"=== SKILL VALUE ===\n" +
+	"Base Value: %.2f\n" % skill.base_value +
+	"Dice Roll: %.2f\n" % dice_roll +
+	"Item Scaling: %.2f\n" % item_scaling +
+	"Affinity Multiplier: %.2f\n" % affinity_multiplier +
+	"-------------------\n" +
+	"Final Value: %.2f" % final_value
+)
+	
+	return final_value
+	
 
 func _calculate_hit_count(skill: SkillDefinition, item: ItemDefinition) -> int:
 	if skill.bonus_hits_per_stat == null:

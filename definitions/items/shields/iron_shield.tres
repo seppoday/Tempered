@@ -9,14 +9,7 @@
 script = ExtResource("2_yb4mm")
 slot = 7
 default_skill = ExtResource("1_7r03k")
-dmg = 2.0
-magic = 1.0
-def = 15.0
-vit = 8.0
-speed = 1.0
-luck = 1.0
-status = 3.0
-crit = 1.0
+def = 4.0
 id = "iron_shield"
 name = "Iron Shield"
 description = "Iron Shield"

@@ -12,7 +12,7 @@
 [ext_resource type="Script" uid="uid://isk6xjs47cxp" path="res://data/definitions/wave_sequence.gd" id="7_lw8pt"]
 [ext_resource type="Script" uid="uid://dfsxlht8w22ue" path="res://data/definitions/enemy_definition.gd" id="8_hgf45"]
 [ext_resource type="Script" uid="uid://dpyk5dj1dlqss" path="res://scripts/UI/gold_label.gd" id="8_ice7a"]
-[ext_resource type="Resource" uid="uid://8uf3l7cr560u" path="res://definitions/enemies/goblin2.tres" id="9_6ydfj"]
+[ext_resource type="Resource" uid="uid://8uf3l7cr560u" path="res://definitions/enemies/goblin.tres" id="9_6ydfj"]
 [ext_resource type="Script" uid="uid://rhwee7ilv64" path="res://scripts/UI/item_panel.gd" id="9_xr32f"]
 [ext_resource type="Resource" uid="uid://bncecrr3fl5gv" path="res://definitions/enemies/wolf.tres" id="10_2r5wi"]
 [ext_resource type="PackedScene" uid="uid://x4spoxodgh4x" path="res://scenes/equipment_slot.tscn" id="10_sj3ib"]
@@ -27,6 +27,7 @@
 [ext_resource type="Script" uid="uid://ciakkvnknrtrw" path="res://scripts/UI/alchemy_panel.gd" id="19_8r76n"]
 [ext_resource type="Script" uid="uid://cpns5yr2xh0ev" path="res://scripts/UI/inventory.gd" id="20_q0ack"]
 [ext_resource type="Script" uid="uid://dyvxaabqf72dk" path="res://data/definitions/inventory_entry.gd" id="21_50bjb"]
+[ext_resource type="FontFile" uid="uid://dok171t6oxmnq" path="res://assets/fonts/FiraSans-Bold.ttf" id="24_amdh2"]
 [ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://definitions/materials/misc/upgrade_dice_d6.tres" id="24_mpvc3"]
 [ext_resource type="Resource" uid="uid://dtnpnnyo0kyjn" path="res://definitions/materials/misc/upgrade_dice_d8.tres" id="25_g7q3g"]
 [ext_resource type="Resource" uid="uid://cufr2r1ewv6c6" path="res://definitions/materials/misc/upgrade_dice_d10.tres" id="26_52jij"]
@@ -45,6 +46,7 @@
 [ext_resource type="Shader" uid="uid://b53p1ced07ofw" path="res://scenes/3D/vigniette.gdshader" id="40_q0ack"]
 [ext_resource type="Texture2D" uid="uid://bn3jdfoam3lr4" path="res://assets/models/materials/carpet/cotton_jersey_nor_gl_1k.jpg" id="41_q0ack"]
 [ext_resource type="Texture2D" uid="uid://c113jmy871e2p" path="res://assets/models/materials/carpet/cotton_jersey_ao_1k.jpg" id="42_50bjb"]
+[ext_resource type="Shader" uid="uid://dixfqjkcloefu" path="res://postprocessing.gdshader" id="46_lhg76"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_wvhbo"]
 panorama = ExtResource("3_yvypd")
@@ -149,30 +151,6 @@ size = Vector3(4.4379883, 1, 2.7385254)
 script = ExtResource("7_lw8pt")
 enemies_list = Array[ExtResource("8_hgf45")]([ExtResource("9_6ydfj"), ExtResource("10_2r5wi")])
 metadata/_custom_type_script = "uid://isk6xjs47cxp"
-
-[sub_resource type="LabelSettings" id="LabelSettings_6qjdx"]
-font_size = 30
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dwi8f"]
-bg_color = Color(0.2816801, 0.60469335, 0.9927555, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ydfj"]
-bg_color = Color(0.5708804, 0.5984392, 0.6757671, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3w64d"]
-bg_color = Color(0.103743516, 0.103743546, 0.10374347, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ke5is"]
 resource_name = "Material"
@@ -446,6 +424,93 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ve3i4")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wvhbo"]
+shader = ExtResource("46_lhg76")
+shader_parameter/enabled = true
+shader_parameter/intensity = 0.2000000095
+shader_parameter/brightness = 0.10000005224999996
+shader_parameter/contrast = 1.200000057
+shader_parameter/saturation = 0.50000002375
+shader_parameter/exposure = -0.4999997862500001
+shader_parameter/gamma = 0.30000001099011997
+shader_parameter/vibrance = 0.5000000712500001
+shader_parameter/tint = Color(1, 1, 1, 1)
+shader_parameter/tint_strength = 0.0
+shader_parameter/hue_shift = 0.0
+shader_parameter/temperature = 1.0
+shader_parameter/vignette_enabled = false
+shader_parameter/vignette_strength = 2.0
+shader_parameter/vignette_radius = 0.7310000347225
+shader_parameter/vignette_softness = 0.33300001511898003
+shader_parameter/vignette_color = Color(0, 0, 0, 1)
+shader_parameter/grain_enabled = true
+shader_parameter/grain_strength = 0.08
+shader_parameter/grain_size = 1.0
+shader_parameter/grain_speed = 1.0
+shader_parameter/noise_enabled = true
+shader_parameter/noise_strength = 0.030000001425
+shader_parameter/noise_scale = 100.0
+shader_parameter/chromatic_aberration_enabled = false
+shader_parameter/chromatic_aberration = 0.0010000000475
+shader_parameter/rgb_split_enabled = false
+shader_parameter/rgb_split = 0.0010000000475
+shader_parameter/sharpen_enabled = true
+shader_parameter/sharpen_strength = 0.50000002375
+shader_parameter/bloom_enabled = true
+shader_parameter/bloom_strength = 1.14000005415
+shader_parameter/bloom_threshold = 0.6000000285
+shader_parameter/bloom_radius = 0.01
+shader_parameter/scanlines_enabled = false
+shader_parameter/scanline_strength = 0.814000038665
+shader_parameter/scanline_density = 600.0
+shader_parameter/scanline_speed = 5.09200071687
+shader_parameter/crt_enabled = false
+shader_parameter/crt_curvature = 0.050000002375
+shader_parameter/pixelation_enabled = false
+shader_parameter/pixelation = 100.0
+shader_parameter/dithering_enabled = false
+shader_parameter/dither_strength = 0.02
+shader_parameter/distortion_enabled = false
+shader_parameter/distortion_strength = 0.01
+shader_parameter/distortion_speed = 1.0
+shader_parameter/distortion_frequency = 20.0
+shader_parameter/fade = 0.0
+shader_parameter/fade_color = Color(0, 0, 0, 1)
+shader_parameter/time_scale = 1.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_6qjdx"]
+font = ExtResource("24_amdh2")
+font_size = 36
+outline_size = 32
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 24
+shadow_color = Color(0.20210624, 0.1110039, 0.062536865, 0.5529412)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dwi8f"]
+bg_color = Color(0.2816801, 0.60469335, 0.9927555, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ydfj"]
+bg_color = Color(0.5708804, 0.5984392, 0.6757671, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_amdh2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mpvc3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3w64d"]
+bg_color = Color(0.103743516, 0.103743546, 0.10374347, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [node name="Main3DScene" type="Node3D" unique_id=417046850 node_paths=PackedStringArray("roll_button", "confirm_button", "result_label", "dice_roller")]
 script = ExtResource("1_8ngun")
 dice_tag_scene = ExtResource("2_rqbel")
@@ -520,10 +585,9 @@ omni_range = 26.449955
 
 [node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=215799819]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 4.9906764, -2.181494e-07)
-light_color = Color(0.8822388, 0.81527275, 0.73464936, 1)
-light_energy = 4.0
-light_indirect_energy = 1.2
-light_volumetric_fog_energy = 0.5
+light_color = Color(0.9400986, 0.835612, 0.7441748, 1)
+light_energy = 5.0
+light_indirect_energy = 3.0
 light_size = 0.304
 light_specular = 3.0
 shadow_enabled = true
@@ -677,6 +741,96 @@ mesh = SubResource("BoxMesh_a0yx4")
 script = ExtResource("7_avuin")
 waves = Array[ExtResource("7_lw8pt")]([SubResource("Resource_nvv70")])
 
+[node name="VoxelGI" type="VoxelGI" parent="." unique_id=1025382049]
+data = ExtResource("36_hgf45")
+
+[node name="Box" type="Node3D" parent="." unique_id=27817797]
+unique_name_in_owner = true
+
+[node name="DiceContainer" type="Node3D" parent="Box" unique_id=933139626 node_paths=PackedStringArray("throw_origin", "landing_center")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, -0.19943744, 0.00018310547)
+script = ExtResource("5_kamvo")
+throw_origin = NodePath("../../ThrowOrigin")
+landing_center = NodePath("../../ThrowLanding")
+hand_cluster_spacing = 0.8
+throw_strength_min = 4.5
+throw_strength_max = 6.0
+arc_height_min = 0.1
+arc_height_max = 1.5
+throw_spread = 0.8
+torque_min = Vector3(-0.5, -0.5, -0.5)
+torque_max = Vector3(1.2, 1.2, 1.2)
+
+[node name="Mesh" type="MeshInstance3D" parent="Box" unique_id=2040764136]
+mesh = SubResource("ArrayMesh_hgqcf")
+surface_material_override/0 = SubResource("StandardMaterial3D_hgf45")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Box/Mesh" unique_id=747997826]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box/Mesh/StaticBody3D" unique_id=746651843]
+shape = SubResource("ConcavePolygonShape3D_jncqg")
+
+[node name="Lid" type="MeshInstance3D" parent="Box" unique_id=267524290]
+unique_name_in_owner = true
+transform = Transform3D(0.9999961, 0.002756115, 0, -0.002756115, 0.9999961, 0, 0, 0, 1, -0.9, 0.25, 0)
+mesh = SubResource("ArrayMesh_82cka")
+surface_material_override/0 = SubResource("StandardMaterial3D_hgf45")
+metadata/extras = {
+"booleans": {}
+}
+
+[node name="EnemySpawnPoint" type="Marker3D" parent="Box/Lid" unique_id=446138479]
+unique_name_in_owner = true
+transform = Transform3D(4.371139e-08, -3.8213714e-15, -1.0000001, -8.742278e-08, -1.0000001, 0, -1, 8.7422784e-08, -4.3711392e-08, 0.9, 0.1, 0)
+
+[node name="LidScreen" type="MeshInstance3D" parent="Box/Lid" unique_id=1704107719]
+transform = Transform3D(5.5929405e-08, 0, -1.5620002, 4.1184094e-08, -0.98300004, 0, -1.562, -2.5918029e-08, -5.59294e-08, 0.89047265, 0.07314545, 4.3289685e-08)
+mesh = SubResource("PlaneMesh_lquvc")
+metadata/extras = {
+"booleans": {}
+}
+
+[node name="BoxScreen" type="MeshInstance3D" parent="Box" unique_id=2038969564]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.010597676, 0)
+material_overlay = SubResource("ShaderMaterial_8r76n")
+mesh = SubResource("ArrayMesh_u67e6")
+surface_material_override/0 = SubResource("StandardMaterial3D_a5a6l")
+
+[node name="Box2" type="Node3D" parent="." unique_id=251726894]
+visible = false
+
+[node name="Box" type="MeshInstance3D" parent="Box2" unique_id=719703658]
+mesh = SubResource("ArrayMesh_tau5g")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Box2/Box" unique_id=921752907]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box2/Box/StaticBody3D" unique_id=1908592382]
+shape = SubResource("ConcavePolygonShape3D_mpvc3")
+
+[node name="Lid" type="MeshInstance3D" parent="Box2" unique_id=1172278676]
+transform = Transform3D(-0.819152, -0.5735764, 0, 0.5735764, -0.819152, 0, 0, 0, 1, -0.9, 0.25, 0)
+mesh = SubResource("ArrayMesh_ktmsg")
+metadata/extras = {
+"booleans": {}
+}
+
+[node name="LidScreen" type="MeshInstance3D" parent="Box2" unique_id=2138058124]
+transform = Transform3D(-0.819152, -0.5735764, 0, 0.5735764, -0.819152, 0, 0, 0, 1, -0.846978, 0.32572332, 0)
+mesh = SubResource("ArrayMesh_nkjgk")
+metadata/extras = {
+"booleans": {}
+}
+
+[node name="PostProcessing" type="CanvasLayer" parent="." unique_id=1801893158]
+
+[node name="ColorRect" type="ColorRect" parent="PostProcessing" unique_id=77687052]
+material = SubResource("ShaderMaterial_wvhbo")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="MainSceneUICanvasLayer" type="CanvasLayer" parent="." unique_id=507339266]
 unique_name_in_owner = true
 script = ExtResource("7_ap16l")
@@ -696,9 +850,13 @@ custom_minimum_size = Vector2(400, 200)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
+offset_transform_position = Vector2(0, 200)
+offset_transform_visual_only = false
+text = "test"
 label_settings = SubResource("LabelSettings_6qjdx")
 horizontal_alignment = 1
 vertical_alignment = 1
+uppercase = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MainSceneUICanvasLayer/MarginContainer" unique_id=1383841492]
 custom_minimum_size = Vector2(400, 0)
@@ -782,13 +940,12 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "100"
 
-[node name="GoldLabel" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer" unique_id=368449364]
-visible = false
+[node name="GoldLabel" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer" unique_id=368449364]
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 3
+size_flags_vertical = 3
 offset_transform_enabled = true
 text = "Gold: 1235$"
-horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("8_ice7a")
 
@@ -804,14 +961,22 @@ custom_minimum_size = Vector2(200, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("24_amdh2")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_amdh2")
 text = "ROLL"
 
 [node name="ConfirmButton" type="Button" parent="MainSceneUICanvasLayer/MarginContainer/VBoxContainer" unique_id=664425350]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 80)
+custom_minimum_size = Vector2(300, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("24_amdh2")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_mpvc3")
 text = "CONFIRM SELECTED DICES"
 
 [node name="EquipmentCanvasLayer" type="CanvasLayer" parent="." unique_id=219155604]
@@ -1045,83 +1210,3 @@ layout_mode = 2
 [node name="Button" type="Button" parent="EquipmentCanvasLayer/MarginContainer/MiddlePanel" unique_id=2062853075]
 layout_mode = 2
 text = "Next Wave"
-
-[node name="Box" type="Node3D" parent="." unique_id=27817797]
-unique_name_in_owner = true
-
-[node name="DiceContainer" type="Node3D" parent="Box" unique_id=933139626 node_paths=PackedStringArray("throw_origin", "landing_center")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, -0.19943744, 0.00018310547)
-script = ExtResource("5_kamvo")
-throw_origin = NodePath("../../ThrowOrigin")
-landing_center = NodePath("../../ThrowLanding")
-hand_cluster_spacing = 0.8
-throw_strength_min = 4.5
-throw_strength_max = 6.0
-arc_height_min = 0.1
-arc_height_max = 1.5
-throw_spread = 0.8
-torque_min = Vector3(-0.5, -0.5, -0.5)
-torque_max = Vector3(1.2, 1.2, 1.2)
-
-[node name="Mesh" type="MeshInstance3D" parent="Box" unique_id=2040764136]
-mesh = SubResource("ArrayMesh_hgqcf")
-surface_material_override/0 = SubResource("StandardMaterial3D_hgf45")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Box/Mesh" unique_id=747997826]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Box/Mesh/StaticBody3D" unique_id=746651843]
-shape = SubResource("ConcavePolygonShape3D_jncqg")
-
-[node name="Lid" type="MeshInstance3D" parent="Box" unique_id=267524290]
-unique_name_in_owner = true
-transform = Transform3D(0.9999961, 0.002756115, 0, -0.002756115, 0.9999961, 0, 0, 0, 1, -0.9, 0.25, 0)
-mesh = SubResource("ArrayMesh_82cka")
-surface_material_override/0 = SubResource("StandardMaterial3D_hgf45")
-metadata/extras = {
-"booleans": {}
-}
-
-[node name="EnemySpawnPoint" type="Marker3D" parent="Box/Lid" unique_id=446138479]
-unique_name_in_owner = true
-transform = Transform3D(4.371139e-08, -3.8213714e-15, -1.0000001, -8.742278e-08, -1.0000001, 0, -1, 8.7422784e-08, -4.3711392e-08, 0.9, 0.1, 0)
-
-[node name="LidScreen" type="MeshInstance3D" parent="Box/Lid" unique_id=1704107719]
-transform = Transform3D(5.5929405e-08, 0, -1.5620002, 4.1184094e-08, -0.98300004, 0, -1.562, -2.5918029e-08, -5.59294e-08, 0.89047265, 0.07314545, 4.3289685e-08)
-mesh = SubResource("PlaneMesh_lquvc")
-metadata/extras = {
-"booleans": {}
-}
-
-[node name="BoxScreen" type="MeshInstance3D" parent="Box" unique_id=2038969564]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.010597676, 0)
-material_overlay = SubResource("ShaderMaterial_8r76n")
-mesh = SubResource("ArrayMesh_u67e6")
-surface_material_override/0 = SubResource("StandardMaterial3D_a5a6l")
-
-[node name="VoxelGI" type="VoxelGI" parent="." unique_id=1025382049]
-data = ExtResource("36_hgf45")
-
-[node name="Box2" type="Node3D" parent="." unique_id=251726894]
-visible = false
-
-[node name="Box" type="MeshInstance3D" parent="Box2" unique_id=719703658]
-mesh = SubResource("ArrayMesh_tau5g")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Box2/Box" unique_id=921752907]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Box2/Box/StaticBody3D" unique_id=1908592382]
-shape = SubResource("ConcavePolygonShape3D_mpvc3")
-
-[node name="Lid" type="MeshInstance3D" parent="Box2" unique_id=1172278676]
-transform = Transform3D(-0.819152, -0.5735764, 0, 0.5735764, -0.819152, 0, 0, 0, 1, -0.9, 0.25, 0)
-mesh = SubResource("ArrayMesh_ktmsg")
-metadata/extras = {
-"booleans": {}
-}
-
-[node name="LidScreen" type="MeshInstance3D" parent="Box2" unique_id=2138058124]
-transform = Transform3D(-0.819152, -0.5735764, 0, 0.5735764, -0.819152, 0, 0, 0, 1, -0.846978, 0.32572332, 0)
-mesh = SubResource("ArrayMesh_nkjgk")
-metadata/extras = {
-"booleans": {}
-}

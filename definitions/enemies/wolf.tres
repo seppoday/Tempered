@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://doyuee4t73gkp" path="res://data/definitions/enemy_attack_pattern.gd" id="1_n0q5s"]
 [ext_resource type="Script" uid="uid://dfsxlht8w22ue" path="res://data/definitions/enemy_definition.gd" id="2_8fqqs"]
-[ext_resource type="Texture2D" uid="uid://cb3riuari6imq" path="res://assets/items/hat (1).png" id="3_n0q5s"]
+[ext_resource type="Texture2D" uid="uid://bftlcbgr8bch7" path="res://assets/enemies/enemy.jpg" id="3_n0q5s"]
 
 [sub_resource type="Resource" id="Resource_0daba"]
 script = ExtResource("1_n0q5s")
-damage = 50
+damage = 8
 hits = 2
 metadata/_custom_type_script = "uid://doyuee4t73gkp"
 
@@ -15,6 +15,6 @@ script = ExtResource("2_8fqqs")
 id = "wolf"
 enemy_name = "Wolf"
 sprite = ExtResource("3_n0q5s")
-max_hp = 20
+max_hp = 150
 attack_patterns = Array[ExtResource("1_n0q5s")]([SubResource("Resource_0daba")])
 metadata/_custom_type_script = "uid://dfsxlht8w22ue"

@@ -24,7 +24,7 @@ var pending_results: Array[Dictionary] = []
 var resolving_tags: Array[Control] = []
 var is_rolling := false
 var update_tags := false
-var lid_opening_time := .7
+var lid_opening_time := .5
 
 var dice_tag_cration_wait_time: float = 0.08
 
@@ -58,7 +58,7 @@ func shake_box(duration: float = 1.5, max_intensity: float = 0.15, lift_height: 
 	
 	# Podział czasu na fazy
 	var lift_duration: float = duration * 0.5   # 20% czasu na uniesienie
-	var fall_duration: float = duration * 0.1   # 15% czasu na gwałtowny spadek
+	var fall_duration: float = duration * 0.05   # 15% czasu na gwałtowny spadek
 	var shake_duration: float = duration - lift_duration - fall_duration # reszta na trzęsienie
 	var fall_start_time: float = lift_duration + shake_duration
 	
@@ -113,7 +113,7 @@ func shake_box(duration: float = 1.5, max_intensity: float = 0.15, lift_height: 
 		
 	# --- EFEKT UDERZENIA (Micro-bounce) ---
 	var bounce_time: float = 0.05
-	var bounce_height: float = lift_height * 0.15
+	var bounce_height: float = lift_height * 0.25
 	
 	# Lekki odskok boxa w górę
 	shake_tween.tween_property(box, "position:y", original_pos.y + bounce_height, bounce_time)\

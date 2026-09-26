@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3 uid="uid://bxmxwyuw00k2w"]
+
+[ext_resource type="Script" uid="uid://doyuee4t73gkp" path="res://data/definitions/enemy_attack_pattern.gd" id="1_8p1qr"]
+[ext_resource type="Script" uid="uid://dfsxlht8w22ue" path="res://data/definitions/enemy_definition.gd" id="2_w5cdw"]
+[ext_resource type="Texture2D" uid="uid://bftlcbgr8bch7" path="res://assets/enemies/enemy.jpg" id="3_8p1qr"]
+
+[sub_resource type="Resource" id="Resource_0daba"]
+script = ExtResource("1_8p1qr")
+damage = 15
+hits = 3
+metadata/_custom_type_script = "uid://doyuee4t73gkp"
+
+[resource]
+script = ExtResource("2_w5cdw")
+id = "ghoul"
+enemy_name = "Ghoul"
+sprite = ExtResource("3_8p1qr")
+max_hp = 120
+attack_patterns = Array[ExtResource("1_8p1qr")]([SubResource("Resource_0daba")])
+metadata/_custom_type_script = "uid://dfsxlht8w22ue"

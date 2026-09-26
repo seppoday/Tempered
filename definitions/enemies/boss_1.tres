@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3 uid="uid://cvpr7mhikuk36"]
+
+[ext_resource type="Script" uid="uid://doyuee4t73gkp" path="res://data/definitions/enemy_attack_pattern.gd" id="1_fs7tl"]
+[ext_resource type="Script" uid="uid://dfsxlht8w22ue" path="res://data/definitions/enemy_definition.gd" id="2_1mx8s"]
+[ext_resource type="Texture2D" uid="uid://bftlcbgr8bch7" path="res://assets/enemies/enemy.jpg" id="3_fs7tl"]
+
+[sub_resource type="Resource" id="Resource_0daba"]
+script = ExtResource("1_fs7tl")
+damage = 50
+metadata/_custom_type_script = "uid://doyuee4t73gkp"
+
+[resource]
+script = ExtResource("2_1mx8s")
+id = "boss_1"
+enemy_name = "Boss 1"
+sprite = ExtResource("3_fs7tl")
+max_hp = 215
+attack_patterns = Array[ExtResource("1_fs7tl")]([SubResource("Resource_0daba")])
+metadata/_custom_type_script = "uid://dfsxlht8w22ue"

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ckvbsvfexndh8"]
 
 [ext_resource type="Script" uid="uid://bs284m27d4kr5" path="res://scripts/enemies/enemy_instance.gd" id="1_fcftc"]
-[ext_resource type="Resource" uid="uid://8uf3l7cr560u" path="res://definitions/enemies/goblin2.tres" id="2_lu5c6"]
+[ext_resource type="Resource" uid="uid://8uf3l7cr560u" path="res://definitions/enemies/goblin.tres" id="2_lu5c6"]
 [ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="4_jt03m"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_5rl3n"]

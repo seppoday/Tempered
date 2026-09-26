@@ -9,10 +9,8 @@
 script = ExtResource("2_qpsv8")
 slot = 5
 default_skill = ExtResource("2_c2tts")
-magic = 12.0
-vit = 6.0
-luck = 7.0
-status = 8.0
+magic = 2.0
+vit = 4.0
 id = "silver_amulet"
 name = "Silver Amulet"
 description = "Silver Amulet"

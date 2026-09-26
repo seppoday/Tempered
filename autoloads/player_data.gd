@@ -14,7 +14,7 @@ signal attributes_changed # Na razie nie używane nigdzie
 # ==========================================
 var health: Health
 
-var picks_per_cycle: int = 3
+var picks_per_cycle: int = 2
 
 var gold: int = 0
 
@@ -24,12 +24,6 @@ var pending_dodge_bonus: float = 0.0
 # ==========================================
 # BAZOWE ATRYBUTY
 # ==========================================
-var attributes: Dictionary = {
-	"STR": 10,
-	"DEX": 10,
-	"INT": 10,
-	"CON": 10,
-}
 
 var totals: Dictionary = {
 		"dmg": 1,
@@ -68,13 +62,13 @@ const BASE_CRIT: float = 0.0
 const DEBUG_START_GEAR: Array[Dictionary] = [
 	# [id, count, level (0-6)]
 	{"id": "iron_sword",    "count": 1, "level": 1},
-	{"id": "iron_shield",    "count": 1, "level": 1},
+	#{"id": "iron_shield",    "count": 1, "level": 1},
 	{"id": "silver_amulet",  "count": 1, "level": 1},
-	{"id": "knight_armor",   "count": 1, "level": 1},
-	{"id": "leather_gloves", "count": 1, "level": 6},
-	{"id": "hunter_boots",   "count": 1, "level": 6},
-	{"id": "leather_cap",    "count": 1, "level": 6},
-	{"id": "iron_ring",      "count": 1, "level": 6},
+	#{"id": "knight_armor",   "count": 1, "level": 1},
+	#{"id": "leather_gloves", "count": 1, "level": 1},
+	#{"id": "hunter_boots",   "count": 1, "level": 1},
+	#{"id": "leather_cap",    "count": 1, "level": 1},
+	{"id": "iron_ring",      "count": 1, "level": 1},
 ]
 
 func give_debug_gear() -> void:
