@@ -17,5 +17,4 @@ enemy_name = "Wolf"
 sprite = ExtResource("3_n0q5s")
 max_hp = 20
 attack_patterns = Array[ExtResource("1_n0q5s")]([SubResource("Resource_0daba")])
-exp_reward = 20
 metadata/_custom_type_script = "uid://dfsxlht8w22ue"

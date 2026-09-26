@@ -24,7 +24,7 @@ var pending_results: Array[Dictionary] = []
 var resolving_tags: Array[Control] = []
 var is_rolling := false
 var update_tags := false
-var lid_opening_time := 1.0
+var lid_opening_time := .7
 
 var dice_tag_cration_wait_time: float = 0.08
 
@@ -45,18 +45,41 @@ func _ready() -> void:
 	shake_box()
 	
 
-func shake_box(duration: float = 1.2, max_intensity: float = 0.06) -> void:
+func shake_box(duration: float = 1.5, max_intensity: float = 0.15, lift_height: float = 1.0, fov_zoom: float = 4.0) -> void:
 	var original_pos: Vector3 = box.position
 	var original_rot: Vector3 = box.rotation
 	
+	# Pobieramy kamerę (zakładamy, że %Camera3D istnieje w scenie)
+	var camera: Camera3D = %Camera3D
+	var original_fov: float = camera.fov
+	
+	# Tworzymy równoległy tween
 	var shake_tween := create_tween().set_parallel(true)
-	var shake_count: int = 16
-	var step_duration: float = duration / shake_count
+	
+	# Podział czasu na fazy
+	var lift_duration: float = duration * 0.5   # 20% czasu na uniesienie
+	var fall_duration: float = duration * 0.1   # 15% czasu na gwałtowny spadek
+	var shake_duration: float = duration - lift_duration - fall_duration # reszta na trzęsienie
+	var fall_start_time: float = lift_duration + shake_duration
+	
+	# --- FAZA 1: UNIESIENIE (Start) ---
+	shake_tween.tween_property(box, "position:y", original_pos.y + lift_height, lift_duration)\
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	shake_tween.tween_property(box, "rotation", original_rot + Vector3(0.05, 0.02, -0.05), lift_duration)\
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	
+	# [KAMERA] Powolne przybliżanie (zmniejszanie FOV) przez cały czas uniesienia i trzęsienia
+	var total_zoom_duration: float = lift_duration + shake_duration
+	shake_tween.tween_property(camera, "fov", original_fov - fov_zoom, total_zoom_duration)\
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	
+	# --- FAZA 2: TRZĘSIENIE (W powietrzu) ---
+	var shake_count: int = 12
+	var step_duration: float = shake_duration / shake_count
 	
 	for i in range(shake_count):
-		# Intensywność narasta z każdym drgnięciem (od 20% do 100% max_intensity)
 		var progress: float = float(i) / float(shake_count)
-		var current_intensity: float = lerp(0.2, 1.0, progress) * max_intensity
+		var current_intensity: float = lerp(0.3, 1.0, progress) * max_intensity
 		
 		var random_offset := Vector3(
 			randf_range(-current_intensity, current_intensity),
@@ -65,19 +88,41 @@ func shake_box(duration: float = 1.2, max_intensity: float = 0.06) -> void:
 		)
 		var random_rot := Vector3(
 			randf_range(-current_intensity * 2.0, current_intensity * 2.0),
-			0,
+			randf_range(-current_intensity * 1.5, current_intensity * 1.5),
 			randf_range(-current_intensity * 2.0, current_intensity * 2.0)
 		)
-		var t: float = i * step_duration
-		shake_tween.tween_property(box, "position", original_pos + random_offset, step_duration)\
+		
+		var t: float = lift_duration + (i * step_duration)
+		var target_pos := Vector3(original_pos.x + random_offset.x, original_pos.y + lift_height, original_pos.z + random_offset.z)
+		
+		shake_tween.tween_property(box, "position", target_pos, step_duration)\
 			.set_delay(t).set_trans(Tween.TRANS_SINE)
 		shake_tween.tween_property(box, "rotation", original_rot + random_rot, step_duration)\
 			.set_delay(t).set_trans(Tween.TRANS_SINE)
+			
+	# --- FAZA 3: OPUSZCZENIE / UPADEK (Koniec) ---
+	# Gwałtowny powrót boxa na stół
+	shake_tween.tween_property(box, "position", original_pos, fall_duration)\
+		.set_delay(fall_start_time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	shake_tween.tween_property(box, "rotation", original_rot, fall_duration)\
+		.set_delay(fall_start_time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+		
+	# [KAMERA] Błyskawiczny powrót FOV do normy w momencie uderzenia (daje "kopnięcie" kamery)
+	shake_tween.tween_property(camera, "fov", original_fov, fall_duration)\
+		.set_delay(fall_start_time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		
+	# --- EFEKT UDERZENIA (Micro-bounce) ---
+	var bounce_time: float = 0.05
+	var bounce_height: float = lift_height * 0.15
 	
-	# Reset
-	shake_tween.tween_property(box, "position", original_pos, step_duration).set_delay(duration)
-	shake_tween.tween_property(box, "rotation", original_rot, step_duration).set_delay(duration)
-	
+	# Lekki odskok boxa w górę
+	shake_tween.tween_property(box, "position:y", original_pos.y + bounce_height, bounce_time)\
+		.set_delay(fall_start_time + fall_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	# Ostateczny powrót boxa na stół
+	shake_tween.tween_property(box, "position:y", original_pos.y, bounce_time)\
+		.set_delay(fall_start_time + fall_duration + bounce_time).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+
+	# Czekamy na zakończenie wszystkich animacji (w tym ostatniego bounce)
 	await shake_tween.finished
 	open_lid()
 

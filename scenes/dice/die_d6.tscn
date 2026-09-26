@@ -1,8 +1,20 @@
 [gd_scene format=4 uid="uid://bkmu5apsdlwbt"]
 
+[ext_resource type="Script" uid="uid://cgi11cjij4v43" path="res://scenes/dice/die_d_6.gd" id="1_8ew4n"]
+[ext_resource type="Shader" uid="uid://scnxv3h4pxyi" path="res://scenes/dice/outline.gdshader" id="1_kesym"]
+
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_a5i42"]
 friction = 0.5
 bounce = 0.2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hc6pw"]
+render_priority = 0
+shader = ExtResource("1_kesym")
+shader_parameter/thickness = 3.5000000447036
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/samples = 10
+shader_parameter/sensitivity = 0.07999999821184
+shader_parameter/edge_fade = 0.015
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dnbs3"]
 resource_name = "Material.002"
@@ -43,9 +55,10 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_xjggl")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tyvhf"]
+resource_local_to_scene = true
 resource_name = "D20"
 cull_mode = 2
-albedo_color = Color(0.7212755, 0.91973764, 0.9067657, 1)
+albedo_color = Color(0.19791326, 0.40830338, 0.39579853, 1)
 metallic = 1.0
 roughness = 0.75
 clearcoat_enabled = true
@@ -63,9 +76,11 @@ can_sleep = false
 continuous_cd = true
 linear_damp = 0.5
 angular_damp = 0.5
+script = ExtResource("1_8ew4n")
 
-[node name="D6 Numbered" type="MeshInstance3D" parent="." unique_id=1877262552]
+[node name="D6" type="MeshInstance3D" parent="." unique_id=1877262552]
 transform = Transform3D(0.1299717, 0, 0, 0, 0.1299717, 0, 0, 0, 0.1299717, 0, 0, 0)
+material_overlay = SubResource("ShaderMaterial_hc6pw")
 mesh = SubResource("ArrayMesh_yh8jf")
 surface_material_override/0 = SubResource("StandardMaterial3D_tyvhf")
 

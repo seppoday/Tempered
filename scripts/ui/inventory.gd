@@ -128,9 +128,11 @@ func get_all_items() -> Array[ItemInstance]:
 
 func _on_slot_changed(slot: Panel) -> void:
 	if slot.item_data:
-		Log.print("[INVENTORY] Slot: ", slot.item_data.definition.name, " x", slot.item_data.quantity)
+		var def: InventoryEntry = slot.item_data.definition
+		var kind: String = EquipmentSlot.Type.keys()[def.slot] if def is ItemDefinition else InventoryEntry.Category.keys()[def.category]
+		Log.print("[INVENTORY] ", kind, ": ", def.name, " x", slot.item_data.quantity)
 	else:
-		Log.print("[INVENTORY] Slot cleared")
+		Log.print("[INVENTORY] Slot opróżniony")
 
 func _on_item_pickup_requested(item_instance: ItemInstance, drop_node: Node) -> void:
 	if add_item(item_instance):

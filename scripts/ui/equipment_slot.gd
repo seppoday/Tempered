@@ -12,7 +12,7 @@ enum Type {
 	RING,
 	SHIELD,
 	BACKPACK,
-	LEGS,i
+	LEGS,
 }
 
 ## Which equipment slot this UI slot represents. Set per-instance in the Inspector
@@ -26,13 +26,38 @@ enum Type {
 func _ready() -> void:
 	super._ready()
 	PlayerData.item_equipped.connect(_on_item_equipped)
-	
-	# --- POBIERZ AKTUALNY STAN PRZY STARCIE ---
+	mouse_entered.connect(_on_mouse_entered_preview)
+	mouse_exited.connect(_on_mouse_exited_preview)
+
 	var current_item: ItemInstance = PlayerData.get_equipped_item(slot_type)
 	if current_item:
 		super.set_item(current_item)
 	else:
-		super.clear() # lub po prostu _update_visual()
+		super.clear()
+
+
+func _on_mouse_entered_preview() -> void:
+	if not get_viewport().gui_is_dragging():
+		return
+
+	var data: Variant = get_viewport().gui_get_drag_data()
+	if not (data is Dictionary and data.has("item_instance")):
+		return
+
+	var dragged_instance: ItemInstance = data["item_instance"]
+	var def := dragged_instance.definition
+
+	if not def is ItemDefinition:
+		return
+	if def.category != InventoryEntry.Category.EQUIPMENT or def.slot != slot_type:
+		return
+
+	var preview := PlayerData.get_total_stats_with_swap(slot_type, dragged_instance)
+	PlayerData.stat_preview_started.emit(preview)
+
+
+func _on_mouse_exited_preview() -> void:
+	PlayerData.stat_preview_ended.emit()
 
 func _on_item_equipped(equipped_slot_type: Type, item_instance: ItemInstance) -> void:
 	if equipped_slot_type != slot_type:

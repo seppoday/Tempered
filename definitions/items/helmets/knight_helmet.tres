@@ -1,14 +1,26 @@
 [gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://gxa5nyxfh74q"]
 
 [ext_resource type="Texture2D" uid="uid://jrau58b8cdsr" path="res://assets/items/steel_sword.jpg" id="1_e6t7a"]
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_lkpow"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_1aaew"]
+
+[sub_resource type="Resource" id="Resource_5u3kd"]
+script = ExtResource("1_lkpow")
+multiplier = 1.5
+metadata/_custom_type_script = "uid://cint7quw6fy51"
 
 [resource]
 script = ExtResource("2_1aaew")
 slot = 1
-hp = 45
-armor = 7
-dodge = 0.01
+dmg = 100.0
+magic = 100.0
+def = 100.0
+vit = 100.0
+speed = 100.0
+luck = 100.0
+status = 100.0
+crit = 100.0
+affinities = Array[ExtResource("1_lkpow")]([SubResource("Resource_5u3kd")])
 id = "knight_helmet"
 name = "Knight Helmet"
 description = "Knight Helmet"

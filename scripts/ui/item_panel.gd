@@ -2,94 +2,84 @@ extends PanelContainer
 
 @onready var stats_box: VBoxContainer = %StatsBox
 
-# Wolne punkty
-@onready var points_label: Label = get_node_or_null("%PointsLabel")
-
-const FONT_SIZE: int = 16
+const FONT_SIZE: int = 24
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 
-	# Podłączamy sygnały z Autoloada PlayerData
 	if not PlayerData.stats_changed.is_connected(_on_stats_changed):
 		PlayerData.stats_changed.connect(_on_stats_changed)
+	PlayerData.stat_preview_started.connect(_on_preview_started)
+	PlayerData.stat_preview_ended.connect(_on_preview_ended)
 
 	_update_ui()
-	var totals := PlayerData.get_total_stats()
 
-func _setup_button(btn: Button, attr_name: String) -> void:
-	if not btn: return
-	
-	for connection in btn.pressed.get_connections():
-		btn.pressed.disconnect(connection["callable"])
-		
-	btn.pressed.connect(func(): PlayerData.add_attribute(attr_name))
-
-
-# ==========================================
-# DYNAMICZNE GENEROWANIE UI (PRAWY PANEL)
-# ==========================================
-# Uwaga: równanie/odejmowanie itemu z ekwipunku dzieje się teraz wewnątrz
-# EquipmentSlot._drop_data()/clear() (wywołuje PlayerData.equip_item/unequip_item
-# bezpośrednio), więc panel nie musi tego już przekazywać dalej — wystarczy,
-# że słucha PlayerData.stats_changed (podłączone w _ready powyżej).
 
 func _on_stats_changed(changed_stat: String) -> void:
 	_update_ui(changed_stat)
 
-func _update_ui(changed_stat: String = "") -> void:
+func _on_preview_started(preview_totals: Dictionary) -> void:
+	_update_ui("", preview_totals)
+
+func _on_preview_ended() -> void:
+	_update_ui()
+
+
+func _update_ui(changed_stat: String = "", preview_totals: Dictionary = {}) -> void:
 	if not stats_box: return
 
 	var totals := PlayerData.get_total_stats()
-	var char_info := PlayerData.character_stats
+	var is_previewing := not preview_totals.is_empty()
 
 	Utilities.clear_children(stats_box)
 
-	_add_label("Level %d" % char_info["level"], Color(0.95, 0.75, 0.2), FONT_SIZE, "level")
-	_add_spacer()
+	for key in ["dmg", "magic", "def", "speed", "luck", "status", "crit", "hp", "dodge"]:
+		var delta: float = (preview_totals[key] - totals[key]) if is_previewing else 0.0
+		_add_label("%s: %d" % [key.capitalize(), totals[key]], Color.WHITE, FONT_SIZE, key, _format_delta(delta), delta >= 0.0)
 
-	# Mapowanie statystyk z PlayerData (Zalecane ujednolicenie nazw z ItemDefinition)
-	if totals.has("dmg"): _add_label("Damage: %.2f" % totals["dmg"], Color.WHITE, FONT_SIZE, "dmg")
-	if totals.has("magic_dmg"): _add_label("Magic Damage: %.2f" % totals["magic_dmg"], Color.WHITE, FONT_SIZE, "magic_dmg")
-	if totals.has("attack_speed"): _add_label("Attack Speed: %.2f /s" % totals["attack_speed"], Color.WHITE, FONT_SIZE, "attack_speed")
-	if totals.has("crit_chance"): _add_label("Crit Chance: %d%%" % int(totals["crit_chance"] * 100), Color.WHITE, FONT_SIZE, "crit_chance")
-	if totals.has("crit_damage"): _add_label("Crit Damage: %d%%" % int(totals["crit_damage"] * 100), Color.WHITE, FONT_SIZE, "crit_damage")
-	if totals.has("armor"): _add_label("Armor: %d" % totals["armor"], Color.WHITE, FONT_SIZE, "armor")
+	#_add_spacer()
+#
+	#var hp_delta: float = (preview_totals["hp"] - totals["hp"]) if is_previewing else 0.0
+	#_add_label("Max HP: %d" % totals["hp"], Color(0.4, 0.8, 0.4), FONT_SIZE, "hp", _format_delta(hp_delta), hp_delta >= 0.0)
+#
+	#var dodge_delta: float = (preview_totals["dodge"] - totals["dodge"]) if is_previewing else 0.0
+	#_add_label("Dodge: %d%%" % int(totals["dodge"] * 100), Color(0.6, 0.6, 0.65), FONT_SIZE, "dodge", _format_delta(dodge_delta, true), dodge_delta >= 0.0)
+#
+	#_add_spacer()
 
-	_add_spacer()
+	#if changed_stat != "" and not is_previewing:
+		#for stat_key in ["dmg", "magic", "def", "speed", "luck", "status", "crit", "hp", "dodge"]:
+			#call_deferred("_pop_stat_label", stat_key)
 
-	# Pozostałe statystyki (np. uniki, lifesteal)
-	var has_survival := false
-	if totals.get("lifesteal", 0) > 0:
-		_add_label("Lifesteal: %d%%" % int(totals["lifesteal"] * 100), Color(0.85, 0.3, 0.4), FONT_SIZE, "lifesteal")
-		has_survival = true
-	if totals.get("dodge", 0) > 0:
-		_add_label("Dodge: %d%%" % int(totals["dodge"] * 100), Color(0.6, 0.6, 0.65), FONT_SIZE, "dodge")
-		has_survival = true
-	if totals.has("hp"):
-		_add_label("Max HP: %d" % totals["hp"], Color(0.4, 0.8, 0.4), FONT_SIZE, "hp")
-		has_survival = true
-	if has_survival: _add_spacer()
 
-	# Efekt graficzny pop-up
-	if changed_stat != "":
-		var stats_to_pop: Array[String] = [changed_stat]
-		if changed_stat == "STR": stats_to_pop = ["dmg", "crit_damage"]
-		elif changed_stat == "DEX": stats_to_pop = ["attack_speed", "crit_chance", "dodge"]
-		elif changed_stat == "INT": stats_to_pop = ["crit_damage"]
-		elif changed_stat == "CON": stats_to_pop = ["hp"]
+func _format_delta(value: float, is_percent: bool = false) -> String:
+	if is_zero_approx(value):
+		return ""
+	var sign_str := "+" if value > 0.0 else ""
+	if is_percent:
+		return "%s%d%%" % [sign_str, int(round(value * 100))]
+	return "%s%.2f" % [sign_str, value]
 
-		for stat in stats_to_pop:
-			call_deferred("_pop_stat_label", stat)
 
-func _add_label(text_val: String, color: Color, font_size: int = 11, stat_key: String = "") -> Label:
-	var lbl = Label.new()
+func _add_label(text_val: String, color: Color, font_size: int = 11, stat_key: String = "", delta_text: String = "", delta_positive: bool = true) -> Control:
+	var row := HBoxContainer.new()
+	if stat_key != "": row.set_meta("stat_key", stat_key)
+	stats_box.add_child(row)
+
+	var lbl := Label.new()
 	lbl.text = text_val
 	lbl.add_theme_color_override("font_color", color)
 	lbl.add_theme_font_size_override("font_size", font_size)
-	if stat_key != "": lbl.set_meta("stat_key", stat_key)
-	stats_box.add_child(lbl)
-	return lbl
+	row.add_child(lbl)
+
+	if delta_text != "":
+		var delta_lbl := Label.new()
+		delta_lbl.text = " (%s)" % delta_text
+		delta_lbl.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4) if delta_positive else Color(1.0, 0.4, 0.4))
+		delta_lbl.add_theme_font_size_override("font_size", font_size)
+		row.add_child(delta_lbl)
+
+	return row
 
 func _add_spacer() -> void:
 	var space = Control.new()
@@ -98,12 +88,12 @@ func _add_spacer() -> void:
 
 func _pop_stat_label(stat_key: String) -> void:
 	for child in stats_box.get_children():
-		if child is Label and child.has_meta("stat_key") and child.get_meta("stat_key") == stat_key:
+		if child.has_meta("stat_key") and child.get_meta("stat_key") == stat_key:
 			_pop_label(child)
 
-func _pop_label(label: Label) -> void:
-	Utilities.center_pivot(label)
+func _pop_label(control: Control) -> void:
+	Utilities.center_pivot(control)
 	var tween := create_tween()
 	tween.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tween.tween_property(label, "scale", Vector2(1.25, 1.25), 0.08)
-	tween.tween_property(label, "scale", Vector2.ONE, 0.15)
+	tween.tween_property(control, "scale", Vector2(1.25, 1.25), 0.08)
+	tween.tween_property(control, "scale", Vector2.ONE, 0.15)

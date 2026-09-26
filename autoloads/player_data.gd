@@ -3,25 +3,18 @@ extends Node
 
 signal stats_changed(changed_stat_key: String)
 signal item_equipped(slot_type: EquipmentSlot.Type, item_instance: ItemInstance)
-signal exp_changed
-signal level_up(new_level: int)
 signal gold_changed(new_gold_amount: int)
+signal stat_preview_started(preview_totals: Dictionary)
+signal stat_preview_ended
 
 signal attributes_changed # Na razie nie używane nigdzie
 
 # ==========================================
 # POSTAĆ I POSTĘP
 # ==========================================
-var character_definition : CharacterDefinition
 var health: Health
 
 var picks_per_cycle: int = 3
-
-var character_stats: Dictionary = {
-	"level": 1,
-	"exp": 0,
-	"exp_to_next": 100,
-}
 
 var gold: int = 0
 
@@ -38,6 +31,17 @@ var attributes: Dictionary = {
 	"CON": 10,
 }
 
+var totals: Dictionary = {
+		"dmg": 1,
+		"magic": 1,
+		"def": 1,
+		"vit": 1,
+		"speed": 1,
+		"luck": 1,
+		"status": 1,
+		"crit": 1,
+	}
+
 var equipped_items: Dictionary = {
 	EquipmentSlot.Type.AMULET: null,
 	EquipmentSlot.Type.HELMET: null,
@@ -51,6 +55,14 @@ var equipped_items: Dictionary = {
 	#EquipmentSlot.Type.BACKPACK: null,
 }
 
+const BASE_DMG: float = 0.0
+const BASE_MAGIC: float = 0.0
+const BASE_DEF: float = 0.0
+const BASE_VIT: float = 50.0
+const BASE_SPEED: float = 0.0
+const BASE_LUCK: float = 0.0
+const BASE_STATUS: float = 0.0
+const BASE_CRIT: float = 0.0
 
 # DEBUG
 const DEBUG_START_GEAR: Array[Dictionary] = [
@@ -58,11 +70,11 @@ const DEBUG_START_GEAR: Array[Dictionary] = [
 	{"id": "iron_sword",    "count": 1, "level": 1},
 	{"id": "iron_shield",    "count": 1, "level": 1},
 	{"id": "silver_amulet",  "count": 1, "level": 1},
-	#{"id": "knight_armor",   "count": 1, "level": 1},
-	#{"id": "leather_gloves", "count": 1, "level": 6},
-	#{"id": "hunter_boots",   "count": 1, "level": 6},
-	#{"id": "leather_cap",    "count": 1, "level": 6},
-	#{"id": "iron_ring",      "count": 1, "level": 6},
+	{"id": "knight_armor",   "count": 1, "level": 1},
+	{"id": "leather_gloves", "count": 1, "level": 6},
+	{"id": "hunter_boots",   "count": 1, "level": 6},
+	{"id": "leather_cap",    "count": 1, "level": 6},
+	{"id": "iron_ring",      "count": 1, "level": 6},
 ]
 
 func give_debug_gear() -> void:
@@ -82,17 +94,7 @@ func _ready() -> void:
 	give_debug_gear()
 	
 	DebugConsole.register_command("heal", _cmd_heal, "heal [ilość] - leczy gracza (bez argumentu: pełne HP)")
-	
-	character_definition = CharacterDatabase.get_by_id("warrior") # chwilowe, tylko debug
-	
-	if character_definition == null:
-		Log.warning("Nie znaleziono character definition w pliku Player_Data")
-		return
-		
-	attributes["STR"] = character_definition.starting_str
-	attributes["DEX"] = character_definition.starting_dex
-	attributes["INT"] = character_definition.starting_int
-	attributes["CON"] = character_definition.starting_con
+	DebugConsole.register_command("die", _cmd_die, "die - zabija gracza)")
 
 	health = Health.new(get_total_stats()["hp"])
 	health.died.connect(_on_player_died)
@@ -102,21 +104,24 @@ func _cmd_heal(args: Array) -> String:
 	health.heal(amount)
 	return "[color=green]Wyleczono do %d/%d HP[/color]" % [health.current, health.max_hp]
 
+func _cmd_die(args: Array) -> String:
+	health.take_damage(999999)
+	return "[color=green]Gracz umarł"
 # ==========================================
 # OBLICZANIE STATYSTYK
 # ==========================================
 func get_total_stats() -> Dictionary:
 	var totals: Dictionary = {
-		"dmg": character_definition.base_dmg + (attributes["STR"] * 1.0),
-		"magic": character_definition.base_magic + (attributes["INT"] * 1.0),
-		"def": character_definition.base_def,
-		"vit": character_definition.base_vit + (attributes["CON"] * 5.0),
-		"speed": character_definition.base_speed + (attributes["DEX"] * 1.0),
-		"luck": character_definition.base_luck,
-		"status": character_definition.base_status,
-		"crit": character_definition.base_crit,
+		"dmg": BASE_DMG,
+		"magic": BASE_MAGIC,
+		"def": BASE_DEF,
+		"vit": BASE_VIT,
+		"speed": BASE_SPEED,
+		"luck": BASE_LUCK,
+		"status": BASE_STATUS,
+		"crit": BASE_CRIT,
 	}
-
+	
 	for slot_type in equipped_items:
 		var item: ItemInstance = equipped_items[slot_type]
 		if item == null or item.definition == null:
@@ -131,25 +136,6 @@ func get_total_stats() -> Dictionary:
 	totals["dodge"] = totals["speed"] / (totals["speed"] + 100.0)
 
 	return totals
-
-# ==========================================
-# EKONOMIA I LEVELOWANIE
-# ==========================================
-func add_exp(amount: int) -> void:
-	character_stats["exp"] += amount
-	var leveled: bool = false
-	
-	while character_stats["exp"] >= character_stats["exp_to_next"]:
-		character_stats["exp"] -= character_stats["exp_to_next"]
-		character_stats["level"] += 1
-		character_stats["exp_to_next"] = int(character_stats["exp_to_next"] * 1.45)
-		
-		leveled = true
-
-	exp_changed.emit()
-	if leveled:
-		level_up.emit(character_stats["level"])
-		stats_changed.emit("level")
 
 func add_gold(amount: int) -> void:
 	gold += amount
@@ -207,6 +193,14 @@ func calculate_attack() -> Dictionary:
 		"color": text_color,
 		"stats": stats
 	}
+
+## Liczy staty tak, jakby hypothetical_item był założony w slot_type — bez trwałej zmiany stanu.
+func get_total_stats_with_swap(slot_type: EquipmentSlot.Type, hypothetical_item: ItemInstance) -> Dictionary:
+	var previous: ItemInstance = equipped_items.get(slot_type)
+	equipped_items[slot_type] = hypothetical_item
+	var totals := get_total_stats()
+	equipped_items[slot_type] = previous
+	return totals
 
 # player_data.gd — nowa funkcja, PlayerData jako pośrednik przed Health
 func take_damage(raw_amount: int) -> void:

@@ -21,9 +21,9 @@ buses/default_bus_layout="uid://jxm05fnbr37j"
 
 [autoload]
 
+DebugConsole="*uid://bhu0r73v58n47"
 RNG="*uid://t87xmd5kuqdc"
 GameManager="*uid://cn6mg6lu8ybnx"
-CharacterDatabase="*uid://dijwlqmfj15qv"
 ItemDatabase="*uid://bd5jd72g3kuwk"
 EventBus="*uid://djqyjqh76fg4j"
 PlayerData="*uid://bj574n8hpsceu"
@@ -40,7 +40,6 @@ SceneTransition="*uid://db2lmw3wdtyjd"
 FloatingTextManager="*uid://sbj0e42bu6lc"
 ConsumableDatabase="*uid://brwhp86xgdxoq"
 SkillItemDatabase="*uid://wya1s4nl8703"
-DebugConsole="*uid://bhu0r73v58n47"
 
 [debug]
 
@@ -61,7 +60,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/anthonyec.camera_preview/plugin.cfg")
+enabled=PackedStringArray("res://addons/anthonyec.camera_preview/plugin.cfg", "res://addons/script-ide/plugin.cfg")
 
 [global_group]
 

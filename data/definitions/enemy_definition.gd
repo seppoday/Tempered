@@ -11,5 +11,4 @@ class_name EnemyDefinition extends Resource
 @export var attack_patterns: Array[EnemyAttackPattern] = []
 
 @export_category("On dead")
-@export var exp_reward: int = 10
 @export var loot_table: LootTable

@@ -118,8 +118,31 @@ func _apply_heal_to_player(skill: SkillDefinition, value: int) -> void:
 
 func _on_current_enemy_died(enemy: EnemyInstance) -> void:
 	Log.print("Wróg pokonany: %s" % enemy.definition.enemy_name)
+	_grant_rewards(enemy.definition)
 	current_enemy = null
 	enemy_died.emit(enemy)
+
+
+func _grant_rewards(definition: EnemyDefinition) -> void:
+	var loot_table: LootTable = definition.loot_table
+	if loot_table == null:
+		return
+
+	if loot_table.gold_max > 0:
+		var gold_amount: int = RNG.randi_range(loot_table.gold_min, loot_table.gold_max)
+		if gold_amount > 0:
+			PlayerData.add_gold(gold_amount)
+
+	var dropped: LootEntry = loot_table.roll_entry()
+	if dropped == null or dropped.entry == null:
+		return
+
+	var inventory := get_tree().get_first_node_in_group("inventory")
+	if inventory == null:
+		Log.warning("CombatManager: brak aktywnego plecaka, pomijam drop '%s'" % dropped.entry.name)
+		return
+
+	inventory.add_item(ItemInstance.new(dropped.entry))
 
 
 func _on_player_died() -> void:

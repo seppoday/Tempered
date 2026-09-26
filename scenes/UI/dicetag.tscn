@@ -1,17 +1,8 @@
 [gd_scene format=3 uid="uid://dei603y45frkh"]
 
 [ext_resource type="Script" uid="uid://gom6cpdggn8p" path="res://scripts/UI/dicetag.gd" id="1_54fgk"]
-[ext_resource type="Texture2D" uid="uid://7beia3st4uaw" path="res://assets/test.webp" id="1_vnf6y"]
 [ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="2_vnf6y"]
 [ext_resource type="FontFile" uid="uid://ksubfguv2mi1" path="res://assets/fonts/FiraSans-ExtraBold.ttf" id="4_s5h31"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wvhbo"]
-texture = ExtResource("1_vnf6y")
-texture_margin_left = 16.0
-texture_margin_top = 16.0
-texture_margin_right = 16.0
-texture_margin_bottom = 16.0
-region_rect = Rect2(2, 2, 130, 132)
 
 [sub_resource type="LabelSettings" id="LabelSettings_mjkwc"]
 font_size = 24
@@ -35,7 +26,6 @@ offset_right = 162.0
 offset_bottom = 164.0
 pivot_offset_ratio = Vector2(0.5, 0.5)
 offset_transform_enabled = true
-theme_override_styles/panel = SubResource("StyleBoxTexture_wvhbo")
 script = ExtResource("1_54fgk")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1557987852]
@@ -85,7 +75,7 @@ custom_minimum_size = Vector2(32, 32)
 custom_maximum_size = Vector2(32, 32)
 layout_mode = 2
 offset_transform_enabled = true
-offset_transform_position = Vector2(-32, -32)
+offset_transform_position = Vector2(-16, -16)
 theme_override_styles/panel = SubResource("StyleBoxFlat_54fgk")
 
 [node name="RollDetailLabel" type="Label" parent="PanelContainer" unique_id=1472837659]

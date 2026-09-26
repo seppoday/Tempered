@@ -43,7 +43,8 @@ func roll_skill() -> Dictionary:
 	var item_def := definition as ItemDefinition
 	var max_face: int = GameEnums.DICE_PROGRESSION[dice_level]
 	var face: int = RNG.randi_range(1, max_face)
-	var skill: SkillDefinition = slot_assignments.get(face, item_def.default_skill)
+	var slot: int = RNG.randi_range(1, 6) # 6 Slotów na skille na każdym itemie
+	var skill: SkillDefinition = slot_assignments.get(slot, item_def.default_skill)
 
 	if skill == null:
 		Log.error("ItemInstance.roll_skill(): brak skilla dla ścianki %d i brak default_skill w '%s'" % [face, item_def.name])
@@ -52,7 +53,8 @@ func roll_skill() -> Dictionary:
 	return {
 		"face": face,
 		"skill": skill,
-		"dice_level_on_item": GameEnums.DICE_PROGRESSION[dice_level]
+		"slot": slot,
+		"dice_level_on_item": max_face,
 	}
 
 func use() -> void:
@@ -61,4 +63,4 @@ func use() -> void:
 		var heal_hp: float = consumable_def.heal_hp
 
 		if heal_hp > 0.0:
-			PlayerData.heal(heal_hp)
+			PlayerData.health.heal(heal_hp)
