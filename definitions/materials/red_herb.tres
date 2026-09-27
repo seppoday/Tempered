@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="MaterialDefinition" format=3 uid="uid://bhalfrgdo8yuy"]
 
 [ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="1_q3mkw"]
-[ext_resource type="Script" uid="uid://ca7fwkvbpwp8c" path="res://data/definitions/material_definition.gd" id="2_we605"]
+[ext_resource type="Script" uid="uid://ca7fwkvbpwp8c" path="res://data/definitions_patterns/material_definition.gd" id="2_we605"]
 
 [resource]
 script = ExtResource("2_we605")

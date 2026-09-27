@@ -1,4 +1,3 @@
-# equipment_slot.gd
 class_name EquipmentSlot
 extends InventorySlot
 
@@ -15,12 +14,7 @@ enum Type {
 	LEGS,
 }
 
-## Which equipment slot this UI slot represents. Set per-instance in the Inspector
-## (e.g. the "weapon" panel slot has slot_type = Type.WEAPON).
 @export var slot_type: Type = Type.WEAPON
-
-## Optional greyed-out icon shown when the slot is empty (e.g. a sword silhouette
-## on the weapon slot), ported over from the old string-based equipment_slot.gd.
 @export var placeholder_texture: Texture2D
 
 func _ready() -> void:
@@ -69,10 +63,6 @@ func _on_item_equipped(equipped_slot_type: Type, item_instance: ItemInstance) ->
 		else:
 			super.set_item(item_instance)
 
-# ==========================================
-# DRAG & DROP (restricted to matching equipment)
-# ==========================================
-
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	if not super._can_drop_data(_at_position, data):
 		return false
@@ -98,21 +88,14 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	super._drop_data(_at_position, data)
 
 	if dragged_instance.definition is SkillItemDefinition:
-		return  # picker sam ogarnia resztę, nic do "equipnięcia"
+		return
 
 	PlayerData.equip_item(item_data)
 
-# ==========================================
-# PUBLIC API
-# ==========================================
 
 func clear() -> void:
 	super.clear()
 	PlayerData.unequip_item(slot_type)
-
-# ==========================================
-# VISUAL (placeholder icon when empty)
-# ==========================================
 
 func _update_visual() -> void:
 	super._update_visual()
@@ -121,7 +104,7 @@ func _update_visual() -> void:
 		if icon and placeholder_texture:
 			icon.texture = placeholder_texture
 			icon.visible = true
-			icon.modulate = Color(1, 1, 1, 0.35)  # półprzezroczysty placeholder
+			icon.modulate = Color(1, 1, 1, 0.35)
 	else:
 		if icon:
-			icon.modulate = Color(1, 1, 1, 1)  # pełna widoczność przedmiotu
+			icon.modulate = Color(1, 1, 1, 1)

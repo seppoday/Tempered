@@ -15,21 +15,12 @@ signal lid_opened
 @export var default_fov_zoom: float = 4.0
 
 
-## Wykonuje pełną sekwencję: uniesienie, trzęsienie, uderzenie o stół i otwarcie wieczka.
-func shake(
-	camera: Camera3D = null,
-	duration: float = -1.0,
-	max_intensity: float = -1.0,
-	lift_height: float = -1.0,
-	fov_zoom: float = -1.0
-) -> void:
-	# Jeśli podano wartości mniejsze od zera, używamy domyślnych z Inspektora
+func shake(camera: Camera3D = null, duration: float = -1.0, max_intensity: float = -1.0, lift_height: float = -1.0, fov_zoom: float = -1.0) -> void:
 	duration = default_duration if duration < 0.0 else duration
 	max_intensity = default_max_intensity if max_intensity < 0.0 else max_intensity
 	lift_height = default_lift_height if lift_height < 0.0 else lift_height
 	fov_zoom = default_fov_zoom if fov_zoom < 0.0 else fov_zoom
 
-	# Jeśli kamera nie została przekazana, pobieramy aktywną kamerę z widoku
 	if camera == null:
 		camera = get_viewport().get_camera_3d()
 
@@ -39,13 +30,12 @@ func shake(
 
 	var shake_tween := create_tween().set_parallel(true)
 
-	# Podział czasu na fazy
 	var lift_duration: float = duration * 0.5
 	var fall_duration: float = duration * 0.05
 	var shake_duration: float = duration - lift_duration - fall_duration
 	var fall_start_time: float = lift_duration + shake_duration
 
-	# --- FAZA 1: UNIESIENIE (Start) ---
+	# UNIESIENIE
 	shake_tween.tween_property(self, "position:y", original_pos.y + lift_height, lift_duration)\
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	shake_tween.tween_property(self, "rotation", original_rot + Vector3(0.05, 0.02, -0.05), lift_duration)\
@@ -56,7 +46,7 @@ func shake(
 		shake_tween.tween_property(camera, "fov", original_fov - fov_zoom, total_zoom_duration)\
 			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
-	# --- FAZA 2: TRZĘSIENIE (W powietrzu) ---
+	# TRZĘSIENIE
 	var shake_count: int = 12
 	var step_duration: float = shake_duration / shake_count
 
@@ -83,7 +73,7 @@ func shake(
 		shake_tween.tween_property(self, "rotation", original_rot + random_rot, step_duration)\
 			.set_delay(t).set_trans(Tween.TRANS_SINE)
 
-	# --- FAZA 3: OPUSZCZENIE / UPADEK (Koniec) ---
+	# OPUSZCZENIE
 	shake_tween.tween_property(self, "position", original_pos, fall_duration)\
 		.set_delay(fall_start_time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	shake_tween.tween_property(self, "rotation", original_rot, fall_duration)\
@@ -92,8 +82,10 @@ func shake(
 	if camera != null:
 		shake_tween.tween_property(camera, "fov", original_fov, fall_duration)\
 			.set_delay(fall_start_time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-
-	# --- EFEKT UDERZENIA (Micro-bounce) ---
+		
+		var impact_time: float = fall_start_time + fall_duration
+		shake_tween.tween_callback(camera.shake.bind(0.8, 15.0)).set_delay(impact_time)
+		
 	var bounce_time: float = 0.05
 	var bounce_height: float = lift_height * 0.25
 
@@ -107,8 +99,6 @@ func shake(
 	
 	await open_lid()
 
-
-## Otwiera wieczko pudełka
 func open_lid() -> void:
 	if not is_instance_valid(lid):
 		push_warning("DiceBox: Brak przypisanego wieczka (Lid)!")

@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="LootTable" format=3 uid="uid://bsyad544r2cja"]
 
-[ext_resource type="Script" uid="uid://dmw8mcvfjhous" path="res://data/definitions/loot_entry.gd" id="1_rph4y"]
+[ext_resource type="Script" uid="uid://dmw8mcvfjhous" path="res://data/definitions_patterns/loot_entry.gd" id="1_rph4y"]
 [ext_resource type="Resource" uid="uid://3fkcla4p68we" path="res://definitions/materials/blood_essence.tres" id="2_et4b8"]
 [ext_resource type="Resource" uid="uid://gxa5nyxfh74q" path="res://definitions/items/helmets/knight_helmet.tres" id="3_aynvt"]
-[ext_resource type="Script" uid="uid://dp0kh2akuu60m" path="res://data/definitions/loot_table.gd" id="4_aynvt"]
+[ext_resource type="Script" uid="uid://dp0kh2akuu60m" path="res://data/definitions_patterns/loot_table.gd" id="4_aynvt"]
 [ext_resource type="Resource" uid="uid://c05svccheegwf" path="res://definitions/items/weapons/executioner.tres" id="4_me3hv"]
 [ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://definitions/materials/misc/upgrade_dice_d6.tres" id="5_bhbi7"]
 

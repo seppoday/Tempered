@@ -10,14 +10,14 @@ signal dice_settled(results: Array[Dictionary])
 }
 
 @export_group("Rzut z ręki")
-@export var throw_origin: Node3D  ## Marker3D symulujący dłoń — umieść go z boku/nad stołem, z dala od strefy lądowania.
-@export var landing_center: Node3D  ## Opcjonalnie: punkt, w który celujemy rzutem. Puste = Vector3.ZERO.
-@export var hand_cluster_spacing: float = 0.15  ## Odstęp między kośćmi w dłoni, żeby się nie nakładały przy starcie rzutu.
+@export var throw_origin: Node3D
+@export var landing_center: Node3D  # Opcjonalnie: punkt, w który celujemy rzutem. Puste = Vector3.ZERO.
+@export var hand_cluster_spacing: float = 0.15
 @export var throw_strength_min: float = 2.0
 @export var throw_strength_max: float = 3.5
 @export var arc_height_min: float = 1.5
 @export var arc_height_max: float = 2.5
-@export var throw_spread: float = 0.6  ## Losowe odchylenie na boki, żeby rzut nie leciał idealnie po linii.
+@export var throw_spread: float = 0.6
 
 @export_group("Siła obrotu")
 @export var torque_min: Vector3 = Vector3(-1.0, -1.0, -1.0)
@@ -34,7 +34,7 @@ var pending_results: Array[Dictionary] = []
 
 
 func _ready() -> void:
-	pass  # spawn wołany jawnie z main_3d_scene, PO podłączeniu sygnałów
+	pass
 
 func spawn_dice() -> void:
 	_spawn_dice_for_equipped_items()
@@ -123,7 +123,6 @@ func _throw_all_dice() -> void:
 		if result.is_empty():
 			continue
 
-		# Zamrożony teleport do "dłoni" — bezpieczny nawet jeśli kość leżała daleko od tego miejsca.
 		die.freeze = true
 		die.global_position = origin + hand_offsets[i]
 		die.linear_velocity = Vector3.ZERO
@@ -136,7 +135,6 @@ func _throw_all_dice() -> void:
 		var weight_strength = center_of_mass_weight_large if result["dice_level_on_item"] >= large_dice_threshold else center_of_mass_weight_small
 		die.center_of_mass = -local_up * weight_strength
 
-		# Kierunek: od dłoni w stronę środka stołu, plus łuk w górę i lekki rozrzut na boki.
 		var to_target := target_center - die.global_position
 		to_target.y = 0.0
 		var throw_dir := to_target.normalized() if to_target.length() > 0.01 else Vector3.FORWARD

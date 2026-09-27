@@ -21,7 +21,6 @@ func _ready() -> void:
 	_music_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(_music_player)
 
-# Music
 
 func play_music(stream: AudioStream, volume_db: float = 0.0) -> void:
 	if stream == null:
@@ -39,8 +38,6 @@ func stop_music() -> void:
 func set_bus_volume_db(bus_index: int = 0, volume: float = 0.0) -> void:
 	AudioServer.set_bus_volume_db(bus_index, volume)
 
-
-# Generalna metoda
 func play_sound(stream: AudioStream, bus_name: String, volume_db: float = 0.0, pitch_scale: float = 1.0) -> AudioStreamPlayer:
 	if stream == null:
 		Log.warning("AudioManager: przekazano pusty AudioStream.")
@@ -62,7 +59,6 @@ func play_sound_random_pitch(stream: AudioStream, bus_name: String, volume_db: f
 	return play_sound(stream, bus_name, volume_db, RNG.randf_range(min_pitch, max_pitch))
 
 
-# Skróty per kategoria
 func play_sfx(stream: AudioStream, volume_db: float = 0.0, pitch_scale: float = 1.0) -> AudioStreamPlayer:
 	return play_sound(stream, "SFX", volume_db, pitch_scale)
 

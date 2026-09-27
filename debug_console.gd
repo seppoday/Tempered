@@ -1,4 +1,5 @@
 extends CanvasLayer
+# Autoload
 
 @onready var panel: PanelContainer = $PanelContainer
 @onready var output: RichTextLabel = %Output
@@ -32,17 +33,12 @@ func _set_open(value: bool) -> void:
 	if value:
 		input.grab_focus()
 
-
-## Wywoływane z dowolnego autoloadu/skryptu, żeby dodać nową komendę.
-## callable dostaje Array[String] argumentów (bez nazwy komendy) i zwraca String do wypisania.
 func register_command(name: String, callable: Callable, usage: String = "") -> void:
 	_commands[name] = {"callable": callable, "usage": usage}
 
 func unregister_command(name: String, callable: Callable = Callable()) -> void:
 	if not _commands.has(name):
 		return
-	# Jeśli podano callable i nie zgadza się z aktualnie zarejestrowanym,
-	# to znaczy że ktoś inny już przejął tę nazwę — nie usuwaj cudzej komendy.
 	if callable.is_valid() and _commands[name]["callable"] != callable:
 		return
 	_commands.erase(name)
@@ -119,8 +115,6 @@ func _cmd_list_items(args: Array) -> String:
 	lines.sort()
 	return "\n".join(lines)
 
-
-## Wspólne źródło dla additem i listitems — jedno miejsce, jeśli kiedyś dojdzie kolejna baza.
 func _inventory_databases() -> Dictionary:
 	return {
 		"item": ItemDatabase,

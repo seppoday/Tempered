@@ -1,3 +1,4 @@
+# INFO: Najprawdopodobniej do usunięcia będzie, pozostałość po prototypowaniu
 extends PanelContainer
 
 @onready var alchemy_grid: GridContainer = %AlchemyGrid
@@ -11,8 +12,7 @@ const SLOT_COUNT: int = 3
 const SLOT_GAP: int = 2
 const GRID_COLUMNS: int = 3
 
-# Jedyna linijka potrzebna do tworzenia slotów:
-const SlotScene: PackedScene = preload("res://scenes/slot.tscn")
+const SlotScene: PackedScene = preload("res://scenes/UI/slot.tscn")
 
 func _ready() -> void:
 	craft_button.pressed.connect(_on_craft_button_pressed)

@@ -1,6 +1,5 @@
 class_name SkillItemDefinition extends InventoryEntry
 
-## Efekt, który ten item-skill wstrzykuje w wybrane pole kości.
 @export var skill: SkillDefinition:
 	set(value):
 		skill = value

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="EnemyDefinition" format=3 uid="uid://bxmxwyuw00k2w"]
 
-[ext_resource type="Script" uid="uid://doyuee4t73gkp" path="res://data/definitions/enemy_attack_pattern.gd" id="1_8p1qr"]
-[ext_resource type="Script" uid="uid://dfsxlht8w22ue" path="res://data/definitions/enemy_definition.gd" id="2_w5cdw"]
+[ext_resource type="Script" uid="uid://doyuee4t73gkp" path="res://data/definitions_patterns/enemy_attack_pattern.gd" id="1_8p1qr"]
+[ext_resource type="Script" uid="uid://dfsxlht8w22ue" path="res://data/definitions_patterns/enemy_definition.gd" id="2_w5cdw"]
 [ext_resource type="Texture2D" uid="uid://bftlcbgr8bch7" path="res://assets/enemies/enemy.jpg" id="3_8p1qr"]
 
 [sub_resource type="Resource" id="Resource_0daba"]

@@ -1,4 +1,3 @@
-# inventory.gd
 extends PanelContainer
 
 @onready var grid: GridContainer = $MarginContainer/GridContainer
@@ -7,10 +6,9 @@ const SLOT_COUNT: int = 36
 const SLOT_GAP: int = 4
 const GRID_COLUMNS: int = 6
 
-# Jedyna linijka potrzebna do tworzenia slotów:
-const SlotScene: PackedScene = preload("res://scenes/slot.tscn")
+const SlotScene: PackedScene = preload("res://scenes/UI/slot.tscn")
 
-@export var base_items: Dictionary[InventoryEntry, int] = {}
+@export var base_items: Dictionary[InventoryEntry, Dictionary] = {}
 
 func _ready() -> void:
 	add_to_group("inventory")
@@ -19,8 +17,10 @@ func _ready() -> void:
 	
 	for definition in base_items.keys():
 		if definition:
-			var quantity: int = base_items[definition]
-			add_item(ItemInstance.new(definition, quantity))
+			var data: Dictionary = base_items[definition]
+			var quantity: int = data.get("quantity", 1)
+			var level: int = data.get("level", 1)
+			add_item(ItemInstance.new(definition, quantity, level))
 
 func _create_slots() -> void:
 	for existing_slot in grid.get_children():
@@ -36,12 +36,7 @@ func _setup_grid() -> void:
 	grid.add_theme_constant_override("h_separation", SLOT_GAP)
 	grid.add_theme_constant_override("v_separation", SLOT_GAP)
 
-# ==========================================
-# PUBLIC API
-# ==========================================
-
 func add_item(item: ItemInstance) -> bool:
-	# Najpierw próbujemy dołożyć do istniejących stacków.
 	if item.is_stackable():
 		var max_stack := item.get_max_stack_size()
 
@@ -71,7 +66,6 @@ func add_item(item: ItemInstance) -> bool:
 			if item.quantity <= 0:
 				return true
 
-	# Jeżeli nadal coś zostało, szukamy pustych slotów.
 	while item.quantity > 0:
 		var empty_slot = null
 
@@ -87,16 +81,12 @@ func add_item(item: ItemInstance) -> bool:
 		if item.is_stackable():
 			var stack_size = min(item.quantity, item.get_max_stack_size())
 
-			var new_item := ItemInstance.new(
-				item.definition,
-				stack_size
-			)
+			var new_item := ItemInstance.new(item.definition,stack_size,item.dice_level)
 
 			empty_slot.set_item(new_item)
 			item.quantity -= stack_size
 		else:
-			# Zwykły ItemDefinition = jeden item na slot.
-			var new_item := ItemInstance.new(item.definition, 1)
+			var new_item := ItemInstance.new(item.definition, 1, item.dice_level)
 
 			empty_slot.set_item(new_item)
 			item.quantity -= 1
@@ -140,4 +130,4 @@ func _on_item_pickup_requested(item_instance: ItemInstance, drop_node: Node) -> 
 			if drop_node.has_method("on_collected"):
 				drop_node.on_collected()
 			else:
-				drop_node.queue_free()
+				Utilities.safe_free(drop_node)

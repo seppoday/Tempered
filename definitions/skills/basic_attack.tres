@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://dw0cugqwhkga1"]
 
-[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions/skill_definition.gd" id="1_d17f2"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="1_d17f2"]
 [ext_resource type="Texture2D" uid="uid://cyu1e16lmrvk7" path="res://assets/icons/stats/sword.svg" id="1_rst5n"]
 [ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="2_x44ks"]
 
@@ -26,5 +26,6 @@ id = "basic_attack"
 skill_name = "Basic Attack"
 icon = ExtResource("1_rst5n")
 description = "Basic Attack"
+base_value = 5000.0
 scalings = Array[ExtResource("2_x44ks")]([SubResource("Resource_g7d3i"), SubResource("Resource_d27jr"), SubResource("Resource_ppoig")])
 metadata/_custom_type_script = "uid://dgjg1vlcvdtpi"

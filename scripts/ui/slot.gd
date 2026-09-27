@@ -1,4 +1,3 @@
-# slot.gd
 class_name InventorySlot
 extends Panel
 
@@ -12,9 +11,6 @@ signal slot_changed(slot: Panel)
 
 const SkillFacePickerScene := preload("res://scenes/UI/skill_face_picker.tscn")
 
-# Słownik definiujący dokładny wygląd nazwy statystyki oraz jej kolor.
-# Wszystkie wartości są teraz traktowane jako czyste liczby całkowite (jak siła/zręczność).
-# Słownik definiujący wygląd, kolor oraz ikonę statystyki.
 const STAT_DISPLAY := {
 	"dmg":    ["DAMAGE", Color(0.95, 0.3, 0.3), preload("res://assets/icons/stats/sword.svg")],
 	"magic":  ["MAGIC", Color(0.0, 0.3, 0.9), preload("res://assets/icons/stats/sword.svg")],
@@ -52,9 +48,6 @@ func _gui_input(event: InputEvent) -> void:
 
 	slot_changed.emit(self)
 
-# ==========================================
-# TOOLTIP
-# ==========================================
 const FONT_TITLE := 28
 const FONT_BODY := 20
 const TOOLTIP_WIDTH := 500
@@ -66,7 +59,6 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 	var def = item_data.definition
 	var rarity_color := _get_rarity_color()
 
-	# ── Root ──────────────────────────────────────────────
 	var container := PanelContainer.new()
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.111, 0.127, 0.157, 0.96)
@@ -79,19 +71,16 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 	style.content_margin_bottom = 8
 	container.add_theme_stylebox_override("panel", style)
 
-	# Usuń domyślne tło TooltipPanel
 	container.tree_entered.connect(_clear_tooltip_panel_bg.bind(container), CONNECT_ONE_SHOT)
 
 	var root := VBoxContainer.new()
 	root.add_theme_constant_override("separation", 8)
 	container.add_child(root)
 
-	# ── HEADER: ikona + nazwa/kategoria | cena ────────────
 	var header := HBoxContainer.new()
 	header.add_theme_constant_override("separation", 8)
 	root.add_child(header)
 
-	# Ikona przedmiotu
 	if def.icon:
 		var icon_rect := TextureRect.new()
 		icon_rect.texture = def.icon
@@ -101,7 +90,6 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 		icon_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		header.add_child(icon_rect)
 
-	# Nazwa + kategoria
 	var title_box := VBoxContainer.new()
 	title_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title_box.add_theme_constant_override("separation", 0)
@@ -123,7 +111,6 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 	category_label.add_theme_font_size_override("font_size", FONT_BODY)
 	title_box.add_child(category_label)
 
-	# Cena / sell value
 	if def.get("sell_value") != null or def.get("price") != null:
 		var price_box := VBoxContainer.new()
 		price_box.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -137,25 +124,23 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 		sell_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		price_box.add_child(sell_label)
 
-	# ── Separator ─────────────────────────────────────────
 	root.add_child(_make_separator())
 
-	# ── STATY ─────────────────────────────────────────────
 	var stat_rows := _get_stat_rows()
 	if not stat_rows.is_empty():
 		var stats_box := VBoxContainer.new()
-		stats_box.add_theme_constant_override("separation", 2) # Lekki odstęp między wierszami
+		stats_box.add_theme_constant_override("separation", 2)
 		root.add_child(stats_box)
 
 		for row in stat_rows:
 			var row_h := HBoxContainer.new()
-			row_h.add_theme_constant_override("separation", 6) # <--- ZMIENIONE Z 0 NA 6 (odstęp ikona <-> tekst)
+			row_h.add_theme_constant_override("separation", 6)
 			stats_box.add_child(row_h)
 
 			if row.has("icon") and row["icon"]:
 				var s_icon := TextureRect.new()
 				s_icon.texture = row["icon"]
-				s_icon.custom_minimum_size = Vector2(32, 32) # <--- ZMIENIONE NA 18x18 (lepiej pasuje do czcionki 20px)
+				s_icon.custom_minimum_size = Vector2(32, 32)
 				s_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 				s_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 				s_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -170,7 +155,6 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 
 		root.add_child(_make_separator())
 
-	# ── AFFINITIES ────────────────────────────────────────
 	if item_data.definition is ItemDefinition:
 		var item_def: ItemDefinition = item_data.definition
 		if not item_def.affinities.is_empty():
@@ -197,7 +181,6 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 
 			root.add_child(_make_separator())
 	
-	# ── SKILLE NA KOŚCI ──────────────────
 	if item_data.definition is ItemDefinition and item_data.dice_level >= 0:
 		var item_def: ItemDefinition = item_data.definition
 
@@ -239,7 +222,6 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 
 		root.add_child(_make_separator())
 
-	# ── SZCZEGÓŁY I SKALOWANIE SKILLA ──────────────────────
 	var skill_def: SkillDefinition = null
 	if def is SkillItemDefinition:
 		skill_def = def.skill
@@ -249,14 +231,12 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 		skill_box.add_theme_constant_override("separation", 4)
 		root.add_child(skill_box)
 
-		# Nagłówek sekcji skilla
 		var skill_header := Label.new()
 		skill_header.text = "Skill Properties:"
 		skill_header.add_theme_color_override("font_color", Color(0.91, 0.75, 0.35))
 		skill_header.add_theme_font_size_override("font_size", FONT_BODY)
 		skill_box.add_child(skill_header)
 
-		# Typ efektu i żywioł (np. Damage: Physical)
 		var effect_lbl := Label.new()
 		var element_name = GameEnums.DamageElement.keys()[skill_def.damage_element].capitalize()
 		var effect_name = GameEnums.SkillEffect.keys()[skill_def.effect_type].capitalize()
@@ -265,7 +245,6 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 		effect_lbl.add_theme_font_size_override("font_size", FONT_BODY)
 		skill_box.add_child(effect_lbl)
 
-		# Wyświetlanie skalowania (Scalings)
 		if not skill_def.scalings.is_empty():
 			var scaling_title := Label.new()
 			scaling_title.text = " • Damage scaling:"
@@ -279,16 +258,13 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 				var row := HBoxContainer.new()
 				row.add_theme_constant_override("separation", 6)
 				
-				# Małe wcięcie z lewej strony
 				var indent := Control.new()
 				indent.custom_minimum_size = Vector2(16, 0)
 				row.add_child(indent)
 
-				# Pobieramy ikonę i kolor z Twojego STAT_DISPLAY
 				if STAT_DISPLAY.has(stat_key):
 					var stat_info = STAT_DISPLAY[stat_key]
 					
-					# Mini-ikonka statystyki
 					if stat_info.size() > 2 and stat_info[2]:
 						var s_icon := TextureRect.new()
 						s_icon.texture = stat_info[2]
@@ -298,14 +274,12 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 						s_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 						row.add_child(s_icon)
 
-					# Nazwa statystyki + waga (np. "DAMAGE x1.20")
 					var scaling_lbl := Label.new()
 					scaling_lbl.text = "%s x%.2f" % [stat_info[0], scaling.weight]
 					scaling_lbl.add_theme_color_override("font_color", stat_info[1])
 					scaling_lbl.add_theme_font_size_override("font_size", FONT_BODY)
 					row.add_child(scaling_lbl)
 				else:
-					# Awaryjny fallback na wypadek braku wpisu w STAT_DISPLAY
 					var scaling_lbl := Label.new()
 					var fallback_name = GameEnums.Stat.keys()[scaling.stat].capitalize()
 					scaling_lbl.text = "%s x%.2f" % [fallback_name, scaling.weight]
@@ -315,7 +289,6 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 
 				skill_box.add_child(row)
 
-		# Dodatkowe trafienia (bonus_hits_per_stat)
 		if skill_def.bonus_hits_per_stat:
 			var bonus = skill_def.bonus_hits_per_stat
 			var stat_key = _get_stat_key_from_enum(bonus.stat)
@@ -329,7 +302,6 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 
 		root.add_child(_make_separator())
 
-	# ── OPIS / PASYWKI ────────────────────────────────────
 	if not def.description.is_empty():
 		var blocks = def.description.split("\n\n", false)
 		for i in blocks.size():
@@ -405,28 +377,20 @@ func _get_stat_rows() -> Array[Dictionary]:
 		if property in def:
 			var value = def.get(property)
 
-			# Ignoruj puste/zerowe wartości
 			if value == 0 or value == 0.0:
 				continue
 				
 			var info = STAT_DISPLAY[property]
 			
-			# Bezwarunkowe rzutowanie na czystą liczbę całkowitą (int)
 			var value_str := "%d" % int(round(value))
-				
-			# Format: "NAZWA: WARTOŚĆ" (np. "DAMAGE: 5")
+
 			var formatted_text = "%s: %s" % [info[0], value_str]
-			
-			# Pobieramy ikonę, jeśli istnieje w słowniku
+
 			var icon_texture: Texture2D = null
 			if info.size() > 2:
 				icon_texture = info[2]
 			
-			rows.append({
-				"text": formatted_text, 
-				"color": info[1],
-				"icon": icon_texture
-			})
+			rows.append({"text": formatted_text, "color": info[1],"icon": icon_texture})
 	return rows
 
 
@@ -434,10 +398,6 @@ func _get_rarity_color() -> Color:
 	if is_empty() or not item_data.definition:
 		return Color.WHITE
 	return GameEnums.get_rarity_color(item_data.definition.rarity)
-
-# ==========================================
-# DRAG & DROP
-# ==========================================
 
 func _get_drag_data(_at_position: Vector2) -> Variant:
 	if is_empty():
@@ -451,7 +411,7 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	elif Input.is_key_pressed(KEY_CTRL) and total_count > 1:
 		drag_count = int(total_count / 2.0)
 
-	var drag_instance = ItemInstance.new(item_data.definition, drag_count)
+	var drag_instance = ItemInstance.new(item_data.definition, drag_count, item_data.dice_level)
 
 	var preview: TextureRect = TextureRect.new()
 	preview.texture = icon.texture
@@ -576,10 +536,6 @@ func _on_skill_assignment_confirmed(face: int, skill: SkillDefinition, source_sl
 		source_slot._update_visual()
 	source_slot.slot_changed.emit(source_slot)
 
-# ==========================================
-# PUBLIC API
-# ==========================================
-
 func set_item(new_instance: ItemInstance) -> void:
 	item_data = new_instance
 	_update_visual()
@@ -590,10 +546,6 @@ func clear() -> void:
 
 func is_empty() -> bool:
 	return item_data == null
-
-# ==========================================
-# VISUAL
-# ==========================================
 
 func _update_visual() -> void:
 	modulate = Color.WHITE
@@ -627,8 +579,6 @@ func _apply_slot_style(bg: Color, border: Color) -> void:
 func _get_stat_key_from_enum(stat_enum: GameEnums.Stat) -> String:
 	var enum_name: String = GameEnums.Stat.keys()[stat_enum].to_lower()
 	
-	# Jeżeli w Enumie masz np. "VITALITY", a w STAT_DISPLAY używasz "vit",
-	# tutaj robimy mapowanie wyjątków:
 	match enum_name:
 		"vitality": return "vit"
 		"defense": return "def"

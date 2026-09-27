@@ -54,7 +54,6 @@ func resolve_player_attack(selected_results: Array[Dictionary]) -> void:
 			break
 			
 		var skill: SkillDefinition = result["skill"]
-		#var dice_level_on_item: int = result["dice_level_on_item"]
 		var item_instance: ItemInstance = result["item"]
 		var rolled_face: int = result["face"]
 		var value := calculate_effect_value(skill, item_instance.definition, rolled_face)

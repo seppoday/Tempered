@@ -1,3 +1,4 @@
+# INFO: Najprawdopodobniej do usunięcia będzie, pozostałość po prototypowaniu
 class_name RecipeDefinition extends Resource
 
 @export var id: String

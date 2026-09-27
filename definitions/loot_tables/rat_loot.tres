@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="LootTable" format=3 uid="uid://cs6xmyupnk1g4"]
 
-[ext_resource type="Script" uid="uid://dmw8mcvfjhous" path="res://data/definitions/loot_entry.gd" id="1_jfrrb"]
+[ext_resource type="Script" uid="uid://dmw8mcvfjhous" path="res://data/definitions_patterns/loot_entry.gd" id="1_jfrrb"]
 [ext_resource type="Resource" uid="uid://bdo0a1sdk0vx1" path="res://definitions/consumable/potion_small.tres" id="2_jfrrb"]
 [ext_resource type="Resource" uid="uid://dwkkti5y8v234" path="res://definitions/materials/rough_leather.tres" id="3_j2the"]
-[ext_resource type="Script" uid="uid://dp0kh2akuu60m" path="res://data/definitions/loot_table.gd" id="4_378ne"]
+[ext_resource type="Script" uid="uid://dp0kh2akuu60m" path="res://data/definitions_patterns/loot_table.gd" id="4_378ne"]
 [ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://definitions/materials/misc/upgrade_dice_d6.tres" id="4_j2the"]
 
 [sub_resource type="Resource" id="Resource_me3hv"]

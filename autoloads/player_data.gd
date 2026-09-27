@@ -1,5 +1,5 @@
-# PlayerData.gd
 extends Node
+# Autoload
 
 signal stats_changed(changed_stat_key: String)
 signal item_equipped(slot_type: EquipmentSlot.Type, item_instance: ItemInstance)
@@ -9,21 +9,11 @@ signal stat_preview_ended
 
 signal attributes_changed # Na razie nie używane nigdzie
 
-# ==========================================
-# POSTAĆ I POSTĘP
-# ==========================================
 var health: Health
-
 var picks_per_cycle: int = 2
-
 var gold: int = 0
-
 var pending_block: float = 0.0
 var pending_dodge_bonus: float = 0.0
-
-# ==========================================
-# BAZOWE ATRYBUTY
-# ==========================================
 
 var totals: Dictionary = {
 		"dmg": 1,
@@ -101,9 +91,7 @@ func _cmd_heal(args: Array) -> String:
 func _cmd_die(args: Array) -> String:
 	health.take_damage(999999)
 	return "[color=green]Gracz umarł"
-# ==========================================
-# OBLICZANIE STATYSTYK
-# ==========================================
+
 func get_total_stats() -> Dictionary:
 	var totals: Dictionary = {
 		"dmg": BASE_DMG,
@@ -196,7 +184,6 @@ func get_total_stats_with_swap(slot_type: EquipmentSlot.Type, hypothetical_item:
 	equipped_items[slot_type] = previous
 	return totals
 
-# player_data.gd — nowa funkcja, PlayerData jako pośrednik przed Health
 func take_damage(raw_amount: int) -> void:
 	var stats := get_total_stats()
 
@@ -215,10 +202,8 @@ func take_damage(raw_amount: int) -> void:
 	EventBus.player_damaged.emit(final_amount)
 	health.take_damage(final_amount)
 
-# Formuła redukcji armor - malejąca skuteczność (jak w większości gier)
+
 func calculate_armor_reduction(armor: float) -> float:
-	# Formuła: armor / (armor + 100)
-	# Przykłady:
 	# 10 armor  = 9.1% redukcji
 	# 50 armor  = 33% redukcji
 	# 100 armor = 50% redukcji

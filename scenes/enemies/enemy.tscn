@@ -7,6 +7,20 @@
 [sub_resource type="BoxMesh" id="BoxMesh_5rl3n"]
 size = Vector3(3.055, 0.05, 1.755)
 
+[sub_resource type="QuadMesh" id="QuadMesh_wvhbo"]
+size = Vector2(1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_38ino"]
+shading_mode = 0
+albedo_color = Color(0.4258898, 0.013419389, 7.219613e-08, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_38ino"]
+size = Vector2(1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ifow5"]
+shading_mode = 0
+albedo_color = Color(5.2943824e-07, 0.8209616, 0.17400587, 1)
+
 [node name="Enemy" type="MeshInstance3D" unique_id=1304486158]
 mesh = SubResource("BoxMesh_5rl3n")
 script = ExtResource("1_fcftc")
@@ -16,3 +30,15 @@ definition = ExtResource("2_lu5c6")
 transform = Transform3D(0.175, 0, 0, 0, -7.649493e-09, 0.175, 0, -0.175, -7.649493e-09, 0, 0.05, 0)
 texture_filter = 1
 texture = ExtResource("4_jt03m")
+
+[node name="HealthBarBackground" type="MeshInstance3D" parent="." unique_id=809532472]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.6, -0.33013725)
+mesh = SubResource("QuadMesh_wvhbo")
+surface_material_override/0 = SubResource("StandardMaterial3D_38ino")
+
+[node name="HealthBarFill" type="MeshInstance3D" parent="." unique_id=100757973]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.601, -0.33)
+mesh = SubResource("QuadMesh_38ino")
+surface_material_override/0 = SubResource("StandardMaterial3D_ifow5")

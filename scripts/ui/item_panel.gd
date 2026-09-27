@@ -37,21 +37,6 @@ func _update_ui(changed_stat: String = "", preview_totals: Dictionary = {}) -> v
 		var delta: float = (preview_totals[key] - totals[key]) if is_previewing else 0.0
 		_add_label("%s: %d" % [key.capitalize(), totals[key]], Color.WHITE, FONT_SIZE, key, _format_delta(delta), delta >= 0.0)
 
-	#_add_spacer()
-#
-	#var hp_delta: float = (preview_totals["hp"] - totals["hp"]) if is_previewing else 0.0
-	#_add_label("Max HP: %d" % totals["hp"], Color(0.4, 0.8, 0.4), FONT_SIZE, "hp", _format_delta(hp_delta), hp_delta >= 0.0)
-#
-	#var dodge_delta: float = (preview_totals["dodge"] - totals["dodge"]) if is_previewing else 0.0
-	#_add_label("Dodge: %d%%" % int(totals["dodge"] * 100), Color(0.6, 0.6, 0.65), FONT_SIZE, "dodge", _format_delta(dodge_delta, true), dodge_delta >= 0.0)
-#
-	#_add_spacer()
-
-	#if changed_stat != "" and not is_previewing:
-		#for stat_key in ["dmg", "magic", "def", "speed", "luck", "status", "crit", "hp", "dodge"]:
-			#call_deferred("_pop_stat_label", stat_key)
-
-
 func _format_delta(value: float, is_percent: bool = false) -> String:
 	if is_zero_approx(value):
 		return ""

@@ -1,7 +1,6 @@
 extends Label
 
 func _ready() -> void:
-	# Podłączamy się pod sygnał zmiany złota z Autoloada
 	PlayerData.gold_changed.connect(_update_gold_display)
 	_update_gold_display(PlayerData.gold)
 
@@ -9,7 +8,6 @@ func _update_gold_display(new_amount: int) -> void:
 	text = "Gold: %d$" % new_amount
 	_pop_animation()
 
-# Efekt soczystego "podskoczenia" napisu przy zdobyciu złota
 func _pop_animation() -> void:
 	Utilities.center_pivot(self)
 	var tween := create_tween()

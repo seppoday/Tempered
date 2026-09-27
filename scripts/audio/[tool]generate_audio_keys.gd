@@ -25,7 +25,6 @@ func _run() -> void:
 			lines.append('const %s: StringName = &"%s"' % [const_name, n])
 		lines.append("")
 
-	# NOWE: upewnij się, że folder docelowy istnieje
 	var dir_path := OUTPUT_PATH.get_base_dir()
 	if not DirAccess.dir_exists_absolute(dir_path):
 		var err := DirAccess.make_dir_recursive_absolute(dir_path)

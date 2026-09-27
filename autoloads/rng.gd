@@ -4,7 +4,6 @@ var _generator := RandomNumberGenerator.new()
 var current_seed: int
 
 func _ready() -> void:
-	# Przykład użycia RandomNumberGenerator
 	_generator.randomize()
 	current_seed = _generator.seed
 

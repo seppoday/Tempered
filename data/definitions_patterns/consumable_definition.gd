@@ -1,3 +1,4 @@
+# INFO: Najprawdopodobniej do usunięcia będzie, pozostałość po prototypowaniu
 class_name ConsumableDefinition
 extends InventoryEntry
 
@@ -8,5 +9,4 @@ extends InventoryEntry
 
 func use() -> void:
 	if heal_hp > 0.0:
-		# Heal the player
 		PlayerData.heal(heal_hp)

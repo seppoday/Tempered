@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://buqtttr68wn7s"]
+
+[ext_resource type="Shader" uid="uid://c7js0bwvl7ydj" path="res://shaders/blink.gdshader" id="2_4yait"]
+
+[sub_resource type="GDScript" id="GDScript_0rrhd"]
+script/source = "extends Node2D
+
+var hp: float
+var max_hp: float
+var definition: EnemyDefinition
+var active_statuses: Array[Dictionary] = []
+
+@onready var sprite: Sprite2D = $Sprite2D
+
+func setup(enemy_definition: EnemyDefinition, hp_multiplier: float) -> void:
+	definition = enemy_definition
+	max_hp = float(definition.max_hp * hp_multiplier)
+	hp = max_hp
+
+func take_damage(amount: float) -> void:
+	_flash()
+	hp -= amount
+	if hp <= 0.0:
+		die()
+
+func apply_status(damage_per_round: float, rounds: int) -> void:
+	active_statuses.append({\"remaining\": rounds, \"damage\": damage_per_round})
+
+func tick_statuses() -> void:
+	for status in active_statuses.duplicate():
+		if hp <= 0.0:
+			return
+		take_damage(status[\"damage\"])
+		status[\"remaining\"] -= 1
+		if status[\"remaining\"] <= 0:
+			active_statuses.erase(status)
+
+func perform_attack_on_player() -> void:
+	PlayerData.take_damage(definition.damage)
+
+func is_dead() -> bool:
+	return hp <= 0.0 or is_queued_for_deletion()
+
+func die() -> void:
+	EventBus.enemy_died.emit(self, global_position)
+	Utilities.safe_free(self)
+
+func _flash() -> void:
+	if sprite.material == null:
+		return
+	sprite.material.set_shader_parameter(\"flash_amount\", 1.0)
+	var tween := get_tree().create_tween()
+	tween.tween_method(func(v): sprite.material.set_shader_parameter(\"flash_amount\", v), 1.0, 0.0, 0.2)
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s0o7b"]
+resource_local_to_scene = true
+shader = ExtResource("2_4yait")
+shader_parameter/flash_amount = 0.0
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_fya1x"]
+load_path = "res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex"
+
+[node name="Enemy" type="Node2D" unique_id=267119783 groups=["enemies"]]
+script = SubResource("GDScript_0rrhd")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1756268848]
+modulate = Color(1, 0.6137826, 0.558063, 1)
+material = SubResource("ShaderMaterial_s0o7b")
+texture = SubResource("CompressedTexture2D_fya1x")

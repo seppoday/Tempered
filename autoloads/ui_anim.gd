@@ -4,10 +4,8 @@ var _active: Dictionary = {}
 
 
 func _register(node: Node, tween: Tween) -> Tween:
-	# Rejestruje tween i podpina auto-czyszczenie po zakończeniu
 	if not _active.has(node):
 		_active[node] = []
-		# Jeśli węzeł zostanie usunięty, czyścimy po nim
 		if not node.tree_exiting.is_connected(_on_node_exiting):
 			node.tree_exiting.connect(_on_node_exiting.bind(node))
 
@@ -24,8 +22,6 @@ func _on_tween_finished(node: Node, tween: Tween) -> void:
 func _on_node_exiting(node: Node) -> void:
 	_active.erase(node)
 
-
-## Zabija wszystkie aktywne tweens na danym węźle (opcjonalnie przed nową animacją).
 func kill_all(node: Node) -> void:
 	if _active.has(node):
 		for t: Tween in _active[node]:
@@ -33,12 +29,7 @@ func kill_all(node: Node) -> void:
 				t.kill()
 		_active[node].clear()
 
-
-
-#  ANIMACJE
-
 func scale_to(control: Control, target: Vector2, duration: float = 0.12, key: StringName = &"scale") -> Tween:
-	# pivot w środku, inaczej skaluje się od lewego-górnego rogu
 	Utilities.center_pivot(control)
 	control.offset_transform_enabled = true
 	
@@ -53,7 +44,6 @@ func scale_to(control: Control, target: Vector2, duration: float = 0.12, key: St
 	control.set_meta(key, tween)
 	return tween
 
-## Skala 1 → big → 1 (klasyczny "pop" przycisku).
 func pop(node: CanvasItem, scale_amount: float = 1.2, duration: float = 0.2, kill_existing: bool = true) -> Tween:
 	if kill_existing:
 		kill_all(node)
@@ -70,8 +60,6 @@ func pop(node: CanvasItem, scale_amount: float = 1.2, duration: float = 0.2, kil
 
 	return _register(node, t)
 
-
-## Drżenie w miejscu (błąd, obrażenia, alert).
 func shake(node: CanvasItem, intensity: float = 6.0, duration: float = 0.3, kill_existing: bool = true) -> Tween:
 	if kill_existing:
 		kill_all(node)
@@ -90,8 +78,6 @@ func shake(node: CanvasItem, intensity: float = 6.0, duration: float = 0.3, kill
 	t.tween_property(node, "position", original, 0.05)
 	return _register(node, t)
 
-
-## Pojawienie przez fade (modulate.a: 0 → 1).
 func fade_in(node: CanvasItem, duration: float = 0.3, kill_existing: bool = true) -> Tween:
 	if kill_existing:
 		kill_all(node)
@@ -102,8 +88,6 @@ func fade_in(node: CanvasItem, duration: float = 0.3, kill_existing: bool = true
 		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
 	return _register(node, t)
 
-
-## Zniknięcie przez fade (modulate.a: 1 → 0).
 func fade_out(node: CanvasItem, duration: float = 0.3, kill_existing: bool = true) -> Tween:
 	if kill_existing:
 		kill_all(node)
@@ -113,8 +97,6 @@ func fade_out(node: CanvasItem, duration: float = 0.3, kill_existing: bool = tru
 		.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
 	return _register(node, t)
 
-
-## Wjazd z krawędzi (direction = Vector2.LEFT / RIGHT / UP / DOWN).
 func slide_in(node: CanvasItem, direction: Vector2 = Vector2.LEFT, distance: float = 200.0, duration: float = 0.35, kill_existing: bool = true) -> Tween:
 	if kill_existing:
 		kill_all(node)
@@ -128,8 +110,6 @@ func slide_in(node: CanvasItem, direction: Vector2 = Vector2.LEFT, distance: flo
 		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	return _register(node, t)
 
-
-## Wyjazd za krawędź.
 func slide_out(node: CanvasItem, direction: Vector2 = Vector2.RIGHT, distance: float = 200.0, duration: float = 0.3, kill_existing: bool = true) -> Tween:
 	if kill_existing:
 		kill_all(node)
@@ -140,8 +120,6 @@ func slide_out(node: CanvasItem, direction: Vector2 = Vector2.RIGHT, distance: f
 		.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
 	return _register(node, t)
 
-
-## Pulsowanie skali (nieskończone, np. "kliknij mnie!").
 func pulse(node: CanvasItem, scale_amount: float = 1.08, duration: float = 0.8) -> Tween:
 	kill_all(node)
 	node.offset_transform_enabled = true
@@ -156,8 +134,6 @@ func pulse(node: CanvasItem, scale_amount: float = 1.08, duration: float = 0.8) 
 		.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
 	return _register(node, t)
 
-
-## Kołysanie rotacyjne (np. ikony powiadomień).
 func wiggle(node: CanvasItem, angle_deg: float = 8.0, duration: float = 0.5, loops: int = 3) -> Tween:
 	kill_all(node)
 
@@ -171,8 +147,6 @@ func wiggle(node: CanvasItem, angle_deg: float = 8.0, duration: float = 0.5, loo
 		.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
 	return _register(node, t)
 
-
-## Mignięcie kolorem (np. damage flash na biało/czerwono).
 func flash(node: CanvasItem, color: Color = Color.WHITE, duration: float = 0.15, kill_existing: bool = true) -> Tween:
 	if kill_existing:
 		kill_all(node)
@@ -184,8 +158,6 @@ func flash(node: CanvasItem, color: Color = Color.WHITE, duration: float = 0.15,
 		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
 	return _register(node, t)
 
-
-## Bounce — "upuszczenie" elementu z góry z odbiciem.
 func bounce_in(node: CanvasItem, distance: float = 150.0, duration: float = 0.5, kill_existing: bool = true) -> Tween:
 	if kill_existing:
 		kill_all(node)

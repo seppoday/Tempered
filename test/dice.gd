@@ -32,9 +32,9 @@ func _animate_to(target_value: int) -> void:
 		var new_index: int
 
 		if is_last_step:
-			new_index = target_value - 1  # docelowa ścianka, ZNANA z zewnątrz
+			new_index = target_value - 1
 		else:
-			new_index = RNG.randi_range(0, face_count - 1)  # czysto wizualne "miganie"
+			new_index = RNG.randi_range(0, face_count - 1)
 
 		_show_only(new_index)
 		current_index = new_index

@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="1_lhyd0"]
 [ext_resource type="Script" uid="uid://rhwee7ilv64" path="res://scripts/UI/item_panel.gd" id="2_3pyoa"]
-[ext_resource type="PackedScene" uid="uid://x4spoxodgh4x" path="res://scenes/equipment_slot.tscn" id="3_vjrio"]
+[ext_resource type="PackedScene" uid="uid://x4spoxodgh4x" path="res://scenes/UI/equipment_slot.tscn" id="3_vjrio"]
 [ext_resource type="Texture2D" uid="uid://ygdvvwu2iiq5" path="res://assets/ui/amulet_slot_placeholder.png" id="4_ya0yf"]
 [ext_resource type="Texture2D" uid="uid://bp8alctflgmd7" path="res://assets/ui/helmet_slot_placeholder.png" id="5_jqmly"]
 [ext_resource type="Texture2D" uid="uid://dftmcck2to81" path="res://assets/ui/ring_slot_placeholder.png" id="6_feca5"]
@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://hckl245r3g2f" path="res://assets/ui/boots_slot_placeholder.png" id="10_noosx"]
 [ext_resource type="Script" uid="uid://ciakkvnknrtrw" path="res://scripts/UI/alchemy_panel.gd" id="11_hqhi7"]
 [ext_resource type="Script" uid="uid://cpns5yr2xh0ev" path="res://scripts/UI/inventory.gd" id="12_60tpx"]
-[ext_resource type="Script" uid="uid://dyvxaabqf72dk" path="res://data/definitions/inventory_entry.gd" id="13_y2y3y"]
+[ext_resource type="Script" uid="uid://dyvxaabqf72dk" path="res://data/definitions_patterns/inventory_entry.gd" id="13_y2y3y"]
 [ext_resource type="Resource" uid="uid://bdo0a1sdk0vx1" path="res://definitions/consumable/potion_small.tres" id="14_8g54w"]
 [ext_resource type="Resource" uid="uid://c0juciddabsbt" path="res://definitions/items/armor/knight_armor.tres" id="15_6p4l3"]
 [ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://definitions/materials/misc/upgrade_dice_d6.tres" id="16_p4vqy"]
@@ -21,8 +21,8 @@
 [ext_resource type="Resource" uid="uid://dsduls0bi6xud" path="res://definitions/materials/misc/upgrade_dice_d12.tres" id="19_adse8"]
 [ext_resource type="Resource" uid="uid://d34h5uwlsdqvl" path="res://definitions/materials/misc/upgrade_dice_d16.tres" id="20_78wb8"]
 [ext_resource type="Resource" uid="uid://dk3ixuqlc7qyg" path="res://definitions/materials/misc/upgrade_dice_d20.tres" id="21_k1yji"]
-[ext_resource type="Resource" uid="uid://cl0cq55cuw0hb" path="res://definitions/skill_items/skill_item_fire_attack.tres" id="22_fg2vn"]
-[ext_resource type="PackedScene" uid="uid://bbadchds7qm5n" path="res://scenes/slot.tscn" id="23_lv0ea"]
+[ext_resource type="Resource" uid="uid://lqt0rt3daif5" path="res://definitions/skill_items/skill_item_fire_attack.tres" id="22_fg2vn"]
+[ext_resource type="PackedScene" uid="uid://bbadchds7qm5n" path="res://scenes/UI/slot.tscn" id="23_lv0ea"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tpase"]
 bg_color = Color(0.103743516, 0.103743546, 0.10374347, 1)

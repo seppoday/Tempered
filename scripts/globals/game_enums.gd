@@ -9,7 +9,16 @@ enum Rarity {
 	MYTHIC
 }
 
-enum Stat { DMG, MAGIC, DEF, VIT, SPEED, LUCK, STATUS, CRIT }
+enum Stat { 
+	DMG,
+	MAGIC,
+	DEF,
+	VIT,
+	SPEED,
+	LUCK,
+	STATUS,
+	CRIT
+}
 
 enum DamageElement {
 	PHYSICAL, 
@@ -33,7 +42,7 @@ enum SkillTarget {
 	SELF,
 	SINGLE_ENEMY,
 	ALL_ENEMIES,
-	NONE,           # Efekty globalne (gold, buffy)
+	NONE, # Efekty globalne (gold, buffy)
 }
 
 const DICE_PROGRESSION: Array[int] = [4, 6, 8, 10, 12, 16, 20]

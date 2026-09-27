@@ -2,7 +2,7 @@
 
 [ext_resource type="Resource" uid="uid://csljdigk7bkki" path="res://definitions/skills/shield.tres" id="1_7r03k"]
 [ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_km3s3"]
-[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions/item_definition.gd" id="2_yb4mm"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="2_yb4mm"]
 [ext_resource type="Texture2D" uid="uid://dyuor5gq0y08d" path="res://assets/items/iron_shield.jpeg" id="3_km3s3"]
 
 [resource]

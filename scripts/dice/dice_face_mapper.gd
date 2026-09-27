@@ -1,7 +1,6 @@
 class_name DiceFaceMapper
 extends RefCounted
 
-# Mapowanie: max_face (6, 20...) -> { numer_ścianki: wektor_lokalny_"do góry" }
 static var FACE_UP_BY_NUMBER: Dictionary = _build_face_maps()
 
 
@@ -48,19 +47,13 @@ static func _build_face_maps() -> Dictionary:
 		}
 	}
 
-
-## Zwraca mapę ścianek dla danego max_face, z fallbackiem do d6.
 static func get_face_map(max_face: int) -> Dictionary:
 	return FACE_UP_BY_NUMBER.get(max_face, FACE_UP_BY_NUMBER.get(6, {}))
 
-
-## Zwraca lokalny wektor "do góry" dla danej ścianki (z fallbackiem do Vector3.UP).
 static func get_local_up(max_face: int, face_number: int) -> Vector3:
 	var face_map := get_face_map(max_face)
 	return face_map.get(face_number, Vector3.UP)
 
-
-## Odczytuje, która ścianka aktualnie jest skierowana najbardziej "do góry" w świecie.
 static func get_landed_face(die: RigidBody3D, max_face: int) -> int:
 	var face_map := get_face_map(max_face)
 	var best_face := 1

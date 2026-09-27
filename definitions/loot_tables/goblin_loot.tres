@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="LootTable" format=3 uid="uid://b2pgpsivmuity"]
 
-[ext_resource type="Script" uid="uid://dmw8mcvfjhous" path="res://data/definitions/loot_entry.gd" id="1_jj25l"]
+[ext_resource type="Script" uid="uid://dmw8mcvfjhous" path="res://data/definitions_patterns/loot_entry.gd" id="1_jj25l"]
 [ext_resource type="Resource" uid="uid://cys41i4h53vjd" path="res://definitions/materials/iron.tres" id="2_exrnc"]
-[ext_resource type="Script" uid="uid://dp0kh2akuu60m" path="res://data/definitions/loot_table.gd" id="2_ydjod"]
+[ext_resource type="Script" uid="uid://dp0kh2akuu60m" path="res://data/definitions_patterns/loot_table.gd" id="2_ydjod"]
 [ext_resource type="Resource" uid="uid://d05poumq2y3b4" path="res://definitions/items/amulets/silver_amulet.tres" id="3_b616e"]
 [ext_resource type="Resource" uid="uid://chv5cgemwuano" path="res://definitions/materials/misc/upgrade_dice_d6.tres" id="4_exrnc"]
 

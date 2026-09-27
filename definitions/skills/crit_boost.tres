@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://868qluknvm0"]
 
 [ext_resource type="Texture2D" uid="uid://bb3hgpllu76to" path="res://assets/icons/stars.svg" id="1_5fkpt"]
-[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions/skill_definition.gd" id="2_0nyp6"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_0nyp6"]
 
 [resource]
 script = ExtResource("2_0nyp6")
