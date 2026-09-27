@@ -66,6 +66,13 @@ func resolve_player_attack(selected_results: Array[Dictionary]) -> void:
 					_apply_damage_to_enemy(skill, value)
 				GameEnums.SkillEffect.HEAL:
 					_apply_heal_to_player(skill, value)
+				GameEnums.SkillEffect.SHIELD:
+					Log.warning("CombatManager: nieobsłużony effect_type %s dla skilla '%s'" % [skill.effect_type, skill.skill_name])
+					Log.print("Shield for %s" % value)
+				GameEnums.SkillEffect.GOLD:
+					Log.warning("CombatManager: nieobsłużony effect_type %s dla skilla '%s'" % [skill.effect_type, skill.skill_name])
+					Log.print("Gained: %s gold" % value)
+					
 				_:
 					Log.warning("CombatManager: nieobsłużony effect_type %s dla skilla '%s'" % [skill.effect_type, skill.skill_name])
 					break
@@ -89,12 +96,11 @@ func calculate_effect_value(skill: SkillDefinition, item: ItemDefinition, dice_r
 	
 	Log.print(
 	"=== SKILL VALUE ===\n" +
-	"Base Value: %.2f\n" % skill.base_value +
-	"Dice Roll: %.2f\n" % dice_roll +
-	"Item Scaling: %.2f\n" % item_scaling +
-	"Affinity Multiplier: %.2f\n" % affinity_multiplier +
-	"-------------------\n" +
-	"Final Value: %.2f" % final_value
+	"Base Value: %.2f - " % skill.base_value +
+	"Dice Roll: %.2f - " % dice_roll +
+	"Item Scaling: %.2f - " % item_scaling +
+	"Affinity Multiplier: %.2f - " % affinity_multiplier +
+	"Final Value: %.2f for %s" % [final_value, item]
 )
 	
 	return final_value
@@ -119,6 +125,7 @@ func _apply_damage_to_enemy(skill: SkillDefinition, value: int) -> void:
 	if current_enemy == null:
 		Log.warning("CombatManager: brak current_enemy, pomijam %d obrażeń ze skilla '%s'" % [value, skill.skill_name])
 		return
+
 	current_enemy.health.take_damage(value)
 	effect_applied.emit(skill, value, "enemy")
 

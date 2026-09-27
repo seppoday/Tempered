@@ -2,7 +2,7 @@ extends Node
 
 signal state_changed(new_state: State)
 
-enum State { # NA RAZIE NIC Z TEGO NIE JEST PODPIETE
+enum State {
 	INTRO, 
 	WEAPON_SELECT,
 	PLAYER_TURN, 
@@ -30,7 +30,7 @@ func _ready() -> void:
 func set_state(new_state: State, node: Node) -> void:
 	current_state = new_state
 	state_changed.emit(new_state)
-	Log.print("Nowy state: %s, wywołany przez %s" % [current_state, node])
+	Log.print("Nowy state: %s, wywołany przez %s" % [State.keys()[new_state], node])
 
 func _on_enemy_spawned(_enemy: Node2D) -> void:
 	enemies_spawned_this_wave += 1

@@ -52,12 +52,12 @@ const BASE_CRIT: float = 0.0
 const DEBUG_START_GEAR: Array[Dictionary] = [
 	# [id, count, level (0-6)]
 	{"id": "iron_sword",    "count": 1, "level": 1},
-	#{"id": "iron_shield",    "count": 1, "level": 1},
+	{"id": "iron_shield",    "count": 1, "level": 1},
 	{"id": "silver_amulet",  "count": 1, "level": 1},
-	#{"id": "knight_armor",   "count": 1, "level": 1},
-	#{"id": "leather_gloves", "count": 1, "level": 1},
-	#{"id": "hunter_boots",   "count": 1, "level": 1},
-	#{"id": "leather_cap",    "count": 1, "level": 1},
+	{"id": "knight_armor",   "count": 1, "level": 1},
+	{"id": "leather_gloves", "count": 1, "level": 1},
+	{"id": "hunter_boots",   "count": 1, "level": 6},
+	{"id": "leather_cap",    "count": 1, "level": 6},
 	{"id": "iron_ring",      "count": 1, "level": 1},
 ]
 

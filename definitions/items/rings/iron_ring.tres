@@ -14,4 +14,5 @@ id = "iron_ring"
 name = "Iron Ring"
 description = "Iron Ring"
 icon = ExtResource("3_qdubs")
+rarity = 5
 metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

@@ -3,17 +3,37 @@ class_name DiceBox
 
 signal shake_finished
 signal lid_opened
+signal lid_closed
+signal bump_finished
 
 @onready var lid: Node3D = %Lid
 @export var lid_opening_time: float = 0.5
 @export var lid_open_rotation: Vector3 = Vector3(0.0, 0.0, 145.0)
 
-@export_group("Shake Settings")
+@export_group("Heavy Shake Settings (Rzut)")
 @export var default_duration: float = 1.5
 @export var default_max_intensity: float = 0.15
 @export var default_lift_height: float = 1.0
 @export var default_fov_zoom: float = 4.0
 
+@export_group("Gentle Bump Settings (Szybkie tąpnięcie)")
+@export var bump_duration: float = 0.35
+@export var bump_lift_height: float = 0.12     # Bardzo delikatny podskok
+@export var bump_intensity: float = 0.03       # Mikro-shake na boki
+
+var _original_lid_rot: Vector3
+
+
+func _ready() -> void:
+	CombatManager.effect_applied.connect(_on_effect_applied)
+	if is_instance_valid(lid):
+		# Zapamiętujemy pierwotną rotację zamkniętego wieczka
+		_original_lid_rot = lid.global_rotation_degrees
+
+
+func _on_effect_applied(skill: SkillDefinition, value: int, target: String) -> void:
+	if target == "enemy":
+		bump()
 
 func shake(camera: Camera3D = null, duration: float = -1.0, max_intensity: float = -1.0, lift_height: float = -1.0, fov_zoom: float = -1.0) -> void:
 	duration = default_duration if duration < 0.0 else duration
@@ -99,6 +119,48 @@ func shake(camera: Camera3D = null, duration: float = -1.0, max_intensity: float
 	
 	await open_lid()
 
+
+func bump(duration: float = 0.15, lift_height: float = 0.01, intensity: float = 0.01) -> void:
+	# Przypisanie wartości domyślnych, jeśli nie podano własnych parametrów
+	duration = bump_duration if duration < 0.0 else duration
+	lift_height = bump_lift_height if lift_height < 0.0 else lift_height
+	intensity = bump_intensity if intensity < 0.0 else intensity
+
+	var original_pos: Vector3 = position
+	var original_rot: Vector3 = rotation
+
+	var tween := create_tween()
+	var half_time := duration * 0.5
+
+	# 1. FAZA: Skok w górę z lekkim losowym przechyłem
+	var random_tilt := Vector3(
+		randf_range(-intensity * 3.0, intensity * 3.0),
+		randf_range(-intensity * 2.0, intensity * 2.0),
+		randf_range(-intensity * 3.0, intensity * 3.0)
+	)
+	var target_lift_pos := original_pos + Vector3(
+		randf_range(-intensity, intensity),
+		lift_height,
+		randf_range(-intensity, intensity)
+	)
+
+	# Animujemy pozycję w górę...
+	tween.tween_property(self, "position", target_lift_pos, half_time)\
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	# ...i równolegle rotację w górę.
+	tween.parallel().tween_property(self, "rotation", original_rot + random_tilt, half_time)\
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+	# 2. FAZA: Powrót na stół z efektem fizycznego odbicia
+	tween.tween_property(self, "position", original_pos, half_time)\
+		.set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(self, "rotation", original_rot, half_time)\
+		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+
+	await tween.finished
+	bump_finished.emit()
+
+
 func open_lid() -> void:
 	if not is_instance_valid(lid):
 		push_warning("DiceBox: Brak przypisanego wieczka (Lid)!")
@@ -109,3 +171,15 @@ func open_lid() -> void:
 	
 	await tween.finished
 	lid_opened.emit()
+
+
+func close_lid() -> void:
+	if not is_instance_valid(lid):
+		push_warning("DiceBox: Brak przypisanego wieczka (Lid)!")
+		return
+		
+	var tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	tween.tween_property(lid, "global_rotation_degrees", _original_lid_rot, lid_opening_time)
+	
+	await tween.finished
+	lid_closed.emit()

@@ -14,7 +14,7 @@ metadata/_custom_type_script = "uid://cint7quw6fy51"
 [resource]
 script = ExtResource("2_3fu4x")
 default_skill = ExtResource("2_6kxcf")
-dmg = 5.0
+dmg = 10.0
 affinities = Array[ExtResource("1_keopn")]([SubResource("Resource_c7dpk")])
 id = "iron_sword"
 name = "Iron Sword"

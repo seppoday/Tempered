@@ -52,7 +52,8 @@ static func get_rarity_color(rarity: Rarity) -> Color:
 		Rarity.COMMON: return Color(0.7, 0.7, 0.7)
 		Rarity.UNCOMMON: return Color(0.2, 0.8, 0.2)
 		Rarity.RARE: return Color(0.2, 0.5, 1.0)
-		Rarity.EPIC: return Color(0.7, 0.2, 0.9)
-		Rarity.LEGENDARY: return Color(1.0, 0.7, 0.0)
-		Rarity.MYTHIC: return Color(1.0, 0.2, 0.2)
+		Rarity.EPIC: return Color(0.742, 0.0, 0.219, 1.0)
+		Rarity.LEGENDARY: return Color(0.8, 0.307, 0.0, 1.0)
+		Rarity.MYTHIC: return Color(0.491, 0.003, 0.85, 1.0)
+		
 	return Color.WHITE

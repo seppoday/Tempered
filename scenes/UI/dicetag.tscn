@@ -3,11 +3,32 @@
 [ext_resource type="Script" uid="uid://gom6cpdggn8p" path="res://scripts/UI/dicetag.gd" id="1_54fgk"]
 [ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="2_vnf6y"]
 [ext_resource type="FontFile" uid="uid://ksubfguv2mi1" path="res://assets/fonts/FiraSans-ExtraBold.ttf" id="4_s5h31"]
+[ext_resource type="Shader" uid="uid://0oxx6d0b4k3s" path="res://shaders/dice_tag_effect.gdshader" id="4_we6yk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yc77a"]
+bg_color = Color(0.2, 0.2, 0.2, 0.5058824)
 
 [sub_resource type="LabelSettings" id="LabelSettings_mjkwc"]
 font_size = 24
 outline_size = 6
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wvhbo"]
+resource_local_to_scene = true
+shader = ExtResource("4_we6yk")
+shader_parameter/size = Vector2(150, 100)
+shader_parameter/corner_radius = 6.000000285
+shader_parameter/hover_intensity = 0.0
+shader_parameter/hover_color = Color(1, 1, 1, 0.15)
+shader_parameter/selected_intensity = 0.0
+shader_parameter/bracket_color = Color(0.8802152, 0.29826948, 0, 1)
+shader_parameter/bracket_length = 0.2000000095
+shader_parameter/bracket_thickness = 0.050000002375
+shader_parameter/bracket_padding = 0.0
+shader_parameter/pulse_speed = 0.0
+shader_parameter/pulse_amount = 0.25
+shader_parameter/locked_intensity = 0.0
+shader_parameter/locked_color = Color(0.1, 0.1, 0.12, 0.6)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54fgk"]
 corner_radius_top_left = 50
@@ -27,7 +48,9 @@ offset_right = 162.0
 offset_bottom = 164.0
 pivot_offset_ratio = Vector2(0.5, 0.5)
 offset_transform_enabled = true
+theme_override_styles/panel = SubResource("StyleBoxFlat_yc77a")
 script = ExtResource("1_54fgk")
+podglad_locked = null
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1557987852]
 layout_mode = 2
@@ -71,7 +94,15 @@ text = "test"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=730571463]
+[node name="EffectOverlay" type="ColorRect" parent="." unique_id=417394727]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_wvhbo")
+layout_mode = 2
+offset_transform_enabled = true
+mouse_filter = 2
+
+[node name="RollDetail" type="PanelContainer" parent="." unique_id=730571463]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(48, 48)
 custom_maximum_size = Vector2(48, 48)
 layout_mode = 2
@@ -79,7 +110,7 @@ offset_transform_enabled = true
 offset_transform_position = Vector2(-24, -24)
 theme_override_styles/panel = SubResource("StyleBoxFlat_54fgk")
 
-[node name="RollDetailLabel" type="Label" parent="PanelContainer" unique_id=1472837659]
+[node name="RollDetailLabel" type="Label" parent="RollDetail" unique_id=1472837659]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

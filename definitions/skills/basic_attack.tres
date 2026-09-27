@@ -26,6 +26,5 @@ id = "basic_attack"
 skill_name = "Basic Attack"
 icon = ExtResource("1_rst5n")
 description = "Basic Attack"
-base_value = 5000.0
 scalings = Array[ExtResource("2_x44ks")]([SubResource("Resource_g7d3i"), SubResource("Resource_d27jr"), SubResource("Resource_ppoig")])
 metadata/_custom_type_script = "uid://dgjg1vlcvdtpi"

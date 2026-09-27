@@ -10,7 +10,7 @@ signal results_ready
 @export var enemy_spawn_point: Node3D
 @export var hp_progress_bar: ProgressBar
 @export var result_label: Label
-@export var dice_tag_cration_wait_time: float = 0.08
+@export var dice_tag_cration_wait_time: float = 0.12 # Odrobinę większe dla lepszego efektu domino
 
 var active_tags: Array[Control] = []
 var selected_tags: Array[PanelContainer] = []
@@ -18,7 +18,6 @@ var resolving_tags: Array[Control] = []
 var pending_results: Array[Dictionary] = []
 
 var is_rolling: bool = false
-var _update_tags: bool = false
 
 
 func _ready() -> void:
@@ -27,22 +26,16 @@ func _ready() -> void:
 	CombatManager.effect_applied.connect(_on_combat_effect_applied)
 
 
-func _process(delta: float) -> void:
-	if _update_tags:
-		_update_all_tag_positions(delta)
-
+# Usunęliśmy _process i śledzenie pozycji kości w 3D, bo tagi lądują od razu na środku.
 
 func start_rolling() -> void:
 	is_rolling = true
-	_update_tags = false
 
 
 func has_selection() -> bool:
 	return not selected_tags.is_empty()
 
 
-## Sortuje zaznaczone karty, odtwarza zwinięcie reszty i wycentrowanie wybranych,
-## zwraca wyniki odpowiadające zaznaczonym kartom.
 func confirm_selection() -> Array[Dictionary]:
 	selected_tags.sort_custom(func(a, b): return a.position.x < b.position.x)
 
@@ -68,6 +61,7 @@ func reset_for_new_roll() -> void:
 			tag.offset_transform_scale = Vector2.ONE
 			tag.modulate.a = 1.0
 			tag.set_selected(false)
+			tag.set_locked(false)
 	selected_tags.clear()
 	resolving_tags.clear()
 
@@ -85,8 +79,7 @@ func _on_dice_spawned(dice: Array[RigidBody3D]) -> void:
 
 func _on_dice_settled(results: Array[Dictionary]) -> void:
 	pending_results = results
-	_update_tags = true
-	await _reveal_results()
+	await _reveal_results_domino() # Nowa, uproszczona metoda domino
 
 	if not CombatManager.is_game_over:
 		results_ready.emit()
@@ -105,6 +98,19 @@ func _on_card_toggled(card: PanelContainer, wants_selected: bool) -> void:
 		card.set_selected(false)
 		AudioManager.play_sfx(AudioLibrary.get_ui(AudioKeys.UI_CLICK), -5.0)
 
+	_update_lock_states()
+
+func _update_lock_states() -> void:
+	var limit_reached := selected_tags.size() >= PlayerData.picks_per_cycle
+	
+	for tag in active_tags:
+		if is_instance_valid(tag):
+			# Karta ma być zablokowana TYLKO wtedy, gdy osiągnięto limit 
+			# ORAZ ta konkretna karta nie jest obecnie wybrana.
+			var is_tag_selected = tag in selected_tags
+			var should_lock = limit_reached and not is_tag_selected
+			
+			tag.set_locked(should_lock)
 
 func _clear_previous_tags() -> void:
 	for tag in active_tags:
@@ -113,105 +119,20 @@ func _clear_previous_tags() -> void:
 	selected_tags.clear()
 	resolving_tags.clear()
 
-
-func _reveal_results() -> void:
-	var pop_tweens: Array[Tween] = []
-
-	for i in range(dice_roller.dice_group.size()):
-		var tag := active_tags[i]
-		var result: Dictionary = pending_results[i]
-
-		var skill: SkillDefinition = result["skill"]
-		var item: ItemInstance = result["item"]
-		var face: int = result["face"]
-		var max_face: int = GameEnums.DICE_PROGRESSION[item.dice_level]
-		var effect_value := CombatManager.calculate_effect_value(skill, item.definition, face)
-
-		tag.setup(skill, face, max_face, effect_value)
-		_update_all_tag_positions(0.016)
-
-		var tween: Tween = await tag.pop_in(0.0)
-		pop_tweens.append(tween)
-
-		AudioManager.play_sfx_random_pitch(AudioLibrary.get_sfx(AudioKeys.SFX_POP), -6.0, 0.75, 1.25)
-		await get_tree().create_timer(dice_tag_cration_wait_time).timeout
-
-	for tween in pop_tweens:
-		if tween != null and tween.is_valid():
-			await tween.finished
-
-	_update_tags = false
-	await _align_tags_to_center_line()
-
-	is_rolling = false
-
-
-func _update_all_tag_positions(delta: float) -> void:
-	var count = min(dice_roller.dice_group.size(), active_tags.size())
-	if count == 0: return
-
-	var viewport_size = camera.get_viewport().get_visible_rect().size
-	var margin = 2.0
-	var tag_rects: Array[Rect2] = []
-
-	for i in range(count):
-		var die = dice_roller.dice_group[i]
-		var tag = active_tags[i]
-
-		if not is_instance_valid(die) or not is_instance_valid(tag):
-			tag_rects.append(Rect2())
-			continue
-
-		var world_pos = die.global_position + Vector3(0, 0.2, 0)
-		if camera.is_position_behind(world_pos):
-			tag_rects.append(Rect2())
-			continue
-
-		var screen_pos = camera.unproject_position(world_pos)
-		var tag_size = tag.size if tag.size != Vector2.ZERO else Vector2(50, 50)
-		var half_size = tag_size * 0.5
-		tag_rects.append(Rect2(screen_pos - half_size, tag_size))
-
-	for iter in range(4):
-		for i in range(count):
-			if tag_rects[i].size == Vector2.ZERO: continue
-			for j in range(i + 1, count):
-				if tag_rects[j].size == Vector2.ZERO: continue
-				if tag_rects[i].intersects(tag_rects[j]):
-					var dir = (tag_rects[i].get_center() - tag_rects[j].get_center()).normalized()
-					if dir == Vector2.ZERO: dir = Vector2.UP
-					var overlap = 15.0
-					tag_rects[i].position += dir * overlap
-					tag_rects[j].position -= dir * overlap
-
-	for i in range(count):
-		var tag = active_tags[i]
-		var rect = tag_rects[i]
-		if rect.size == Vector2.ZERO: continue
-
-		var target_pos = rect.position
-		target_pos.x = clamp(target_pos.x, margin, viewport_size.x - margin - rect.size.x)
-		target_pos.y = clamp(target_pos.y, margin, viewport_size.y - margin - rect.size.y)
-
-		if not tag.visible or tag.position == Vector2.ZERO:
-			tag.position = target_pos
-		else:
-			tag.position = tag.position.lerp(target_pos, delta * 1.8)
-
-
-func _align_tags_to_center_line() -> void:
+func _reveal_results_domino() -> void:
 	var count = active_tags.size()
 	if count == 0: return
 
 	var viewport_size = camera.get_viewport().get_visible_rect().size
 	var spacing = 20.0
 
+	# 1. Najpierw obliczamy szerokość całego rzędu, aby go idealnie wycentrować
 	var total_width = 0.0
 	var tag_widths: Array[float] = []
 
 	for tag in active_tags:
 		if is_instance_valid(tag):
-			var w = tag.size.x if tag.size.x > 0 else 120.0
+			var w = tag.size.x if tag.size.x > 0 else 120.0 # fallback
 			tag_widths.append(w)
 			total_width += w
 		else:
@@ -221,24 +142,48 @@ func _align_tags_to_center_line() -> void:
 
 	var start_x = (viewport_size.x - total_width) * 0.5
 	var target_y = viewport_size.y * 0.5
-
-	var align_tween = create_tween().set_parallel(true)
 	var current_x = start_x
 
-	AudioManager.play_sfx(AudioLibrary.get_sfx(AudioKeys.SFX_SWOOSH))
+	var last_tween: Tween = null
 
+	# 2. Spawnujemy i ujawniamy tagi jeden po drugim (efekt domino)
 	for i in range(count):
 		var tag = active_tags[i]
 		if not is_instance_valid(tag): continue
 
+		var result: Dictionary = pending_results[i]
+		var skill: SkillDefinition = result["skill"]
+		var item: ItemInstance = result["item"]
+		var face: int = result["face"]
+		var max_face: int = GameEnums.DICE_PROGRESSION[item.dice_level]
+		var effect_value := CombatManager.calculate_effect_value(skill, item.definition, face)
+
+		# Ustawiamy dane
+		tag.setup(skill, face, max_face, effect_value)
+
+		# Ustawiamy pozycję na docelowym miejscu w rzędzie
 		var tag_height = tag.size.y if tag.size.y > 0 else 50.0
-		var target_pos = Vector2(current_x, target_y - (tag_height * 0.5))
+		tag.position = Vector2(current_x, target_y - (tag_height * 0.5))
 
-		align_tween.tween_property(tag, "position", target_pos, 0.65).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		# Odpalamy animację pojawiania się (pop_in) i zapisujemy referencję do tweena
+		last_tween = await tag.pop_in(0.0)
 
+		# Dźwięk popnięcia o losowym, rosnącym tonie
+		var pitch = 0.85 + (i * 0.08)
+		AudioManager.play_sfx_random_pitch(AudioLibrary.get_sfx(AudioKeys.SFX_POP), -6.0, pitch, pitch)
+
+		# Przesuwamy wskaźnik X dla następnego elementu
 		current_x += tag_widths[i] + spacing
 
-	await align_tween.finished
+		# Czekamy chwilę przed pokazaniem kolejnego tagu (nie czekamy przy ostatnim)
+		if i < count - 1:
+			await get_tree().create_timer(dice_tag_cration_wait_time).timeout
+
+	# 3. BEZPIECZNE CZEKANIE: Czekamy tylko na ostatni tween (bo on kończy się jako ostatni)
+	if last_tween != null and last_tween.is_valid():
+		await last_tween.finished
+
+	is_rolling = false
 
 
 func _animate_selection_and_centering() -> void:
@@ -294,7 +239,9 @@ func _animate_selection_and_centering() -> void:
 				.set_trans(Tween.TRANS_CUBIC)\
 				.set_ease(Tween.EASE_OUT)\
 				.set_delay(0.15)
-
+			
+			tag._animate_selected(0.0)
+			
 			current_x += tag_widths[i] + spacing
 
 	await main_tween.finished

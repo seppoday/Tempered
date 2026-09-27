@@ -20,10 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://bp8alctflgmd7" path="res://assets/ui/helmet_slot_placeholder.png" id="12_hgf45"]
 [ext_resource type="Texture2D" uid="uid://dftmcck2to81" path="res://assets/ui/ring_slot_placeholder.png" id="13_6ydfj"]
 [ext_resource type="Texture2D" uid="uid://cp1hwkfgl84rj" path="res://assets/ui/weapon_slot_placeholder.png" id="14_2r5wi"]
-[ext_resource type="Resource" uid="uid://btyoaq5owt6k6" path="res://definitions/enemies/orc.tres" id="14_amdh2"]
 [ext_resource type="Texture2D" uid="uid://b4jtn8mldxqyf" path="res://assets/ui/armor_slot_placeholder.png" id="15_j5tbv"]
-[ext_resource type="Resource" uid="uid://bxmxwyuw00k2w" path="res://definitions/enemies/ghoul.tres" id="15_mpvc3"]
-[ext_resource type="Resource" uid="uid://cvpr7mhikuk36" path="res://definitions/enemies/boss_1.tres" id="16_g7q3g"]
 [ext_resource type="Texture2D" uid="uid://doswu3pxkpcf6" path="res://assets/ui/shield_slot_placeholder.png" id="16_hgqcf"]
 [ext_resource type="Script" uid="uid://bvnx5uagtyhgg" path="res://scripts/environment/box.gd" id="16_mpvc3"]
 [ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="17_82cka"]
@@ -45,7 +42,6 @@
 [ext_resource type="Texture2D" uid="uid://bn3jdfoam3lr4" path="res://assets/models/materials/carpet/cotton_jersey_nor_gl_1k.jpg" id="41_q0ack"]
 [ext_resource type="Texture2D" uid="uid://c113jmy871e2p" path="res://assets/models/materials/carpet/cotton_jersey_ao_1k.jpg" id="42_50bjb"]
 [ext_resource type="Script" uid="uid://c6w0ntq5lk1od" path="res://scripts/gameplay/dice_hand.gd" id="43_8r76n"]
-[ext_resource type="Resource" uid="uid://lqt0rt3daif5" path="res://definitions/skill_items/skill_item_fire_attack.tres" id="43_q0ack"]
 [ext_resource type="Shader" uid="uid://dixfqjkcloefu" path="res://postprocessing.gdshader" id="46_lhg76"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_wvhbo"]
@@ -149,7 +145,7 @@ size = Vector3(4.4379883, 1, 2.7385254)
 
 [sub_resource type="Resource" id="Resource_nvv70"]
 script = ExtResource("7_lw8pt")
-enemies_list = Array[ExtResource("8_hgf45")]([ExtResource("9_6ydfj"), ExtResource("10_2r5wi"), ExtResource("14_amdh2"), ExtResource("15_mpvc3"), ExtResource("16_g7q3g")])
+enemies_list = Array[ExtResource("8_hgf45")]([ExtResource("9_6ydfj"), ExtResource("10_2r5wi")])
 metadata/_custom_type_script = "uid://isk6xjs47cxp"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ke5is"]
@@ -571,7 +567,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28463566, 0.11371899, 0.000
 
 [node name="ThrowLanding" type="Marker3D" parent="." unique_id=1227997681]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.024732769, -0.07673681, 0.00018310547)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5844341, -0.19943744, 0.00018310547)
 
 [node name="BoxTop" type="Node3D" parent="." unique_id=655316211]
 transform = Transform3D(-2.1855695e-09, -0.04330127, 0.025000004, 0, 0.025000004, 0.04330127, -0.05, 1.8927586e-09, -1.0927849e-09, 0.013428688, 1.1751683, -5.7940874)
@@ -664,12 +660,10 @@ data = ExtResource("36_hgf45")
 unique_name_in_owner = true
 script = ExtResource("16_mpvc3")
 
-[node name="DiceRoller" type="Node3D" parent="Box" unique_id=933139626]
+[node name="DiceRoller" type="Node3D" parent="Box" unique_id=933139626 node_paths=PackedStringArray("landing_center")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, -0.19943744, 0.00018310547)
 script = ExtResource("5_kamvo")
-drift_force = 2.0
-torque_strength = 5.0
-center_of_mass_weight = 0.3
+landing_center = NodePath("../../ThrowLanding")
 
 [node name="Mesh" type="MeshInstance3D" parent="Box" unique_id=2040764136]
 mesh = SubResource("ArrayMesh_hgqcf")
@@ -1103,9 +1097,6 @@ base_items = Dictionary[ExtResource("21_50bjb"), Dictionary]({
 ExtResource("37_50bjb"): {
 "level": 6,
 "quantity": 1
-},
-ExtResource("43_q0ack"): {
-"quantity": 5
 }
 })
 

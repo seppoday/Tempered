@@ -6,6 +6,7 @@ extends Node3D
 @export var dice_roller: DiceRoller
 @export var dice_hand: DiceHand
 @export var enemy_scene: PackedScene
+@export var wave_manager: WaveManager
 
 @onready var camera = %Camera3D
 @onready var equipment_canvas_layer: CanvasLayer = %EquipmentCanvasLayer
@@ -63,6 +64,7 @@ func _on_player_damaged(final_amount) -> void:
 
 
 func _on_enemy_died(enemy) -> void:
+	box.close_lid()
 	GameManager.set_state(GameManager.State.WEAPON_SELECT, self)
 
 
@@ -112,6 +114,8 @@ func _on_confirm_button_pressed() -> void:
 
 
 func _on_next_enemy_button_pressed() -> void:
+	box.open_lid()
+	wave_manager.request_next_enemy()
 	dice_roller._clear_previous_dice()
 	dice_roller._spawn_dice_for_equipped_items()
 	GameManager.set_state(GameManager.State.PLAYER_TURN, self)

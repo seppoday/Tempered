@@ -17,7 +17,7 @@ func _rebuild_grid() -> void:
 	Utilities.clear_children(faces_grid)
 
 	var max_face: int = GameEnums.DICE_PROGRESSION[_target_item.dice_level]
-	for face in range(1, 6):
+	for face in range(1, 7):
 		var assigned: SkillDefinition = _target_item.slot_assignments.get(face)
 		var btn := Button.new()
 		btn.custom_minimum_size = Vector2(128, 128)
