@@ -392,8 +392,15 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g7q3g"]
+bg_color = Color(0.73248976, 0, 0.03350093, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ydfj"]
-bg_color = Color(0.5708804, 0.5984392, 0.6757671, 1)
+bg_color = Color(0.20392157, 0.39607844, 0.6745098, 1)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
@@ -528,7 +535,7 @@ transform = Transform3D(-4.371139e-08, -0.74024993, 0.6723318, 0, 0.6723318, 0.7
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, -9.509359e-16, 0, -9.509359e-16, 1, 0, 0, 0)
 attributes = SubResource("CameraAttributesPractical_hgf45")
-fov = 28.0
+fov = 35.0
 size = 0.1
 script = ExtResource("7_ufuvc")
 
@@ -780,7 +787,6 @@ size_flags_vertical = 1
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, -1.6)
 theme_override_styles/fill = SubResource("StyleBoxFlat_dwi8f")
-value = 11.05
 show_percentage = false
 
 [node name="HpMax" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/EnemyHpBox" unique_id=580099287]
@@ -826,8 +832,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 1
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, -1.6)
-theme_override_styles/fill = SubResource("StyleBoxFlat_dwi8f")
-value = 11.05
+theme_override_styles/fill = SubResource("StyleBoxFlat_g7q3g")
 show_percentage = false
 
 [node name="HpMax" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/HpBox" unique_id=1363107852]
@@ -861,7 +866,6 @@ size_flags_vertical = 1
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, -1.6)
 theme_override_styles/fill = SubResource("StyleBoxFlat_6ydfj")
-value = 11.05
 show_percentage = false
 
 [node name="ShieldMax" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ShieldBox" unique_id=2059704989]

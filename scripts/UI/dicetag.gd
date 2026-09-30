@@ -112,25 +112,6 @@ func setup(skill: SkillDefinition, face: int, max_face: int, effect_value: float
 	roll_detail_label.add_theme_color_override("font_color", element_color)
 	icon.self_modulate = element_color
 
-
-func pop_in(delay: float = 0.0) -> Tween:
-	await get_tree().process_frame
-	if delay > 0.0:
-		await get_tree().create_timer(delay).timeout
-
-	show()
-	Utilities.center_pivot(self)
-	scale = Vector2.ZERO
-	modulate.a = 0.0
-
-	var tween = create_tween().set_parallel(true)
-	tween.tween_property(self, "scale", Vector2.ONE, 0.35)\
-		.set_ease(Tween.EASE_OUT)\
-		.set_trans(Tween.TRANS_BACK)
-	tween.tween_property(self, "modulate:a", 1.0, 0.15)
-	return tween
-
-
 func play_strike_animation() -> void:
 	var orig_pos = position
 	AudioManager.play_sfx_random_pitch(AudioLibrary.get_sfx(AudioKeys.SFX_POP), -4.0, 1.1, 1.3)

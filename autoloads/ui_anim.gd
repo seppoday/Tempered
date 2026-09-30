@@ -29,6 +29,62 @@ func kill_all(node: Node) -> void:
 				t.kill()
 		_active[node].clear()
 
+## Znikanie ze zmniejszeniem skali (np. odrzucenie karty)
+func fade_out_shrink(node: Control, duration: float = 0.45, kill_existing: bool = true) -> Tween:
+	if not is_instance_valid(node):
+		return null
+	if kill_existing:
+		kill_all(node)
+
+	Utilities.center_pivot(node)
+	node.offset_transform_enabled = true
+
+	var t := node.create_tween()
+	t.tween_property(node, "offset_transform_scale", Vector2.ZERO, duration) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	t.parallel().tween_property(node, "modulate:a", 0.0, duration) \
+		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	return _register(node, t)
+
+
+## Pojawienie się z "odbiciem" (pop-in)
+func pop_in(node: Control, duration: float = 0.35, kill_existing: bool = true) -> Tween:
+	if not is_instance_valid(node):
+		return null
+	if kill_existing:
+		kill_all(node)
+
+	node.show()
+	Utilities.center_pivot(node)
+	node.offset_transform_enabled = true
+	node.offset_transform_scale = Vector2.ZERO
+	node.modulate.a = 0.0
+
+	var t := node.create_tween()
+	t.tween_property(node, "offset_transform_scale", Vector2.ONE, duration) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	t.parallel().tween_property(node, "modulate:a", 1.0, duration * 0.5) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	return _register(node, t)
+
+
+## Uderzenie / puls (np. po kliknięciu lub hoverze)
+func punch_scale(node: Control, target_scale: Vector2 = Vector2(1.15, 1.15), duration: float = 0.15, kill_existing: bool = true) -> Tween:
+	if not is_instance_valid(node):
+		return null
+	if kill_existing:
+		kill_all(node)
+
+	Utilities.center_pivot(node)
+	node.offset_transform_enabled = true
+
+	var t := node.create_tween()
+	t.tween_property(node, "offset_transform_scale", target_scale, duration * 0.4) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	t.tween_property(node, "offset_transform_scale", Vector2.ONE, duration * 0.6) \
+		.set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+	return _register(node, t)
+
 func scale_to(control: Control, target: Vector2, duration: float = 0.12, key: StringName = &"scale") -> Tween:
 	Utilities.center_pivot(control)
 	control.offset_transform_enabled = true
@@ -157,6 +213,7 @@ func flash(node: CanvasItem, color: Color = Color.WHITE, duration: float = 0.15,
 	t.tween_property(node, "modulate", original, duration * 0.7) \
 		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
 	return _register(node, t)
+
 
 func bounce_in(node: CanvasItem, distance: float = 150.0, duration: float = 0.5, kill_existing: bool = true) -> Tween:
 	if kill_existing:

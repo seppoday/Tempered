@@ -1,15 +1,18 @@
 extends Node
-# Autoload
+# Autoload: PlayerData
 
 signal stats_changed(changed_stat_key: String)
 signal item_equipped(slot_type: EquipmentSlot.Type, item_instance: ItemInstance)
 signal gold_changed(new_gold_amount: int)
+signal shield_changed(current_shield: int, max_hp: int) # <--- NOWY SYGNAŁ
 signal stat_preview_started(preview_totals: Dictionary)
 signal stat_preview_ended
+signal player_dodged
 
 signal attributes_changed # Na razie nie używane nigdzie
 
 var health: Health
+var max_shield: float
 var picks_per_cycle: int = 2
 var gold: int = 0
 var pending_block: float = 0.0
@@ -36,7 +39,6 @@ var equipped_items: Dictionary = {
 	EquipmentSlot.Type.GLOVES: null,
 	EquipmentSlot.Type.LEGS: null,
 	EquipmentSlot.Type.BOOTS: null,
-	#EquipmentSlot.Type.BACKPACK: null,
 }
 
 const BASE_DMG: float = 0.0
@@ -82,6 +84,7 @@ func _ready() -> void:
 
 	health = Health.new(get_total_stats()["hp"])
 	health.died.connect(_on_player_died)
+	max_shield = calculate_max_shield()
 
 func _cmd_heal(args: Array) -> String:
 	var amount: int = int(args[0]) if args.size() > 0 else health.max_hp
@@ -138,6 +141,7 @@ func equip_item(item_instance: ItemInstance) -> ItemInstance:
 	
 	stats_changed.emit(EquipmentSlot.Type.keys()[slot_type])
 	item_equipped.emit(slot_type, item_instance)
+	add_block(0)
 	return previous
 
 
@@ -147,6 +151,7 @@ func unequip_item(slot_type: EquipmentSlot.Type) -> ItemInstance:
 	
 	stats_changed.emit(EquipmentSlot.Type.keys()[slot_type])
 	item_equipped.emit(slot_type, null)
+	add_block(0)
 	return previous
 
 
@@ -184,23 +189,46 @@ func get_total_stats_with_swap(slot_type: EquipmentSlot.Type, hypothetical_item:
 	equipped_items[slot_type] = previous
 	return totals
 
+
+# ── LOGIKA OTRZYMYWANIA OBRAŻEŃ (ZMODYFIKOWANA O TARCZĘ) ──
+
 func take_damage(raw_amount: int) -> void:
 	var stats := get_total_stats()
 
+	# 1. Unik (Dodge)
 	var dodge_chance: float = stats.get("dodge", 0.0) + pending_dodge_bonus
 	pending_dodge_bonus = 0.0
 	if RNG.randf() < dodge_chance:
+		player_dodged.emit()
 		Log.print("Dodged Enemy Attack.")
 		return
 
-	var mitigated: float = max(0.0, raw_amount - pending_block)
-	pending_block = 0.0
-
-	var reduction: float = calculate_armor_reduction(stats.get("def", 0.0))
-	var final_amount: int = int(round(mitigated * (1.0 - reduction)))
+	# 2. Obliczamy ile tarczy pochłonie obrażenia
+	var shield_absorbed: float = min(pending_block, float(raw_amount))
+	pending_block -= shield_absorbed
 	
-	EventBus.player_damaged.emit(final_amount)
-	health.take_damage(final_amount)
+	var shield_damage_taken: int = int(shield_absorbed) # Ile tarczy pękło
+	var mitigated: float = float(raw_amount) - shield_absorbed # Reszta obrażeń idzie na HP
+
+	# Emitujemy aktualizację tarczy do paska UI
+	shield_changed.emit(int(pending_block), max_shield)
+
+	var hp_damage_taken: int = 0
+
+	# 3. Jeśli coś przebiło tarczę, nakładamy pancerz i ranimy gracza
+	if mitigated > 0:
+		var reduction: float = calculate_armor_reduction(stats.get("def", 0.0))
+		hp_damage_taken = int(round(mitigated * (1.0 - reduction)))
+		
+		# Gwarancja min. 1 dmg do HP, jeśli cios przebił tarczę
+		if hp_damage_taken <= 0:
+			hp_damage_taken = 1
+		
+		# Zadanie obrażeń do HP
+		health.take_damage(hp_damage_taken)
+	
+	# 4. Wysyłamy do UI informację: ile poszło w HP, a ile w Tarczę
+	EventBus.player_damaged.emit(hp_damage_taken, shield_damage_taken)
 
 
 func calculate_armor_reduction(armor: float) -> float:
@@ -210,11 +238,28 @@ func calculate_armor_reduction(armor: float) -> float:
 	# 200 armor = 66.7% redukcji
 	return armor / (armor + 100.0)
 
+
 func add_block(amount: float) -> void:
-	pending_block += amount
+	max_shield = calculate_max_shield()
+	
+	# Zwiększamy tarczę, ale ograniczamy ją do max_shield
+	pending_block = min(pending_block + amount, max_shield)
+	
+	shield_changed.emit(int(pending_block), max_shield)
+
+func calculate_max_shield() -> float:
+	# Limit to bazowo 20 + 2x wartość DEF z przedmiotów
+	var stats := get_total_stats()
+	return 20.0 + (stats.get("def", 0.0) * 2.0) 
+
+func clear_block() -> void:
+	pending_block = 0.0
+	shield_changed.emit(0, max_shield)
+
 
 func add_dodge_bonus(amount: float) -> void:
 	pending_dodge_bonus += amount
+
 
 func _on_player_died() -> void:
 	pass

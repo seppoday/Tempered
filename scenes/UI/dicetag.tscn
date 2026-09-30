@@ -16,7 +16,7 @@ outline_color = Color(0, 0, 0, 1)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wvhbo"]
 resource_local_to_scene = true
 shader = ExtResource("4_we6yk")
-shader_parameter/size = Vector2(150, 100)
+shader_parameter/size = Vector2(162, 221)
 shader_parameter/corner_radius = 6.000000285
 shader_parameter/hover_intensity = 0.0
 shader_parameter/hover_color = Color(1, 1, 1, 0.15)
@@ -50,7 +50,6 @@ pivot_offset_ratio = Vector2(0.5, 0.5)
 offset_transform_enabled = true
 theme_override_styles/panel = SubResource("StyleBoxFlat_yc77a")
 script = ExtResource("1_54fgk")
-podglad_locked = null
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1557987852]
 layout_mode = 2
