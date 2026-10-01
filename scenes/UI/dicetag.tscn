@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://gom6cpdggn8p" path="res://scripts/UI/dicetag.gd" id="1_54fgk"]
 [ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="2_vnf6y"]
+[ext_resource type="FontFile" uid="uid://cdjqfdlffrhaq" path="res://assets/fonts/FiraSans-LightItalic.ttf" id="4_e10p4"]
 [ext_resource type="FontFile" uid="uid://ksubfguv2mi1" path="res://assets/fonts/FiraSans-ExtraBold.ttf" id="4_s5h31"]
 [ext_resource type="Shader" uid="uid://0oxx6d0b4k3s" path="res://shaders/dice_tag_effect.gdshader" id="4_we6yk"]
 
@@ -16,7 +17,7 @@ outline_color = Color(0, 0, 0, 1)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wvhbo"]
 resource_local_to_scene = true
 shader = ExtResource("4_we6yk")
-shader_parameter/size = Vector2(162, 221)
+shader_parameter/size = Vector2(162, 237)
 shader_parameter/corner_radius = 6.000000285
 shader_parameter/hover_intensity = 0.0
 shader_parameter/hover_color = Color(1, 1, 1, 0.15)
@@ -92,6 +93,19 @@ theme_override_font_sizes/font_size = 32
 text = "test"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ScalingLabel" type="Label" parent="MarginContainer/BoxContainer" unique_id=671578473]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("4_e10p4")
+theme_override_font_sizes/font_size = 12
+text = "test"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
 
 [node name="EffectOverlay" type="ColorRect" parent="." unique_id=417394727]
 unique_name_in_owner = true

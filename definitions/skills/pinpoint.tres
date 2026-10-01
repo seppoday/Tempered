@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://bvb4j10w1jtaj"]
+
+[ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_bi2sm"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_tcqqf"]
+[ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="3_m8v2n"]
+
+[sub_resource type="Resource" id="Resource_5xcho"]
+script = ExtResource("1_bi2sm")
+stat = 7
+weight = 0.05
+
+[resource]
+script = ExtResource("2_tcqqf")
+id = "pinpoint"
+skill_name = "Pinpoint"
+effect_type = 4
+target_type = 0
+base_value = 1.5
+scalings = Array[ExtResource("1_bi2sm")]([SubResource("Resource_5xcho")])
+damage_element = 4

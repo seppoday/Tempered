@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://c78lc41jau7xt"]
+
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_f6128"]
+[ext_resource type="Resource" uid="uid://cj85swoi8e4wv" path="res://definitions/skills/bleeding_cut.tres" id="2_j6src"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_nj3pu"]
+
+[resource]
+script = ExtResource("3_nj3pu")
+slot = 6
+default_skill = ExtResource("2_j6src")
+dmg = 8.0
+id = "ring_of_rupture"
+name = "Ring of Rupture"

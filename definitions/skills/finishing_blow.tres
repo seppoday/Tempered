@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://btykll5xl1oxt"]
+
+[ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_epbjw"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_m1db2"]
+[ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="3_6ladd"]
+
+[sub_resource type="Resource" id="Resource_e2exd"]
+script = ExtResource("1_epbjw")
+
+[sub_resource type="Resource" id="Resource_35smc"]
+script = ExtResource("3_6ladd")
+trigger_type = 5
+threshold = 0.25
+base_value_override = 2.0
+
+[resource]
+script = ExtResource("2_m1db2")
+id = "finishing_blow"
+skill_name = "Finishing Blow"
+base_value = 0.6
+scalings = Array[ExtResource("1_epbjw")]([SubResource("Resource_e2exd")])
+tags = Array[int]([0, 5, 8])
+triggers = Array[ExtResource("3_6ladd")]([SubResource("Resource_35smc")])

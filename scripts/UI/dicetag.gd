@@ -24,13 +24,14 @@ signal toggled(card: PanelContainer, is_selected: bool)
 @onready var skill_name_label: Label = %SkillNameLabel
 @onready var value_label: Label = %ValueLabel
 @onready var roll_detail_label: Label = %RollDetailLabel
+@onready var scaling_label: Label = %ScalingLabel  # <--- NOWY
 @onready var effect_overlay: ColorRect = %EffectOverlay
 
 var is_selected: bool = false
 var is_hovering: bool = false
 var is_locked: bool = false
 
-const STYLE_NORMAL = preload("res://assets/styles/roll_panel_normal.tres")
+const STYLE_NORMAL = preload("uid://dajifqb0i0l82")
 
 const ELEMENT_COLORS := {
 	GameEnums.DamageElement.PHYSICAL: Color(0.8, 0.8, 0.8),
@@ -88,7 +89,7 @@ func _update_editor_preview() -> void:
 		mat.set_shader_parameter("locked_intensity", 1.0 if podglad_locked else 0.0)
 
 
-func setup(skill: SkillDefinition, face: int, max_face: int, effect_value: float) -> void:
+func setup(skill: SkillDefinition, face: int, max_face: int, effect_value: float, item: ItemDefinition = null) -> void:
 	if Engine.is_editor_hint(): return
 	
 	icon.texture = skill.icon
@@ -112,18 +113,100 @@ func setup(skill: SkillDefinition, face: int, max_face: int, effect_value: float
 	roll_detail_label.add_theme_color_override("font_color", element_color)
 	icon.self_modulate = element_color
 
+	# ── NOWE: krótki opis skalowania ──
+	scaling_label.text = _build_scaling_text(skill, item)
+
+
+## Buduje krótki opis skąd bierze się wartość skilla
+func _build_scaling_text(skill: SkillDefinition, item: ItemDefinition) -> String:
+	var parts: Array[String] = []
+
+	# 1. Scaling po statach: "DMG×1.0 • STATUS×0.2"
+	for scaling in skill.scalings:
+		var stat_name: String = GameEnums.Stat.keys()[scaling.stat]
+		parts.append("%s×%s" % [stat_name, _fmt(scaling.weight)])
+
+	# 2. Affinity itemu (tylko jeśli != 1.0 i element pasuje)
+	if item != null and skill.damage_element != GameEnums.DamageElement.NONE:
+		var affinity: float = item.get_affinity_multiplier(skill.damage_element)
+		if not is_equal_approx(affinity, 1.0):
+			var elem_icon := _get_element_icon(skill.damage_element)
+			parts.append("%s×%s" % [elem_icon, _fmt(affinity)])
+
+	# 3. Multi-hit (bonus_hits_per_stat)
+	if skill.bonus_hits_per_stat != null:
+		var hit_stat: String = GameEnums.Stat.keys()[skill.bonus_hits_per_stat.stat]
+		parts.append("+hity: %s" % hit_stat)
+
+	# 4. Trigger (podpowiedź, że coś się odpali)
+	for trigger in skill.triggers:
+		var hint := _get_trigger_hint(trigger)
+		if hint != "":
+			parts.append(hint)
+
+	return " • ".join(parts)
+
+
+## Krótki emoji dla elementu
+func _get_element_icon(element: GameEnums.DamageElement) -> String:
+	match element:
+		GameEnums.DamageElement.FIRE: return "🔥"
+		GameEnums.DamageElement.ICE: return "❄"
+		GameEnums.DamageElement.POISON: return "🧪"
+		GameEnums.DamageElement.PHYSICAL: return "⚔"
+		_: return ""
+
+## Krótki "punch" karty przy trafieniu. Trwa ~0.19 s, czyli mniej niż delay_between_effects (0.35 s).
 func play_strike_animation() -> void:
-	var orig_pos = position
-	AudioManager.play_sfx_random_pitch(AudioLibrary.get_sfx(AudioKeys.SFX_POP), -4.0, 1.1, 1.3)
+	if Engine.is_editor_hint():
+		return
 
-	var strike_up = create_tween()
-	strike_up.tween_property(self, "position", orig_pos + Vector2(0, -65), 0.08)\
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	await strike_up.finished
+	offset_transform_enabled = true
+	pivot_offset = size / 2.0
 
-	var fall_down = create_tween()
-	fall_down.tween_property(self, "position", orig_pos, 0.12)\
+	# Wracamy do skali spoczynkowej (hover ustawia 1.2)
+	var rest := Vector2.ONE * (1.2 if is_hovering else 1.0)
+
+	var tween := create_tween()
+
+	# Uderzenie: powiększenie + rozjaśnienie
+	tween.tween_property(self, "offset_transform_scale", rest * 1.25, 0.07)\
+		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(self, "modulate", Color(1.8, 1.8, 1.8, 1.0), 0.07)
+
+	# Powrót
+	tween.tween_property(self, "offset_transform_scale", rest, 0.12)\
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(self, "modulate", Color.WHITE, 0.12)
+
+	await tween.finished
+
+## Krótka podpowiedź dla triggera
+func _get_trigger_hint(trigger: SkillTrigger) -> String:
+	match trigger.trigger_type:
+		GameEnums.TriggerType.ON_HIT:
+			var status_name: String = GameEnums.StatusType.keys()[trigger.apply_status].capitalize()
+			return "→ %s" % status_name
+		GameEnums.TriggerType.ON_HIGH_ROLL:
+			var status_name: String = GameEnums.StatusType.keys()[trigger.apply_status].capitalize()
+			var pct: int = int(trigger.threshold * 100)
+			return "High Roll (%d%%+) → %s×%d" % [pct, status_name, trigger.status_stacks]
+		GameEnums.TriggerType.ON_MAX_ROLL:
+			return "Max Roll → ×2"
+		GameEnums.TriggerType.ON_LOW_HP:
+			var pct: int = int(trigger.threshold * 100)
+			return "HP<%d%% → mocniej" % pct
+		GameEnums.TriggerType.EXECUTE:
+			var pct: int = int(trigger.threshold * 100)
+			return "Execute <%d%% HP" % pct
+	return ""
+
+
+## Formatuje liczbę: 1.0 → "1", 0.25 → "0.25"
+func _fmt(value: float) -> String:
+	if is_equal_approx(value, round(value)):
+		return "%d" % int(value)
+	return "%.2f" % value
 
 
 func _gui_input(event: InputEvent) -> void:

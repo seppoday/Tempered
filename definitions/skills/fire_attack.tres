@@ -1,31 +1,27 @@
-[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://m362bnj4e4i2"]
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://bhg0unwlpacw5"]
 
-[ext_resource type="Texture2D" uid="uid://dmgl50ls0pddu" path="res://assets/icons/fire.svg" id="1_2ebgg"]
-[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_5vrb4"]
-[ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="2_jxuoa"]
+[ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_bmj64"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_80ifi"]
+[ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="3_sq4pl"]
 
-[sub_resource type="Resource" id="Resource_q0ack"]
-script = ExtResource("2_jxuoa")
-metadata/_custom_type_script = "uid://oma4qvx1pxtp"
-
-[sub_resource type="Resource" id="Resource_hgf45"]
-script = ExtResource("2_jxuoa")
+[sub_resource type="Resource" id="Resource_iwefr"]
+script = ExtResource("1_bmj64")
 stat = 1
-weight = 0.5
-metadata/_custom_type_script = "uid://oma4qvx1pxtp"
 
-[sub_resource type="Resource" id="Resource_6ydfj"]
-script = ExtResource("2_jxuoa")
+[sub_resource type="Resource" id="Resource_vqdxr"]
+script = ExtResource("1_bmj64")
 stat = 6
 weight = 0.2
-metadata/_custom_type_script = "uid://oma4qvx1pxtp"
+
+[sub_resource type="Resource" id="Resource_v2xsl"]
+script = ExtResource("3_sq4pl")
+trigger_type = 1
 
 [resource]
-script = ExtResource("2_5vrb4")
+script = ExtResource("2_80ifi")
 id = "fire_attack"
 skill_name = "Fire Attack"
-icon = ExtResource("1_2ebgg")
-description = "Fire Attack"
-scalings = Array[ExtResource("2_jxuoa")]([SubResource("Resource_q0ack"), SubResource("Resource_hgf45"), SubResource("Resource_6ydfj")])
+scalings = Array[ExtResource("1_bmj64")]([SubResource("Resource_iwefr"), SubResource("Resource_vqdxr")])
 damage_element = 1
-metadata/_custom_type_script = "uid://dgjg1vlcvdtpi"
+tags = Array[int]([0, 1, 2])
+triggers = Array[ExtResource("3_sq4pl")]([SubResource("Resource_v2xsl")])

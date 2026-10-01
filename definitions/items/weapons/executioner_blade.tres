@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://1nwsplam85h3"]
+
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_ixh2h"]
+[ext_resource type="Resource" uid="uid://btykll5xl1oxt" path="res://definitions/skills/finishing_blow.tres" id="2_johgv"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_45uu3"]
+
+[resource]
+script = ExtResource("3_45uu3")
+default_skill = ExtResource("2_johgv")
+dmg = 8.0
+crit = 6.0
+id = "executioner_blade"
+name = "Executioner's Blade"

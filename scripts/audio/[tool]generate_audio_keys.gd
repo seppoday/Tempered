@@ -7,7 +7,7 @@ const DIRS := {
 	"UI": "res://assets/audio/ui/",
 }
 
-const OUTPUT_PATH := "res://scripts/audio/audio_keys.gd"
+const OUTPUT_PATH := "uid://7oxsdqiret0y"
 
 func _run() -> void:
 	var lines: Array[String] = []

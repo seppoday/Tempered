@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://0fr4265j4x2r"]
+
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_7f2bw"]
+[ext_resource type="Resource" uid="uid://c2ehod2o6lr78" path="res://definitions/skills/rekindle.tres" id="2_6oein"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_rwsem"]
+
+[resource]
+script = ExtResource("3_rwsem")
+slot = 4
+default_skill = ExtResource("2_6oein")
+magic = 4.0
+vit = 6.0
+id = "phoenix_greaves"
+name = "Phoenix Greaves"

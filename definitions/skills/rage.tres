@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://dk36bw1mbj4sx"]
+
+[ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_27qxw"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_leh5s"]
+[ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="3_3a6py"]
+
+[sub_resource type="Resource" id="Resource_1se2n"]
+script = ExtResource("1_27qxw")
+stat = 5
+weight = 0.02
+
+[resource]
+script = ExtResource("2_leh5s")
+id = "rage"
+skill_name = "Rage"
+effect_type = 5
+target_type = 0
+base_value = 0.15
+scalings = Array[ExtResource("1_27qxw")]([SubResource("Resource_1se2n")])
+damage_element = 4

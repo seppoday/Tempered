@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://cqcsn3f0u34ci"]
+
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_fmhu1"]
+[ext_resource type="Resource" uid="uid://c5vyhyjogciu5" path="res://definitions/skills/heal.tres" id="2_jx1xs"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_jff03"]
+
+[resource]
+script = ExtResource("3_jff03")
+slot = 5
+default_skill = ExtResource("2_jx1xs")
+magic = 5.0
+vit = 8.0
+id = "healers_amulet"
+name = "Healer's Amulet"

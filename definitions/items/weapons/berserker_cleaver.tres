@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://duarrnffv6u3b"]
+
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_rf26d"]
+[ext_resource type="Resource" uid="uid://bo6f6lbtn55op" path="res://definitions/skills/wild_slash.tres" id="2_kwilb"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_ngpec"]
+
+[resource]
+script = ExtResource("3_ngpec")
+default_skill = ExtResource("2_kwilb")
+dmg = 10.0
+id = "berserker_cleaver"
+name = "Berserker's Cleaver"

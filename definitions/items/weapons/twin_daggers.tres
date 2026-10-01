@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://d24qi4m4dxhnh"]
+
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_yjer2"]
+[ext_resource type="Resource" uid="uid://dyegyx24lkwvw" path="res://definitions/skills/twin_strike.tres" id="2_yjer2"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_qrbjs"]
+
+[resource]
+script = ExtResource("3_qrbjs")
+default_skill = ExtResource("2_yjer2")
+dmg = 5.0
+speed = 10.0
+id = "twin_daggers"
+name = "Twin Daggers"
+description = "Twin Daggers"
+rarity = 1
+metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

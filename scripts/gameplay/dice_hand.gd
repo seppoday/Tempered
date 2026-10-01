@@ -5,7 +5,7 @@ signal results_ready
 
 @export var dice_tag_scene: PackedScene
 @export var camera: Camera3D
-@export var canvas_layer: CanvasLayer
+@export var dice_tag_canvas_layer: CanvasLayer
 @export var dice_roller: DiceRoller
 @export var enemy_spawn_point: Node3D
 @export var hp_progress_bar: ProgressBar
@@ -18,6 +18,9 @@ var active_tags: Array[PanelContainer] = []
 var selected_tags: Array[PanelContainer] = []
 var resolving_tags: Array[PanelContainer] = []
 var pending_results: Array[Dictionary] = []
+
+# ✅ NOWE: indeks do śledzenia który hit aktualnie się animuje
+var current_hit_index: int = 0
 
 var is_rolling: bool = false
 
@@ -43,6 +46,9 @@ func confirm_selection() -> Array[Dictionary]:
 	# Filtrujemy tylko instancje, które wciąż istnieją
 	resolving_tags = selected_tags.filter(func(tag): return is_instance_valid(tag))
 
+	# ✅ NOWE: Reset indeksu hitu
+	current_hit_index = 0
+
 	var selected_results: Array[Dictionary] = []
 	for tag in resolving_tags:
 		var index := active_tags.find(tag)
@@ -54,6 +60,9 @@ func confirm_selection() -> Array[Dictionary]:
 
 
 func reset_for_new_roll() -> void:
+	# ✅ NOWE: Reset indeksu
+	current_hit_index = 0
+	
 	for tag in active_tags:
 		if is_instance_valid(tag):
 			tag.hide()
@@ -73,7 +82,7 @@ func _on_dice_spawned(dice: Array[RigidBody3D]) -> void:
 	for i in dice.size():
 		var tag := dice_tag_scene.instantiate() as Control
 		tag.toggled.connect(_on_card_toggled)
-		canvas_layer.add_child(tag)
+		dice_tag_canvas_layer.add_child(tag)
 		active_tags.append(tag)
 		tag.hide()
 
@@ -101,19 +110,35 @@ func _on_card_toggled(card: PanelContainer, wants_selected: bool) -> void:
 
 
 func _on_combat_effect_applied(skill: SkillDefinition, value: int, target: String) -> void:
-	var tag = resolving_tags.pop_front() if not resolving_tags.is_empty() else null
+	# Odczyt MUSI być przed pierwszym await
+	var idx := CombatManager.current_result_index
+	if idx < 0 or idx >= resolving_tags.size():
+		Log.warning("DiceHand: zły indeks tagu (%d / %d)" % [idx, resolving_tags.size()])
+		return
 
-	if is_instance_valid(tag) and tag.has_method("play_strike_animation"):
-		await tag.play_strike_animation()
+	var tag = resolving_tags[idx]
+
+	if is_instance_valid(tag):
+		if tag.has_method("play_strike_animation"):
+			await tag.play_strike_animation()
+		else:
+			push_warning("DiceTag nie ma play_strike_animation()")
 
 	AudioManager.play_sfx(AudioLibrary.get_ui(AudioKeys.UI_BUP))
 
+	# ✅ NOWE: Floating text PO animacji
 	if target == "enemy":
 		FloatingTextManager.spawn_damage(value, enemy_spawn_point.global_transform.origin)
 		result_label.text = "%s: -%d wrogowi" % [skill.skill_name, value]
-	else:
-		FloatingTextManager.spawn_heal(value, hp_progress_bar.global_position)
-		result_label.text = "%s: +%d graczowi" % [skill.skill_name, value]
+	elif target == "player":
+		if skill.effect_type == GameEnums.SkillEffect.HEAL:
+			FloatingTextManager.spawn_heal(value, hp_progress_bar.global_position)
+			result_label.text = "%s: +%d graczowi" % [skill.skill_name, value]
+		elif skill.effect_type == GameEnums.SkillEffect.SHIELD:
+			FloatingTextManager.spawn_shield_block(value, hp_progress_bar.global_position)
+			result_label.text = "%s: +%d tarczy graczowi" % [skill.skill_name, value]
+		else:
+			result_label.text = "%s: +%d graczowi" % [skill.skill_name, value]
 
 
 # --- SYSTEM ANIMACJI I WYŚRODKOWYWANIA (LAYOUT) ---
@@ -230,9 +255,12 @@ func _setup_tag_from_result(tag: Control, result: Dictionary) -> void:
 	var item: ItemInstance = result["item"]
 	var face: int = result["face"]
 	var max_face: int = GameEnums.DICE_PROGRESSION[item.dice_level]
-	var effect_value := CombatManager.calculate_effect_value(skill, item.definition, face)
-	
-	tag.setup(skill, face, max_face, effect_value)
+
+	var context := CombatManager.build_trigger_context(face, max_face)
+	var base := CombatManager.get_effective_base(skill, context)
+	var effect_value := CombatManager.calculate_effect_value(skill, item.definition, face, base)
+
+	tag.setup(skill, face, max_face, effect_value, item.definition)
 
 
 func _animate_fade_out(tween: Tween, tag: Control) -> void:
@@ -262,6 +290,8 @@ func _clear_previous_tags() -> void:
 	active_tags.clear()
 	selected_tags.clear()
 	resolving_tags.clear()
+	# ✅ NOWE: Reset indeksu przy czyszczeniu
+	current_hit_index = 0
 
 
 func _play_pop_sound_pitch(index: int) -> void:

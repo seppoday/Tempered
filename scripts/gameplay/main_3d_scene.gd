@@ -21,9 +21,16 @@ func _ready() -> void:
 	dice_hand.results_ready.connect(_on_dice_hand_results_ready)
 	GameManager.state_changed.connect(_on_game_state_changed)
 
+	# --- SYGNAŁY WALKI I OBRAŻEŃ ---
 	CombatManager.player_died.connect(_on_player_died)
 	CombatManager.enemy_died.connect(_on_enemy_died)
 	EventBus.player_damaged.connect(_on_player_damaged)
+	PlayerData.player_dodged.connect(_on_player_dodged) # <--- NOWE
+	
+	# --- NOWE: Sygnały statusów i efektów na wrogu ---
+	#CombatManager.effect_applied.connect(_on_combat_effect_applied)
+	CombatManager.status_applied_to_enemy.connect(_on_enemy_status_applied)
+	CombatManager.status_tick_on_enemy.connect(_on_enemy_status_tick)
 
 	dice_roller.spawn_dice()
 	box.shake(camera)
@@ -40,22 +47,59 @@ func _on_player_died() -> void:
 	GameManager.set_state(GameManager.State.GAME_OVER, self)
 
 
+# ── REAKCJA NA OBRAŻEŃ GRACZA (2D) ──
+
 func _on_player_damaged(hp_amount: int, shield_amount: int) -> void:
 	# Pozycja startowa nad paskiem HP
 	var pos = %HpProgressBar.global_position + Vector2(0, -20)
 	
 	# 1. Jeśli zeszła tarcza, spawnujemy niebieski tekst np. "-10 🛡️"
 	if shield_amount > 0:
-		var shield_color = Color(0.2, 0.6, 1.0) # Ładny błękit tarczy
-		FloatingTextManager.spawn_screen("-%d" % shield_amount, pos, shield_color)
-		
+		FloatingTextManager.spawn_shield_block(shield_amount, pos)
 		# Przesuwamy pozycję następnego tekstu w górę, aby się nie nałożyły
 		pos += Vector2(0, -25) 
 		
 	# 2. Jeśli ucierpiało HP, spawnujemy czerwony tekst damage
 	if hp_amount > 0:
+		# Używamy dedykowanej metody dla heala/damage, ale na ekranie 2D
 		FloatingTextManager.spawn_screen("-%d" % hp_amount, pos, FloatingTextManager.COLOR_DAMAGE)
 
+
+func _on_player_dodged() -> void:
+	var pos = %HpProgressBar.global_position + Vector2(0, -20)
+	FloatingTextManager.spawn_screen("DODGE! ✨", pos, FloatingTextManager.COLOR_DODGE)
+
+
+# ── REAKCJA NA EFEKTY I STATUSY WROGA (3D) ──
+
+#func _on_combat_effect_applied(skill: SkillDefinition, value: int, target: String) -> void:
+	## Jeśli gracz zadał bezpośrednie obrażenia wrogowi, spawnowany jest tekst w 3D
+	#if target == "enemy" and CombatManager.current_enemy != null:
+		#var enemy_pos: Vector3 = CombatManager.current_enemy.global_position + Vector3(0, 1.2, 0)
+		#FloatingTextManager.spawn_damage(value, enemy_pos)
+
+
+func _on_enemy_status_applied(status_name: String) -> void:
+	if CombatManager.current_enemy == null:
+		return
+		
+	# POPRAWKA: Używamy zapisu słownikowego [] zamiast .get()
+	var status_type: GameEnums.StatusType = GameEnums.StatusType[status_name] as GameEnums.StatusType
+	var enemy_pos: Vector3 = CombatManager.current_enemy.global_position
+	FloatingTextManager.spawn_status_applied(status_type, enemy_pos)
+
+
+func _on_enemy_status_tick(status_name: String, damage: int) -> void:
+	if CombatManager.current_enemy == null:
+		return
+		
+	# POPRAWKA: Używamy zapisu słownikowego [] zamiast .get()
+	var status_type: GameEnums.StatusType = GameEnums.StatusType[status_name] as GameEnums.StatusType
+	var enemy_pos: Vector3 = CombatManager.current_enemy.global_position
+	FloatingTextManager.spawn_status_tick(damage, status_type, enemy_pos)
+
+
+# ── RESTA SYSTEMÓW WALK / TURY ──
 
 func _on_enemy_died(enemy) -> void:
 	box.close_lid()

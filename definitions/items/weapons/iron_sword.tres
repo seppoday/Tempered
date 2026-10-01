@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_keopn"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="2_3fu4x"]
-[ext_resource type="Resource" uid="uid://dw0cugqwhkga1" path="res://definitions/skills/basic_attack.tres" id="2_6kxcf"]
+[ext_resource type="Resource" uid="uid://dw0cugqwhkga1" path="res://definitions/skills/basic_strike.tres" id="2_6kxcf"]
 [ext_resource type="Texture2D" uid="uid://btt130bdswuwf" path="res://assets/items/iron_sword.jpg" id="3_6kxcf"]
 
 [sub_resource type="Resource" id="Resource_c7dpk"]

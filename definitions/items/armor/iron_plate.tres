@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://b5vodqh56tdyt"]
+
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_5xnud"]
+[ext_resource type="Resource" uid="uid://cfxhjjrkgfx1u" path="res://definitions/skills/fortify.tres" id="2_3uqv5"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_jw2fu"]
+
+[resource]
+script = ExtResource("3_jw2fu")
+slot = 2
+default_skill = ExtResource("2_3uqv5")
+def = 15.0
+vit = 8.0
+id = "iron_plate"
+name = "Iron Plate"

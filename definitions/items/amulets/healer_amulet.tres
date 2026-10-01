@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://dfdfojtvomx2u"]
+
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_i282f"]
+[ext_resource type="Resource" uid="uid://7ky5kymujpm0" path="res://definitions/skills/heal.tres" id="2_vey1h"]
+[ext_resource type="Texture2D" uid="uid://c7675vp32ev6d" path="res://assets/items/jade_amulet.jpeg" id="3_odysq"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="4_61prx"]
+
+[resource]
+script = ExtResource("4_61prx")
+slot = 5
+default_skill = ExtResource("2_vey1h")
+magic = 5.0
+vit = 8.0
+id = "healer_amulet"
+name = "Healer Amulet"
+description = "Healer Amulet"
+icon = ExtResource("3_odysq")
+metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

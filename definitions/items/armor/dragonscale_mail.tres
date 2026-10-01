@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://b7g52m0w4s622"]
+
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_yw67o"]
+[ext_resource type="Resource" uid="uid://4ar526ji5r6a" path="res://definitions/skills/molten_ward.tres" id="2_bmwfn"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_areox"]
+
+[sub_resource type="Resource" id="Resource_wrlqx"]
+script = ExtResource("1_yw67o")
+element = 1
+multiplier = 1.3
+
+[resource]
+script = ExtResource("3_areox")
+slot = 2
+default_skill = ExtResource("2_bmwfn")
+magic = 6.0
+def = 8.0
+vit = 4.0
+affinities = Array[ExtResource("1_yw67o")]([SubResource("Resource_wrlqx")])
+id = "dragonscale_mail"
+name = "Dragonscale Mail"

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://ca8ljpfcsacwc"]
+
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_kiura"]
+[ext_resource type="Resource" uid="uid://b0r7s6h666d1b" path="res://definitions/skills/loot.tres" id="2_kwi2p"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_qct4y"]
+
+[resource]
+script = ExtResource("3_qct4y")
+slot = 4
+default_skill = ExtResource("2_kwi2p")
+luck = 10.0
+id = "boots_of_avarice"
+name = "Boots of Avarice"

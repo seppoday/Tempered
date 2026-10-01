@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://bo6f6lbtn55op"]
+
+[ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_m8otg"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_10k7c"]
+[ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="3_0uxmd"]
+
+[sub_resource type="Resource" id="Resource_l3ocy"]
+script = ExtResource("1_m8otg")
+weight = 0.9
+
+[sub_resource type="Resource" id="Resource_03j1w"]
+script = ExtResource("3_0uxmd")
+trigger_type = 3
+base_value_override = 1.0
+
+[resource]
+script = ExtResource("2_10k7c")
+id = "wild_slash"
+skill_name = "Wild Slash"
+base_value = 0.5
+scalings = Array[ExtResource("1_m8otg")]([SubResource("Resource_l3ocy")])
+tags = Array[int]([0, 5])
+triggers = Array[ExtResource("3_0uxmd")]([SubResource("Resource_03j1w")])

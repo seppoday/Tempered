@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://bpk3km28i6vsa"]
+
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_vwrsv"]
+[ext_resource type="Resource" uid="uid://bhg0unwlpacw5" path="res://definitions/skills/fire_attack.tres" id="2_i505t"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_j72vp"]
+
+[sub_resource type="Resource" id="Resource_nc0el"]
+script = ExtResource("1_vwrsv")
+element = 1
+multiplier = 1.3
+
+[resource]
+script = ExtResource("3_j72vp")
+default_skill = ExtResource("2_i505t")
+dmg = 4.0
+magic = 6.0
+status = 3.0
+affinities = Array[ExtResource("1_vwrsv")]([SubResource("Resource_nc0el")])
+id = "ember_blade"
+name = "Ember Blade"

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://cj85swoi8e4wv"]
+
+[ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_ljcbk"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_22hwr"]
+[ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="3_mvaa2"]
+
+[sub_resource type="Resource" id="Resource_3khsb"]
+script = ExtResource("1_ljcbk")
+weight = 0.6
+
+[sub_resource type="Resource" id="Resource_mn752"]
+script = ExtResource("3_mvaa2")
+trigger_type = 1
+apply_status = 2
+
+[resource]
+script = ExtResource("2_22hwr")
+id = "bleeding_cut"
+skill_name = "Bleeding Cut"
+base_value = 0.5
+scalings = Array[ExtResource("1_ljcbk")]([SubResource("Resource_3khsb")])
+tags = Array[int]([0, 5, 10])
+triggers = Array[ExtResource("3_mvaa2")]([SubResource("Resource_mn752")])

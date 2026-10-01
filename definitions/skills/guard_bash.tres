@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://cg6k1pk4uooua"]
+
+[ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_g40vr"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_cg4hj"]
+[ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="3_wkwys"]
+
+[sub_resource type="Resource" id="Resource_72b2p"]
+script = ExtResource("1_g40vr")
+stat = 2
+weight = 0.5
+
+[sub_resource type="Resource" id="Resource_v1yb3"]
+script = ExtResource("1_g40vr")
+weight = 0.5
+
+[resource]
+script = ExtResource("2_cg4hj")
+id = "guard_bash"
+skill_name = "Guard Bash"
+base_value = 0.7
+scalings = Array[ExtResource("1_g40vr")]([SubResource("Resource_72b2p"), SubResource("Resource_v1yb3")])
+tags = Array[int]([0, 5, 9])

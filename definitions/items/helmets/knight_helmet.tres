@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://jrau58b8cdsr" path="res://assets/items/steel_sword.jpg" id="1_e6t7a"]
 [ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_lkpow"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="2_1aaew"]
-[ext_resource type="Resource" uid="uid://dw0cugqwhkga1" path="res://definitions/skills/basic_attack.tres" id="2_5u3kd"]
+[ext_resource type="Resource" uid="uid://dw0cugqwhkga1" path="res://definitions/skills/basic_strike.tres" id="2_5u3kd"]
 
 [sub_resource type="Resource" id="Resource_5u3kd"]
 script = ExtResource("1_lkpow")

@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://cnn7lyrr1fr60"]
+
+[ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_ilkpb"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_r7bgt"]
+[ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="3_fkf7b"]
+
+[sub_resource type="Resource" id="Resource_5fvw2"]
+script = ExtResource("1_ilkpb")
+stat = 6
+
+[sub_resource type="Resource" id="Resource_eb2yn"]
+script = ExtResource("1_ilkpb")
+stat = 1
+weight = 0.2
+
+[sub_resource type="Resource" id="Resource_nsiup"]
+script = ExtResource("3_fkf7b")
+trigger_type = 1
+apply_status = 1
+
+[resource]
+script = ExtResource("2_r7bgt")
+id = "poison_sting"
+skill_name = "Poison Sting"
+base_value = 0.8
+scalings = Array[ExtResource("1_ilkpb")]([SubResource("Resource_5fvw2"), SubResource("Resource_eb2yn")])
+damage_element = 3
+tags = Array[int]([0, 1, 4, 10])
+triggers = Array[ExtResource("3_fkf7b")]([SubResource("Resource_nsiup")])

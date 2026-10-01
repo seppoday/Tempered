@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://bxmcowaaa0ccf"]
+
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_ad3a2"]
+[ext_resource type="Resource" uid="uid://bywjnjpu0x571" path="res://definitions/skills/second_wind.tres" id="2_h2b3f"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_42cva"]
+
+[resource]
+script = ExtResource("3_42cva")
+slot = 5
+default_skill = ExtResource("2_h2b3f")
+magic = 4.0
+vit = 6.0
+id = "phoenix_feather"
+name = "Phoenix Feather"

@@ -45,6 +45,35 @@ enum SkillTarget {
 	NONE, # Efekty globalne (gold, buffy)
 }
 
+enum StatusType {
+	BURN,
+	POISON,
+	BLEED,
+}
+
+enum TriggerType {
+	NONE,           # Brak triggera — skill działa normalnie
+	ON_HIT,         # Przy każdym trafieniu
+	ON_HIGH_ROLL,   # Gdy rzut >= 75% max ścianki (top 25%)
+	ON_MAX_ROLL,    # Gdy rzut == max ścianki (naturalne max)
+	ON_LOW_HP,      # Gdy HP castera < próg (dla healów)
+	EXECUTE,        # Gdy HP celu < próg (dla ataków)
+}
+
+enum SkillTag {
+	ATTACK,
+	ELEMENTAL,
+	FIRE,
+	ICE,
+	POISON,
+	PHYSICAL,
+	HEALING,
+	MULTI_HIT,
+	EXECUTE,
+	DEFENSIVE,
+	DOT,
+}
+
 const DICE_PROGRESSION: Array[int] = [4, 6, 8, 10, 12, 16, 20]
 
 static func get_rarity_color(rarity: Rarity) -> Color:

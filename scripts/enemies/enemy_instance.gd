@@ -13,9 +13,11 @@ signal attack_finished
 const HEALTH_BAR_WIDTH: float = 1.0
 
 var health: Health
-
-# --- NOWE: debuff pancerza nakładany przez gracza ---
 var armor_debuff: float = 0.0
+
+# --- NOWE ---
+var status_manager: StatusManager = StatusManager.new()
+
 
 func _ready() -> void:
 	if definition == null:
@@ -66,10 +68,8 @@ func _pick_attack_pattern() -> EnemyAttackPattern:
 	return RNG.weighted_pick(patterns)
 
 
-# --- NOWE: zwraca efektywny pancerz po debuffach ---
 func get_effective_armor() -> float:
 	var base_armor: float = 0.0
-	# Dostosuj nazwę pola do swojego EnemyDefinition (def / armor / defense)
 	if "def" in definition:
 		base_armor = definition.def
 	elif "armor" in definition:
@@ -78,5 +78,6 @@ func get_effective_armor() -> float:
 
 
 func _on_died() -> void:
+	status_manager.clear_all()
 	died.emit(self)
 	Utilities.safe_free(self)

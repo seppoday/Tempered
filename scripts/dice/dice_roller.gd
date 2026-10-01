@@ -5,8 +5,8 @@ signal dice_spawned(dice: Array[RigidBody3D])
 signal dice_settled(results: Array[Dictionary])
 
 @export var die_scenes: Dictionary = {
-	6: preload("res://scenes/dice/die_d6.tscn"),
-	20: preload("res://scenes/dice/die_d20.tscn"),
+	6: preload("uid://bkmu5apsdlwbt"),
+	20: preload("uid://dg4qey0lvwj0y"),
 }
 
 @export_group("Fizyka Stuknięcia (Table Bump)")

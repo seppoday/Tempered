@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://bywjnjpu0x571"]
+
+[ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_yit7n"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_2hulh"]
+[ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="3_7aa3o"]
+
+[sub_resource type="Resource" id="Resource_4af6p"]
+script = ExtResource("1_yit7n")
+stat = 3
+
+[sub_resource type="Resource" id="Resource_31ge8"]
+script = ExtResource("3_7aa3o")
+trigger_type = 4
+threshold = 0.3
+base_value_override = 1.2
+
+[resource]
+script = ExtResource("2_2hulh")
+id = "second_wind"
+skill_name = "Second Wind"
+effect_type = 1
+target_type = 0
+base_value = 0.5
+scalings = Array[ExtResource("1_yit7n")]([SubResource("Resource_4af6p")])
+damage_element = 4
+tags = Array[int]([6])
+triggers = Array[ExtResource("3_7aa3o")]([SubResource("Resource_31ge8")])

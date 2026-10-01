@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://c8xtyf5xu3ydt"]
+
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_uhe44"]
+[ext_resource type="Resource" uid="uid://cg6k1pk4uooua" path="res://definitions/skills/guard_bash.tres" id="2_0fmvw"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_o12bp"]
+
+[resource]
+script = ExtResource("3_o12bp")
+slot = 7
+default_skill = ExtResource("2_0fmvw")
+def = 12.0
+vit = 6.0
+id = "bulwark_shield"
+name = "Bulwark Shield"

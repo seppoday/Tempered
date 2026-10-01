@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://b0r7s6h666d1b"]
+
+[ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_h35vm"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_qnpbn"]
+[ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="3_ng1x1"]
+
+[sub_resource type="Resource" id="Resource_y28wi"]
+script = ExtResource("1_h35vm")
+stat = 5
+
+[resource]
+script = ExtResource("2_qnpbn")
+id = "loot"
+skill_name = "Loot"
+effect_type = 2
+target_type = 3
+base_value = 2.0
+scalings = Array[ExtResource("1_h35vm")]([SubResource("Resource_y28wi")])
+damage_element = 4

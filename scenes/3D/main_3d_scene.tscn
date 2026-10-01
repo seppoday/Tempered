@@ -37,16 +37,24 @@
 [ext_resource type="Texture2D" uid="uid://dyhh4dx4wna1x" path="res://wood_table_nor_dx_1k.png" id="36_2r5wi"]
 [ext_resource type="VoxelGIData" uid="uid://cjgs3mam0qcsa" path="res://main_3d_scene.VoxelGI_data.res" id="36_hgf45"]
 [ext_resource type="Texture2D" uid="uid://b14a1l82bk56j" path="res://wood_table_diff_1k.jpg" id="36_hgqcf"]
-[ext_resource type="Resource" uid="uid://gxa5nyxfh74q" path="res://definitions/items/helmets/knight_helmet.tres" id="37_50bjb"]
 [ext_resource type="Texture2D" uid="uid://bb7o0pev2ccr4" path="res://wood_table_ao_1k.jpg" id="37_82cka"]
 [ext_resource type="Texture2D" uid="uid://hx0fsur03pps" path="res://wood_table_rough_1k.png" id="37_j5tbv"]
 [ext_resource type="Texture2D" uid="uid://6l4n1qorcftp" path="res://assets/models/materials/carpet/cotton_jersey_diff_1k.jpg" id="40_8r76n"]
 [ext_resource type="Shader" uid="uid://b53p1ced07ofw" path="res://shaders/vigniette.gdshader" id="40_q0ack"]
 [ext_resource type="Texture2D" uid="uid://bn3jdfoam3lr4" path="res://assets/models/materials/carpet/cotton_jersey_nor_gl_1k.jpg" id="41_q0ack"]
 [ext_resource type="Texture2D" uid="uid://c113jmy871e2p" path="res://assets/models/materials/carpet/cotton_jersey_ao_1k.jpg" id="42_50bjb"]
+[ext_resource type="Resource" uid="uid://c8xtyf5xu3ydt" path="res://definitions/items/shields/bulwark_shield.tres" id="43_4psnp"]
 [ext_resource type="Script" uid="uid://c6w0ntq5lk1od" path="res://scripts/gameplay/dice_hand.gd" id="43_8r76n"]
-[ext_resource type="Resource" uid="uid://lqt0rt3daif5" path="res://definitions/skill_items/skill_item_fire_attack.tres" id="43_q0ack"]
+[ext_resource type="Resource" uid="uid://duarrnffv6u3b" path="res://definitions/items/weapons/berserker_cleaver.tres" id="45_dwi8f"]
+[ext_resource type="Resource" uid="uid://bpk3km28i6vsa" path="res://definitions/items/weapons/ember_blade.tres" id="45_ev28f"]
 [ext_resource type="Shader" uid="uid://dixfqjkcloefu" path="res://postprocessing.gdshader" id="46_lhg76"]
+[ext_resource type="Resource" uid="uid://d24qi4m4dxhnh" path="res://definitions/items/weapons/twin_daggers.tres" id="47_ifyqo"]
+[ext_resource type="Resource" uid="uid://j6xuijp73so4" path="res://definitions/items/weapons/venom_fang.tres" id="48_6qjdx"]
+[ext_resource type="Resource" uid="uid://diiwnmylykliq" path="res://definitions/items/weapons/mercenery_blade.tres" id="50_fdv13"]
+[ext_resource type="Resource" uid="uid://bgturwky8qaxf" path="res://definitions/items/rings/frost_ring.tres" id="51_dwi8f"]
+[ext_resource type="Resource" uid="uid://cqcsn3f0u34ci" path="res://definitions/items/amulets/healers_amulet.tres" id="52_xt5sj"]
+[ext_resource type="Resource" uid="uid://bxmcowaaa0ccf" path="res://definitions/items/rings/phoenix_feather.tres" id="53_7ifas"]
+[ext_resource type="Resource" uid="uid://dixma2lmo5kkv" path="res://definitions/items/weapons/plague_dagger.tres" id="54_0ba6h"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_wvhbo"]
 panorama = ExtResource("3_yvypd")
@@ -385,13 +393,6 @@ outline_color = Color(0, 0, 0, 1)
 shadow_size = 24
 shadow_color = Color(0.20210624, 0.1110039, 0.062536865, 0.5529412)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dwi8f"]
-bg_color = Color(0.2816801, 0.60469335, 0.9927555, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g7q3g"]
 bg_color = Color(0.73248976, 0, 0.03350093, 1)
 corner_radius_top_left = 6
@@ -527,6 +528,16 @@ shadow_opacity = 0.8
 directional_shadow_blend_splits = true
 directional_shadow_fade_start = 0.648
 directional_shadow_max_distance = 18.6
+
+[node name="DiceHand" type="Node" parent="." unique_id=187322700 node_paths=PackedStringArray("camera", "dice_tag_canvas_layer", "dice_roller", "enemy_spawn_point", "hp_progress_bar", "result_label")]
+script = ExtResource("43_8r76n")
+dice_tag_scene = ExtResource("2_rqbel")
+camera = NodePath("../CameraAnchor/Camera3D")
+dice_tag_canvas_layer = NodePath("../DiceTags")
+dice_roller = NodePath("../Box/DiceRoller")
+enemy_spawn_point = NodePath("../Box/Lid/EnemySpawnPoint")
+hp_progress_bar = NodePath("../MainSceneUICanvasLayer/MarginContainer/HBoxContainer2/HpBox/HpProgressBar")
+result_label = NodePath("../MainSceneUICanvasLayer/MarginContainer/ResultLabel")
 
 [node name="CameraAnchor" type="Node3D" parent="." unique_id=198828219]
 transform = Transform3D(-4.371139e-08, -0.74024993, 0.6723318, 0, 0.6723318, 0.74024993, -1, 3.2357352e-08, -2.9388557e-08, 4.2191253, 5.755158, -1.8442381e-07)
@@ -713,16 +724,6 @@ material_overlay = SubResource("ShaderMaterial_8r76n")
 mesh = SubResource("ArrayMesh_u67e6")
 surface_material_override/0 = SubResource("StandardMaterial3D_a5a6l")
 
-[node name="DiceHand" type="Node" parent="." unique_id=559825601 node_paths=PackedStringArray("camera", "canvas_layer", "dice_roller", "enemy_spawn_point", "hp_progress_bar", "result_label")]
-script = ExtResource("43_8r76n")
-dice_tag_scene = ExtResource("2_rqbel")
-camera = NodePath("../CameraAnchor/Camera3D")
-canvas_layer = NodePath("../DiceTags")
-dice_roller = NodePath("../Box/DiceRoller")
-enemy_spawn_point = NodePath("../Box/Lid/EnemySpawnPoint")
-hp_progress_bar = NodePath("../MainSceneUICanvasLayer/MarginContainer/EnemyHpBox/HpProgressBar")
-result_label = NodePath("../MainSceneUICanvasLayer/MarginContainer/ResultLabel")
-
 [node name="PostProcessing" type="CanvasLayer" parent="." unique_id=1801893158]
 
 [node name="ColorRect" type="ColorRect" parent="PostProcessing" unique_id=77687052]
@@ -760,71 +761,31 @@ horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 
-[node name="EnemyHpBox" type="BoxContainer" parent="MainSceneUICanvasLayer/MarginContainer" unique_id=1197722031]
-visible = false
-custom_maximum_size = Vector2(600, -1)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-
-[node name="Label2" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/EnemyHpBox" unique_id=1846836755]
-custom_minimum_size = Vector2(36, 0)
-layout_mode = 2
-text = "HP"
-vertical_alignment = 1
-
-[node name="HpCurrent" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/EnemyHpBox" unique_id=1345579661]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "0"
-vertical_alignment = 1
-
-[node name="HpProgressBar" type="ProgressBar" parent="MainSceneUICanvasLayer/MarginContainer/EnemyHpBox" unique_id=386037739]
-custom_minimum_size = Vector2(300, 4)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-offset_transform_enabled = true
-offset_transform_position = Vector2(0, -1.6)
-theme_override_styles/fill = SubResource("StyleBoxFlat_dwi8f")
-show_percentage = false
-
-[node name="HpMax" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/EnemyHpBox" unique_id=580099287]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "100"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MainSceneUICanvasLayer/MarginContainer" unique_id=1383841492]
-custom_minimum_size = Vector2(400, 0)
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 8
-theme_override_constants/separation = 24
-
-[node name="HBoxContainer" type="BoxContainer" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer" unique_id=485729519]
+[node name="HBoxContainer2" type="BoxContainer" parent="MainSceneUICanvasLayer/MarginContainer" unique_id=485729519]
+custom_maximum_size = Vector2(400, -1)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 alignment = 1
 vertical = true
 
-[node name="HpBox" type="BoxContainer" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1955519889]
+[node name="HpBox" type="BoxContainer" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer2" unique_id=1955519889]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/HpBox" unique_id=1871555241]
+[node name="Label2" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer2/HpBox" unique_id=1871555241]
 custom_minimum_size = Vector2(36, 0)
 layout_mode = 2
 text = "HP"
 vertical_alignment = 1
 
-[node name="HpCurrent" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/HpBox" unique_id=701309585]
+[node name="HpCurrent" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer2/HpBox" unique_id=701309585]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 text = "0"
 vertical_alignment = 1
 
-[node name="HpProgressBar" type="ProgressBar" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/HpBox" unique_id=54554829]
+[node name="HpProgressBar" type="ProgressBar" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer2/HpBox" unique_id=54554829]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 4)
 layout_mode = 2
@@ -835,29 +796,29 @@ offset_transform_position = Vector2(0, -1.6)
 theme_override_styles/fill = SubResource("StyleBoxFlat_g7q3g")
 show_percentage = false
 
-[node name="HpMax" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/HpBox" unique_id=1363107852]
+[node name="HpMax" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer2/HpBox" unique_id=1363107852]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 text = "100"
 
-[node name="ShieldBox" type="BoxContainer" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer" unique_id=91889068]
+[node name="ShieldBox" type="BoxContainer" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer2" unique_id=91889068]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ShieldBox" unique_id=749575843]
+[node name="Label2" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer2/ShieldBox" unique_id=749575843]
 custom_minimum_size = Vector2(36, 0)
 layout_mode = 2
 text = "HP"
 vertical_alignment = 1
 
-[node name="ShieldCurrent" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ShieldBox" unique_id=502018597]
+[node name="ShieldCurrent" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer2/ShieldBox" unique_id=502018597]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 text = "0"
 vertical_alignment = 1
 
-[node name="ShieldProgressBar" type="ProgressBar" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ShieldBox" unique_id=960721487]
+[node name="ShieldProgressBar" type="ProgressBar" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer2/ShieldBox" unique_id=960721487]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 4)
 layout_mode = 2
@@ -868,13 +829,13 @@ offset_transform_position = Vector2(0, -1.6)
 theme_override_styles/fill = SubResource("StyleBoxFlat_6ydfj")
 show_percentage = false
 
-[node name="ShieldMax" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer/ShieldBox" unique_id=2059704989]
+[node name="ShieldMax" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer2/ShieldBox" unique_id=2059704989]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 text = "100"
 
-[node name="GoldLabel" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer/HBoxContainer" unique_id=368449364]
+[node name="GoldLabel" type="Label" parent="MainSceneUICanvasLayer/MarginContainer/HBoxContainer2" unique_id=368449364]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1104,12 +1065,45 @@ size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_3w64d")
 script = ExtResource("20_q0ack")
 base_items = Dictionary[ExtResource("21_50bjb"), Dictionary]({
-ExtResource("37_50bjb"): {
-"level": 6,
+ExtResource("43_4psnp"): {
+"level": 1,
 "quantity": 1
 },
-ExtResource("43_q0ack"): {
-"quantity": 5
+ExtResource("52_xt5sj"): {
+"level": 1,
+"quantity": 1
+},
+ExtResource("45_ev28f"): {
+"level": 1,
+"quantity": 1
+},
+ExtResource("45_dwi8f"): {
+"level": 1,
+"quantity": 1
+},
+ExtResource("47_ifyqo"): {
+"level": 1,
+"quantity": 1
+},
+ExtResource("48_6qjdx"): {
+"level": 1,
+"quantity": 1
+},
+ExtResource("54_0ba6h"): {
+"level": 1,
+"quantity": 1
+},
+ExtResource("50_fdv13"): {
+"level": 1,
+"quantity": 1
+},
+ExtResource("51_dwi8f"): {
+"level": 1,
+"quantity": 1
+},
+ExtResource("53_7ifas"): {
+"level": 1,
+"quantity": 1
 }
 })
 

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://bgturwky8qaxf"]
+
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_f73y0"]
+[ext_resource type="Resource" uid="uid://bfn05v3mnbnp7" path="res://definitions/skills/frost_bolt.tres" id="2_rdg6u"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_yrb2d"]
+
+[sub_resource type="Resource" id="Resource_y0rdc"]
+script = ExtResource("1_f73y0")
+element = 2
+multiplier = 1.4
+
+[resource]
+script = ExtResource("3_yrb2d")
+slot = 6
+default_skill = ExtResource("2_rdg6u")
+magic = 10.0
+speed = 4.0
+affinities = Array[ExtResource("1_f73y0")]([SubResource("Resource_y0rdc")])
+id = "frost_ring"
+name = "Frost Ring"

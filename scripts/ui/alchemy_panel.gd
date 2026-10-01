@@ -12,7 +12,7 @@ const SLOT_COUNT: int = 3
 const SLOT_GAP: int = 2
 const GRID_COLUMNS: int = 3
 
-const SlotScene: PackedScene = preload("res://scenes/UI/slot.tscn")
+const SlotScene: PackedScene = preload("uid://bbadchds7qm5n")
 
 func _ready() -> void:
 	craft_button.pressed.connect(_on_craft_button_pressed)

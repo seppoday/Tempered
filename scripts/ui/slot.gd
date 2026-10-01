@@ -9,17 +9,17 @@ var item_data: ItemInstance = null
 
 signal slot_changed(slot: Panel)
 
-const SkillFacePickerScene := preload("res://scenes/UI/skill_face_picker.tscn")
+const SkillFacePickerScene := preload("uid://bwdqoodum7hgx")
 
 const STAT_DISPLAY := {
-	"dmg":    ["DAMAGE", Color(0.95, 0.3, 0.3), preload("res://assets/icons/stats/sword.svg")],
-	"magic":  ["MAGIC", Color(0.0, 0.3, 0.9), preload("res://assets/icons/stats/sword.svg")],
-	"def":    ["DEFENSE", Color(0.6, 0.6, 0.65), preload("res://assets/icons/stats/sword.svg")],
-	"vit":    ["VITALITY", Color(0.2, 0.8, 0.2), preload("res://assets/icons/stats/sword.svg")],
-	"speed":  ["SPEED", Color(0.95, 0.95, 0.95), preload("res://assets/icons/stats/sword.svg")],
-	"luck":   ["LUCK", Color(0.2, 0.8, 0.8), preload("res://assets/icons/stats/sword.svg")],
-	"status": ["STATUS", Color(0.85, 0.3, 0.4), preload("res://assets/icons/stats/sword.svg")],
-	"crit":   ["CRIT", Color(0.9, 0.7, 0.2), preload("res://assets/icons/stats/sword.svg")],
+	"dmg":    ["DAMAGE", Color(0.95, 0.3, 0.3), preload("uid://cyu1e16lmrvk7")],
+	"magic":  ["MAGIC", Color(0.0, 0.3, 0.9), preload("uid://cyu1e16lmrvk7")],
+	"def":    ["DEFENSE", Color(0.6, 0.6, 0.65), preload("uid://cyu1e16lmrvk7")],
+	"vit":    ["VITALITY", Color(0.2, 0.8, 0.2), preload("uid://cyu1e16lmrvk7")],
+	"speed":  ["SPEED", Color(0.95, 0.95, 0.95), preload("uid://cyu1e16lmrvk7")],
+	"luck":   ["LUCK", Color(0.2, 0.8, 0.8), preload("uid://cyu1e16lmrvk7")],
+	"status": ["STATUS", Color(0.85, 0.3, 0.4), preload("uid://cyu1e16lmrvk7")],
+	"crit":   ["CRIT", Color(0.9, 0.7, 0.2), preload("uid://cyu1e16lmrvk7")],
 }
 
 const BASE_BG := Color(0.12, 0.12, 0.14, 1.0)

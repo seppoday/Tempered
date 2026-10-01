@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://b7tyy1uay3wfu"]
+
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_3picd"]
+[ext_resource type="Resource" uid="uid://dqh7viaw10oa7" path="res://definitions/skills/arcane_burst.tres" id="2_t8fwa"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_2j2kd"]
+
+[resource]
+script = ExtResource("3_2j2kd")
+slot = 1
+default_skill = ExtResource("2_t8fwa")
+magic = 10.0
+status = 4.0
+id = "mystic_hood"
+name = "Mystic Hood"

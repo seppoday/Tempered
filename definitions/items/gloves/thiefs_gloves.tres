@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://cag2v24qfuy07"]
+
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_0di8e"]
+[ext_resource type="Resource" uid="uid://bh7cfgi3ll2sm" path="res://definitions/skills/pickpocket.tres" id="2_sg7s0"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_4etrm"]
+
+[resource]
+script = ExtResource("3_4etrm")
+slot = 3
+default_skill = ExtResource("2_sg7s0")
+speed = 5.0
+luck = 8.0
+id = "thiefs_gloves"
+name = "Thief's Gloves"

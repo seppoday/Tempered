@@ -6,7 +6,7 @@ const SLOT_COUNT: int = 36
 const SLOT_GAP: int = 4
 const GRID_COLUMNS: int = 6
 
-const SlotScene: PackedScene = preload("res://scenes/UI/slot.tscn")
+const SlotScene: PackedScene = preload("uid://bbadchds7qm5n")
 
 @export var base_items: Dictionary[InventoryEntry, Dictionary] = {}
 

@@ -13,3 +13,31 @@ class_name SkillDefinition extends Resource
 @export var damage_element: GameEnums.DamageElement = GameEnums.DamageElement.PHYSICAL
 @export var duration_rounds: int = 1
 @export var bonus_hits_per_stat: SkillScaling  # null = zawsze 1 trafienie
+
+@export_category("Tags")
+@export var tags: Array[GameEnums.SkillTag] = []
+
+@export_category("Triggers")
+@export var triggers: Array[SkillTrigger] = []
+
+
+## Sprawdza czy skill ma dany tag
+func has_tag(tag: GameEnums.SkillTag) -> bool:
+	return tag in tags
+
+
+## Zwraca pierwszy trigger danego typu (lub null)
+func get_trigger(type: GameEnums.TriggerType) -> SkillTrigger:
+	for t in triggers:
+		if t.trigger_type == type:
+			return t
+	return null
+
+
+## Zwraca wszystkie triggery danego typu
+func get_triggers(type: GameEnums.TriggerType) -> Array[SkillTrigger]:
+	var result: Array[SkillTrigger] = []
+	for t in triggers:
+		if t.trigger_type == type:
+			result.append(t)
+	return result

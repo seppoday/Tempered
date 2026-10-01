@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://dqh7viaw10oa7"]
+
+[ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_qs5sb"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_iuyq4"]
+[ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="3_vm7u8"]
+
+[sub_resource type="Resource" id="Resource_3jp0v"]
+script = ExtResource("1_qs5sb")
+stat = 1
+
+[resource]
+script = ExtResource("2_iuyq4")
+id = "arcane_burst"
+skill_name = "Arcane Burst"
+scalings = Array[ExtResource("1_qs5sb")]([SubResource("Resource_3jp0v")])
+damage_element = 4
+tags = Array[int]([0, 1])

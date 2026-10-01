@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://ocagai282ih5"]
+
+[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_kp51t"]
+[ext_resource type="Resource" uid="uid://djwkfcks443ol" path="res://definitions/skills/headbutt.tres" id="2_orp5i"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_bxaof"]
+
+[resource]
+script = ExtResource("3_bxaof")
+slot = 1
+default_skill = ExtResource("2_orp5i")
+dmg = 5.0
+def = 8.0
+id = "warhelm"
+name = "Warhelm"
