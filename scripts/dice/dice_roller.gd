@@ -193,8 +193,7 @@ func _snap_to_perfect_face() -> void:
 		var tween = create_tween().set_parallel(true)
 		tween.tween_method(func(t: float):
 			if is_instance_valid(die):
-				die.global_basis = Basis(start_q.slerp(end_q, t))
-		, 0.0, 1.0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+				die.global_basis = Basis(start_q.slerp(end_q, t)), 0.0, 1.0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 		
 		var target_y = 0.002 if pending_results[i]["dice_level_on_item"] <= 6 else 0.005
 		tween.tween_property(die, "global_position:y", target_y, 0.2).set_trans(Tween.TRANS_CUBIC)

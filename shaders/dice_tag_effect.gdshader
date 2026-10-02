@@ -11,9 +11,11 @@ uniform vec4 hover_color : source_color = vec4(1.0, 1.0, 1.0, 0.15);
 // Selected corner brackets
 uniform float selected_intensity : hint_range(0.0, 1.0) = 0.0;
 uniform vec4 bracket_color : source_color = vec4(1.0, 0.95, 0.55, 1.0);
-uniform float bracket_length : hint_range(0.0, 0.5) = 0.18;
-uniform float bracket_thickness : hint_range(0.0, 0.1) = 0.018;
-uniform float bracket_padding : hint_range(0.0, 0.1) = 0.02;
+// 0.5 oznacza dokładnie połowę szerokości/wysokości (ramki się połączą)
+uniform float bracket_length : hint_range(0.0, 0.5) = 0.2; 
+// Grubość i padding zdefiniowane sztywno w pikselach (zawsze uniform)
+uniform float bracket_thickness : hint_range(0.0, 20.0) = 2.0;
+uniform float bracket_padding : hint_range(0.0, 20.0) = 3.0;
 uniform float pulse_speed : hint_range(0.0, 10.0) = 3.0;
 uniform float pulse_amount : hint_range(0.0, 1.0) = 0.25;
 
@@ -45,24 +47,34 @@ void fragment() {
 		final_color = mix(final_color, h, h.a);
 	}
 
-	// --- SELECTED: rogowe ramki (zostawiamy ostre/prostokątne w narożnikach) ---
+	// --- SELECTED: rogowe ramki ---
 	if (selected_intensity > 0.0) {
-		float dist_x = min(uv.x, 1.0 - uv.x);
-		float dist_y = min(uv.y, 1.0 - uv.y);
+		// Odległość w pikselach od krawędzi
+		float dist_x = min(pixel_pos.x, size.x - pixel_pos.x);
+		float dist_y = min(pixel_pos.y, size.y - pixel_pos.y);
 
-		bool in_corner_zone = (dist_x < bracket_length) && (dist_y < bracket_length);
+		// Obliczamy maksymalną długość linii w pikselach na podstawie procentu (bracket_length)
+		float max_len_x = size.x * bracket_length;
+		float max_len_y = size.y * bracket_length;
 
-		if (in_corner_zone) {
-			bool on_horizontal_line = (dist_y > bracket_padding) && (dist_y < bracket_padding + bracket_thickness);
-			bool on_vertical_line = (dist_x > bracket_padding) && (dist_x < bracket_padding + bracket_thickness);
+		// Linia pozioma: od paddingu do max_len_x
+		bool on_horizontal_line = (dist_y >= bracket_padding) && 
+		                          (dist_y < bracket_padding + bracket_thickness) && 
+		                          (dist_x >= bracket_padding) && 
+		                          (dist_x < max_len_x);
+		
+		// Linia pionowa: od paddingu do max_len_y
+		bool on_vertical_line = (dist_x >= bracket_padding) && 
+		                        (dist_x < bracket_padding + bracket_thickness) && 
+		                        (dist_y >= bracket_padding) && 
+		                        (dist_y < max_len_y);
 
-			if (on_horizontal_line || on_vertical_line) {
-				float pulse = 1.0 - pulse_amount + pulse_amount * (0.5 + 0.5 * sin(TIME * pulse_speed));
-				vec4 c = bracket_color;
-				c.rgb *= pulse;
-				c.a *= selected_intensity;
-				final_color = mix(final_color, c, c.a);
-			}
+		if (on_horizontal_line || on_vertical_line) {
+			float pulse = 1.0 - pulse_amount + pulse_amount * (0.5 + 0.5 * sin(TIME * pulse_speed));
+			vec4 c = bracket_color;
+			c.rgb *= pulse;
+			c.a *= selected_intensity;
+			final_color = mix(final_color, c, c.a);
 		}
 	}
 

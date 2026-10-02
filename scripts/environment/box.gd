@@ -7,7 +7,7 @@ signal lid_closed
 signal bump_finished
 
 @onready var lid: Node3D = %Lid
-@export var lid_opening_time: float = 0.5
+@export var lid_opening_time: float = 0.75
 @export var lid_open_rotation: Vector3 = Vector3(0.0, 0.0, 145.0)
 
 @export_group("Heavy Shake Settings (Rzut)")

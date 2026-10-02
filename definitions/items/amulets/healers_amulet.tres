@@ -8,7 +8,7 @@
 script = ExtResource("3_jff03")
 slot = 5
 default_skill = ExtResource("2_jx1xs")
-magic = 5.0
-vit = 8.0
+magic = 1.0
+vit = 2.0
 id = "healers_amulet"
 name = "Healer's Amulet"

@@ -218,7 +218,7 @@ func _gui_input(event: InputEvent) -> void:
 func _on_mouse_entered() -> void:
 	if is_locked: return  # zablokowane karty nie reagują na hover
 	is_hovering = true
-	UIAnim.scale_to(self, Vector2(1.2, 1.2))
+	UIAnim.scale_to(self, Vector2(1.1, 1.1))
 	_animate_hover(1.0)
 
 

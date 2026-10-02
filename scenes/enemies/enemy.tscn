@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bs284m27d4kr5" path="res://scripts/enemies/enemy_instance.gd" id="1_fcftc"]
 [ext_resource type="Resource" uid="uid://8uf3l7cr560u" path="res://definitions/enemies/goblin.tres" id="2_lu5c6"]
+[ext_resource type="FontFile" uid="uid://dok171t6oxmnq" path="res://assets/fonts/FiraSans-Bold.ttf" id="4_fcftc"]
 [ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="4_jt03m"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_5rl3n"]
@@ -33,12 +34,19 @@ texture = ExtResource("4_jt03m")
 
 [node name="HealthBarBackground" type="MeshInstance3D" parent="." unique_id=809532472]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.6, -0.33013725)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.09686577, -0.7313899)
 mesh = SubResource("QuadMesh_wvhbo")
 surface_material_override/0 = SubResource("StandardMaterial3D_38ino")
 
 [node name="HealthBarFill" type="MeshInstance3D" parent="." unique_id=100757973]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.601, -0.33)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.09786576, -0.7312527)
 mesh = SubResource("QuadMesh_38ino")
 surface_material_override/0 = SubResource("StandardMaterial3D_ifow5")
+
+[node name="AttackLabel" type="Label3D" parent="." unique_id=828654799]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.07450107, 0.76623535)
+text = "123"
+font = ExtResource("4_fcftc")
+font_size = 24

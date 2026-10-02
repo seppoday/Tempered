@@ -4,8 +4,10 @@ signal state_changed(new_state: State)
 
 enum State {
 	INTRO, 
-	WEAPON_SELECT,
 	PLAYER_TURN, 
+	WEAPON_SELECT,
+	ENEMY_REWARDS,
+	WAVE_REWARD,
 	SELECTING,
 	RESOLVING, 
 	ENEMY_TURN, 

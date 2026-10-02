@@ -76,8 +76,10 @@ func punch_scale(node: Control, target_scale: Vector2 = Vector2(1.15, 1.15), dur
 		kill_all(node)
 
 	Utilities.center_pivot(node)
+	
 	node.offset_transform_enabled = true
-
+	node.offset_transform_visual_only = false
+	
 	var t := node.create_tween()
 	t.tween_property(node, "offset_transform_scale", target_scale, duration * 0.4) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
@@ -87,7 +89,9 @@ func punch_scale(node: Control, target_scale: Vector2 = Vector2(1.15, 1.15), dur
 
 func scale_to(control: Control, target: Vector2, duration: float = 0.12, key: StringName = &"scale") -> Tween:
 	Utilities.center_pivot(control)
+	
 	control.offset_transform_enabled = true
+	control.offset_transform_visual_only = false
 	
 	if control.has_meta(key):
 		var old := control.get_meta(key) as Tween
@@ -105,7 +109,8 @@ func pop(node: CanvasItem, scale_amount: float = 1.2, duration: float = 0.2, kil
 		kill_all(node)
 	
 	node.offset_transform_enabled = true
-
+	node.offset_transform_visual_only = false
+	
 	var original: Vector2 = node.scale
 	var big: Vector2 = original * scale_amount
 
@@ -157,13 +162,79 @@ func slide_in(node: CanvasItem, direction: Vector2 = Vector2.LEFT, distance: flo
 	if kill_existing:
 		kill_all(node)
 
+	node.offset_transform_enabled = true
+	node.offset_transform_visual_only = false
+	
 	var target: Vector2 = node.position
 	var start: Vector2 = target + direction.normalized() * distance
 	node.position = start
 
 	var t := create_tween()
-	t.tween_property(node, "position", target, duration) \
+	t.tween_property(node, "offset_transform_position", target, duration) \
+		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).as_relative()
+	return _register(node, t)
+
+func slide_and_fade_in(node: CanvasItem, direction: Vector2 = Vector2.DOWN, distance: float = 200.0, duration: float = 0.35, kill_existing: bool = true, delay: float = 0.0) -> Tween:
+	if kill_existing:
+		kill_all(node)
+
+	node.offset_transform_enabled = true
+	node.offset_transform_visual_only = false
+	
+	# Ustawiamy przezroczystość na start
+	node.modulate.a = 0.0
+	
+	# Obliczamy cel: aktualny offset + przesunięcie w podanym kierunku
+	# np. (0, -200) + (0, 1) * 200 = (0, 0)
+	var start_offset: Vector2 = node.offset_transform_position
+	var target_offset: Vector2 = start_offset + direction.normalized() * distance
+
+	var t := create_tween()
+	
+	# Animacja ruchu z aktualnej pozycji do obliczonego celu
+	var move_tween = t.tween_property(node, "offset_transform_position", target_offset, duration) \
 		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+		
+	# Animacja przezroczystości
+	var fade_tween = t.parallel().tween_property(node, "modulate:a", 1.0, duration) \
+		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+
+	# Opóźnienie dla efektu kaskady
+	if delay > 0.0:
+		move_tween.set_delay(delay)
+		fade_tween.set_delay(delay)
+		
+	return _register(node, t)
+
+func slide_and_fade_out(node: CanvasItem, direction: Vector2 = Vector2.DOWN, distance: float = 200.0, duration: float = 0.3, kill_existing: bool = true, delay: float = 0.0) -> Tween:
+	if not is_instance_valid(node):
+		return null
+	if kill_existing:
+		kill_all(node)
+
+	node.offset_transform_enabled = true
+	node.offset_transform_visual_only = false
+	
+	# Obliczamy cel: aktualny offset + ruch w stronę wskazaną przez direction
+	# Np. jeśli karta jest na 0, a chcemy ją wysunąć w dół o 200: 0 + (0, 1) * 200 = (0, 200)
+	var start_offset: Vector2 = node.offset_transform_position
+	var target_offset: Vector2 = start_offset + direction.normalized() * distance
+
+	var t := create_tween()
+	
+	# Przy znikaniu (Out) zazwyczaj używamy EASE_IN (animacja przyspiesza na końcu, gdy element opuszcza ekran)
+	var move_tween = t.tween_property(node, "offset_transform_position", target_offset, duration) \
+		.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+		
+	# Jednoczesne zanikanie do 0.0
+	var fade_tween = t.parallel().tween_property(node, "modulate:a", 0.0, duration) \
+		.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+
+	# Obsługa opóźnienia kaskadowego
+	if delay > 0.0:
+		move_tween.set_delay(delay)
+		fade_tween.set_delay(delay)
+		
 	return _register(node, t)
 
 func slide_out(node: CanvasItem, direction: Vector2 = Vector2.RIGHT, distance: float = 200.0, duration: float = 0.3, kill_existing: bool = true) -> Tween:
@@ -173,7 +244,7 @@ func slide_out(node: CanvasItem, direction: Vector2 = Vector2.RIGHT, distance: f
 	var target: Vector2 = node.position + direction.normalized() * distance
 	var t := create_tween()
 	t.tween_property(node, "position", target, duration) \
-		.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+		.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD).as_relative()
 	return _register(node, t)
 
 func pulse(node: CanvasItem, scale_amount: float = 1.08, duration: float = 0.8) -> Tween:

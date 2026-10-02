@@ -1,10 +1,10 @@
-[gd_scene format=3 uid="uid://dei603y45frkh"]
+[gd_scene format=3 uid="uid://bbkjtosvst7i2"]
 
-[ext_resource type="Script" uid="uid://gom6cpdggn8p" path="res://scripts/UI/dicetag.gd" id="1_54fgk"]
-[ext_resource type="Texture2D" uid="uid://1f8lt201861u" path="res://assets/icons/test.png" id="2_we6yk"]
-[ext_resource type="FontFile" uid="uid://cdjqfdlffrhaq" path="res://assets/fonts/FiraSans-LightItalic.ttf" id="4_e10p4"]
-[ext_resource type="FontFile" uid="uid://ksubfguv2mi1" path="res://assets/fonts/FiraSans-ExtraBold.ttf" id="4_s5h31"]
-[ext_resource type="Shader" uid="uid://0oxx6d0b4k3s" path="res://shaders/dice_tag_effect.gdshader" id="4_we6yk"]
+[ext_resource type="Script" uid="uid://ceksib7lxfweo" path="res://scripts/UI/reward_tag.gd" id="1_cd3re"]
+[ext_resource type="Texture2D" uid="uid://1f8lt201861u" path="res://assets/icons/test.png" id="2_txbqc"]
+[ext_resource type="FontFile" uid="uid://ksubfguv2mi1" path="res://assets/fonts/FiraSans-ExtraBold.ttf" id="3_ri84k"]
+[ext_resource type="FontFile" uid="uid://cdjqfdlffrhaq" path="res://assets/fonts/FiraSans-LightItalic.ttf" id="4_7800n"]
+[ext_resource type="Shader" uid="uid://0oxx6d0b4k3s" path="res://shaders/dice_tag_effect.gdshader" id="5_ufewc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yc77a"]
 bg_color = Color(0.2, 0.2, 0.2, 0.5058824)
@@ -16,15 +16,15 @@ outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wvhbo"]
 resource_local_to_scene = true
-shader = ExtResource("4_we6yk")
-shader_parameter/size = Vector2(184, 253)
+shader = ExtResource("5_ufewc")
+shader_parameter/size = Vector2(280, 349)
 shader_parameter/corner_radius = 6.000000285
 shader_parameter/hover_intensity = 0.0
 shader_parameter/hover_color = Color(1, 1, 1, 0.15)
-shader_parameter/selected_intensity = 1.0
-shader_parameter/bracket_color = Color(0.8780775, 0.38444263, 3.85046e-07, 1)
-shader_parameter/bracket_length = 0.5
-shader_parameter/bracket_thickness = 5.0000002375
+shader_parameter/selected_intensity = 0.0
+shader_parameter/bracket_color = Color(0.8802152, 0.29826948, 0, 1)
+shader_parameter/bracket_length = 0.2000000095
+shader_parameter/bracket_thickness = 0.050000002375
 shader_parameter/bracket_padding = 0.0
 shader_parameter/pulse_speed = 0.0
 shader_parameter/pulse_amount = 0.25
@@ -49,9 +49,10 @@ offset_right = 162.0
 offset_bottom = 164.0
 pivot_offset_ratio = Vector2(0.5, 0.5)
 offset_transform_enabled = true
+offset_transform_position = Vector2(0, -200)
+offset_transform_visual_only = false
 theme_override_styles/panel = SubResource("StyleBoxFlat_yc77a")
-script = ExtResource("1_54fgk")
-podglad_selected = true
+script = ExtResource("1_cd3re")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1557987852]
 layout_mode = 2
@@ -68,11 +69,11 @@ vertical = true
 
 [node name="Icon" type="TextureRect" parent="MarginContainer/BoxContainer" unique_id=689231955]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(160, 160)
-custom_maximum_size = Vector2(160, 160)
+custom_minimum_size = Vector2(256, 256)
+custom_maximum_size = Vector2(256, 256)
 layout_mode = 2
 size_flags_horizontal = 4
-texture = ExtResource("2_we6yk")
+texture = ExtResource("2_txbqc")
 expand_mode = 1
 stretch_mode = 5
 
@@ -82,7 +83,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 theme_override_constants/outline_size = 6
-theme_override_fonts/font = ExtResource("4_s5h31")
+theme_override_fonts/font = ExtResource("3_ri84k")
 theme_override_font_sizes/font_size = 32
 text = "test"
 horizontal_alignment = 1
@@ -105,7 +106,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 theme_override_constants/outline_size = 6
-theme_override_fonts/font = ExtResource("4_e10p4")
+theme_override_fonts/font = ExtResource("4_7800n")
 theme_override_font_sizes/font_size = 12
 text = "test"
 horizontal_alignment = 1
