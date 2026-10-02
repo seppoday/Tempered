@@ -48,6 +48,7 @@ func _format_delta(value: float, is_percent: bool = false) -> String:
 
 func _add_label(text_val: String, color: Color, font_size: int = 11, stat_key: String = "", delta_text: String = "", delta_positive: bool = true) -> Control:
 	var row := HBoxContainer.new()
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	if stat_key != "": row.set_meta("stat_key", stat_key)
 	stats_box.add_child(row)
 

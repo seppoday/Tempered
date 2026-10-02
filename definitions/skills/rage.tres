@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://dk36bw1mbj4sx"]
 
 [ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_27qxw"]
+[ext_resource type="Texture2D" uid="uid://c3w4oakgm0r0f" path="res://assets/icons/angry.svg" id="1_leh5s"]
 [ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_leh5s"]
 [ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="3_3a6py"]
 
@@ -13,6 +14,7 @@ weight = 0.02
 script = ExtResource("2_leh5s")
 id = "rage"
 skill_name = "Rage"
+icon = ExtResource("1_leh5s")
 effect_type = 5
 target_type = 0
 base_value = 0.15

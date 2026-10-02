@@ -9,21 +9,23 @@ var item_data: ItemInstance = null
 
 signal slot_changed(slot: Panel)
 
-const SkillFacePickerScene := preload("uid://bwdqoodum7hgx")
-
 const STAT_DISPLAY := {
-	"dmg":    ["DAMAGE", Color(0.95, 0.3, 0.3), preload("uid://cyu1e16lmrvk7")],
-	"magic":  ["MAGIC", Color(0.0, 0.3, 0.9), preload("uid://cyu1e16lmrvk7")],
-	"def":    ["DEFENSE", Color(0.6, 0.6, 0.65), preload("uid://cyu1e16lmrvk7")],
-	"vit":    ["VITALITY", Color(0.2, 0.8, 0.2), preload("uid://cyu1e16lmrvk7")],
-	"speed":  ["SPEED", Color(0.95, 0.95, 0.95), preload("uid://cyu1e16lmrvk7")],
-	"luck":   ["LUCK", Color(0.2, 0.8, 0.8), preload("uid://cyu1e16lmrvk7")],
-	"status": ["STATUS", Color(0.85, 0.3, 0.4), preload("uid://cyu1e16lmrvk7")],
-	"crit":   ["CRIT", Color(0.9, 0.7, 0.2), preload("uid://cyu1e16lmrvk7")],
+	"dmg":    ["Attack Damage", Color(0.95, 0.95, 0.95), preload("uid://pdoitlfackp")],
+	"magic":  ["Magic Damage", Color(0.95, 0.95, 0.95), preload("uid://cyu1e16lmrvk7")],
+	"def":    ["Defense", Color(0.95, 0.95, 0.95), preload("uid://cyu1e16lmrvk7")],
+	"vit":    ["Vitality", Color(0.95, 0.95, 0.95), preload("uid://cyu1e16lmrvk7")],
+	"speed":  ["Speed", Color(0.95, 0.95, 0.95), preload("uid://cyu1e16lmrvk7")],
+	"luck":   ["Luck", Color(0.95, 0.95, 0.95), preload("uid://cyu1e16lmrvk7")],
+	"status": ["Status", Color(0.95, 0.95, 0.95), preload("uid://cyu1e16lmrvk7")],
+	"crit":   ["Critical", Color(0.95, 0.95, 0.95), preload("uid://cyu1e16lmrvk7")],
 }
 
 const BASE_BG := Color(0.12, 0.12, 0.14, 1.0)
 const BASE_BORDER := Color(0.32, 0.32, 0.36, 1.0)
+
+const FONT_TITLE := 28
+const FONT_BODY := 20
+const TOOLTIP_WIDTH := 700
 
 func _ready() -> void:
 	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -48,305 +50,117 @@ func _gui_input(event: InputEvent) -> void:
 
 	slot_changed.emit(self)
 
-const FONT_TITLE := 28
-const FONT_BODY := 20
-const TOOLTIP_WIDTH := 500
-
 func _make_custom_tooltip(_for_text: String) -> Control:
 	if is_empty() or not item_data.definition:
 		return null
 
-	var def = item_data.definition
-	var rarity_color := _get_rarity_color()
+	var tooltip := preload("uid://d3l2j2u2xebjv").instantiate() as InventoryTooltip
+	tooltip.populate(item_data, STAT_DISPLAY)
 
-	var container := PanelContainer.new()
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.111, 0.127, 0.157, 0.96)
-	style.border_color = Color(rarity_color, 0.55)
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(0)
-	style.content_margin_left = 8
-	style.content_margin_top = 8
-	style.content_margin_right = 8
-	style.content_margin_bottom = 8
-	container.add_theme_stylebox_override("panel", style)
+	tooltip.tree_entered.connect(
+		_clear_tooltip_panel_bg.bind(tooltip),
+		CONNECT_ONE_SHOT
+	)
 
-	container.tree_entered.connect(_clear_tooltip_panel_bg.bind(container), CONNECT_ONE_SHOT)
+	return tooltip
 
-	var root := VBoxContainer.new()
-	root.add_theme_constant_override("separation", 8)
-	container.add_child(root)
 
-	var header := HBoxContainer.new()
-	header.add_theme_constant_override("separation", 8)
-	root.add_child(header)
+## Wspólny renderer właściwości skilla — używany zarówno dla skilla założonego
+## na itemie (owning_item_def != null, pokazuje affinity tego itemu), jak i dla
+## luźnego skill-itemu w plecaku (owning_item_def == null, bez affinity, bo nie
+## wiadomo jeszcze na jaki item trafi).
+func _add_skill_properties_box(parent: Control, skill_def: SkillDefinition, owning_item_def: ItemDefinition) -> void:
+	var skill_box := VBoxContainer.new()
+	skill_box.add_theme_constant_override("separation", 4)
+	parent.add_child(skill_box)
 
-	if def.icon:
-		var icon_rect := TextureRect.new()
-		icon_rect.texture = def.icon
-		icon_rect.custom_minimum_size = Vector2(64, 64)
-		icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		header.add_child(icon_rect)
+	var skill_header := Label.new()
+	skill_header.text = "Skill Properties:"
+	skill_header.add_theme_color_override("font_color", Color(0.91, 0.75, 0.35))
+	skill_header.add_theme_font_size_override("font_size", FONT_BODY)
+	skill_box.add_child(skill_header)
 
-	var title_box := VBoxContainer.new()
-	title_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	title_box.add_theme_constant_override("separation", 0)
-	header.add_child(title_box)
+	var effect_lbl := Label.new()
+	var element_name = GameEnums.DamageElement.keys()[skill_def.damage_element].capitalize()
+	var effect_name = GameEnums.SkillEffect.keys()[skill_def.effect_type].capitalize()
+	effect_lbl.text = " • Type: %s (%s)" % [effect_name, element_name]
+	effect_lbl.add_theme_color_override("font_color", Color(0.7, 0.85, 0.95))
+	effect_lbl.add_theme_font_size_override("font_size", FONT_BODY)
+	skill_box.add_child(effect_lbl)
 
-	var name_label := Label.new()
-	if item_data.definition is ItemDefinition and item_data.dice_level >= 0:
-		var dice_size := GameEnums.DICE_PROGRESSION[item_data.dice_level]
-		name_label.text = "%s (d%d)" % [def.name, dice_size]
-	else:
-		name_label.text = def.name
-	name_label.add_theme_color_override("font_color", Color(0.91, 0.84, 0.58))
-	name_label.add_theme_font_size_override("font_size", FONT_TITLE)
-	title_box.add_child(name_label)
+	if not skill_def.scalings.is_empty():
+		var scaling_title := Label.new()
+		scaling_title.text = " • Damage scaling:"
+		scaling_title.add_theme_color_override("font_color", Color(0.7, 0.85, 0.95))
+		scaling_title.add_theme_font_size_override("font_size", FONT_BODY)
+		skill_box.add_child(scaling_title)
 
-	var category_label := Label.new()
-	category_label.text = GameEnums.Rarity.keys()[def.rarity].capitalize()
-	category_label.add_theme_color_override("font_color", Color(0.55, 0.52, 0.42))
-	category_label.add_theme_font_size_override("font_size", FONT_BODY)
-	title_box.add_child(category_label)
+		for scaling in skill_def.scalings:
+			var stat_key := _get_stat_key_from_enum(scaling.stat)
 
-	if def.get("sell_value") != null or def.get("price") != null:
-		var price_box := VBoxContainer.new()
-		price_box.alignment = BoxContainer.ALIGNMENT_CENTER
-		header.add_child(price_box)
-
-		var sell_label := Label.new()
-		var price = def.sell_value if def.get("sell_value") != null else def.price
-		sell_label.text = "Sells: %d" % price
-		sell_label.add_theme_color_override("font_color", Color(0.78, 0.70, 0.40))
-		sell_label.add_theme_font_size_override("font_size", FONT_BODY)
-		sell_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		price_box.add_child(sell_label)
-
-	root.add_child(_make_separator())
-
-	var stat_rows := _get_stat_rows()
-	if not stat_rows.is_empty():
-		var stats_box := VBoxContainer.new()
-		stats_box.add_theme_constant_override("separation", 2)
-		root.add_child(stats_box)
-
-		for row in stat_rows:
-			var row_h := HBoxContainer.new()
-			row_h.add_theme_constant_override("separation", 6)
-			stats_box.add_child(row_h)
-
-			if row.has("icon") and row["icon"]:
-				var s_icon := TextureRect.new()
-				s_icon.texture = row["icon"]
-				s_icon.custom_minimum_size = Vector2(32, 32)
-				s_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-				s_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-				s_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-				s_icon.modulate = Color.ALICE_BLUE
-				row_h.add_child(s_icon)
-
-			var stat_lbl := Label.new()
-			stat_lbl.text = row["text"]
-			stat_lbl.add_theme_color_override("font_color", row.get("color", Color(0.85, 0.78, 0.50)))
-			stat_lbl.add_theme_font_size_override("font_size", FONT_BODY)
-			row_h.add_child(stat_lbl)
-
-		root.add_child(_make_separator())
-
-	if item_data.definition is ItemDefinition:
-		var item_def: ItemDefinition = item_data.definition
-		if not item_def.affinities.is_empty():
-			var aff_box := VBoxContainer.new()
-			aff_box.add_theme_constant_override("separation", 2)
-			root.add_child(aff_box)
-
-			var aff_title := Label.new()
-			aff_title.text = "Elemental Affinities:"
-			aff_title.add_theme_color_override("font_color", Color(0.4, 0.75, 0.95))
-			aff_title.add_theme_font_size_override("font_size", FONT_BODY)
-			aff_box.add_child(aff_title)
-
-			for affinity in item_def.affinities:
-				var row := HBoxContainer.new()
-				aff_box.add_child(row)
-
-				var aff_lbl := Label.new()
-				var element_name = GameEnums.DamageElement.keys()[affinity.element].capitalize()
-				aff_lbl.text = " • %s: x%.2f Damage" % [element_name, affinity.multiplier]
-				aff_lbl.add_theme_color_override("font_color", Color(0.7, 0.85, 0.95))
-				aff_lbl.add_theme_font_size_override("font_size", FONT_BODY)
-				row.add_child(aff_lbl)
-
-			root.add_child(_make_separator())
-	
-	if item_data.definition is ItemDefinition and item_data.dice_level >= 0:
-		var item_def: ItemDefinition = item_data.definition
-
-		var skills_box := VBoxContainer.new()
-		skills_box.add_theme_constant_override("separation", 2)
-		root.add_child(skills_box)
-
-		var skills_title := Label.new()
-		skills_title.text = "Skill slots"
-		skills_title.add_theme_color_override("font_color", Color(0.91, 0.75, 0.35))
-		skills_title.add_theme_font_size_override("font_size", FONT_BODY)
-		skills_box.add_child(skills_title)
-
-		for face in range(1, 7):
-			var assigned: SkillDefinition = item_data.slot_assignments.get(face)
 			var row := HBoxContainer.new()
-			row.add_theme_constant_override("separation", 4)
-			skills_box.add_child(row)
+			row.add_theme_constant_override("separation", 6)
 
-			var face_lbl := Label.new()
-			face_lbl.text = "%d:" % face
-			face_lbl.custom_minimum_size = Vector2(18, 0)
-			face_lbl.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
-			face_lbl.add_theme_font_size_override("font_size", FONT_BODY)
-			row.add_child(face_lbl)
+			var indent := Control.new()
+			indent.custom_minimum_size = Vector2(16, 0)
+			row.add_child(indent)
 
-			var skill_lbl := Label.new()
-			if assigned:
-				skill_lbl.text = assigned.skill_name
-				skill_lbl.add_theme_color_override("font_color", Color(0.85, 0.78, 0.50))
-			elif item_def.default_skill:
-				skill_lbl.text = "%s (Default)" % item_def.default_skill.skill_name
-				skill_lbl.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5))
+			if STAT_DISPLAY.has(stat_key):
+				var stat_info = STAT_DISPLAY[stat_key]
+
+				if stat_info.size() > 2 and stat_info[2]:
+					var s_icon := TextureRect.new()
+					s_icon.texture = stat_info[2]
+					s_icon.custom_minimum_size = Vector2(16, 16)
+					s_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+					s_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+					s_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+					row.add_child(s_icon)
+
+				var scaling_lbl := Label.new()
+				scaling_lbl.text = "%s x%.2f" % [stat_info[0], scaling.weight]
+				scaling_lbl.add_theme_color_override("font_color", stat_info[1])
+				scaling_lbl.add_theme_font_size_override("font_size", FONT_BODY)
+				row.add_child(scaling_lbl)
 			else:
-				skill_lbl.text = "—"
-				skill_lbl.add_theme_color_override("font_color", Color(0.4, 0.4, 0.4))
-			skill_lbl.add_theme_font_size_override("font_size", FONT_BODY)
-			row.add_child(skill_lbl)
+				var scaling_lbl := Label.new()
+				var fallback_name = GameEnums.Stat.keys()[scaling.stat].capitalize()
+				scaling_lbl.text = "%s x%.2f" % [fallback_name, scaling.weight]
+				scaling_lbl.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
+				scaling_lbl.add_theme_font_size_override("font_size", FONT_BODY)
+				row.add_child(scaling_lbl)
 
-		root.add_child(_make_separator())
+			skill_box.add_child(row)
 
-	var skill_def: SkillDefinition = null
-	if def is SkillItemDefinition:
-		skill_def = def.skill
+	if skill_def.bonus_hits_per_stat:
+		var bonus = skill_def.bonus_hits_per_stat
+		var bonus_stat_key = _get_stat_key_from_enum(bonus.stat)
+		var stat_name = STAT_DISPLAY[bonus_stat_key][0] if STAT_DISPLAY.has(bonus_stat_key) else GameEnums.Stat.keys()[bonus.stat].capitalize()
 
-	if skill_def:
-		var skill_box := VBoxContainer.new()
-		skill_box.add_theme_constant_override("separation", 4)
-		root.add_child(skill_box)
+		var bonus_lbl := Label.new()
+		bonus_lbl.text = " • Bonus Hits: +1 hit per %.1f %s" % [bonus.weight, stat_name]
+		bonus_lbl.add_theme_color_override("font_color", Color(0.9, 0.6, 0.2))
+		bonus_lbl.add_theme_font_size_override("font_size", FONT_BODY)
+		skill_box.add_child(bonus_lbl)
 
-		var skill_header := Label.new()
-		skill_header.text = "Skill Properties:"
-		skill_header.add_theme_color_override("font_color", Color(0.91, 0.75, 0.35))
-		skill_header.add_theme_font_size_override("font_size", FONT_BODY)
-		skill_box.add_child(skill_header)
+	if owning_item_def != null \
+			and skill_def.effect_type == GameEnums.SkillEffect.DAMAGE \
+			and skill_def.damage_element != GameEnums.DamageElement.PHYSICAL \
+			and skill_def.damage_element != GameEnums.DamageElement.NONE:
+		var element_name_aff = GameEnums.DamageElement.keys()[skill_def.damage_element].capitalize()
+		var affinity_mult: float = owning_item_def.get_affinity_multiplier(skill_def.damage_element)
 
-		var effect_lbl := Label.new()
-		var element_name = GameEnums.DamageElement.keys()[skill_def.damage_element].capitalize()
-		var effect_name = GameEnums.SkillEffect.keys()[skill_def.effect_type].capitalize()
-		effect_lbl.text = " • Type: %s (%s)" % [effect_name, element_name]
-		effect_lbl.add_theme_color_override("font_color", Color(0.7, 0.85, 0.95))
-		effect_lbl.add_theme_font_size_override("font_size", FONT_BODY)
-		skill_box.add_child(effect_lbl)
+		var aff_lbl := Label.new()
+		if affinity_mult != 1.0:
+			aff_lbl.text = " • %s Affinity: x%.2f" % [element_name_aff, affinity_mult]
+			aff_lbl.add_theme_color_override("font_color", Color(0.95, 0.6, 0.3))
+		else:
+			aff_lbl.text = " • %s Affinity: none on this item" % element_name_aff
+			aff_lbl.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5))
+		aff_lbl.add_theme_font_size_override("font_size", FONT_BODY)
+		skill_box.add_child(aff_lbl)
 
-		if not skill_def.scalings.is_empty():
-			var scaling_title := Label.new()
-			scaling_title.text = " • Damage scaling:"
-			scaling_title.add_theme_color_override("font_color", Color(0.7, 0.85, 0.95))
-			scaling_title.add_theme_font_size_override("font_size", FONT_BODY)
-			skill_box.add_child(scaling_title)
-
-			for scaling in skill_def.scalings:
-				var stat_key := _get_stat_key_from_enum(scaling.stat)
-
-				var row := HBoxContainer.new()
-				row.add_theme_constant_override("separation", 6)
-				
-				var indent := Control.new()
-				indent.custom_minimum_size = Vector2(16, 0)
-				row.add_child(indent)
-
-				if STAT_DISPLAY.has(stat_key):
-					var stat_info = STAT_DISPLAY[stat_key]
-					
-					if stat_info.size() > 2 and stat_info[2]:
-						var s_icon := TextureRect.new()
-						s_icon.texture = stat_info[2]
-						s_icon.custom_minimum_size = Vector2(18, 18)
-						s_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-						s_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-						s_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-						row.add_child(s_icon)
-
-					var scaling_lbl := Label.new()
-					scaling_lbl.text = "%s x%.2f" % [stat_info[0], scaling.weight]
-					scaling_lbl.add_theme_color_override("font_color", stat_info[1])
-					scaling_lbl.add_theme_font_size_override("font_size", FONT_BODY)
-					row.add_child(scaling_lbl)
-				else:
-					var scaling_lbl := Label.new()
-					var fallback_name = GameEnums.Stat.keys()[scaling.stat].capitalize()
-					scaling_lbl.text = "%s x%.2f" % [fallback_name, scaling.weight]
-					scaling_lbl.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
-					scaling_lbl.add_theme_font_size_override("font_size", FONT_BODY)
-					row.add_child(scaling_lbl)
-
-				skill_box.add_child(row)
-
-		if skill_def.bonus_hits_per_stat:
-			var bonus = skill_def.bonus_hits_per_stat
-			var stat_key = _get_stat_key_from_enum(bonus.stat)
-			var stat_name = STAT_DISPLAY[stat_key][0] if STAT_DISPLAY.has(stat_key) else GameEnums.Stat.keys()[bonus.stat].capitalize()
-			
-			var bonus_lbl := Label.new()
-			bonus_lbl.text = " • Bonus Hits: +1 hit per %.1f %s" % [bonus.weight, stat_name]
-			bonus_lbl.add_theme_color_override("font_color", Color(0.9, 0.6, 0.2))
-			bonus_lbl.add_theme_font_size_override("font_size", FONT_BODY)
-			skill_box.add_child(bonus_lbl)
-
-		root.add_child(_make_separator())
-
-	if not def.description.is_empty():
-		var blocks = def.description.split("\n\n", false)
-		for i in blocks.size():
-			var block: String = blocks[i].strip_edges()
-			if block.is_empty():
-				continue
-
-			var lines := block.split("\n", false)
-			var passive_box := VBoxContainer.new()
-			passive_box.add_theme_constant_override("separation", 2)
-			root.add_child(passive_box)
-
-			if lines.size() >= 2:
-				var p_title := Label.new()
-				p_title.text = lines[0]
-				p_title.add_theme_color_override("font_color", Color(0.91, 0.75, 0.35))
-				p_title.add_theme_font_size_override("font_size", FONT_BODY)
-				passive_box.add_child(p_title)
-
-				var p_desc := RichTextLabel.new()
-				p_desc.bbcode_enabled = true
-				p_desc.fit_content = true
-				p_desc.scroll_active = false
-				p_desc.custom_minimum_size = Vector2(300, 0)
-				p_desc.add_theme_color_override("default_color", Color(0.72, 0.72, 0.70))
-				p_desc.add_theme_font_size_override("normal_font_size", FONT_BODY)
-				p_desc.text = _colorize_numbers("\n".join(lines.slice(1)))
-				passive_box.add_child(p_desc)
-			else:
-				var desc := RichTextLabel.new()
-				desc.bbcode_enabled = true
-				desc.fit_content = true
-				desc.scroll_active = false
-				desc.custom_minimum_size = Vector2(300, 0)
-				desc.add_theme_color_override("default_color", Color(0.72, 0.72, 0.70))
-				desc.add_theme_font_size_override("normal_font_size", FONT_BODY)
-				desc.text = _colorize_numbers(block)
-				passive_box.add_child(desc)
-
-			if i < blocks.size() - 1:
-				var gap := Control.new()
-				gap.custom_minimum_size = Vector2(0, 4)
-				root.add_child(gap)
-
-	return container
+	parent.add_child(_make_separator())
 
 
 func _clear_tooltip_panel_bg(tooltip_content: Control) -> void:
@@ -372,25 +186,27 @@ func _colorize_numbers(text: String) -> String:
 func _get_stat_rows() -> Array[Dictionary]:
 	var rows: Array[Dictionary] = []
 	var def = item_data.definition
-	
+
 	for property in STAT_DISPLAY.keys():
 		if property in def:
 			var value = def.get(property)
 
 			if value == 0 or value == 0.0:
 				continue
-				
-			var info = STAT_DISPLAY[property]
-			
-			var value_str := "%d" % int(round(value))
 
-			var formatted_text = "%s: %s" % [info[0], value_str]
+			var info = STAT_DISPLAY[property]
+			var value_str := "%d" % int(round(value))
 
 			var icon_texture: Texture2D = null
 			if info.size() > 2:
 				icon_texture = info[2]
-			
-			rows.append({"text": formatted_text, "color": info[1],"icon": icon_texture})
+
+			rows.append({
+				"value": value_str,
+				"label": info[0],
+				"color": info[1],
+				"icon": icon_texture,
+			})
 	return rows
 
 
@@ -449,8 +265,9 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	var dragged_instance: ItemInstance = data["item_instance"]
 	var drag_count: int = data["drag_count"]
 	var is_partial: bool = data["is_partial"]
+	
 	if not is_empty() and dragged_instance.definition is SkillItemDefinition and item_data.definition is ItemDefinition:
-		_open_skill_face_picker(dragged_instance.definition.skill, source_slot)
+		_assign_skill_to_item(dragged_instance.definition.skill, source_slot)
 		return
 
 	if not self.is_empty() and dragged_instance.definition is MaterialDefinition and dragged_instance.definition.category == InventoryEntry.Category.UPGRADE_STONE:
@@ -518,15 +335,27 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 
 	slot_changed.emit(self)
 	source_slot.slot_changed.emit(source_slot)
+	
+func _assign_skill_to_item(skill: SkillDefinition, source_slot: Panel) -> void:
+	var existing: SkillDefinition = item_data.equipped_skill
 
-func _open_skill_face_picker(skill: SkillDefinition, source_slot: Panel) -> void:
-	var picker := SkillFacePickerScene.instantiate()
-	get_tree().root.add_child(picker)
-	picker.assignment_confirmed.connect(_on_skill_assignment_confirmed.bind(source_slot))
-	picker.setup(item_data, skill)
+	if existing == null:
+		_confirm_skill_assignment(skill, source_slot)
+		return
 
-func _on_skill_assignment_confirmed(face: int, skill: SkillDefinition, source_slot: Panel) -> void:
-	item_data.slot_assignments[face] = skill
+	var confirm := ConfirmationDialog.new()
+	confirm.dialog_text = "Nadpisać \"%s\" skillem \"%s\"?" % [existing.skill_name, skill.skill_name]
+	confirm.confirmed.connect(func():
+		_confirm_skill_assignment(skill, source_slot)
+		confirm.queue_free()
+	)
+	confirm.canceled.connect(confirm.queue_free)
+	get_tree().root.add_child(confirm)
+	confirm.popup_centered()
+
+
+func _confirm_skill_assignment(skill: SkillDefinition, source_slot: Panel) -> void:
+	item_data.equipped_skill = skill
 	_update_visual()
 
 	source_slot.item_data.quantity -= 1

@@ -10,12 +10,13 @@ enum Type {
 	AMULET,
 	RING,
 	SHIELD,
-	BACKPACK,
 	LEGS,
 }
 
 @export var slot_type: Type = Type.WEAPON
 @export var placeholder_texture: Texture2D
+
+@onready var skill_icon: TextureRect = $SkillIcon
 
 func _ready() -> void:
 	super._ready()
@@ -105,6 +106,17 @@ func _update_visual() -> void:
 			icon.texture = placeholder_texture
 			icon.visible = true
 			icon.modulate = Color(1, 1, 1, 0.35)
+		skill_icon.texture = null
+		skill_icon.visible = false
+		return
+
+	if icon:
+		icon.modulate = Color(1, 1, 1, 1)
+
+	var active_skill: SkillDefinition = item_data.equipped_skill if item_data.equipped_skill else item_data.definition.default_skill
+	if active_skill and active_skill.icon:
+		skill_icon.texture = active_skill.icon
+		skill_icon.visible = true
 	else:
-		if icon:
-			icon.modulate = Color(1, 1, 1, 1)
+		skill_icon.texture = null
+		skill_icon.visible = false

@@ -1,0 +1,88 @@
+[gd_scene format=3 uid="uid://d3l2j2u2xebjv"]
+
+[ext_resource type="Script" uid="uid://cct67fc0pu5hd" path="res://scripts/UI/inventory_tooltip.gd" id="1_ymwa4"]
+
+[node name="InventoryTooltip" type="PanelContainer" unique_id=1611436189]
+custom_minimum_size = Vector2(700, 0)
+custom_maximum_size = Vector2(700, -1)
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_ymwa4")
+
+[node name="Root" type="VBoxContainer" parent="." unique_id=1153736935]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Header" type="HBoxContainer" parent="Root" unique_id=1742413212]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Icon" type="TextureRect" parent="Root/Header" unique_id=650005491]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TitleBox" type="VBoxContainer" parent="Root/Header" unique_id=1990469574]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Name" type="Label" parent="Root/Header/TitleBox" unique_id=420066179]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Category" type="Label" parent="Root/Header/TitleBox" unique_id=916046604]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Slot" type="Label" parent="Root/Header/TitleBox" unique_id=984225742]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="PriceBox" type="VBoxContainer" parent="Root/Header" unique_id=491599097]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Price" type="Label" parent="Root/Header/PriceBox" unique_id=1015862886]
+unique_name_in_owner = true
+layout_mode = 2
+text = "$"
+
+[node name="StatsSeparator" type="ColorRect" parent="Root" unique_id=643570725]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+color = Color(1, 1, 1, 0.19607843)
+
+[node name="Stats" type="VBoxContainer" parent="Root" unique_id=2058235577]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AffinitiesSeparator" type="ColorRect" parent="Root" unique_id=80074321]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+color = Color(1, 1, 1, 0.19607843)
+
+[node name="Affinities" type="VBoxContainer" parent="Root" unique_id=1198427524]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SkillSeparator" type="ColorRect" parent="Root" unique_id=2051709407]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+color = Color(1, 1, 1, 0.19607843)
+
+[node name="Skill" type="VBoxContainer" parent="Root" unique_id=784855985]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Description" type="VBoxContainer" parent="Root" unique_id=632390106]
+unique_name_in_owner = true
+layout_mode = 2

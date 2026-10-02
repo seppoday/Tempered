@@ -1,13 +1,15 @@
 [gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://868qluknvm0"]
 
-[ext_resource type="Texture2D" uid="uid://bb3hgpllu76to" path="res://assets/icons/stars.svg" id="1_5fkpt"]
+[ext_resource type="Texture2D" uid="uid://44j65q7wp2lp" path="res://assets/icons/star.svg" id="1_vnckl"]
 [ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_0nyp6"]
+[ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="2_61kco"]
+[ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="4_skbyp"]
 
 [resource]
 script = ExtResource("2_0nyp6")
 id = "crit_boost"
 skill_name = "Crit Boost"
-icon = ExtResource("1_5fkpt")
+icon = ExtResource("1_vnckl")
 description = "Crit Boost"
 effect_type = 4
 target_type = 3

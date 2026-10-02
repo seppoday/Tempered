@@ -2,9 +2,9 @@ extends PanelContainer
 
 @onready var grid: GridContainer = $MarginContainer/GridContainer
 
-const SLOT_COUNT: int = 36
-const SLOT_GAP: int = 4
-const GRID_COLUMNS: int = 6
+const SLOT_COUNT: int = 28
+const SLOT_GAP: int = 8
+const GRID_COLUMNS: int = 7
 
 const SlotScene: PackedScene = preload("uid://bbadchds7qm5n")
 

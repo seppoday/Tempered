@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://d11sg6ka7ahht"]
 
+[ext_resource type="Texture2D" uid="uid://dm548qaq1saoh" path="res://assets/icons/poison.svg" id="1_5ognc"]
 [ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_yp5cc"]
 [ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_1vg0d"]
 [ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="3_46wbb"]
@@ -20,6 +21,7 @@ status_stacks = 2
 script = ExtResource("2_1vg0d")
 id = "venom_cascade"
 skill_name = "Venom Cascade"
+icon = ExtResource("1_5ognc")
 base_value = 0.5
 scalings = Array[ExtResource("1_yp5cc")]([SubResource("Resource_fl0bf")])
 damage_element = 3

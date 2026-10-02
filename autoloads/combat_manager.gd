@@ -35,7 +35,7 @@ var is_game_over: bool = false
 
 func _ready() -> void:
 	PlayerData.health.died.connect(_on_player_died)
-	DebugConsole.register_command("killenemy", _cmd_kill_enemy, "killenemy = zabija bieżącego wroga")
+	DebugConsole.register_command("kill", _cmd_kill_enemy, "kill = zabija bieżącego wroga")
 
 
 func _cmd_kill_enemy(_args: Array) -> String:
@@ -91,14 +91,14 @@ func resolve_player_attack(selected_results: Array[Dictionary]) -> void:
 		var context := build_trigger_context(rolled_face, max_face)
 
 		var effective_base := get_effective_base(skill, context)
-		for trigger in skill.triggers:
-			if trigger.base_value_override > 0.0 and trigger.should_activate(context):
-				effective_base = trigger.base_value_override
-				Log.print("Trigger %s → base_value override: %.2f → %.2f" % [
-					GameEnums.TriggerType.keys()[trigger.trigger_type],
-					skill.base_value,
-					effective_base
-				])
+		#for trigger in skill.triggers:
+			#if trigger.base_value_override > 0.0 and trigger.should_activate(context):
+				#effective_base = trigger.base_value_override
+				#Log.print("Trigger %s → base_value override: %.2f → %.2f" % [
+					#GameEnums.TriggerType.keys()[trigger.trigger_type],
+					#skill.base_value,
+					#effective_base
+				#])
 
 		# ZMIANA: apply_modifiers = true → tylko tutaj zużywamy buffy
 		var value := calculate_effect_value(

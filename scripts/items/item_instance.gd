@@ -9,7 +9,7 @@ enum UpgradeResult {
 
 var definition: InventoryEntry
 var quantity: int = 1
-var slot_assignments: Dictionary = {}
+var equipped_skill: SkillDefinition = null
 var dice_level: int = 0
 
 func _init(item_definition: InventoryEntry, amount: int = 1, level: int = 0) -> void:
@@ -43,8 +43,7 @@ func roll_skill() -> Dictionary:
 	var item_def := definition as ItemDefinition
 	var max_face: int = GameEnums.DICE_PROGRESSION[dice_level]
 	var face: int = RNG.randi_range(1, max_face)
-	var slot: int = RNG.randi_range(1, 6) # 6 Slotów na skille na każdym itemie
-	var skill: SkillDefinition = slot_assignments.get(slot, item_def.default_skill)
+	var skill: SkillDefinition = equipped_skill if equipped_skill != null else item_def.default_skill
 
 	if skill == null:
 		Log.error("ItemInstance.roll_skill(): brak skilla dla ścianki %d i brak default_skill w '%s'" % [face, item_def.name])
@@ -53,7 +52,6 @@ func roll_skill() -> Dictionary:
 	return {
 		"face": face,
 		"skill": skill,
-		"slot": slot,
 		"dice_level_on_item": max_face,
 	}
 

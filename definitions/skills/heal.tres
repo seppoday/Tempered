@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://c5vyhyjogciu5"]
 
 [ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_8xpnj"]
+[ext_resource type="Texture2D" uid="uid://c3dt1o7p27p24" path="res://assets/icons/heal.svg" id="1_wf0p2"]
 [ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_s34pt"]
 [ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="3_ti3mt"]
 
@@ -18,6 +19,7 @@ weight = 0.4
 script = ExtResource("2_s34pt")
 id = "heal"
 skill_name = "Heal"
+icon = ExtResource("1_wf0p2")
 effect_type = 1
 target_type = 0
 scalings = Array[ExtResource("1_8xpnj")]([SubResource("Resource_qte4o"), SubResource("Resource_ysmgp")])

@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://c47fxxua7vnpl"]
 
+[ext_resource type="Texture2D" uid="uid://b8u7whk4fd75c" path="res://assets/icons/arrow.svg" id="1_17fyx"]
 [ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_exrd1"]
 [ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_17fyx"]
 [ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="3_4rl7k"]
@@ -13,6 +14,7 @@ weight = 0.8
 script = ExtResource("2_17fyx")
 id = "swift_strike"
 skill_name = "Swift Strike"
+icon = ExtResource("1_17fyx")
 base_value = 0.5
 scalings = Array[ExtResource("1_exrd1")]([SubResource("Resource_bycpo")])
 tags = Array[int]([0, 5])

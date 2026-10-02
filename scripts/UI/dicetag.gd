@@ -111,7 +111,6 @@ func setup(skill: SkillDefinition, face: int, max_face: int, effect_value: float
 
 	var element_color: Color = ELEMENT_COLORS.get(skill.damage_element, Color.WHITE)
 	roll_detail_label.add_theme_color_override("font_color", element_color)
-	icon.self_modulate = element_color
 
 	# ── NOWE: krótki opis skalowania ──
 	scaling_label.text = _build_scaling_text(skill, item)

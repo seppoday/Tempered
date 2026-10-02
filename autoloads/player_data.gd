@@ -54,14 +54,14 @@ const BASE_CRIT: float = 0.0
 # DEBUG
 const DEBUG_START_GEAR: Array[Dictionary] = [
 	# [id, count, level (0-6)]
-	{"id": "twin_daggers",    "count": 1, "level": 1},
+	{"id": "ember_blade",    "count": 1, "level": 1},
 	{"id": "iron_shield",    "count": 1, "level": 1},
 	{"id": "healers_amulet",  "count": 1, "level": 1},
-	{"id": "iron_plate",   "count": 1, "level": 1},
-	{"id": "thiefs_gloves", "count": 1, "level": 1},
-	{"id": "hunter_boots",   "count": 1, "level": 1},
-	{"id": "berserker_horns",    "count": 1, "level": 1},
-	{"id": "frost_ring",      "count": 1, "level": 1},
+	#{"id": "iron_plate",   "count": 1, "level": 1},
+	#{"id": "thiefs_gloves", "count": 1, "level": 1},
+	#{"id": "hunter_boots",   "count": 1, "level": 1},
+	#{"id": "berserker_horns",    "count": 1, "level": 1},
+	#{"id": "frost_ring",      "count": 1, "level": 1},
 ]
 
 func give_debug_gear() -> void:

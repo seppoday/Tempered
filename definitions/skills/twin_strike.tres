@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://dyegyx24lkwvw"]
 
-[ext_resource type="Texture2D" uid="uid://dmgl50ls0pddu" path="res://assets/icons/fire.svg" id="1_po40w"]
+[ext_resource type="Texture2D" uid="uid://mc8kstoeeofw" path="res://assets/icons/twin_sword.svg" id="2_dhbwa"]
 [ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="2_vby44"]
 [ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="3_dhbwa"]
 [ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="4_vby44"]
@@ -20,7 +20,7 @@ metadata/_custom_type_script = "uid://oma4qvx1pxtp"
 script = ExtResource("3_dhbwa")
 id = "twin_strike"
 skill_name = "Twin Strike"
-icon = ExtResource("1_po40w")
+icon = ExtResource("2_dhbwa")
 description = "Twin Strike"
 base_value = 0.6
 scalings = Array[ExtResource("2_vby44")]([SubResource("Resource_70e4i")])

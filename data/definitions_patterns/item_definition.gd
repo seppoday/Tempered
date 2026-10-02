@@ -15,6 +15,7 @@ class_name ItemDefinition extends InventoryEntry
 @export var luck: float = 0.0
 @export var status: float = 0.0
 @export var crit: float = 0.0
+@export var price: int = 0
 
 @export_category("Affinity")
 @export var affinities: Array[ItemAffinity] = []

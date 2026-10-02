@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://d2bx1aee0jsx" path="res://assets/icons/coin.svg" id="1_ui8la"]
 [ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="2_l7a50"]
 [ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_nahdi"]
+[ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="4_l7a50"]
 
 [sub_resource type="Resource" id="Resource_c5yqb"]
 script = ExtResource("2_l7a50")
