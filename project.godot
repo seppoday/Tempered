@@ -68,6 +68,7 @@ enabled=PackedStringArray("res://addons/anthonyec.camera_preview/plugin.cfg", "r
 player=""
 enemies=""
 dices=""
+dice_box_trigger=""
 
 [gui]
 
@@ -99,7 +100,9 @@ toggle_console={
 [layer_names]
 
 2d_physics/layer_1="Player"
+3d_physics/layer_1="world"
 2d_physics/layer_2="Enemy"
+3d_physics/layer_2="clickable"
 2d_physics/layer_3="PlayerWeapon"
 
 [physics]

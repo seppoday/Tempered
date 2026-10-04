@@ -3,6 +3,8 @@ extends Node3D
 
 # Zamiast dwóch przycisków, mamy teraz jeden kontekstowy
 @export var action_button: Button
+@export var box_clicker: StaticBody3D
+
 @export var dice_roller: DiceRoller
 @export var dice_hand: DiceHand
 @export var enemy_scene: PackedScene
@@ -13,12 +15,15 @@ extends Node3D
 
 
 func _ready() -> void:
+	get_viewport().physics_object_picking = true
 	AudioManager.play_music(AudioLibrary.get_music(AudioKeys.MUSIC_TEST), -10.0)
 
 	# Podłączamy tylko jeden przycisk do wspólnej funkcji obsługującej kliknięcie
 	action_button.pressed.connect(_on_action_button_pressed)
+	box_clicker.roll_requested.connect(_on_action_button_pressed)
 	
-	dice_hand.results_ready.connect(_on_dice_hand_results_ready)
+	#dice_hand.results_ready.connect(_on_dice_hand_results_ready)
+	dice_hand.selection_complete.connect(_on_selection_complete)
 	GameManager.state_changed.connect(_on_game_state_changed)
 	GameManager.set_state(GameManager.State.INTRO, self)
 
@@ -71,6 +76,7 @@ func _on_game_state_changed(new_state: GameManager.State) -> void:
 # ── KLIKNIĘCIE JEDYNEGO PRZYCISKU ──
 
 func _on_action_button_pressed() -> void:
+	print("test")
 	# Animacja uderzenia przycisku
 	UIAnim.pop(action_button)
 	
@@ -93,6 +99,21 @@ func _execute_roll() -> void:
 	GameManager.set_state(GameManager.State.RESOLVING, self)
 	dice_roller.roll()
 
+func _on_selection_complete(selected_results: Array[Dictionary]) -> void:
+	GameManager.set_state(GameManager.State.RESOLVING, self)
+	await CombatManager.resolve_player_attack(selected_results)
+
+	dice_hand.reset_for_new_roll()
+
+	if CombatManager.is_game_over or CombatManager.current_enemy == null:
+		return
+
+	await get_tree().create_timer(0.5).timeout
+	GameManager.set_state(GameManager.State.ENEMY_TURN, self)
+	CombatManager.enemy_take_turn()
+
+	if not CombatManager.is_game_over:
+		GameManager.set_state(GameManager.State.PLAYER_TURN, self)
 
 func _execute_confirm() -> void:
 	if not dice_hand.has_selection() or CombatManager.is_game_over:

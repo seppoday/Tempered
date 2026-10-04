@@ -23,10 +23,6 @@ var dice_items: Array[ItemInstance] = []
 var pending_results: Array[Dictionary] = []
 
 
-func _ready() -> void:
-	pass
-
-
 func roll() -> void:
 	if dice_group.is_empty():
 		push_warning("DiceRoller.roll(): brak kości — zapomniałeś wywołać sync_dice_with_equipment()?")

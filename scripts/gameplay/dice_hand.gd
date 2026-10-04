@@ -2,8 +2,10 @@ class_name DiceHand
 extends Node
 
 signal results_ready
+signal selection_complete(selected_results: Array[Dictionary])
 
 @export var dice_tag_scene: PackedScene
+@export var picks_label: Label
 @export var camera: Camera3D
 @export var dice_tag_canvas_layer: CanvasLayer
 @export var dice_roller: DiceRoller
@@ -18,18 +20,19 @@ var selected_tags: Array[PanelContainer] = []
 var resolving_tags: Array[PanelContainer] = []
 var pending_results: Array[Dictionary] = []
 
-# ✅ NOWE: indeks do śledzenia który hit aktualnie się animuje
 var current_hit_index: int = 0
 
 var is_rolling: bool = false
 
 
 func _ready() -> void:
+	picks_label.hide()
 	dice_roller.dice_spawned.connect(_on_dice_spawned)
 	dice_roller.dice_settled.connect(_on_dice_settled)
 	CombatManager.effect_applied.connect(_on_combat_effect_applied)
 
-
+	
+	
 func start_rolling() -> void:
 	is_rolling = true
 
@@ -59,7 +62,6 @@ func confirm_selection() -> Array[Dictionary]:
 
 
 func reset_for_new_roll() -> void:
-	# ✅ NOWE: Reset indeksu
 	current_hit_index = 0
 	
 	for tag in active_tags:
@@ -71,8 +73,14 @@ func reset_for_new_roll() -> void:
 			tag.set_locked(false)
 	selected_tags.clear()
 	resolving_tags.clear()
+	
+	picks_label.hide()
 
-
+func _update_picks_label() -> void:
+	var limit := PlayerData.picks_per_cycle
+	var chosen := selected_tags.size()
+	picks_label.text = "Wybierz %d/%d" % [chosen, limit]
+	
 # --- OBSŁUGA SYGNAŁÓW I EVENTÓW ---
 
 func _on_dice_spawned(dice: Array[RigidBody3D]) -> void:
@@ -106,7 +114,11 @@ func _on_card_toggled(card: PanelContainer, wants_selected: bool) -> void:
 	card.set_selected(wants_selected)
 	AudioManager.play_sfx(AudioLibrary.get_ui(AudioKeys.UI_CLICK), -5.0)
 	_update_lock_states()
-
+	_update_picks_label()
+	
+	if selected_tags.size() == PlayerData.picks_per_cycle:
+		var results := await confirm_selection()
+		selection_complete.emit(results)
 
 func _on_combat_effect_applied(skill: SkillDefinition, value: int, target: String) -> void:
 	# Odczyt MUSI być przed pierwszym await
@@ -140,6 +152,9 @@ func _on_combat_effect_applied(skill: SkillDefinition, value: int, target: Strin
 
 func _reveal_results_domino() -> void:
 	if active_tags.is_empty(): return
+	
+	picks_label.show()
+	_update_picks_label()
 
 	# Najpierw ustawiamy teksty, żeby tagi dostały finalny rozmiar
 	for i in active_tags.size():
@@ -168,7 +183,7 @@ func _reveal_results_domino() -> void:
 		await last_tween.finished
 
 	is_rolling = false
-
+	
 
 func _animate_selection_and_centering() -> void:
 	var unselected_tags = active_tags.filter(
