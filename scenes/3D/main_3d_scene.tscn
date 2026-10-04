@@ -29,7 +29,6 @@
 [ext_resource type="Texture2D" uid="uid://hckl245r3g2f" path="res://assets/ui/boots_slot_placeholder.png" id="18_ufuvc"]
 [ext_resource type="Script" uid="uid://ciakkvnknrtrw" path="res://scripts/UI/alchemy_panel.gd" id="19_8r76n"]
 [ext_resource type="Script" uid="uid://cpns5yr2xh0ev" path="res://scripts/UI/inventory.gd" id="20_q0ack"]
-[ext_resource type="Script" uid="uid://dyvxaabqf72dk" path="res://data/definitions_patterns/inventory_entry.gd" id="21_50bjb"]
 [ext_resource type="FontFile" uid="uid://dok171t6oxmnq" path="res://assets/fonts/FiraSans-Bold.ttf" id="24_amdh2"]
 [ext_resource type="Script" uid="uid://b0nh08jlx8xfr" path="res://scripts/UI/equipment_canvas_layer.gd" id="28_8r76n"]
 [ext_resource type="PackedScene" uid="uid://bbadchds7qm5n" path="res://scenes/UI/slot.tscn" id="31_ifyqo"]
@@ -44,21 +43,15 @@
 [ext_resource type="Texture2D" uid="uid://bn3jdfoam3lr4" path="res://assets/models/materials/carpet/cotton_jersey_nor_gl_1k.jpg" id="41_q0ack"]
 [ext_resource type="Texture2D" uid="uid://c113jmy871e2p" path="res://assets/models/materials/carpet/cotton_jersey_ao_1k.jpg" id="42_50bjb"]
 [ext_resource type="Texture2D" uid="uid://dnaguf6uyfwym" path="res://assets/ui/legs_slot_placeholder.png" id="42_fdv13"]
-[ext_resource type="Resource" uid="uid://c8xtyf5xu3ydt" path="res://definitions/items/shields/bulwark_shield.tres" id="43_4psnp"]
 [ext_resource type="Script" uid="uid://c6w0ntq5lk1od" path="res://scripts/gameplay/dice_hand.gd" id="43_8r76n"]
-[ext_resource type="Resource" uid="uid://duarrnffv6u3b" path="res://definitions/items/weapons/berserker_cleaver.tres" id="45_dwi8f"]
-[ext_resource type="Resource" uid="uid://bpk3km28i6vsa" path="res://definitions/items/weapons/ember_blade.tres" id="45_ev28f"]
 [ext_resource type="Shader" uid="uid://dixfqjkcloefu" path="res://postprocessing.gdshader" id="46_lhg76"]
-[ext_resource type="Resource" uid="uid://d24qi4m4dxhnh" path="res://definitions/items/weapons/twin_daggers.tres" id="47_ifyqo"]
-[ext_resource type="Resource" uid="uid://j6xuijp73so4" path="res://definitions/items/weapons/venom_fang.tres" id="48_6qjdx"]
-[ext_resource type="Resource" uid="uid://diiwnmylykliq" path="res://definitions/items/weapons/mercenery_blade.tres" id="50_fdv13"]
-[ext_resource type="Resource" uid="uid://bgturwky8qaxf" path="res://definitions/items/rings/frost_ring.tres" id="51_dwi8f"]
-[ext_resource type="Resource" uid="uid://cqcsn3f0u34ci" path="res://definitions/items/amulets/healers_amulet.tres" id="52_xt5sj"]
-[ext_resource type="Resource" uid="uid://bxmcowaaa0ccf" path="res://definitions/items/rings/phoenix_feather.tres" id="53_7ifas"]
-[ext_resource type="Resource" uid="uid://dixma2lmo5kkv" path="res://definitions/items/weapons/plague_dagger.tres" id="54_0ba6h"]
-[ext_resource type="Resource" uid="uid://lqt0rt3daif5" path="res://definitions/skill_items/skill_item_fire_attack.tres" id="55_6qjdx"]
 [ext_resource type="Script" uid="uid://c73k0xhw4yeyb" path="res://scripts/UI/rewards_canvas_layer.gd" id="58_dwi8f"]
 [ext_resource type="PackedScene" uid="uid://bbkjtosvst7i2" path="res://scenes/UI/reward_tag.tscn" id="59_3w64d"]
+
+[sub_resource type="Resource" id="Resource_nvv70"]
+script = ExtResource("7_lw8pt")
+enemies_list = Array[ExtResource("8_hgf45")]([ExtResource("9_6ydfj"), ExtResource("10_2r5wi"), ExtResource("14_amdh2"), ExtResource("15_mpvc3"), ExtResource("16_g7q3g")])
+metadata/_custom_type_script = "uid://isk6xjs47cxp"
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_wvhbo"]
 panorama = ExtResource("3_yvypd")
@@ -141,6 +134,7 @@ size = Vector3(4.3, 0.1, 1.2)
 size = Vector3(3, 0.1, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_wvhbo"]
+height = 1.2827148
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_abi3o"]
 albedo_color = Color(0.9563518, 0.88003916, 0.7647266, 1)
@@ -155,14 +149,12 @@ bottom_radius = 0.4272461
 height = 0.12402344
 
 [sub_resource type="BoxMesh" id="BoxMesh_ifow5"]
-size = Vector3(4.4379883, 1, 2.7385254)
+size = Vector3(4.4379883, 0.6767578, 2.7385254)
+
+[sub_resource type="PrismMesh" id="PrismMesh_g7q3g"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_a0yx4"]
-
-[sub_resource type="Resource" id="Resource_nvv70"]
-script = ExtResource("7_lw8pt")
-enemies_list = Array[ExtResource("8_hgf45")]([ExtResource("9_6ydfj"), ExtResource("10_2r5wi"), ExtResource("14_amdh2"), ExtResource("15_mpvc3"), ExtResource("16_g7q3g")])
-metadata/_custom_type_script = "uid://isk6xjs47cxp"
+size = Vector3(0.48242188, 0.34106445, 2.4858398)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ke5is"]
 resource_name = "Material"
@@ -389,14 +381,6 @@ shader_parameter/fade = 0.0
 shader_parameter/fade_color = Color(0, 0, 0, 1)
 shader_parameter/time_scale = 1.0
 
-[sub_resource type="LabelSettings" id="LabelSettings_6qjdx"]
-font = ExtResource("24_amdh2")
-font_size = 24
-outline_size = 12
-outline_color = Color(0, 0, 0, 1)
-shadow_size = 24
-shadow_color = Color(0.20210624, 0.1110039, 0.062536865, 0.5529412)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g7q3g"]
 bg_color = Color(0.73248976, 0, 0.03350093, 1)
 corner_radius_top_left = 6
@@ -420,14 +404,26 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[node name="Main3DScene" type="Node3D" unique_id=417046850 node_paths=PackedStringArray("action_button", "result_label", "dice_roller", "dice_hand", "wave_manager")]
+[node name="Main3DScene" type="Node3D" unique_id=417046850 node_paths=PackedStringArray("action_button", "dice_roller", "dice_hand", "wave_manager")]
 script = ExtResource("1_8ngun")
 action_button = NodePath("MainSceneUICanvasLayer/MarginContainer/ActionButton")
-result_label = NodePath("MainSceneUICanvasLayer/MarginContainer/ResultLabel")
 dice_roller = NodePath("Box/DiceRoller")
 dice_hand = NodePath("DiceHand")
 enemy_scene = ExtResource("4_yvypd")
 wave_manager = NodePath("WaveManager")
+
+[node name="DiceHand" type="Node" parent="." unique_id=187322700 node_paths=PackedStringArray("camera", "dice_tag_canvas_layer", "dice_roller", "enemy_spawn_point", "hp_progress_bar")]
+script = ExtResource("43_8r76n")
+dice_tag_scene = ExtResource("2_rqbel")
+camera = NodePath("../CameraAnchor/Camera3D")
+dice_tag_canvas_layer = NodePath("../DiceTags")
+dice_roller = NodePath("../Box/DiceRoller")
+enemy_spawn_point = NodePath("../Box/Lid/EnemySpawnPoint")
+hp_progress_bar = NodePath("../MainSceneUICanvasLayer/MarginContainer/HBoxContainer2/HpBox/HpProgressBar")
+
+[node name="WaveManager" type="Node" parent="." unique_id=1545171642]
+script = ExtResource("7_avuin")
+waves = Array[ExtResource("7_lw8pt")]([SubResource("Resource_nvv70")])
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1158641627]
 environment = SubResource("Environment_rqbel")
@@ -504,7 +500,7 @@ shadow_enabled = true
 shadow_blur = 5.0
 spot_range = 12.0
 spot_attenuation = 0.6
-spot_angle = 32.0
+spot_angle = 40.0
 spot_angle_attenuation = 0.6155724
 
 [node name="SpotLight3D2" type="AreaLight3D" parent="." unique_id=1410226786]
@@ -530,16 +526,6 @@ directional_shadow_blend_splits = true
 directional_shadow_fade_start = 0.648
 directional_shadow_max_distance = 18.6
 
-[node name="DiceHand" type="Node" parent="." unique_id=187322700 node_paths=PackedStringArray("camera", "dice_tag_canvas_layer", "dice_roller", "enemy_spawn_point", "hp_progress_bar", "result_label")]
-script = ExtResource("43_8r76n")
-dice_tag_scene = ExtResource("2_rqbel")
-camera = NodePath("../CameraAnchor/Camera3D")
-dice_tag_canvas_layer = NodePath("../DiceTags")
-dice_roller = NodePath("../Box/DiceRoller")
-enemy_spawn_point = NodePath("../Box/Lid/EnemySpawnPoint")
-hp_progress_bar = NodePath("../MainSceneUICanvasLayer/MarginContainer/HBoxContainer2/HpBox/HpProgressBar")
-result_label = NodePath("../MainSceneUICanvasLayer/MarginContainer/ResultLabel")
-
 [node name="CameraAnchor" type="Node3D" parent="." unique_id=198828219]
 transform = Transform3D(-4.371139e-08, -0.74024993, 0.6723318, 0, 0.6723318, 0.74024993, -1, 3.2357352e-08, -2.9388557e-08, 4.4259553, 5.5673046, -1.9346464e-07)
 
@@ -547,7 +533,7 @@ transform = Transform3D(-4.371139e-08, -0.74024993, 0.6723318, 0, 0.6723318, 0.7
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, -9.509359e-16, 0, -9.509359e-16, 1, 0, 0, 0)
 attributes = SubResource("CameraAttributesPractical_hgf45")
-fov = 35.0
+fov = 34.0
 size = 0.1
 script = ExtResource("7_ufuvc")
 
@@ -629,23 +615,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.157814, 0.7526282, 0.654289
 mesh = SubResource("CylinderMesh_wvhbo")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="Props" unique_id=1180479643]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.88242, 0.7526281, -1.7747266)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.88242, 0.3939855, -1.7747266)
 mesh = SubResource("CylinderMesh_wvhbo")
 
 [node name="MeshInstance3D5" type="MeshInstance3D" parent="Props" unique_id=417963231]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5801115, -0.18536007, 0.9343791)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7524028, -0.18536007, 1.0452685)
 mesh = SubResource("CylinderMesh_l3r7w")
 
 [node name="MeshInstance3D9" type="MeshInstance3D" parent="Props" unique_id=1123871655]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.467003, 4.581102, 4.102424)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0157514, 4.581102, 3.8223505)
+visible = false
 mesh = SubResource("CylinderMesh_l3r7w")
 
 [node name="MeshInstance3D10" type="MeshInstance3D" parent="Props" unique_id=396774068]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.97594124, 4.581102, 2.3047931)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.97594124, 4.581102, 2.4115567)
 mesh = SubResource("CylinderMesh_l3r7w")
 
 [node name="MeshInstance3D11" type="MeshInstance3D" parent="Props" unique_id=1216312127]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.91483694, 4.581102, 3.6922297)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7912452, 4.581102, 4.1732445)
 mesh = SubResource("CylinderMesh_l3r7w")
 
 [node name="MeshInstance3D12" type="MeshInstance3D" parent="Props" unique_id=526247012]
@@ -653,15 +640,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.90528655, 4.581102, 1.25562
 mesh = SubResource("CylinderMesh_l3r7w")
 
 [node name="MeshInstance3D7" type="MeshInstance3D" parent="Props" unique_id=900675602]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.896648, -0.18536007, 1.7768469)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0689392, -0.18536007, 1.8877363)
 mesh = SubResource("CylinderMesh_l3r7w")
 
 [node name="MeshInstance3D6" type="MeshInstance3D" parent="Props" unique_id=2008974576]
-transform = Transform3D(0.98358154, -0.18046412, 0, 0.18046412, 0.98358154, 0, 0, 0, 1, -3.0210423, -0.10927549, 0.9343791)
+transform = Transform3D(0.98358154, -0.18046412, 0, 0.18046412, 0.98358154, 0, 0, 0, 1, -3.1933336, -0.10927549, 1.0452685)
 mesh = SubResource("CylinderMesh_l3r7w")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="Props" unique_id=381559824]
-transform = Transform3D(0.8660254, 0, -0.5, 0, 1, 0, 0.5, 0, 0.8660254, -4.902467, 0.25262856, -2.1767836)
+transform = Transform3D(0.8660254, 0, -0.5, 0, 1, 0, 0.5, 0, 0.8660254, -4.902467, 0.09100747, -2.1767836)
 mesh = SubResource("BoxMesh_ifow5")
 
 [node name="MeshInstance3D8" type="MeshInstance3D" parent="Props" unique_id=1989308225]
@@ -669,12 +656,12 @@ transform = Transform3D(0.8660254, 0, -0.5, 0, 1, 0, 0.5, 0, 0.8660254, -4.01817
 mesh = SubResource("BoxMesh_ifow5")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="Props" unique_id=768184311]
-transform = Transform3D(0.64778465, 0, -0.7618235, 0, 1, 0, 0.7618235, 0, 0.64778465, -1.4670243, 0.25262833, 2.737987)
-mesh = SubResource("BoxMesh_a0yx4")
+transform = Transform3D(0.64778465, 0, -0.7618235, 0, 1, 0, 0.7618235, 0, 0.64778465, -1.7466679, 0.25262833, -4.6446786)
+mesh = SubResource("PrismMesh_g7q3g")
 
-[node name="WaveManager" type="Node" parent="." unique_id=1545171642]
-script = ExtResource("7_avuin")
-waves = Array[ExtResource("7_lw8pt")]([SubResource("Resource_nvv70")])
+[node name="MeshInstance3D13" type="MeshInstance3D" parent="Props" unique_id=847379740]
+transform = Transform3D(0.64778465, 0, -0.7618235, 0, 1, 0, 0.7618235, 0, 0.64778465, 1.7466619, -0.07683945, -3.7948895)
+mesh = SubResource("BoxMesh_a0yx4")
 
 [node name="VoxelGI" type="VoxelGI" parent="." unique_id=1025382049]
 data = ExtResource("36_hgf45")
@@ -747,20 +734,6 @@ theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
-
-[node name="ResultLabel" type="Label" parent="MainSceneUICanvasLayer/MarginContainer" unique_id=376320681]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(400, 100)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-offset_transform_position = Vector2(0, 200)
-offset_transform_visual_only = false
-text = "test"
-label_settings = SubResource("LabelSettings_6qjdx")
-horizontal_alignment = 1
-vertical_alignment = 1
-uppercase = true
 
 [node name="HBoxContainer2" type="BoxContainer" parent="MainSceneUICanvasLayer/MarginContainer" unique_id=485729519]
 custom_maximum_size = Vector2(400, -1)
@@ -865,7 +838,6 @@ text = "ROLL"
 
 [node name="EquipmentCanvasLayer" type="CanvasLayer" parent="." unique_id=219155604]
 unique_name_in_owner = true
-visible = false
 script = ExtResource("28_8r76n")
 
 [node name="ColorRect" type="ColorRect" parent="EquipmentCanvasLayer" unique_id=1037858027]
@@ -887,6 +859,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Margin" type="MarginContainer" parent="EquipmentCanvasLayer/Main" unique_id=2128135305]
+custom_minimum_size = Vector2(1536, 864)
 custom_maximum_size = Vector2(1536, 864)
 layout_mode = 1
 anchors_preset = 8
@@ -1036,6 +1009,26 @@ layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 
+[node name="Stats2" type="PanelContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/InventoryPanel" unique_id=85465600]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_3w64d")
+script = ExtResource("9_xr32f")
+
+[node name="MarginContainer" type="MarginContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/InventoryPanel/Stats2" unique_id=80696076]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="StatsBox" type="VBoxContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/InventoryPanel/Stats2/MarginContainer" unique_id=2103111230]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
 [node name="Alchemy" type="PanelContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/InventoryPanel" unique_id=400516213]
 visible = false
 layout_mode = 2
@@ -1076,52 +1069,6 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_3w64d")
 script = ExtResource("20_q0ack")
-base_items = Dictionary[ExtResource("21_50bjb"), Dictionary]({
-ExtResource("43_4psnp"): {
-"level": 1,
-"quantity": 1
-},
-ExtResource("52_xt5sj"): {
-"level": 1,
-"quantity": 1
-},
-ExtResource("45_ev28f"): {
-"level": 1,
-"quantity": 1
-},
-ExtResource("45_dwi8f"): {
-"level": 1,
-"quantity": 1
-},
-ExtResource("47_ifyqo"): {
-"level": 1,
-"quantity": 1
-},
-ExtResource("48_6qjdx"): {
-"level": 1,
-"quantity": 1
-},
-ExtResource("54_0ba6h"): {
-"level": 1,
-"quantity": 1
-},
-ExtResource("50_fdv13"): {
-"level": 1,
-"quantity": 1
-},
-ExtResource("51_dwi8f"): {
-"level": 1,
-"quantity": 1
-},
-ExtResource("53_7ifas"): {
-"level": 1,
-"quantity": 1
-},
-ExtResource("55_6qjdx"): {
-"level": 1,
-"quantity": 1
-}
-})
 
 [node name="MarginContainer" type="MarginContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/InventoryPanel/Inventory" unique_id=385520042]
 layout_mode = 2
@@ -1169,13 +1116,16 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 24
 
-[node name="PanelContainer" parent="RewardsCanvasLayer/CenterContainer/RewardsContainer" unique_id=95318190 instance=ExtResource("59_3w64d")]
+[node name="RewardOne" parent="RewardsCanvasLayer/CenterContainer/RewardsContainer" unique_id=95318190 instance=ExtResource("59_3w64d")]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="PanelContainer2" parent="RewardsCanvasLayer/CenterContainer/RewardsContainer" unique_id=382896508 instance=ExtResource("59_3w64d")]
+[node name="RewardTwo" parent="RewardsCanvasLayer/CenterContainer/RewardsContainer" unique_id=382896508 instance=ExtResource("59_3w64d")]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="PanelContainer3" parent="RewardsCanvasLayer/CenterContainer/RewardsContainer" unique_id=1269566067 instance=ExtResource("59_3w64d")]
+[node name="RewardThree" parent="RewardsCanvasLayer/CenterContainer/RewardsContainer" unique_id=1269566067 instance=ExtResource("59_3w64d")]
+unique_name_in_owner = true
 layout_mode = 2
 
 [connection signal="pressed" from="EquipmentCanvasLayer/Main/Margin/MiddlePanel/NextEnemyButton" to="." method="_on_next_enemy_button_pressed"]

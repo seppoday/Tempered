@@ -9,7 +9,6 @@ signal results_ready
 @export var dice_roller: DiceRoller
 @export var enemy_spawn_point: Node3D
 @export var hp_progress_bar: ProgressBar
-@export var result_label: Label
 @export var dice_tag_cration_wait_time: float = 0.12 # Odrobinkę większe dla lepszego efektu domino
 
 const SPACING_X = 20.0
@@ -126,19 +125,15 @@ func _on_combat_effect_applied(skill: SkillDefinition, value: int, target: Strin
 
 	AudioManager.play_sfx(AudioLibrary.get_ui(AudioKeys.UI_BUP))
 
-	# ✅ NOWE: Floating text PO animacji
 	if target == "enemy":
 		FloatingTextManager.spawn_damage(value, enemy_spawn_point.global_transform.origin)
-		result_label.text = "%s: -%d wrogowi" % [skill.skill_name, value]
 	elif target == "player":
 		if skill.effect_type == GameEnums.SkillEffect.HEAL:
 			FloatingTextManager.spawn_heal(value, hp_progress_bar.global_position)
-			result_label.text = "%s: +%d graczowi" % [skill.skill_name, value]
 		elif skill.effect_type == GameEnums.SkillEffect.SHIELD:
 			FloatingTextManager.spawn_shield_block(value, hp_progress_bar.global_position)
-			result_label.text = "%s: +%d tarczy graczowi" % [skill.skill_name, value]
 		else:
-			result_label.text = "%s: +%d graczowi" % [skill.skill_name, value]
+			Log.print("%s: +%d graczowi" % [skill.skill_name, value])
 
 
 # --- SYSTEM ANIMACJI I WYŚRODKOWYWANIA (LAYOUT) ---

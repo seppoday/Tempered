@@ -8,6 +8,7 @@ signal attack_finished
 @onready var sprite_3d: Sprite3D = $Sprite3D
 @onready var health_bar_fill: MeshInstance3D = %HealthBarFill
 @onready var attack_label: Label3D = %AttackLabel
+@onready var hp_label: Label3D = %HPLabel
 
 @export var definition: EnemyDefinition # Tutaj mamy już damage_growth
 
@@ -29,10 +30,11 @@ func _ready() -> void:
 	health.died.connect(_on_died)
 	health.changed.connect(_on_health_changed)
 	sprite_3d.texture = definition.sprite
-
+	
 	_on_health_changed(health.current, health.max_hp)
 	_update_attack_label()
 
+	hp_label.text = str(health.max_hp)
 	DebugConsole.register_command("damage", _cmd_damage, "damage [ilość] - atakuje obecnego przeciwnika o X dmg")
 
 
@@ -40,7 +42,7 @@ func _on_health_changed(current: int, max_hp: int) -> void:
 	var percentage: float = float(current) / float(max_hp) if max_hp > 0 else 0.0
 	health_bar_fill.scale.x = percentage
 	health_bar_fill.position.x = -(HEALTH_BAR_WIDTH * 0.5) * (1.0 - percentage)
-	print(current)
+	hp_label.text = str(current)
 
 
 func _exit_tree() -> void:
@@ -108,4 +110,5 @@ func get_effective_armor() -> float:
 func _on_died() -> void:
 	status_manager.clear_all()
 	died.emit(self)
+	EventBus.enemy_died.emit(self)
 	Utilities.safe_free(self)

@@ -25,7 +25,7 @@ func _ready() -> void:
 ## nigdy automatycznie po śmierci wroga.
 func request_next_enemy() -> void:
 	_advance_and_spawn()
-
+	PlayerData.full_heal()
 
 func _advance_and_spawn() -> void:
 	current_enemy_index += 1

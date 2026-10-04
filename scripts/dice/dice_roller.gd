@@ -27,17 +27,19 @@ func _ready() -> void:
 	pass
 
 
-func spawn_dice() -> void:
-	_spawn_dice_for_equipped_items()
-
-
 func roll() -> void:
+	if dice_group.is_empty():
+		push_warning("DiceRoller.roll(): brak kości — zapomniałeś wywołać sync_dice_with_equipment()?")
+		return
+		
 	_roll_results_for_equipped_items()
 	AudioManager.play_sfx(AudioLibrary.get_sfx(AudioKeys.SFX_ROLL))
 	await _bump_table()
 
 
-func resync_with_equipment() -> void:
+## Synchronizuje widoczne kości na stole z aktualnym ekwipunkiem gracza.
+## Czyści poprzednie, spawnuje nowe w pozycji spoczynkowej — NIE rzuca.
+func sync_dice_with_equipment() -> void:
 	_spawn_dice_for_equipped_items()
 
 

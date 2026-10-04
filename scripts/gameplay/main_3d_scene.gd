@@ -3,7 +3,6 @@ extends Node3D
 
 # Zamiast dwóch przycisków, mamy teraz jeden kontekstowy
 @export var action_button: Button
-@export var result_label: Label
 @export var dice_roller: DiceRoller
 @export var dice_hand: DiceHand
 @export var enemy_scene: PackedScene
@@ -32,8 +31,9 @@ func _ready() -> void:
 	# --- Sygnały statusów i efektów na wrogu ---
 	CombatManager.status_applied_to_enemy.connect(_on_enemy_status_applied)
 	CombatManager.status_tick_on_enemy.connect(_on_enemy_status_tick)
+	RewardManager.reward_claimed.connect(_on_reward_claimed)
 	
-	dice_roller.spawn_dice()
+	dice_roller.sync_dice_with_equipment()
 	
 	box.shake_finished.connect(_on_box_shake_finished)
 	box.shake(camera)
@@ -91,7 +91,6 @@ func _execute_roll() -> void:
 	camera.shake()
 	dice_hand.start_rolling()
 	GameManager.set_state(GameManager.State.RESOLVING, self)
-	result_label.text = "Toczenie kości..."
 	dice_roller.roll()
 
 
@@ -156,11 +155,16 @@ func _on_enemy_status_tick(status_name: String, damage: int) -> void:
 
 
 # ── REAKCJA NA ŚMIERĆ PRZECIWNIKA ──
-
 func _on_enemy_died(enemy) -> void:
 	box.close_lid()
-	await get_tree().create_timer(1.0).timeout
-	GameManager.set_state(GameManager.State.ENEMY_REWARDS, self)
+	await get_tree().create_timer(.35).timeout
+	
+	# Zamiast na sztywno iść na ENEMY_REWARDS, sprawdzamy czy są nagrody do pokazania
+	if RewardManager.has_rewards():
+		GameManager.set_state(GameManager.State.ENEMY_REWARDS, self)
+	else:
+		# Brak kart z nagrodami - pomijamy ekran loota i idziemy od razu dalej
+		GameManager.set_state(GameManager.State.WEAPON_SELECT, self)
 
 
 func _on_dice_hand_results_ready() -> void:
@@ -170,10 +174,15 @@ func _on_dice_hand_results_ready() -> void:
 func _on_player_died() -> void:
 	GameManager.set_state(GameManager.State.GAME_OVER, self)
 
+func _on_reward_claimed() -> void:
+	GameManager.set_state(GameManager.State.WEAPON_SELECT, self)
 
 func _on_next_enemy_button_pressed() -> void:
-	box.open_lid()
 	wave_manager.request_next_enemy()
-	dice_roller._clear_previous_dice()
-	dice_roller._spawn_dice_for_equipped_items()
+	dice_roller.sync_dice_with_equipment()
+	#dice_roller._clear_previous_dice()
+	#dice_roller._spawn_dice_for_equipped_items()
 	GameManager.set_state(GameManager.State.PLAYER_TURN, self)
+	
+	await get_tree().create_timer(.35).timeout
+	box.open_lid()

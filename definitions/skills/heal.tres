@@ -8,7 +8,7 @@
 [sub_resource type="Resource" id="Resource_qte4o"]
 script = ExtResource("1_8xpnj")
 stat = 3
-weight = 0.3
+weight = 0.5
 
 [sub_resource type="Resource" id="Resource_ysmgp"]
 script = ExtResource("1_8xpnj")
@@ -22,7 +22,6 @@ skill_name = "Heal"
 icon = ExtResource("1_wf0p2")
 effect_type = 1
 target_type = 0
-base_value = 0.5
 scalings = Array[ExtResource("1_8xpnj")]([SubResource("Resource_qte4o"), SubResource("Resource_ysmgp")])
 damage_element = 4
 tags = Array[int]([6])

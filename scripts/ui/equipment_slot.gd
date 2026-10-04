@@ -105,7 +105,7 @@ func _update_visual() -> void:
 		if icon and placeholder_texture:
 			icon.texture = placeholder_texture
 			icon.visible = true
-			icon.modulate = Color(1, 1, 1, 0.35)
+			icon.modulate = Color(1, 1, 1, 0.15)
 		skill_icon.texture = null
 		skill_icon.visible = false
 		return

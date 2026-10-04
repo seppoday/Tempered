@@ -2,12 +2,51 @@
 
 [ext_resource type="Script" uid="uid://doyuee4t73gkp" path="res://data/definitions_patterns/enemy_attack_pattern.gd" id="1_amobi"]
 [ext_resource type="Script" uid="uid://dfsxlht8w22ue" path="res://data/definitions_patterns/enemy_definition.gd" id="2_2tb2m"]
+[ext_resource type="Script" uid="uid://dmw8mcvfjhous" path="res://data/definitions_patterns/loot_entry.gd" id="2_fit0o"]
+[ext_resource type="Resource" uid="uid://lqt0rt3daif5" path="res://definitions/skill_items/skill_item_fire_attack.tres" id="3_2erhf"]
 [ext_resource type="Texture2D" uid="uid://bftlcbgr8bch7" path="res://assets/enemies/enemy.jpg" id="3_amobi"]
+[ext_resource type="Resource" uid="uid://dk71jywyh32lp" path="res://definitions/items/weapons/iron_sword.tres" id="4_5v1kh"]
+[ext_resource type="Resource" uid="uid://j6xuijp73so4" path="res://definitions/items/weapons/venom_fang.tres" id="5_d47gl"]
+[ext_resource type="Resource" uid="uid://b5a2s8qlw52bi" path="res://definitions/items/boots/hunter_boots.tres" id="6_5v1kh"]
+[ext_resource type="Script" uid="uid://dp0kh2akuu60m" path="res://data/definitions_patterns/loot_table.gd" id="6_swhgi"]
+[ext_resource type="Resource" uid="uid://cag2v24qfuy07" path="res://definitions/items/gloves/thiefs_gloves.tres" id="7_d47gl"]
 
 [sub_resource type="Resource" id="Resource_0daba"]
 script = ExtResource("1_amobi")
 damage = 10
 metadata/_custom_type_script = "uid://doyuee4t73gkp"
+
+[sub_resource type="Resource" id="Resource_axgvs"]
+script = ExtResource("2_fit0o")
+entry = ExtResource("3_2erhf")
+metadata/_custom_type_script = "uid://dmw8mcvfjhous"
+
+[sub_resource type="Resource" id="Resource_g88xr"]
+script = ExtResource("2_fit0o")
+entry = ExtResource("4_5v1kh")
+metadata/_custom_type_script = "uid://dmw8mcvfjhous"
+
+[sub_resource type="Resource" id="Resource_juifq"]
+script = ExtResource("2_fit0o")
+entry = ExtResource("5_d47gl")
+metadata/_custom_type_script = "uid://dmw8mcvfjhous"
+
+[sub_resource type="Resource" id="Resource_gpuxc"]
+script = ExtResource("2_fit0o")
+entry = ExtResource("6_5v1kh")
+metadata/_custom_type_script = "uid://dmw8mcvfjhous"
+
+[sub_resource type="Resource" id="Resource_k7t0j"]
+script = ExtResource("2_fit0o")
+entry = ExtResource("7_d47gl")
+metadata/_custom_type_script = "uid://dmw8mcvfjhous"
+
+[sub_resource type="Resource" id="Resource_dn3m8"]
+script = ExtResource("6_swhgi")
+loot_entries = Array[ExtResource("2_fit0o")]([SubResource("Resource_axgvs"), SubResource("Resource_g88xr"), SubResource("Resource_juifq"), SubResource("Resource_gpuxc"), SubResource("Resource_k7t0j")])
+gold_min = 2
+gold_max = 4
+metadata/_custom_type_script = "uid://dp0kh2akuu60m"
 
 [resource]
 script = ExtResource("2_2tb2m")
@@ -16,4 +55,5 @@ enemy_name = "Goblin"
 sprite = ExtResource("3_amobi")
 attack_patterns = Array[ExtResource("1_amobi")]([SubResource("Resource_0daba")])
 damage_growth = 2
+loot_table = SubResource("Resource_dn3m8")
 metadata/_custom_type_script = "uid://dfsxlht8w22ue"

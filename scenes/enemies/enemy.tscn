@@ -32,6 +32,14 @@ transform = Transform3D(0.175, 0, 0, 0, -7.649493e-09, 0.175, 0, -0.175, -7.6494
 texture_filter = 1
 texture = ExtResource("4_jt03m")
 
+[node name="HPLabel" type="Label3D" parent="." unique_id=1703786471]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -0.7141781, 0.074501, -0.7386093)
+alpha_cut = 1
+text = "123"
+font = ExtResource("4_fcftc")
+font_size = 24
+
 [node name="HealthBarBackground" type="MeshInstance3D" parent="." unique_id=809532472]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.09686577, -0.7313899)

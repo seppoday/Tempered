@@ -47,7 +47,7 @@ func _cmd_kill_enemy(_args: Array) -> String:
 
 func set_enemy(enemy: EnemyInstance) -> void:
 	current_enemy = enemy
-	Log.print("Następny wróg: %s" % current_enemy.definition.enemy_name)
+	Log.print("Następny wróg: %s, HP: %s" % [current_enemy.definition.enemy_name, current_enemy.definition.max_hp])
 
 
 # ══════════════════════════════════════════
@@ -91,16 +91,7 @@ func resolve_player_attack(selected_results: Array[Dictionary]) -> void:
 		var context := build_trigger_context(rolled_face, max_face)
 
 		var effective_base := get_effective_base(skill, context)
-		#for trigger in skill.triggers:
-			#if trigger.base_value_override > 0.0 and trigger.should_activate(context):
-				#effective_base = trigger.base_value_override
-				#Log.print("Trigger %s → base_value override: %.2f → %.2f" % [
-					#GameEnums.TriggerType.keys()[trigger.trigger_type],
-					#skill.base_value,
-					#effective_base
-				#])
 
-		# ZMIANA: apply_modifiers = true → tylko tutaj zużywamy buffy
 		var value := calculate_effect_value(
 			skill, item_instance.definition, rolled_face, effective_base, true
 		)
@@ -389,32 +380,11 @@ func _apply_armor_debuff_to_enemy(skill: SkillDefinition, value: int) -> void:
 
 func _on_current_enemy_died(enemy: EnemyInstance) -> void:
 	Log.print("Wróg pokonany: %s" % enemy.definition.enemy_name)
-	_grant_rewards(enemy.definition)
+	
+	RewardManager.generate_rewards(enemy.definition)
+	
 	current_enemy = null
 	enemy_died.emit(enemy)
-
-
-func _grant_rewards(definition: EnemyDefinition) -> void:
-	var loot_table: LootTable = definition.loot_table
-	if loot_table == null:
-		return
-
-	if loot_table.gold_max > 0:
-		var gold_amount: int = RNG.randi_range(loot_table.gold_min, loot_table.gold_max)
-		if gold_amount > 0:
-			PlayerData.add_gold(gold_amount)
-
-	var dropped: LootEntry = loot_table.roll_entry()
-	if dropped == null or dropped.entry == null:
-		return
-
-	var inventory := get_tree().get_first_node_in_group("inventory")
-	if inventory == null:
-		Log.warning("CombatManager: brak plecaka, pomijam drop '%s'" % dropped.entry.name)
-		return
-
-	inventory.add_item(ItemInstance.new(dropped.entry))
-
 
 func _on_player_died() -> void:
 	if is_game_over:

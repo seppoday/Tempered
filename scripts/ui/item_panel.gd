@@ -33,7 +33,7 @@ func _update_ui(changed_stat: String = "", preview_totals: Dictionary = {}) -> v
 
 	Utilities.clear_children(stats_box)
 
-	for key in ["dmg", "magic", "def", "speed", "luck", "status", "crit", "hp", "dodge"]:
+	for key in ["dmg", "magic", "def", "speed", "luck", "status", "crit", "vit", "dodge", "hp"]:
 		var delta: float = (preview_totals[key] - totals[key]) if is_previewing else 0.0
 		_add_label("%s: %d" % [key.capitalize(), totals[key]], Color.WHITE, FONT_SIZE, key, _format_delta(delta), delta >= 0.0)
 

@@ -45,7 +45,7 @@ var equipped_items: Dictionary = {
 const BASE_DMG: float = 0.0
 const BASE_MAGIC: float = 0.0
 const BASE_DEF: float = 0.0
-const BASE_VIT: float = 50.0
+const BASE_VIT: float = 5.0
 const BASE_SPEED: float = 0.0
 const BASE_LUCK: float = 0.0
 const BASE_STATUS: float = 0.0
@@ -58,10 +58,10 @@ const DEBUG_START_GEAR: Array[Dictionary] = [
 	#{"id": "iron_shield",    "count": 1, "level": 1},
 	{"id": "healers_amulet",  "count": 1, "level": 1},
 	#{"id": "iron_plate",   "count": 1, "level": 1},
-	{"id": "thiefs_gloves", "count": 1, "level": 1},
+	#{"id": "thiefs_gloves", "count": 1, "level": 1},
 	#{"id": "hunter_boots",   "count": 1, "level": 1},
 	#{"id": "berserker_horns",    "count": 1, "level": 1},
-	#{"id": "frost_ring",      "count": 1, "level": 1},
+	{"id": "iron_ring",      "count": 1, "level": 1},
 ]
 
 func give_debug_gear() -> void:
@@ -118,7 +118,7 @@ func get_total_stats() -> Dictionary:
 			var key: String = GameEnums.Stat.keys()[stat].to_lower()
 			totals[key] += def.get_stat(stat)
 
-	totals["hp"] = totals["vit"]
+	totals["hp"] = totals["vit"] * 10
 	totals["dodge"] = totals["speed"] / (totals["speed"] + 100.0)
 
 	return totals
@@ -131,6 +131,8 @@ func add_gold(amount: int) -> void:
 func get_equipped_item(slot_type: EquipmentSlot.Type) -> ItemInstance:
 	return equipped_items.get(slot_type, null)
 
+func full_heal() -> void:
+	health.heal(health.max_hp)
 
 func equip_item(item_instance: ItemInstance) -> ItemInstance:
 	if item_instance == null or item_instance.definition == null:
