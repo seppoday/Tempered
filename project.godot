@@ -61,6 +61,8 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+mouse_cursor/custom_image="uid://boyeghkg0ol4v"
+mouse_cursor/custom_image_hotspot=Vector2(23, 3)
 
 [editor_plugins]
 
@@ -116,6 +118,7 @@ toggle_console={
 [internationalization]
 
 locale/translations=PackedStringArray("res://localization/Translation.de.translation", "res://localization/Translation.en.translation", "res://localization/Translation.es.translation", "res://localization/Translation.fr.translation", "res://localization/Translation.it.translation", "res://localization/Translation.ja.translation", "res://localization/Translation.ko.translation", "res://localization/Translation.pl.translation", "res://localization/Translation.pt_BR.translation", "res://localization/Translation.ru.translation", "res://localization/Translation.zh.translation")
+locale/test="pl"
 locale/locale_filter_mode=0
 locale/language_filter=["en", "pl"]
 

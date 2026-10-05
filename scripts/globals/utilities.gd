@@ -51,3 +51,10 @@ static func free_children(node: Node) -> void:
 	for child in node.get_children():
 		if is_instance_valid(child):
 			child.queue_free()
+
+static func translate_enum(enum_dict: Dictionary, value: int, prefix: String) -> String:
+	var key = enum_dict.find_key(value)
+	if key == null:
+		push_warning("Utilities: brak wartości %d w enumie (prefix %s)" % [value, prefix])
+		return ""
+	return TranslationServer.translate("%s_%s" % [prefix, key])

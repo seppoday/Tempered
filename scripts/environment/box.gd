@@ -99,12 +99,14 @@ func shake(camera: Camera3D = null, duration: float = -1.0, max_intensity: float
 	shake_tween.tween_property(self, "rotation", original_rot, fall_duration)\
 		.set_delay(fall_start_time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 
+
 	if camera != null:
 		shake_tween.tween_property(camera, "fov", original_fov, fall_duration)\
 			.set_delay(fall_start_time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 		
 		var impact_time: float = fall_start_time + fall_duration
 		shake_tween.tween_callback(camera.shake.bind(0.8, 15.0)).set_delay(impact_time)
+		shake_tween.tween_callback(AudioManager.play_sfx.bind(AudioLibrary.get_sfx(AudioKeys.SFX_SLAM))).set_delay(impact_time - 0.1)
 		
 	var bounce_time: float = 0.05
 	var bounce_height: float = lift_height * 0.25

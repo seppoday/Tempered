@@ -1,4 +1,4 @@
-# AUTO-GENERATED — nie edytuj ręcznie. Uruchom generate_audio_keys.gd, żeby odświeżyć.
+
 class_name AudioKeys
 extends RefCounted
 
@@ -9,6 +9,7 @@ const MUSIC_TEST: StringName = &"test"
 const SFX_POP: StringName = &"pop"
 const SFX_ROLL: StringName = &"roll"
 const SFX_SWOOSH: StringName = &"swoosh"
+const SFX_SLAM: StringName = &"slam"
 
 # UI
 const UI_BUP: StringName = &"bup"

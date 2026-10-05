@@ -87,8 +87,8 @@ func _on_mouse_entered() -> void:
 		return
 
 	is_hovering = true
-	UIAnim.scale_to(self, Vector2(1.2, 1.2))
-	_animate_hover(0.5)
+	UIAnim.scale_to(self, Vector2(1.1, 1.1))
+	_animate_hover(1.0)
 
 
 func _on_mouse_exited() -> void:
@@ -119,6 +119,7 @@ func _animate_hover(target: float) -> void:
 
 func _get_shader_material() -> ShaderMaterial:
 	var overlay := effect_overlay if effect_overlay else get_node_or_null("EffectOverlay")
+	print(overlay)
 	if overlay and overlay.material is ShaderMaterial:
 		return overlay.material as ShaderMaterial
 	return null

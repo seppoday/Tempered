@@ -74,7 +74,7 @@ enum SkillTag {
 	DOT,
 }
 
-const DICE_PROGRESSION: Array[int] = [4, 6, 8, 10, 12, 16, 20]
+const DICE_PROGRESSION: Array[int] = [6, 8, 10, 12, 16, 20]
 
 static func get_rarity_color(rarity: Rarity) -> Color:
 	match rarity:
@@ -91,25 +91,25 @@ static func enum_name(enum_dict: Dictionary, value: int, prefix: String) -> Stri
 	return TranslationServer.translate("%s_%s" % [prefix, enum_dict.find_key(value)])
 
 static func get_rarity_name(rarity: Rarity) -> String:
-	return enum_name(Rarity, rarity, "RARITY")
+	return Utilities.translate_enum(Rarity, rarity, "RARITY")
 
 static func get_stat_name(stat: Stat) -> String:
-	return enum_name(Stat, stat, "STAT")
+	return Utilities.translate_enum(Stat, stat, "STAT")
 
 static func get_element_name(element: DamageElement) -> String:
-	return enum_name(DamageElement, element, "ELEMENT")
+	return Utilities.translate_enum(DamageElement, element, "ELEMENT")
 
 static func get_status_name(status: StatusType) -> String:
-	return enum_name(StatusType, status, "STATUS_TYPE")
+	return Utilities.translate_enum(StatusType, status, "STATUS_TYPE")
 
 static func get_skill_effect_name(effect: SkillEffect) -> String:
-	return enum_name(SkillEffect, effect, "SKILL_EFFECT")
+	return Utilities.translate_enum(SkillEffect, effect, "SKILL_EFFECT")
 
 static func get_skill_target_name(target: SkillTarget) -> String:
-	return enum_name(SkillTarget, target, "SKILL_TARGET")
+	return Utilities.translate_enum(SkillTarget, target, "SKILL_TARGET")
 
 static func get_trigger_name(trigger: TriggerType) -> String:
-	return enum_name(TriggerType, trigger, "TRIGGER")
+	return Utilities.translate_enum(TriggerType, trigger, "TRIGGER")
 
 static func get_skill_tag_name(tag: SkillTag) -> String:
-	return enum_name(SkillTag, tag, "SKILL_TAG")
+	return Utilities.translate_enum(SkillTag, tag, "SKILL_TAG")
