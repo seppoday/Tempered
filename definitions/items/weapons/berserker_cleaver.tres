@@ -7,6 +7,6 @@
 [resource]
 script = ExtResource("3_ngpec")
 default_skill = ExtResource("2_kwilb")
-dmg = 10.0
+dmg = 15.0
 id = "berserker_cleaver"
 name = "Berserker's Cleaver"

@@ -76,19 +76,18 @@ func _render() -> void:
 
 	if item_data.definition is ItemDefinition and item_data.dice_level >= 0:
 		var dice_size := GameEnums.DICE_PROGRESSION[item_data.dice_level]
-		name_label.text = "%s (d%d)" % [def.name, dice_size]
+		name_label.text = "%s (d%d)" % [tr(def.name), dice_size]
 	else:
 		name_label.text = def.name
 
 	name_label.add_theme_color_override("font_color", Color(0.91, 0.84, 0.58))
 	name_label.add_theme_font_size_override("font_size", FONT_TITLE)
 	
-	var category_name: String = GameEnums.Rarity.keys()[def.rarity].capitalize()
-	category_label.text = category_name
+	category_label.text = GameEnums.get_rarity_name(def.rarity)
 	
 	if def is ItemDefinition:
 		slot_name = EquipmentSlot.Type.keys()[def.slot].capitalize()
-		category_label.text += "  •  " + slot_name
+		category_label.text += "  •  " + tr(slot_name)
 		
 	
 	category_label.add_theme_color_override("font_color", Color(0.55, 0.52, 0.42))
@@ -317,7 +316,7 @@ func _add_skill_properties_box(skill_def: SkillDefinition, owning_item_def: Item
 
 		var aff_lbl := Label.new()
 		if affinity_mult != 1.0:
-			aff_lbl.text = " • %s Affinity: x%.2f" % [element_name_aff, affinity_mult]
+			aff_lbl.text = " • %s Affinity" % [element_name_aff]
 			aff_lbl.add_theme_color_override("font_color", Color(0.95, 0.6, 0.3))
 		else:
 			aff_lbl.text = " • %s Affinity: none on this item" % element_name_aff

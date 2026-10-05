@@ -1,0 +1,23 @@
+keys,pl,en,fr,de,ja,zh,it,es,ko,pt_BR,ru
+PLAY,Graj,Play,Jouer,Spielen,プレイ,开始游戏,Gioca,Jugar,플레이,Jogar,Играть
+OPTIONS,Opcje,Options,Options,Optionen,オプション,选项,Opzioni,Opciones,옵션,Opções,Настройки
+EXIT,Wyjdź,Exit,Quitter,Beenden,終了,退出,Esci,Salir,종료,Sair,Выйти
+LANGUAGE,Język,Language,Langue,Sprache,言語,语言,Lingua,Idioma,언어,Idioma,Язык
+SETTINGS,Ustawienia,Settings,Paramètres,Einstellungen,設定,设置,Impostazioni,Configuración,설정,Configurações,Настройки
+BACK,Powrót,Back,Retour,Zurück,戻る,返回,Indietro,Atrás,뒤로,Voltar,Назад
+APPLY,Zatwierdź,Apply,Appliquer,Anwenden,適用,应用,Applica,Aplicar,적용,Aplicar,Применить
+RESOLUTION,Rozdzielczość,Resolution,Résolution,Auflösung,解像度,分辨率,Risoluzione,Resolución,해상도,Resolução,Разрешение
+WINDOW_MODE,Tryb okna,Window mode,Mode fenêtre,Fenstermodus,ウィンドウモード,窗口模式,Modalità finestra,Modo ventana,창 모드,Modo janela,Оконный режим
+PROGRESSION,Progresja,Progression,Progression,Spielfortschritt,進行状況,游戏进度,Progressione,Progreso,진행 상황,Progresso,Прогресс
+WINDOW_MODE_WINDOWED,Okno,Windowed,Fenêtré,Fenstermodus,ウィンドウ,窗口,Finestra,Ventana,창 모드,Janela,Оконный режим
+WINDOW_MODE_FULLSCREEN,Pełny ekran,Fullscreen,Plein écran,Vollbild,フルスクリーン,全屏,Schermo intero,Pantalla completa,전체 화면,Tela cheia,Полноэкранный режим
+WINDOW_MODE_BORDERLESS,Pełny ekran bez ramek,Borderless,Plein écran sans bordure,Randloses Vollbild,ボーダーレス,无边框全屏,Schermo intero senza bordi,Pantalla completa sin bordes,테두리 없는 전체 화면,Tela cheia sem bordas,Полноэкранный режим без рамок
+WINDOW_MODE_EXCLUSIVE,Pełny ekran (ekskluzywny),Fullscreen (exclusive),Plein écran exclusif,Exklusives Vollbild,フルスクリーン（排他的）,独占全屏,Schermo intero esclusivo,Pantalla completa exclusiva,독점 전체 화면,Tela cheia exclusiva,Эксклюзивный полноэкранный режим
+WEAPON_IRON_SWORD_NAME,Żelazny miecz,Iron sword,,,,,,,,,
+WEAPON_IRON_SWORD_DESC,Żelazny miecz opis,Iron sword desc,,,,,,,,,
+RARITY_COMMON,Pospolity,Common,,,,,,,,,
+RARITY_UNCOMMON,Niezwykły,Uncommon,,,,,,,,,
+RARITY_RARE,Rzadki,Rare,,,,,,,,,
+RARITY_EPIC,Epicki,Epic,,,,,,,,,
+RARITY_LEGENDARY,Legendardny,Legendary,,,,,,,,,
+RARITY_MYTHIC,Mityczny,Mythic,,,,,,,,,

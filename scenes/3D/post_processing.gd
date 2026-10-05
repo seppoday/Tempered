@@ -25,6 +25,7 @@ func _on_state_changed(new_state: GameManager.State) -> void:
 	var should_blur: bool = (
 		new_state == GameManager.State.GAME_OVER or 
 		new_state == GameManager.State.WEAPON_SELECT or
+		new_state == GameManager.State.ENEMY_REWARDS or
 		new_state == GameManager.State.META_PROGRESSION
 	)
 

@@ -86,3 +86,30 @@ static func get_rarity_color(rarity: Rarity) -> Color:
 		Rarity.MYTHIC: return Color(0.491, 0.003, 0.85, 1.0)
 		
 	return Color.WHITE
+	
+static func enum_name(enum_dict: Dictionary, value: int, prefix: String) -> String:
+	return TranslationServer.translate("%s_%s" % [prefix, enum_dict.find_key(value)])
+
+static func get_rarity_name(rarity: Rarity) -> String:
+	return enum_name(Rarity, rarity, "RARITY")
+
+static func get_stat_name(stat: Stat) -> String:
+	return enum_name(Stat, stat, "STAT")
+
+static func get_element_name(element: DamageElement) -> String:
+	return enum_name(DamageElement, element, "ELEMENT")
+
+static func get_status_name(status: StatusType) -> String:
+	return enum_name(StatusType, status, "STATUS_TYPE")
+
+static func get_skill_effect_name(effect: SkillEffect) -> String:
+	return enum_name(SkillEffect, effect, "SKILL_EFFECT")
+
+static func get_skill_target_name(target: SkillTarget) -> String:
+	return enum_name(SkillTarget, target, "SKILL_TARGET")
+
+static func get_trigger_name(trigger: TriggerType) -> String:
+	return enum_name(TriggerType, trigger, "TRIGGER")
+
+static func get_skill_tag_name(tag: SkillTag) -> String:
+	return enum_name(SkillTag, tag, "SKILL_TAG")

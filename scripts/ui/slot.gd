@@ -3,9 +3,9 @@ extends Panel
 
 var item_data: ItemInstance = null
 
-@onready var icon: TextureRect = $Icon
-@onready var count_label: Label = $CountLabel
-@onready var name_label: Label = $Name
+@onready var icon: TextureRect = %Icon
+@onready var count_label: Label = %CountLabel
+@onready var name_label: Label = %Name
 
 signal slot_changed(slot: Panel)
 

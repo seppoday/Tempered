@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://crlg55s7x78yw"
-path="res://.godot/imported/random_selection.png-4964bf49064e284698a1e16204abee2c.ctex"
+uid="uid://dhrg5otm2d5jv"
+path="res://.godot/imported/anumet.png-f049926e5af814a7af794f5f1d20fa97.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://definitions/items/weapons/random_selection.png"
-dest_files=["res://.godot/imported/random_selection.png-4964bf49064e284698a1e16204abee2c.ctex"]
+source_file="res://assets/items/anumet.png"
+dest_files=["res://.godot/imported/anumet.png-f049926e5af814a7af794f5f1d20fa97.ctex"]
 
 [params]
 

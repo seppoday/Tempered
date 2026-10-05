@@ -77,6 +77,8 @@ func _on_reward_claimed() -> void:
 
 func _on_state_changed(new_state: GameManager.State) -> void:
 	var is_active := new_state == GameManager.State.ENEMY_REWARDS
+	
+	AudioManager.play_sfx(AudioLibrary.get_sfx(AudioKeys.SFX_SWOOSH))
 
 	if is_active:
 		visible = true

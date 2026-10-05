@@ -17,7 +17,6 @@ base_value_override = 1.0
 script = ExtResource("2_10k7c")
 id = "wild_slash"
 skill_name = "Wild Slash"
-base_value = 0.5
 scalings = Array[ExtResource("1_m8otg")]([SubResource("Resource_l3ocy")])
 tags = Array[int]([0, 5])
 triggers = Array[ExtResource("3_0uxmd")]([SubResource("Resource_03j1w")])

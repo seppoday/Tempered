@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btt130bdswuwf"
-path="res://.godot/imported/iron_sword.jpg-be872b15299ae1e6c5447623b9371a88.ctex"
+uid="uid://dhmdojxgyqpjk"
+path="res://.godot/imported/doranring.png-967b4cc2793e20e3fe822199824f45de.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/items/iron_sword.jpg"
-dest_files=["res://.godot/imported/iron_sword.jpg-be872b15299ae1e6c5447623b9371a88.ctex"]
+source_file="res://assets/items/doranring.png"
+dest_files=["res://.godot/imported/doranring.png-967b4cc2793e20e3fe822199824f45de.ctex"]
 
 [params]
 

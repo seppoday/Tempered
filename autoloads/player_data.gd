@@ -50,7 +50,6 @@ const BASE_STATUS: float = 0.0
 const BASE_CRIT: float = 0.0
 
 func equip_starting_loadout() -> void:
-	# UWAGA: Upewnij się, że nazwa autoloadu to MetaProgression (lub MetaProgressionManager)
 	var starting_ids: Array[String] = MetaProgressionManager.get_starting_loadout()
 
 	for item_id in starting_ids:

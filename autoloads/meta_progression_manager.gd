@@ -7,7 +7,7 @@ const SAVE_PATH := "user://meta_progression.save"
 
 var gold: int = 0
 var unlocked_item_ids: Array[String] = []
-var starting_loadout_ids: Array[String] = ["berserker_cleaver", "healers_amulet", "iron_ring"]
+var starting_loadout_ids: Array[String] = ["iron_sword", "healers_amulet", "iron_ring"]
 
 
 func _ready() -> void:
@@ -66,4 +66,4 @@ func load_from_disk() -> void:
 
 	gold = data.get("gold", 0)
 	unlocked_item_ids.assign(data.get("unlocked_item_ids", []))
-	starting_loadout_ids.assign(data.get("starting_loadout_ids", ["rusty_sword", "iron_shield"]))
+	starting_loadout_ids.assign(data.get("starting_loadout_ids", starting_loadout_ids))

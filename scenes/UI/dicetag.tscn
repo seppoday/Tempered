@@ -32,6 +32,7 @@ shader_parameter/locked_intensity = 0.0
 shader_parameter/locked_color = Color(0.1, 0.1, 0.12, 0.6)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54fgk"]
+bg_color = Color(0.08468992, 0.08468994, 0.08468988, 1)
 corner_radius_top_left = 50
 corner_radius_top_right = 50
 corner_radius_bottom_right = 50

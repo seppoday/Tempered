@@ -1,0 +1,108 @@
+[gd_scene format=3 uid="uid://kprej8gd1emx"]
+
+[ext_resource type="Script" uid="uid://dlll27s3cthi6" path="res://scenes/settings.gd" id="1_nkug2"]
+[ext_resource type="FontFile" uid="uid://dok171t6oxmnq" path="res://assets/fonts/FiraSans-Bold.ttf" id="2_3ykye"]
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=478925748]
+script = ExtResource("1_nkug2")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2107708408]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=690405556]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=1169005393]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer" unique_id=743447371]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_3ykye")
+theme_override_font_sizes/font_size = 48
+text = "SETTINGS"
+horizontal_alignment = 1
+
+[node name="BoxContainer" type="BoxContainer" parent="CenterContainer/VBoxContainer" unique_id=304174498]
+layout_mode = 2
+
+[node name="ResolutionLabel" type="Label" parent="CenterContainer/VBoxContainer/BoxContainer" unique_id=601161330]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "RESOLUTION"
+
+[node name="ResolutionOptionButton" type="OptionButton" parent="CenterContainer/VBoxContainer/BoxContainer" unique_id=1120347232]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BoxContainer2" type="BoxContainer" parent="CenterContainer/VBoxContainer" unique_id=239193524]
+layout_mode = 2
+
+[node name="WindowModeLabel" type="Label" parent="CenterContainer/VBoxContainer/BoxContainer2" unique_id=132266110]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "WINDOW_MODE"
+
+[node name="WindowModeOptionButton" type="OptionButton" parent="CenterContainer/VBoxContainer/BoxContainer2" unique_id=193502184]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BoxContainer5" type="BoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1545165244]
+layout_mode = 2
+
+[node name="LanguageLabel" type="Label" parent="CenterContainer/VBoxContainer/BoxContainer5" unique_id=532522887]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "LANGUAGE"
+
+[node name="LanguageOptionButton" type="OptionButton" parent="CenterContainer/VBoxContainer/BoxContainer5" unique_id=955912016]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BoxContainer3" type="BoxContainer" parent="CenterContainer/VBoxContainer" unique_id=2054789549]
+layout_mode = 2
+
+[node name="VSyncLabel" type="Label" parent="CenterContainer/VBoxContainer/BoxContainer3" unique_id=971492326]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "VSync: "
+
+[node name="VSyncCheckButton" type="CheckButton" parent="CenterContainer/VBoxContainer/BoxContainer3" unique_id=1291849746]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/VBoxContainer" unique_id=529680069]
+layout_mode = 2
+
+[node name="BoxContainer4" type="BoxContainer" parent="CenterContainer/VBoxContainer" unique_id=570540438]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="CenterContainer/VBoxContainer/BoxContainer4" unique_id=345044382]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "BACK"
+
+[node name="ApplyButton" type="Button" parent="CenterContainer/VBoxContainer/BoxContainer4" unique_id=1015018858]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "APPLY"

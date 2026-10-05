@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://pmr7r7crsrb"
-path="res://.godot/imported/skeleton.png-534ec709bd0b2490c95bbe32e79208da.ctex"
+uid="uid://crr54t24bj0s5"
+path="res://.godot/imported/Long_Sword_item_HD.webp-e172e071112cde6f398fd70828b97800.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/enemies/skeleton.png"
-dest_files=["res://.godot/imported/skeleton.png-534ec709bd0b2490c95bbe32e79208da.ctex"]
+source_file="res://assets/items/Long_Sword_item_HD.webp"
+dest_files=["res://.godot/imported/Long_Sword_item_HD.webp-e172e071112cde6f398fd70828b97800.ctex"]
 
 [params]
 

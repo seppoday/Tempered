@@ -32,7 +32,9 @@ func _on_state_changed(new_state: GameManager.State) -> void:
 			.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 		t.parallel().tween_property(main, "modulate:a", 1.0, 0.3) \
 			.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
-			
+		
+		AudioManager.play_sfx(AudioLibrary.get_sfx(AudioKeys.SFX_SWOOSH))
+		
 	else:
 		if not visible:
 			return
@@ -48,6 +50,8 @@ func _on_state_changed(new_state: GameManager.State) -> void:
 		# ColorRect fade out na końcu (tło znika jako ostatnie)
 		t.tween_property(color_rect, "modulate:a", 0.0, 0.2) \
 			.set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+		
+		AudioManager.play_sfx(AudioLibrary.get_sfx(AudioKeys.SFX_SWOOSH))
 		
 		await t.finished
 		visible = false

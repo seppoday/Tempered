@@ -16,7 +16,7 @@ enum Type {
 @export var slot_type: Type = Type.WEAPON
 @export var placeholder_texture: Texture2D
 
-@onready var skill_icon: TextureRect = $SkillIcon
+@onready var skill_icon: TextureRect = %SkillIcon
 
 func _ready() -> void:
 	super._ready()
