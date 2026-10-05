@@ -10,10 +10,11 @@ var current_enemy_index = 0
 var current_wave = 0
 
 @onready var enemy_spawn_point: Marker3D = %EnemySpawnPoint
+@onready var enemy_subviewport: SubViewport = %EnemySubViewport
 
 @export var waves: Array[WaveSequence]
 
-var enemy_scene = preload("uid://ckvbsvfexndh8")
+var enemy_scene = preload("uid://b1s7u3s7uxodv")
 
 
 func _ready() -> void:
@@ -53,5 +54,5 @@ func _spawn_current_enemy() -> void:
 	if enemy_def:
 		var enemy_inst = enemy_scene.instantiate()
 		enemy_inst.definition = enemy_def
-		enemy_spawn_point.add_child(enemy_inst)
+		enemy_subviewport.add_child(enemy_inst)
 		CombatManager.set_enemy(enemy_inst)

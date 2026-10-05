@@ -1,8 +1,8 @@
 extends Label
 
 func _ready() -> void:
-	PlayerData.gold_changed.connect(_update_gold_display)
-	_update_gold_display(PlayerData.gold)
+	MetaProgressionManager.gold_changed.connect(_update_gold_display)
+	_update_gold_display(MetaProgressionManager.gold)
 
 func _update_gold_display(new_amount: int) -> void:
 	text = "Gold: %d$" % new_amount

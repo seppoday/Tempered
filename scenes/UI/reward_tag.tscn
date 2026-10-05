@@ -2,8 +2,6 @@
 
 [ext_resource type="Script" uid="uid://ceksib7lxfweo" path="res://scripts/UI/reward_tag.gd" id="1_cd3re"]
 [ext_resource type="Texture2D" uid="uid://1f8lt201861u" path="res://assets/icons/test.png" id="2_txbqc"]
-[ext_resource type="FontFile" uid="uid://ksubfguv2mi1" path="res://assets/fonts/FiraSans-ExtraBold.ttf" id="3_ri84k"]
-[ext_resource type="FontFile" uid="uid://cdjqfdlffrhaq" path="res://assets/fonts/FiraSans-LightItalic.ttf" id="4_7800n"]
 [ext_resource type="Shader" uid="uid://0oxx6d0b4k3s" path="res://shaders/dice_tag_effect.gdshader" id="5_ufewc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yc77a"]
@@ -30,19 +28,6 @@ shader_parameter/pulse_speed = 0.0
 shader_parameter/pulse_amount = 0.25
 shader_parameter/locked_intensity = 0.0
 shader_parameter/locked_color = Color(0.1, 0.1, 0.12, 0.6)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54fgk"]
-corner_radius_top_left = 50
-corner_radius_top_right = 50
-corner_radius_bottom_right = 50
-corner_radius_bottom_left = 50
-shadow_color = Color(0.29954746, 0.29954746, 0.29954743, 0.6)
-shadow_size = 6
-
-[sub_resource type="LabelSettings" id="LabelSettings_fwldo"]
-font_size = 24
-outline_size = 6
-outline_color = Color(0, 0, 0, 1)
 
 [node name="PanelContainer" type="PanelContainer" unique_id=95318190]
 offset_right = 162.0
@@ -77,18 +62,6 @@ texture = ExtResource("2_txbqc")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="ValueLabel" type="Label" parent="MarginContainer/BoxContainer" unique_id=447793444]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 8
-theme_override_constants/outline_size = 6
-theme_override_fonts/font = ExtResource("3_ri84k")
-theme_override_font_sizes/font_size = 32
-text = "test"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="ItemName" type="Label" parent="MarginContainer/BoxContainer" unique_id=1683641356]
 unique_name_in_owner = true
 layout_mode = 2
@@ -99,43 +72,9 @@ label_settings = SubResource("LabelSettings_mjkwc")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ScalingLabel" type="Label" parent="MarginContainer/BoxContainer" unique_id=671578473]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 8
-theme_override_constants/outline_size = 6
-theme_override_fonts/font = ExtResource("4_7800n")
-theme_override_font_sizes/font_size = 12
-text = "test"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 1
-
 [node name="EffectOverlay" type="ColorRect" parent="." unique_id=417394727]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_wvhbo")
 layout_mode = 2
 offset_transform_enabled = true
 mouse_filter = 2
-
-[node name="RollDetail" type="PanelContainer" parent="." unique_id=730571463]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(48, 48)
-custom_maximum_size = Vector2(48, 48)
-layout_mode = 2
-size_flags_horizontal = 4
-offset_transform_enabled = true
-offset_transform_position = Vector2(0, -24)
-theme_override_styles/panel = SubResource("StyleBoxFlat_54fgk")
-
-[node name="RollDetailLabel" type="Label" parent="RollDetail" unique_id=1472837659]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-text = "test"
-label_settings = SubResource("LabelSettings_fwldo")
-horizontal_alignment = 1
-vertical_alignment = 1

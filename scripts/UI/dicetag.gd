@@ -219,7 +219,7 @@ func _on_mouse_entered() -> void:
 	if is_locked: return  # zablokowane karty nie reagują na hover
 	is_hovering = true
 	UIAnim.scale_to(self, Vector2(1.1, 1.1))
-	_animate_hover(1.0)
+	_animate_hover(0.5)
 
 
 func _on_mouse_exited() -> void:

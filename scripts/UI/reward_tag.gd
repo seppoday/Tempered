@@ -6,18 +6,19 @@ signal reward_selected(card)
 @onready var icon_rect: TextureRect = %Icon
 @onready var name_label: Label = %ItemName
 
+
 var is_selected := false
 var is_hovering := false
 var _locked := false
 var _hover_tween: Tween
 var _select_tween: Tween
 var _locked_tween: Tween
+var _item: InventoryEntry
 
 
 func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
-
 
 func setup(item: InventoryEntry) -> void:
 	if not item:
@@ -25,12 +26,37 @@ func setup(item: InventoryEntry) -> void:
 
 	_locked = false
 	is_selected = false
+	_item = item
 
 	if icon_rect:
 		icon_rect.texture = item.icon
 	if name_label:
 		name_label.text = item.name
 
+	tooltip_text = "use_custom"   # bez tego Godot nie wywoła _make_custom_tooltip wcale
+
+
+func _make_custom_tooltip(_for_text: String) -> Control:
+	if not _item:
+		return null
+
+	var instance := ItemInstance.new(_item, 1, 0)  # quantity=1, dice_level=0 — podgląd bazowego d4
+	var tooltip := preload("uid://d3l2j2u2xebjv").instantiate() as InventoryTooltip
+	tooltip.populate(instance, InventorySlot.STAT_DISPLAY)
+
+	tooltip.tree_entered.connect(
+		_clear_tooltip_panel_bg.bind(tooltip),
+		CONNECT_ONE_SHOT
+	)
+
+	return tooltip
+
+
+func _clear_tooltip_panel_bg(tooltip_content: Control) -> void:
+	var parent := tooltip_content.get_parent()
+	if parent == null:
+		return
+	parent.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
 
 func reset_state() -> void:
 	_locked = false
@@ -62,7 +88,7 @@ func _on_mouse_entered() -> void:
 
 	is_hovering = true
 	UIAnim.scale_to(self, Vector2(1.2, 1.2))
-	_animate_hover(1.0)
+	_animate_hover(0.5)
 
 
 func _on_mouse_exited() -> void:

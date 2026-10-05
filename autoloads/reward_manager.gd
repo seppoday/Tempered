@@ -18,7 +18,7 @@ func generate_rewards(enemy_definition: EnemyDefinition) -> void:
 	if table and table.gold_max > 0:
 		_pending_gold = RNG.randi_range(table.gold_min, table.gold_max)
 		if _pending_gold > 0:
-			PlayerData.add_gold(_pending_gold)
+			MetaProgressionManager.add_gold(_pending_gold)
 
 	# 2. Generowanie przedmiotów (kart)
 	if table:

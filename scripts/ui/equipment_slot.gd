@@ -23,6 +23,9 @@ func _ready() -> void:
 	PlayerData.item_equipped.connect(_on_item_equipped)
 	mouse_entered.connect(_on_mouse_entered_preview)
 	mouse_exited.connect(_on_mouse_exited_preview)
+	
+	EventBus.drag_started.connect(_on_drag_started)
+	EventBus.drag_ended.connect(_on_drag_ended)
 
 	var current_item: ItemInstance = PlayerData.get_equipped_item(slot_type)
 	if current_item:
@@ -30,6 +33,25 @@ func _ready() -> void:
 	else:
 		super.clear()
 
+func _on_drag_started(item_definition: InventoryEntry) -> void:
+	if item_definition is ItemDefinition and item_definition.slot == slot_type:
+		_set_drop_highlight(true)
+
+
+func _on_drag_ended() -> void:
+	_set_drop_highlight(false)
+
+
+func _set_drop_highlight(active: bool) -> void:
+	if active:
+		var style := StyleBoxFlat.new()
+		style.bg_color = BASE_BG.lightened(0.15)
+		style.border_color = Color(0.95, 0.8, 0.3, 1.0)  # ciepły, wyraźny kolor "można tu wrzucić"
+		style.set_border_width_all(3)
+		style.set_corner_radius_all(4)
+		add_theme_stylebox_override("panel", style)
+	else:
+		_update_visual()  # wraca do normalnego stylu (rarity-based itd.)
 
 func _on_mouse_entered_preview() -> void:
 	if not get_viewport().gui_is_dragging():

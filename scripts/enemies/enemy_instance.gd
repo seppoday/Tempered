@@ -1,4 +1,4 @@
-class_name EnemyInstance
+class_name EnemyInstance2
 extends Node3D
 
 signal died(enemy: EnemyInstance)

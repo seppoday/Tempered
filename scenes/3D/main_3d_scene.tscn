@@ -33,6 +33,7 @@
 [ext_resource type="Script" uid="uid://cpns5yr2xh0ev" path="res://scripts/UI/inventory.gd" id="20_q0ack"]
 [ext_resource type="FontFile" uid="uid://dok171t6oxmnq" path="res://assets/fonts/FiraSans-Bold.ttf" id="24_amdh2"]
 [ext_resource type="Script" uid="uid://b0nh08jlx8xfr" path="res://scripts/UI/equipment_canvas_layer.gd" id="28_8r76n"]
+[ext_resource type="Script" uid="uid://b2ds0q8y88g1k" path="res://scenes/3D/post_processing.gd" id="29_4psnp"]
 [ext_resource type="PackedScene" uid="uid://bbadchds7qm5n" path="res://scenes/UI/slot.tscn" id="31_ifyqo"]
 [ext_resource type="Script" uid="uid://dpg71kpxh2esj" path="res://scripts/UI/dice_tags.gd" id="31_mpvc3"]
 [ext_resource type="Texture2D" uid="uid://dyhh4dx4wna1x" path="res://wood_table_nor_dx_1k.png" id="36_2r5wi"]
@@ -47,7 +48,10 @@
 [ext_resource type="Texture2D" uid="uid://c113jmy871e2p" path="res://assets/models/materials/carpet/cotton_jersey_ao_1k.jpg" id="42_50bjb"]
 [ext_resource type="Texture2D" uid="uid://dnaguf6uyfwym" path="res://assets/ui/legs_slot_placeholder.png" id="42_fdv13"]
 [ext_resource type="Script" uid="uid://c6w0ntq5lk1od" path="res://scripts/gameplay/dice_hand.gd" id="43_8r76n"]
+[ext_resource type="Script" uid="uid://df8tf81xso1wc" path="res://scenes/3D/skills_panel.gd" id="46_4aqfo"]
 [ext_resource type="Shader" uid="uid://dixfqjkcloefu" path="res://postprocessing.gdshader" id="46_lhg76"]
+[ext_resource type="Script" uid="uid://e0wtwogaocqf" path="res://scenes/3D/game_over_canvas_layer.gd" id="52_ct24d"]
+[ext_resource type="Script" uid="uid://druvchqrj4kex" path="res://scenes/3D/meta_progression_canvas_layer.gd" id="54_ev28f"]
 [ext_resource type="Script" uid="uid://c73k0xhw4yeyb" path="res://scripts/UI/rewards_canvas_layer.gd" id="58_dwi8f"]
 [ext_resource type="PackedScene" uid="uid://bbkjtosvst7i2" path="res://scenes/UI/reward_tag.tscn" id="59_3w64d"]
 
@@ -271,8 +275,8 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_xemqj")
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_lquvc"]
-size = Vector2(1.92, 1.08)
+[sub_resource type="ViewportTexture" id="ViewportTexture_wvhbo"]
+viewport_path = NodePath("Box/Lid/LidScreen/EnemySubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8r76n"]
 render_priority = 100
@@ -340,6 +344,8 @@ uv1_scale = Vector3(4, 4, 4)
 shader = ExtResource("46_lhg76")
 shader_parameter/enabled = true
 shader_parameter/intensity = 0.10000000475
+shader_parameter/blur_enabled = true
+shader_parameter/blur_strength = 9.80400046569
 shader_parameter/brightness = 0.10000005224999996
 shader_parameter/contrast = 1.10000005225
 shader_parameter/saturation = 0.50000002375
@@ -413,10 +419,9 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[node name="Main3DScene" type="Node3D" unique_id=417046850 node_paths=PackedStringArray("action_button", "box_clicker", "dice_roller", "dice_hand", "wave_manager")]
+[node name="Main3DScene" type="Node3D" unique_id=417046850 node_paths=PackedStringArray("box_clicker", "dice_roller", "dice_hand", "wave_manager")]
 script = ExtResource("1_8ngun")
-action_button = NodePath("MainSceneUICanvasLayer/ActionButton")
-box_clicker = NodePath("StaticBody3D")
+box_clicker = NodePath("BoxDiceClicker")
 dice_roller = NodePath("Box/DiceRoller")
 dice_hand = NodePath("DiceHand")
 enemy_scene = ExtResource("4_yvypd")
@@ -430,7 +435,7 @@ camera = NodePath("../CameraAnchor/Camera3D")
 dice_tag_canvas_layer = NodePath("../DiceTags")
 dice_roller = NodePath("../Box/DiceRoller")
 enemy_spawn_point = NodePath("../Box/Lid/EnemySpawnPoint")
-hp_progress_bar = NodePath("../MainSceneUICanvasLayer/HBoxContainer2/HpBox/HpProgressBar")
+hp_progress_bar = NodePath("../MainSceneUICanvasLayer/BoxContainer/HBoxContainer2/BoxContainer3/HpProgressBar")
 
 [node name="WaveManager" type="Node" parent="." unique_id=1545171642]
 script = ExtResource("7_avuin")
@@ -572,18 +577,18 @@ shape = SubResource("BoxShape3D_a5i42")
 transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 1.323489e-22, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106863e-15, -33.564915, -1.9073486e-06, -0.22585705)
 shape = SubResource("BoxShape3D_a5i42")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=702762012 node_paths=PackedStringArray("camera", "highlight_plane") groups=["dice_box_trigger"]]
+[node name="BoxDiceClicker" type="StaticBody3D" parent="." unique_id=702762012 node_paths=PackedStringArray("camera", "highlight_plane") groups=["dice_box_trigger"]]
 transform = Transform3D(-2.1855695e-09, 0, 0.05, 0, 0.05, 0, -0.05, 0, -2.1855695e-09, 0.0049730632, 0.25078917, -0.06945217)
 collision_layer = 2
 script = ExtResource("16_52jij")
 camera = NodePath("../CameraAnchor/Camera3D")
 highlight_plane = NodePath("MeshInstance3D")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=849059475]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BoxDiceClicker" unique_id=849059475]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5218507, -7.6887107, -0.14074887)
 shape = SubResource("BoxShape3D_52jij")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1294606919]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BoxDiceClicker" unique_id=1294606919]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5218507, -0.15578556, -0.14074887)
 material_override = ExtResource("17_4aqfo")
 mesh = SubResource("PlaneMesh_4aqfo")
@@ -727,12 +732,18 @@ metadata/extras = {
 unique_name_in_owner = true
 transform = Transform3D(4.371139e-08, -3.8213714e-15, -1.0000001, -8.742278e-08, -1.0000001, 0, -1, 8.7422784e-08, -4.3711392e-08, 0.9, 0.1, 0)
 
-[node name="LidScreen" type="MeshInstance3D" parent="Box/Lid" unique_id=1704107719]
-transform = Transform3D(5.5929405e-08, 0, -1.5620002, 4.1184094e-08, -0.98300004, 0, -1.562, -2.5918029e-08, -5.59294e-08, 0.89047265, 0.07314545, 4.3289685e-08)
-mesh = SubResource("PlaneMesh_lquvc")
+[node name="LidScreen" type="Sprite3D" parent="Box/Lid" unique_id=998124579]
+transform = Transform3D(-6.993823e-09, 0.16000001, -6.9849193e-09, 0, -6.9849193e-09, -0.16000001, -0.16, -6.993822e-09, 3.0570968e-16, 0.89054126, 0.048349068, 4.3289685e-08)
+texture = SubResource("ViewportTexture_wvhbo")
 metadata/extras = {
 "booleans": {}
 }
+
+[node name="EnemySubViewport" type="SubViewport" parent="Box/Lid/LidScreen" unique_id=1058069601]
+unique_name_in_owner = true
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
 
 [node name="BoxScreen" type="MeshInstance3D" parent="Box" unique_id=2038969564]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.010597676, 0)
@@ -741,8 +752,9 @@ mesh = SubResource("ArrayMesh_u67e6")
 surface_material_override/0 = SubResource("StandardMaterial3D_a5a6l")
 
 [node name="PostProcessing" type="CanvasLayer" parent="." unique_id=1801893158]
+script = ExtResource("29_4psnp")
 
-[node name="ColorRect" type="ColorRect" parent="PostProcessing" unique_id=77687052]
+[node name="ProcessingLayer" type="ColorRect" parent="PostProcessing" unique_id=77687052]
 material = SubResource("ShaderMaterial_wvhbo")
 anchors_preset = 15
 anchor_right = 1.0
@@ -756,6 +768,7 @@ script = ExtResource("7_ap16l")
 
 [node name="ActionButton" type="Button" parent="MainSceneUICanvasLayer" unique_id=1335128765]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(200, 80)
 offset_left = 1393.0
 offset_top = 467.0
@@ -769,38 +782,74 @@ theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxFlat_amdh2")
 text = "ROLL"
 
-[node name="HBoxContainer2" type="BoxContainer" parent="MainSceneUICanvasLayer" unique_id=485729519]
-custom_maximum_size = Vector2(400, -1)
-offset_left = 794.0
-offset_top = 1000.0
-offset_right = 1126.0
-offset_bottom = 1068.0
+[node name="BoxContainer" type="BoxContainer" parent="MainSceneUICanvasLayer" unique_id=1537649407]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -268.0
+offset_top = -95.0
+offset_right = 268.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 12
+vertical = true
+
+[node name="HBoxContainer2" type="BoxContainer" parent="MainSceneUICanvasLayer/BoxContainer" unique_id=485729519]
+layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 8
 offset_transform_position = Vector2(0, -100)
 offset_transform_visual_only = false
+theme_override_constants/separation = 24
 alignment = 1
+
+[node name="BoxContainer" type="BoxContainer" parent="MainSceneUICanvasLayer/BoxContainer/HBoxContainer2" unique_id=1463867008]
+layout_mode = 2
 vertical = true
 
-[node name="HpBox" type="BoxContainer" parent="MainSceneUICanvasLayer/HBoxContainer2" unique_id=1955519889]
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="MainSceneUICanvasLayer/HBoxContainer2/HpBox" unique_id=1871555241]
+[node name="Label2" type="Label" parent="MainSceneUICanvasLayer/BoxContainer/HBoxContainer2/BoxContainer" unique_id=1871555241]
 custom_minimum_size = Vector2(36, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 22
 text = "HP"
 vertical_alignment = 1
 
-[node name="HpCurrent" type="Label" parent="MainSceneUICanvasLayer/HBoxContainer2/HpBox" unique_id=701309585]
+[node name="Label3" type="Label" parent="MainSceneUICanvasLayer/BoxContainer/HBoxContainer2/BoxContainer" unique_id=749575843]
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "SHIELD"
+vertical_alignment = 1
+
+[node name="BoxContainer2" type="BoxContainer" parent="MainSceneUICanvasLayer/BoxContainer/HBoxContainer2" unique_id=207418956]
+layout_mode = 2
+vertical = true
+
+[node name="HpCurrent" type="Label" parent="MainSceneUICanvasLayer/BoxContainer/HBoxContainer2/BoxContainer2" unique_id=701309585]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 22
 text = "0"
 vertical_alignment = 1
 
-[node name="HpProgressBar" type="ProgressBar" parent="MainSceneUICanvasLayer/HBoxContainer2/HpBox" unique_id=54554829]
+[node name="ShieldCurrent" type="Label" parent="MainSceneUICanvasLayer/BoxContainer/HBoxContainer2/BoxContainer2" unique_id=502018597]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(250, 4)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 22
+text = "0"
+vertical_alignment = 1
+
+[node name="BoxContainer3" type="BoxContainer" parent="MainSceneUICanvasLayer/BoxContainer/HBoxContainer2" unique_id=58964236]
+layout_mode = 2
+vertical = true
+
+[node name="HpProgressBar" type="ProgressBar" parent="MainSceneUICanvasLayer/BoxContainer/HBoxContainer2/BoxContainer3" unique_id=54554829]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 30)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -809,31 +858,9 @@ offset_transform_position = Vector2(0, -1.6)
 theme_override_styles/fill = SubResource("StyleBoxFlat_g7q3g")
 show_percentage = false
 
-[node name="HpMax" type="Label" parent="MainSceneUICanvasLayer/HBoxContainer2/HpBox" unique_id=1363107852]
+[node name="ShieldProgressBar" type="ProgressBar" parent="MainSceneUICanvasLayer/BoxContainer/HBoxContainer2/BoxContainer3" unique_id=960721487]
 unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-text = "100"
-
-[node name="ShieldBox" type="BoxContainer" parent="MainSceneUICanvasLayer/HBoxContainer2" unique_id=91889068]
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="MainSceneUICanvasLayer/HBoxContainer2/ShieldBox" unique_id=749575843]
-custom_minimum_size = Vector2(36, 0)
-layout_mode = 2
-text = "HP"
-vertical_alignment = 1
-
-[node name="ShieldCurrent" type="Label" parent="MainSceneUICanvasLayer/HBoxContainer2/ShieldBox" unique_id=502018597]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-text = "0"
-vertical_alignment = 1
-
-[node name="ShieldProgressBar" type="ProgressBar" parent="MainSceneUICanvasLayer/HBoxContainer2/ShieldBox" unique_id=960721487]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(250, 4)
+custom_minimum_size = Vector2(400, 30)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -842,17 +869,30 @@ offset_transform_position = Vector2(0, -1.6)
 theme_override_styles/fill = SubResource("StyleBoxFlat_6ydfj")
 show_percentage = false
 
-[node name="ShieldMax" type="Label" parent="MainSceneUICanvasLayer/HBoxContainer2/ShieldBox" unique_id=2059704989]
+[node name="BoxContainer4" type="BoxContainer" parent="MainSceneUICanvasLayer/BoxContainer/HBoxContainer2" unique_id=1522601309]
+layout_mode = 2
+vertical = true
+
+[node name="HpMax" type="Label" parent="MainSceneUICanvasLayer/BoxContainer/HBoxContainer2/BoxContainer4" unique_id=1363107852]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 22
 text = "100"
 
-[node name="GoldLabel" type="Label" parent="MainSceneUICanvasLayer/HBoxContainer2" unique_id=368449364]
+[node name="ShieldMax" type="Label" parent="MainSceneUICanvasLayer/BoxContainer/HBoxContainer2/BoxContainer4" unique_id=2059704989]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "100"
+
+[node name="GoldLabel" type="Label" parent="MainSceneUICanvasLayer/BoxContainer" unique_id=368449364]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 offset_transform_enabled = true
+theme_override_font_sizes/font_size = 22
 text = "Gold: 1235$"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -1063,14 +1103,14 @@ layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 
-[node name="Stats2" type="PanelContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/InventoryPanel" unique_id=85465600]
+[node name="Skills" type="PanelContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/InventoryPanel" unique_id=85465600]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_3w64d")
-script = ExtResource("9_xr32f")
+script = ExtResource("46_4aqfo")
 
-[node name="MarginContainer" type="MarginContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/InventoryPanel/Stats2" unique_id=80696076]
+[node name="MarginContainer" type="MarginContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/InventoryPanel/Skills" unique_id=80696076]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 12
@@ -1078,7 +1118,8 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="StatsBox" type="VBoxContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/InventoryPanel/Stats2/MarginContainer" unique_id=2103111230]
+[node name="SkillsBox" type="VBoxContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/InventoryPanel/Skills/MarginContainer" unique_id=2103111230]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
@@ -1182,4 +1223,186 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="GameOverCanvasLayer" type="CanvasLayer" parent="." unique_id=250188959]
+visible = false
+script = ExtResource("52_ct24d")
+
+[node name="ColorRect" type="ColorRect" parent="GameOverCanvasLayer" unique_id=1618569229]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.90000004)
+
+[node name="Main" type="CenterContainer" parent="GameOverCanvasLayer" unique_id=537670981]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BoxContainer" type="BoxContainer" parent="GameOverCanvasLayer/Main" unique_id=902554934]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+vertical = true
+
+[node name="GameOverLabel" type="Label" parent="GameOverCanvasLayer/Main/BoxContainer" unique_id=729442930]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("24_amdh2")
+theme_override_font_sizes/font_size = 48
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="GameOverCanvasLayer/Main/BoxContainer" unique_id=245405456]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Score: XXX"
+horizontal_alignment = 1
+
+[node name="HighscoreLabel" type="Label" parent="GameOverCanvasLayer/Main/BoxContainer" unique_id=1005340134]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Highscore: XXX"
+horizontal_alignment = 1
+
+[node name="CoinsLabel" type="Label" parent="GameOverCanvasLayer/Main/BoxContainer" unique_id=2110141618]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Coins: XXX"
+horizontal_alignment = 1
+
+[node name="EndRunButton" type="Button" parent="GameOverCanvasLayer/Main/BoxContainer" unique_id=1961217211]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+text = "END"
+
+[node name="MetaProgressionCanvasLayer" type="CanvasLayer" parent="." unique_id=757109093]
+visible = false
+script = ExtResource("54_ev28f")
+
+[node name="ColorRect" type="ColorRect" parent="MetaProgressionCanvasLayer" unique_id=1148087904]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.90000004)
+
+[node name="Main" type="CenterContainer" parent="MetaProgressionCanvasLayer" unique_id=1331171656]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BoxContainer" type="BoxContainer" parent="MetaProgressionCanvasLayer/Main" unique_id=1424023156]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+vertical = true
+
+[node name="GameOverLabel" type="Label" parent="MetaProgressionCanvasLayer/Main/BoxContainer" unique_id=367147278]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("24_amdh2")
+theme_override_font_sizes/font_size = 48
+text = "Meta Progression"
+horizontal_alignment = 1
+
+[node name="MetaCoinsLabel" type="Label" parent="MetaProgressionCanvasLayer/Main/BoxContainer" unique_id=2142535086]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Coins: XXX"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="BoxContainer" parent="MetaProgressionCanvasLayer/Main/BoxContainer" unique_id=1603228707]
+layout_mode = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="MetaProgressionCanvasLayer/Main/BoxContainer/VBoxContainer" unique_id=1562669258]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "First"
+
+[node name="Button2" type="Button" parent="MetaProgressionCanvasLayer/Main/BoxContainer/VBoxContainer" unique_id=1209794003]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "First"
+
+[node name="Button3" type="Button" parent="MetaProgressionCanvasLayer/Main/BoxContainer/VBoxContainer" unique_id=1787285381]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "First"
+
+[node name="Button4" type="Button" parent="MetaProgressionCanvasLayer/Main/BoxContainer/VBoxContainer" unique_id=1577895488]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "First"
+
+[node name="Button5" type="Button" parent="MetaProgressionCanvasLayer/Main/BoxContainer/VBoxContainer" unique_id=2066703752]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "First"
+
+[node name="VBoxContainer2" type="BoxContainer" parent="MetaProgressionCanvasLayer/Main/BoxContainer" unique_id=1670890321]
+layout_mode = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="MetaProgressionCanvasLayer/Main/BoxContainer/VBoxContainer2" unique_id=440415524]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "First"
+
+[node name="Button2" type="Button" parent="MetaProgressionCanvasLayer/Main/BoxContainer/VBoxContainer2" unique_id=2100374302]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "First"
+
+[node name="Button3" type="Button" parent="MetaProgressionCanvasLayer/Main/BoxContainer/VBoxContainer2" unique_id=1375270681]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "First"
+
+[node name="Button4" type="Button" parent="MetaProgressionCanvasLayer/Main/BoxContainer/VBoxContainer2" unique_id=2002757486]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "First"
+
+[node name="Button5" type="Button" parent="MetaProgressionCanvasLayer/Main/BoxContainer/VBoxContainer2" unique_id=91799381]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "First"
+
+[node name="EndMetaButton" type="Button" parent="MetaProgressionCanvasLayer/Main/BoxContainer" unique_id=2102362502]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+text = "END"
+
 [connection signal="pressed" from="EquipmentCanvasLayer/Main/Margin/MiddlePanel/NextEnemyButton" to="." method="_on_next_enemy_button_pressed"]
+[connection signal="pressed" from="GameOverCanvasLayer/Main/BoxContainer/EndRunButton" to="." method="_on_end_run_button_pressed"]
+[connection signal="pressed" from="MetaProgressionCanvasLayer/Main/BoxContainer/EndMetaButton" to="." method="_on_end_meta_button_pressed"]

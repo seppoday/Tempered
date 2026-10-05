@@ -55,26 +55,26 @@ func spawn_info(value: String, world_position: Vector3) -> void:
 # ── NOWE METODY POMOCNICZE ──
 
 ## Spawnuje informację o nałożeniu statusu (np. "SPALENIE 🔥")
-func spawn_status_applied(status_type: GameEnums.StatusType, world_position: Vector3) -> void:
+func spawn_status_applied(status_type: GameEnums.StatusType, screen_position: Vector2) -> void:
 	match status_type:
 		GameEnums.StatusType.BURN:
-			spawn_world("PODPALENIE 🔥", world_position, COLOR_BURN)
+			spawn_screen("PODPALENIE 🔥", screen_position, COLOR_BURN)
 		GameEnums.StatusType.POISON:
-			spawn_world("ZATRUCIE 🧪", world_position, COLOR_POISON)
+			spawn_screen("ZATRUCIE 🧪", screen_position, COLOR_POISON)
 		GameEnums.StatusType.BLEED:
-			spawn_world("KRWAWIENIE 🩸", world_position, COLOR_BLEED)
+			spawn_screen("KRWAWIENIE 🩸", screen_position, COLOR_BLEED)
 
 
 ## Spawnuje tick obrażeń DoT (np. "-4 🔥")
-func spawn_status_tick(value: int, status_type: GameEnums.StatusType, world_position: Vector3) -> void:
+func spawn_status_tick(value: int, status_type: GameEnums.StatusType, screen_position: Vector2) -> void:
 	var text = "-" + Utilities.format_large_number(value)
 	match status_type:
 		GameEnums.StatusType.BURN:
-			spawn_world(text + " 🔥", world_position, COLOR_BURN)
+			spawn_screen(text + " 🔥", screen_position, COLOR_BURN)
 		GameEnums.StatusType.POISON:
-			spawn_world(text + " 🧪", world_position, COLOR_POISON)
+			spawn_screen(text + " 🧪", screen_position, COLOR_POISON)
 		GameEnums.StatusType.BLEED:
-			spawn_world(text + " 🩸", world_position, COLOR_BLEED)
+			spawn_screen(text + " 🩸", screen_position, COLOR_BLEED)
 
 
 ## Spawnuje blok tarczy (np. "-12 🛡️") w 2D (nad paskiem HP gracza) lub w 3D (nad wrogiem)

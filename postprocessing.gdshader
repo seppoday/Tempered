@@ -17,6 +17,12 @@ uniform bool enabled = true;
 uniform float intensity : hint_range(0.0, 1.0) = 1.0;
 
 // ============================================================
+// BLUR / ROZMYCIE
+// ============================================================
+uniform bool blur_enabled = false;
+uniform float blur_strength : hint_range(0.0, 25.0) = 3.0;
+
+// ============================================================
 // COLOR CORRECTION
 // ============================================================
 uniform float brightness : hint_range(-1.0, 1.0) = 0.0;
@@ -221,6 +227,27 @@ float calculate_vignette(vec2 uv) {
     return vignette * vignette_strength;
 }
 
+vec3 apply_blur(vec2 uv, vec2 pixel_size, sampler2D screen_tex, float radius) {
+    if (radius <= 0.01) {
+        return texture(screen_tex, uv).rgb;
+    }
+    vec3 result = vec3(0.0);
+    float total_weight = 0.0;
+    const int SAMPLES = 16;
+    const float GOLDEN_ANGLE = 2.39996323; // Vogel disk
+
+    for (int i = 0; i < SAMPLES; i++) {
+        float r = sqrt(float(i) + 0.5) / sqrt(float(SAMPLES));
+        float theta = float(i) * GOLDEN_ANGLE;
+        vec2 offset = vec2(cos(theta), sin(theta)) * r * radius * pixel_size;
+        
+        float weight = exp(-0.5 * (r * 2.5) * (r * 2.5)); // Waga Gaussa
+        result += texture(screen_tex, uv + offset).rgb * weight;
+        total_weight += weight;
+    }
+    return result / total_weight;
+}
+
 vec3 bloom_sample(vec2 uv, vec2 pixel_size, sampler2D screen_tex) {
     vec3 result = vec3(0.0);
     vec2 offsets[8] = vec2[](
@@ -277,8 +304,15 @@ void fragment() {
         uv = floor(uv / pixel_size) * pixel_size + pixel_size * 0.5;
     }
 
-    // Chromatic aberration / base sample
+    // Base sample (lub rozmycie)
     vec3 color;
+    if (blur_enabled) {
+        color = apply_blur(uv, SCREEN_PIXEL_SIZE, SCREEN_TEXTURE, blur_strength);
+    } else {
+        color = texture(SCREEN_TEXTURE, uv).rgb;
+    }
+
+    // Chromatic aberration
     if (chromatic_aberration_enabled) {
         vec2 direction = uv - vec2(0.5);
         float distance_from_center = length(direction);
@@ -286,11 +320,9 @@ void fragment() {
         float offset = chromatic_aberration * distance_from_center;
 
         float red   = texture(SCREEN_TEXTURE, uv + direction * offset).r;
-        float green = texture(SCREEN_TEXTURE, uv).g;
         float blue  = texture(SCREEN_TEXTURE, uv - direction * offset).b;
-        color = vec3(red, green, blue);
-    } else {
-        color = texture(SCREEN_TEXTURE, uv).rgb;
+        color.r = red;
+        color.b = blue;
     }
 
     // RGB Split

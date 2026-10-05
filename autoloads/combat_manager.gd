@@ -80,14 +80,14 @@ func resolve_player_attack(selected_results: Array[Dictionary]) -> void:
 		for _hit in range(hit_count):
 			match skill.effect_type:
 				GameEnums.SkillEffect.DAMAGE:
-					_apply_damage_to_enemy(skill, int(value))
+					_apply_damage_to_enemy(skill, int(round(value)))
 					_process_on_hit_triggers(skill, context, item_instance.definition, rolled_face)
-				GameEnums.SkillEffect.HEAL: _apply_heal_to_player(skill, int(value))
-				GameEnums.SkillEffect.SHIELD: _apply_shield_to_player(skill, int(value))
-				GameEnums.SkillEffect.GOLD: _apply_gold_to_player(skill, int(value))
+				GameEnums.SkillEffect.HEAL: _apply_heal_to_player(skill, int(round(value)))
+				GameEnums.SkillEffect.SHIELD: _apply_shield_to_player(skill, int(round(value)))
+				GameEnums.SkillEffect.GOLD: _apply_gold_to_player(skill, int(round(value)))
 				GameEnums.SkillEffect.BUFF_CRIT: _apply_crit_buff(skill, value)
 				GameEnums.SkillEffect.BUFF_DAMAGE: _apply_damage_buff(skill, value)
-				GameEnums.SkillEffect.DEBUFF_ARMOR: _apply_armor_debuff_to_enemy(skill, int(value))
+				GameEnums.SkillEffect.DEBUFF_ARMOR: _apply_armor_debuff_to_enemy(skill, int(round(value)))
 				_: Log.warning("CombatManager: nieobsłużony effect_type %s" % skill.effect_type)
 			if current_enemy == null or current_enemy != target or is_game_over: break
 			if delay_between_effects > 0.0:
@@ -235,7 +235,7 @@ func _apply_shield_to_player(skill: SkillDefinition, value: int) -> void:
 
 ## Dodaje graczowi złoto.
 func _apply_gold_to_player(skill: SkillDefinition, value: int) -> void:
-	PlayerData.add_gold(value)
+	MetaProgressionManager.add_gold(value)
 	effect_applied.emit(skill, value, "player")
 	Log.print("Gracz zyskał %d złota" % value)
 

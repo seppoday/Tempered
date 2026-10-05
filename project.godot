@@ -36,11 +36,12 @@ AudioManager="*uid://ds2cvb4djus4j"
 UIAnim="*uid://df6y53u8nyheq"
 AudioLibrary="*uid://cpsk86ml2tmsk"
 CombatManager="*uid://6uhbbfy05lko"
-SceneTransition="*uid://db2lmw3wdtyjd"
 FloatingTextManager="*uid://sbj0e42bu6lc"
 ConsumableDatabase="*uid://brwhp86xgdxoq"
 SkillItemDatabase="*uid://wya1s4nl8703"
 RewardManager="*uid://c77dok4v756kc"
+SceneTransition="*uid://de5i3thrkc0li"
+MetaProgressionManager="*uid://cjcwlwwmu73ed"
 
 [debug]
 
@@ -72,6 +73,7 @@ dice_box_trigger=""
 
 [gui]
 
+timers/tooltip_delay_sec=0.2
 theme/custom_font="uid://w8scsdxdvbw7"
 
 [input]

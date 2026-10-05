@@ -2,7 +2,7 @@ class_name BattleManager # (lub inna nazwa klasy jaką masz)
 extends Node3D
 
 # Zamiast dwóch przycisków, mamy teraz jeden kontekstowy
-@export var action_button: Button
+#@export var action_button: Button
 @export var box_clicker: StaticBody3D
 
 @export var dice_roller: DiceRoller
@@ -19,12 +19,12 @@ func _ready() -> void:
 	AudioManager.play_music(AudioLibrary.get_music(AudioKeys.MUSIC_TEST), -10.0)
 
 	# Podłączamy tylko jeden przycisk do wspólnej funkcji obsługującej kliknięcie
-	action_button.pressed.connect(_on_action_button_pressed)
+	#action_button.pressed.connect(_on_action_button_pressed)
 	box_clicker.roll_requested.connect(_on_action_button_pressed)
 	
 	#dice_hand.results_ready.connect(_on_dice_hand_results_ready)
 	dice_hand.selection_complete.connect(_on_selection_complete)
-	GameManager.state_changed.connect(_on_game_state_changed)
+	#GameManager.state_changed.connect(_on_game_state_changed)
 	GameManager.set_state(GameManager.State.INTRO, self)
 
 	# --- SYGNAŁY WALKI I OBRAŻEŃ ---
@@ -50,27 +50,27 @@ func _on_box_shake_finished() -> void:
 
 # ── KONTEKSTOWA OBSŁUGA STANU PRZYCISKU ──
 
-func _on_game_state_changed(new_state: GameManager.State) -> void:
-	match new_state:
-		GameManager.State.PLAYER_TURN:
-			action_button.disabled = false
-			action_button.text = "RZUĆ KOŚĆMI"
-			
-		GameManager.State.SELECTING:
-			action_button.disabled = false
-			action_button.text = "ZATWIERDŹ WYBÓR"
-			
-		GameManager.State.RESOLVING:
-			action_button.disabled = true
-			action_button.text = "ROZGRYWANIE..."
-			
-		GameManager.State.ENEMY_TURN:
-			action_button.disabled = true
-			action_button.text = "TURA PRZECIWNIKA"
-			
-		_:
-			action_button.disabled = true
-			action_button.text = "CZEKAJ..."
+#func _on_game_state_changed(new_state: GameManager.State) -> void:
+	#match new_state:
+		#GameManager.State.PLAYER_TURN:
+			#action_button.disabled = false
+			#action_button.text = "RZUĆ KOŚĆMI"
+			#
+		#GameManager.State.SELECTING:
+			#action_button.disabled = false
+			#action_button.text = "ZATWIERDŹ WYBÓR"
+			#
+		#GameManager.State.RESOLVING:
+			#action_button.disabled = true
+			#action_button.text = "ROZGRYWANIE..."
+			#
+		#GameManager.State.ENEMY_TURN:
+			#action_button.disabled = true
+			#action_button.text = "TURA PRZECIWNIKA"
+			#
+		#_:
+			#action_button.disabled = true
+			#action_button.text = "CZEKAJ..."
 
 
 # ── KLIKNIĘCIE JEDYNEGO PRZYCISKU ──
@@ -78,7 +78,7 @@ func _on_game_state_changed(new_state: GameManager.State) -> void:
 func _on_action_button_pressed() -> void:
 	print("test")
 	# Animacja uderzenia przycisku
-	UIAnim.pop(action_button)
+	#UIAnim.pop(action_button)
 	
 	# Decydujemy co zrobić na podstawie aktualnego stanu gry
 	match GameManager.current_state:
@@ -119,7 +119,7 @@ func _execute_confirm() -> void:
 	if not dice_hand.has_selection() or CombatManager.is_game_over:
 		# Możesz tu dodać delikatny shake przycisku (UIAnim.shake) informujący, 
 		# że gracz musi najpierw wybrać kości.
-		UIAnim.shake(action_button, 4.0, 0.2)
+		#UIAnim.shake(action_button, 4.0, 0.2)
 		return
 
 	GameManager.set_state(GameManager.State.RESOLVING, self)
@@ -163,7 +163,7 @@ func _on_enemy_status_applied(status_name: String) -> void:
 	if CombatManager.current_enemy == null:
 		return
 	var status_type: GameEnums.StatusType = GameEnums.StatusType[status_name] as GameEnums.StatusType
-	var enemy_pos: Vector3 = CombatManager.current_enemy.global_position
+	var enemy_pos: Vector2 = CombatManager.current_enemy.global_position
 	FloatingTextManager.spawn_status_applied(status_type, enemy_pos)
 
 
@@ -171,7 +171,7 @@ func _on_enemy_status_tick(status_name: String, damage: int) -> void:
 	if CombatManager.current_enemy == null:
 		return
 	var status_type: GameEnums.StatusType = GameEnums.StatusType[status_name] as GameEnums.StatusType
-	var enemy_pos: Vector3 = CombatManager.current_enemy.global_position
+	var enemy_pos: Vector2 = CombatManager.current_enemy.global_position
 	FloatingTextManager.spawn_status_tick(damage, status_type, enemy_pos)
 
 
@@ -207,3 +207,11 @@ func _on_next_enemy_button_pressed() -> void:
 	
 	await get_tree().create_timer(.35).timeout
 	box.open_lid()
+
+
+func _on_end_run_button_pressed() -> void:
+	GameManager.set_state(GameManager.State.META_PROGRESSION, self)
+
+
+func _on_end_meta_button_pressed() -> void:
+	SceneTransition.fade_to_scene("uid://bxiyugah6we1q")

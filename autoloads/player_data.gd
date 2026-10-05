@@ -3,32 +3,30 @@ extends Node
 
 signal stats_changed(changed_stat_key: String)
 signal item_equipped(slot_type: EquipmentSlot.Type, item_instance: ItemInstance)
-signal gold_changed(new_gold_amount: int)
-signal shield_changed(current_shield: int, max_hp: int) # <--- NOWY SYGNAŁ
+signal shield_changed(current_shield: int, max_hp: int)
 signal stat_preview_started(preview_totals: Dictionary)
 signal stat_preview_ended
 signal player_dodged
 
-signal attributes_changed # Na razie nie używane nigdzie
+signal attributes_changed
 
 var picks_per_cycle: int = 2
 
 var health: Health
 var max_shield: float
-var gold: int = 0
 var pending_block: float = 0.0
 var pending_dodge_bonus: float = 0.0
 
 var totals: Dictionary = {
-		"dmg": 1,
-		"magic": 1,
-		"def": 1,
-		"vit": 1,
-		"speed": 1,
-		"luck": 1,
-		"status": 1,
-		"crit": 1,
-	}
+	"dmg": 1,
+	"magic": 1,
+	"def": 1,
+	"vit": 1,
+	"speed": 1,
+	"luck": 1,
+	"status": 1,
+	"crit": 1,
+}
 
 var equipped_items: Dictionary = {
 	EquipmentSlot.Type.AMULET: null,
@@ -51,34 +49,23 @@ const BASE_LUCK: float = 0.0
 const BASE_STATUS: float = 0.0
 const BASE_CRIT: float = 0.0
 
-# DEBUG
-const DEBUG_START_GEAR: Array[Dictionary] = [
-	# [id, count, level (0-6)]
-	{"id": "rusty_sword",    "count": 1, "level": 1},
-	#{"id": "iron_shield",    "count": 1, "level": 1},
-	{"id": "healers_amulet",  "count": 1, "level": 1},
-	#{"id": "iron_plate",   "count": 1, "level": 1},
-	#{"id": "thiefs_gloves", "count": 1, "level": 1},
-	#{"id": "hunter_boots",   "count": 1, "level": 1},
-	#{"id": "berserker_horns",    "count": 1, "level": 1},
-	{"id": "iron_ring",      "count": 1, "level": 1},
-]
+func equip_starting_loadout() -> void:
+	# UWAGA: Upewnij się, że nazwa autoloadu to MetaProgression (lub MetaProgressionManager)
+	var starting_ids: Array[String] = MetaProgressionManager.get_starting_loadout()
 
-func give_debug_gear() -> void:
-	for item in DEBUG_START_GEAR:
-		var item_definition := ItemDatabase.get_by_id(item.id)
+	for item_id in starting_ids:
+		var item_definition := ItemDatabase.get_by_id(item_id)
 
 		if item_definition == null:
-			Log.warning("give_debug_gear: nie znaleziono przedmiotu o ID: %s" % item.id)
+			Log.warning("equip_starting_loadout: nie znaleziono przedmiotu o ID: %s" % item_id)
 			continue
 
-		var count: int = item.get("count", 1)
-		var level: int = item.get("level", 1)
-
-		equip_item(ItemInstance.new(item_definition, count, level))
+		# Domyślnie zakładamy 1 sztukę o poziomie 1
+		var item_instance := ItemInstance.new(item_definition, 1, 1)
+		equip_item(item_instance)
 
 func _ready() -> void:
-	give_debug_gear()
+	equip_starting_loadout()
 	
 	DebugConsole.register_command("heal", _cmd_heal, "heal [ilość] - leczy gracza (bez argumentu: pełne HP)")
 	DebugConsole.register_command("die", _cmd_die, "die - zabija gracza)")
@@ -123,11 +110,6 @@ func get_total_stats() -> Dictionary:
 
 	return totals
 
-func add_gold(amount: int) -> void:
-	gold += amount
-	gold_changed.emit(gold)
-
-
 func get_equipped_item(slot_type: EquipmentSlot.Type) -> ItemInstance:
 	return equipped_items.get(slot_type, null)
 
@@ -147,7 +129,6 @@ func equip_item(item_instance: ItemInstance) -> ItemInstance:
 	add_block(0)
 	return previous
 
-
 func unequip_item(slot_type: EquipmentSlot.Type) -> ItemInstance:
 	var previous: ItemInstance = equipped_items.get(slot_type)
 	equipped_items[slot_type] = null
@@ -156,7 +137,6 @@ func unequip_item(slot_type: EquipmentSlot.Type) -> ItemInstance:
 	item_equipped.emit(slot_type, null)
 	add_block(0)
 	return previous
-
 
 func calculate_attack() -> Dictionary:
 	var stats := get_total_stats()
@@ -184,16 +164,12 @@ func calculate_attack() -> Dictionary:
 		"stats": stats
 	}
 
-## Liczy staty tak, jakby hypothetical_item był założony w slot_type — bez trwałej zmiany stanu.
 func get_total_stats_with_swap(slot_type: EquipmentSlot.Type, hypothetical_item: ItemInstance) -> Dictionary:
 	var previous: ItemInstance = equipped_items.get(slot_type)
 	equipped_items[slot_type] = hypothetical_item
 	var totals := get_total_stats()
 	equipped_items[slot_type] = previous
 	return totals
-
-
-# ── LOGIKA OTRZYMYWANIA OBRAŻEŃ (ZMODYFIKOWANA O TARCZĘ) ──
 
 func take_damage(raw_amount: int) -> void:
 	var stats := get_total_stats()
@@ -210,10 +186,9 @@ func take_damage(raw_amount: int) -> void:
 	var shield_absorbed: float = min(pending_block, float(raw_amount))
 	pending_block -= shield_absorbed
 	
-	var shield_damage_taken: int = int(shield_absorbed) # Ile tarczy pękło
-	var mitigated: float = float(raw_amount) - shield_absorbed # Reszta obrażeń idzie na HP
+	var shield_damage_taken: int = int(shield_absorbed)
+	var mitigated: float = float(raw_amount) - shield_absorbed
 
-	# Emitujemy aktualizację tarczy do paska UI
 	shield_changed.emit(int(pending_block), max_shield)
 
 	var hp_damage_taken: int = 0
@@ -223,35 +198,23 @@ func take_damage(raw_amount: int) -> void:
 		var reduction: float = calculate_armor_reduction(stats.get("def", 0.0))
 		hp_damage_taken = int(round(mitigated * (1.0 - reduction)))
 		
-		# Gwarancja min. 1 dmg do HP, jeśli cios przebił tarczę
 		if hp_damage_taken <= 0:
 			hp_damage_taken = 1
 		
-		# Zadanie obrażeń do HP
 		health.take_damage(hp_damage_taken)
 	
-	# 4. Wysyłamy do UI informację: ile poszło w HP, a ile w Tarczę
+	# 4. Sygnał do UI
 	EventBus.player_damaged.emit(hp_damage_taken, shield_damage_taken)
 
-
 func calculate_armor_reduction(armor: float) -> float:
-	# 10 armor  = 9.1% redukcji
-	# 50 armor  = 33% redukcji
-	# 100 armor = 50% redukcji
-	# 200 armor = 66.7% redukcji
 	return armor / (armor + 100.0)
-
 
 func add_block(amount: float) -> void:
 	max_shield = calculate_max_shield()
-	
-	# Zwiększamy tarczę, ale ograniczamy ją do max_shield
 	pending_block = min(pending_block + amount, max_shield)
-	
 	shield_changed.emit(int(pending_block), max_shield)
 
 func calculate_max_shield() -> float:
-	# Limit to bazowo 20 + 2x wartość DEF z przedmiotów
 	var stats := get_total_stats()
 	return 20.0 + (stats.get("def", 0.0) * 2.0) 
 
@@ -259,10 +222,35 @@ func clear_block() -> void:
 	pending_block = 0.0
 	shield_changed.emit(0, max_shield)
 
-
 func add_dodge_bonus(amount: float) -> void:
 	pending_dodge_bonus += amount
 
-
 func _on_player_died() -> void:
 	pass
+
+func reset_for_new_run() -> void:
+	# 1. Reset tarczy
+	pending_block = 0.0
+	pending_dodge_bonus = 0.0
+
+	# 2. Czyszczenie ekwipunku
+	for slot_type in equipped_items.keys():
+		equipped_items[slot_type] = null
+		stats_changed.emit(EquipmentSlot.Type.keys()[slot_type])
+		item_equipped.emit(slot_type, null)
+
+	# 3. Rozdanie ekwipunku startowego z Meta Progression
+	equip_starting_loadout()
+
+	# 4. Przeliczenie tarczy
+	max_shield = calculate_max_shield()
+	shield_changed.emit(int(pending_block), max_shield)
+
+	# 5. Reset HP
+	var starting_hp: int = get_total_stats()["hp"]
+	health.max_hp = starting_hp
+	health.current = starting_hp
+	if health.has_method("heal"):
+		health.heal(0)
+
+	Log.print("PlayerData: Zresetowano run. HP zresetowane do: %d/%d" % [health.current, health.max_hp])

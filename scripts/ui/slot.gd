@@ -65,104 +65,6 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 	return tooltip
 
 
-## Wspólny renderer właściwości skilla — używany zarówno dla skilla założonego
-## na itemie (owning_item_def != null, pokazuje affinity tego itemu), jak i dla
-## luźnego skill-itemu w plecaku (owning_item_def == null, bez affinity, bo nie
-## wiadomo jeszcze na jaki item trafi).
-func _add_skill_properties_box(parent: Control, skill_def: SkillDefinition, owning_item_def: ItemDefinition) -> void:
-	var skill_box := VBoxContainer.new()
-	skill_box.add_theme_constant_override("separation", 4)
-	parent.add_child(skill_box)
-
-	var skill_header := Label.new()
-	skill_header.text = "Skill Properties:"
-	skill_header.add_theme_color_override("font_color", Color(0.91, 0.75, 0.35))
-	skill_header.add_theme_font_size_override("font_size", FONT_BODY)
-	skill_box.add_child(skill_header)
-
-	var effect_lbl := Label.new()
-	var element_name = GameEnums.DamageElement.keys()[skill_def.damage_element].capitalize()
-	var effect_name = GameEnums.SkillEffect.keys()[skill_def.effect_type].capitalize()
-	effect_lbl.text = " • Type: %s (%s)" % [effect_name, element_name]
-	effect_lbl.add_theme_color_override("font_color", Color(0.7, 0.85, 0.95))
-	effect_lbl.add_theme_font_size_override("font_size", FONT_BODY)
-	skill_box.add_child(effect_lbl)
-
-	if not skill_def.scalings.is_empty():
-		var scaling_title := Label.new()
-		scaling_title.text = " • Damage scaling:"
-		scaling_title.add_theme_color_override("font_color", Color(0.7, 0.85, 0.95))
-		scaling_title.add_theme_font_size_override("font_size", FONT_BODY)
-		skill_box.add_child(scaling_title)
-
-		for scaling in skill_def.scalings:
-			var stat_key := _get_stat_key_from_enum(scaling.stat)
-
-			var row := HBoxContainer.new()
-			row.add_theme_constant_override("separation", 6)
-
-			var indent := Control.new()
-			indent.custom_minimum_size = Vector2(16, 0)
-			row.add_child(indent)
-
-			if STAT_DISPLAY.has(stat_key):
-				var stat_info = STAT_DISPLAY[stat_key]
-
-				if stat_info.size() > 2 and stat_info[2]:
-					var s_icon := TextureRect.new()
-					s_icon.texture = stat_info[2]
-					s_icon.custom_minimum_size = Vector2(16, 16)
-					s_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-					s_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-					s_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-					row.add_child(s_icon)
-
-				var scaling_lbl := Label.new()
-				scaling_lbl.text = "%s x%.2f" % [stat_info[0], scaling.weight]
-				scaling_lbl.add_theme_color_override("font_color", stat_info[1])
-				scaling_lbl.add_theme_font_size_override("font_size", FONT_BODY)
-				row.add_child(scaling_lbl)
-			else:
-				var scaling_lbl := Label.new()
-				var fallback_name = GameEnums.Stat.keys()[scaling.stat].capitalize()
-				scaling_lbl.text = "%s x%.2f" % [fallback_name, scaling.weight]
-				scaling_lbl.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
-				scaling_lbl.add_theme_font_size_override("font_size", FONT_BODY)
-				row.add_child(scaling_lbl)
-
-			skill_box.add_child(row)
-
-	if skill_def.bonus_hits_per_stat:
-		var bonus = skill_def.bonus_hits_per_stat
-		var bonus_stat_key = _get_stat_key_from_enum(bonus.stat)
-		var stat_name = STAT_DISPLAY[bonus_stat_key][0] if STAT_DISPLAY.has(bonus_stat_key) else GameEnums.Stat.keys()[bonus.stat].capitalize()
-
-		var bonus_lbl := Label.new()
-		bonus_lbl.text = " • Bonus Hits: +1 hit per %.1f %s" % [bonus.weight, stat_name]
-		bonus_lbl.add_theme_color_override("font_color", Color(0.9, 0.6, 0.2))
-		bonus_lbl.add_theme_font_size_override("font_size", FONT_BODY)
-		skill_box.add_child(bonus_lbl)
-
-	if owning_item_def != null \
-			and skill_def.effect_type == GameEnums.SkillEffect.DAMAGE \
-			and skill_def.damage_element != GameEnums.DamageElement.PHYSICAL \
-			and skill_def.damage_element != GameEnums.DamageElement.NONE:
-		var element_name_aff = GameEnums.DamageElement.keys()[skill_def.damage_element].capitalize()
-		var affinity_mult: float = owning_item_def.get_affinity_multiplier(skill_def.damage_element)
-
-		var aff_lbl := Label.new()
-		if affinity_mult != 1.0:
-			aff_lbl.text = " • %s Affinity: x%.2f" % [element_name_aff, affinity_mult]
-			aff_lbl.add_theme_color_override("font_color", Color(0.95, 0.6, 0.3))
-		else:
-			aff_lbl.text = " • %s Affinity: none on this item" % element_name_aff
-			aff_lbl.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5))
-		aff_lbl.add_theme_font_size_override("font_size", FONT_BODY)
-		skill_box.add_child(aff_lbl)
-
-	parent.add_child(_make_separator())
-
-
 func _clear_tooltip_panel_bg(tooltip_content: Control) -> void:
 	var parent := tooltip_content.get_parent()
 	if parent == null:
@@ -181,34 +83,6 @@ func _colorize_numbers(text: String) -> String:
 	var regex := RegEx.new()
 	regex.compile(r"(\d+\.?\d*%?)")
 	return regex.sub(text, "[color=#ff8c39]$1[/color]", true)
-
-
-func _get_stat_rows() -> Array[Dictionary]:
-	var rows: Array[Dictionary] = []
-	var def = item_data.definition
-
-	for property in STAT_DISPLAY.keys():
-		if property in def:
-			var value = def.get(property)
-
-			if value == 0 or value == 0.0:
-				continue
-
-			var info = STAT_DISPLAY[property]
-			var value_str := "%d" % int(round(value))
-
-			var icon_texture: Texture2D = null
-			if info.size() > 2:
-				icon_texture = info[2]
-
-			rows.append({
-				"value": value_str,
-				"label": info[0],
-				"color": info[1],
-				"icon": icon_texture,
-			})
-	return rows
-
 
 func _get_rarity_color() -> Color:
 	if is_empty() or not item_data.definition:
@@ -244,12 +118,18 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 
 	set_drag_preview(preview)
 
+	EventBus.drag_started.emit(drag_instance.definition)
+
 	return {
 		"source_slot": self,
 		"item_instance": drag_instance,
 		"drag_count": drag_count,
 		"is_partial": drag_count < total_count
 	}
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_DRAG_END:
+		EventBus.drag_ended.emit()
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	if not data is Dictionary:

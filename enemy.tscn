@@ -1,0 +1,149 @@
+[gd_scene format=3 uid="uid://b1s7u3s7uxodv"]
+
+[ext_resource type="Texture2D" uid="uid://bftlcbgr8bch7" path="res://assets/enemies/enemy.jpg" id="1_7k104"]
+[ext_resource type="Script" uid="uid://ce6uxj3emdrru" path="res://enemy.gd" id="1_qi2p4"]
+[ext_resource type="FontFile" uid="uid://dok171t6oxmnq" path="res://assets/fonts/FiraSans-Bold.ttf" id="2_4gyqm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7k104"]
+bg_color = Color(0.73248976, 0, 0.03350093, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4gyqm"]
+bg_color = Color(0.20392157, 0.39607844, 0.6745098, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="Enemy" type="Control" unique_id=246865782]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qi2p4")
+
+[node name="EnemyTextureRect" type="TextureRect" parent="." unique_id=2066188746]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_7k104")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1199210742]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="EnemyDmg" type="Label" parent="MarginContainer" unique_id=942488152]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_fonts/font = ExtResource("2_4gyqm")
+theme_override_font_sizes/font_size = 80
+text = "DMG:"
+
+[node name="HBoxContainer2" type="BoxContainer" parent="MarginContainer" unique_id=1198661447]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
+offset_transform_position = Vector2(0, -100)
+offset_transform_visual_only = false
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="BoxContainer" type="BoxContainer" parent="MarginContainer/HBoxContainer2" unique_id=235831448]
+layout_mode = 2
+vertical = true
+
+[node name="EnemyHpLabel" type="Label" parent="MarginContainer/HBoxContainer2/BoxContainer" unique_id=957374035]
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "HP"
+vertical_alignment = 1
+
+[node name="EnemyShieldLabel" type="Label" parent="MarginContainer/HBoxContainer2/BoxContainer" unique_id=1477027163]
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "SHIELD"
+vertical_alignment = 1
+
+[node name="BoxContainer2" type="BoxContainer" parent="MarginContainer/HBoxContainer2" unique_id=479580635]
+layout_mode = 2
+vertical = true
+
+[node name="EnemyHpCurrent" type="Label" parent="MarginContainer/HBoxContainer2/BoxContainer2" unique_id=2085659193]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 40
+text = "0"
+vertical_alignment = 1
+
+[node name="EnemyShieldCurrent" type="Label" parent="MarginContainer/HBoxContainer2/BoxContainer2" unique_id=2033519077]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 40
+text = "0"
+vertical_alignment = 1
+
+[node name="BoxContainer3" type="BoxContainer" parent="MarginContainer/HBoxContainer2" unique_id=2072373235]
+layout_mode = 2
+vertical = true
+
+[node name="EnemyHpProgressBar" type="ProgressBar" parent="MarginContainer/HBoxContainer2/BoxContainer3" unique_id=1473101142]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(600, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -1.6)
+theme_override_styles/fill = SubResource("StyleBoxFlat_7k104")
+show_percentage = false
+
+[node name="EnemyShieldProgressBar" type="ProgressBar" parent="MarginContainer/HBoxContainer2/BoxContainer3" unique_id=361788338]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(600, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -1.6)
+theme_override_styles/fill = SubResource("StyleBoxFlat_4gyqm")
+show_percentage = false
+
+[node name="BoxContainer4" type="BoxContainer" parent="MarginContainer/HBoxContainer2" unique_id=1093868843]
+layout_mode = 2
+vertical = true
+
+[node name="EnemyHpMax" type="Label" parent="MarginContainer/HBoxContainer2/BoxContainer4" unique_id=1915417924]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 40
+text = "100"
+
+[node name="EnemyShieldMax" type="Label" parent="MarginContainer/HBoxContainer2/BoxContainer4" unique_id=1550028881]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 40
+text = "100"
