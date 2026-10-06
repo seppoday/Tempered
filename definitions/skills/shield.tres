@@ -19,9 +19,9 @@ metadata/_custom_type_script = "uid://oma4qvx1pxtp"
 [resource]
 script = ExtResource("2_pbkqh")
 id = "shield"
-skill_name = "Shield"
+skill_name = "SKILL_SHIELD_NAME"
 icon = ExtResource("1_8gli0")
-description = "Shield"
+description = "SKILL_SHIELD_DESC"
 effect_type = 3
 target_type = 0
 scalings = Array[ExtResource("2_k41cl")]([SubResource("Resource_wf0p2"), SubResource("Resource_7hb0y")])

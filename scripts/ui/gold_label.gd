@@ -5,7 +5,7 @@ func _ready() -> void:
 	_update_gold_display(MetaProgressionManager.gold)
 
 func _update_gold_display(new_amount: int) -> void:
-	text = "%s: %d" % [tr("GOLD"), new_amount]
+	text = "%s: %d" % [tr("GAME_LABEL_GOLD"), new_amount]
 	_pop_animation()
 
 func _pop_animation() -> void:

@@ -14,9 +14,9 @@ metadata/_custom_type_script = "uid://oma4qvx1pxtp"
 [resource]
 script = ExtResource("2_nahdi")
 id = "gold_coin"
-skill_name = "Gold Coin"
+skill_name = "SKILL_GOLD_COINS_NAME"
 icon = ExtResource("1_ui8la")
-description = "Gold Coin"
+description = "SKILL_GOLD_COINS_DESC"
 effect_type = 2
 target_type = 3
 scalings = Array[ExtResource("2_l7a50")]([SubResource("Resource_c5yqb")])

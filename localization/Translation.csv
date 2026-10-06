@@ -1,26 +1,30 @@
 keys,pl,en,fr,de,ja,zh,it,es,ko,pt_BR,ru
-PLAY,Graj,Play,Jouer,Spielen,プレイ,开始游戏,Gioca,Jugar,플레이,Jogar,Играть
-OPTIONS,Opcje,Options,Options,Optionen,オプション,选项,Opzioni,Opciones,옵션,Opções,Настройки
-EXIT,Wyjdź,Exit,Quitter,Beenden,終了,退出,Esci,Salir,종료,Sair,Выйти
-LANGUAGE,Język,Language,Langue,Sprache,言語,语言,Lingua,Idioma,언어,Idioma,Язык
-SETTINGS,Ustawienia,Settings,Paramètres,Einstellungen,設定,设置,Impostazioni,Configuración,설정,Configurações,Настройки
-BACK,Powrót,Back,Retour,Zurück,戻る,返回,Indietro,Atrás,뒤로,Voltar,Назад
-APPLY,Zatwierdź,Apply,Appliquer,Anwenden,適用,应用,Applica,Aplicar,적용,Aplicar,Применить
-RESOLUTION,Rozdzielczość,Resolution,Résolution,Auflösung,解像度,分辨率,Risoluzione,Resolución,해상도,Resolução,Разрешение
-WINDOW_MODE,Tryb okna,Window mode,Mode fenêtre,Fenstermodus,ウィンドウモード,窗口模式,Modalità finestra,Modo ventana,창 모드,Modo janela,Оконный режим
-PROGRESSION,Progresja,Progression,Progression,Spielfortschritt,進行状況,游戏进度,Progressione,Progreso,진행 상황,Progresso,Прогресс
-WINDOW_MODE_WINDOWED,Okno,Windowed,Fenêtré,Fenstermodus,ウィンドウ,窗口,Finestra,Ventana,창 모드,Janela,Оконный режим
-WINDOW_MODE_FULLSCREEN,Pełny ekran,Fullscreen,Plein écran,Vollbild,フルスクリーン,全屏,Schermo intero,Pantalla completa,전체 화면,Tela cheia,Полноэкранный режим
-WINDOW_MODE_BORDERLESS,Pełny ekran bez ramek,Borderless,Plein écran sans bordure,Randloses Vollbild,ボーダーレス,无边框全屏,Schermo intero senza bordi,Pantalla completa sin bordes,테두리 없는 전체 화면,Tela cheia sem bordas,Полноэкранный режим без рамок
-WINDOW_MODE_EXCLUSIVE,Pełny ekran (ekskluzywny),Fullscreen (exclusive),Plein écran exclusif,Exklusives Vollbild,フルスクリーン（排他的）,独占全屏,Schermo intero esclusivo,Pantalla completa exclusiva,독점 전체 화면,Tela cheia exclusiva,Эксклюзивный полноэкранный режим
-WEAPON_IRON_SWORD_NAME,Żelazny miecz,Iron sword,,,,,,,,,
-WEAPON_IRON_SWORD_DESC,Żelazny miecz opis,Iron sword desc,,,,,,,,,
-RARITY_COMMON,Pospolity,Common,,,,,,,,,
-RARITY_UNCOMMON,Niezwykły,Uncommon,,,,,,,,,
-RARITY_RARE,Rzadki,Rare,,,,,,,,,
-RARITY_EPIC,Epicki,Epic,,,,,,,,,
-RARITY_LEGENDARY,Legendardny,Legendary,,,,,,,,,
-RARITY_MYTHIC,Mityczny,Mythic,,,,,,,,,
-HP,Zdrowie,HP,,,,,,,,,
-SHIELD,Tarcza,Shield,,,,,,,,,
-GOLD,Złoto,Gold,,,,,,,,,
+MENU_LABEL_PLAY,Graj,Play,Jouer,Spielen,プレイ,开始游戏,Gioca,Jugar,플레이,Jogar,Играть
+MENU_LABEL_OPTIONS,Opcje,Options,Options,Optionen,オプション,选项,Opzioni,Opciones,옵션,Opções,Настройки
+MENU_LABEL_EXIT,Wyjdź,Exit,Quitter,Beenden,終了,退出,Esci,Salir,종료,Sair,Выйти
+MENU_OPTIONS_LANGUAGE,Język,Language,Langue,Sprache,言語,语言,Lingua,Idioma,언어,Idioma,Язык
+MENU_LABEL_SETTINGS,Ustawienia,Settings,Paramètres,Einstellungen,設定,设置,Impostazioni,Configuración,설정,Configurações,Настройки
+MENU_OPTIONS_BACK,Powrót,Back,Retour,Zurück,戻る,返回,Indietro,Atrás,뒤로,Voltar,Назад
+MENU_OPTIONS_APPLY,Zatwierdź,Apply,Appliquer,Anwenden,適用,应用,Applica,Aplicar,적용,Aplicar,Применить
+MENU_OPTIONS_RESOLUTION,Rozdzielczość,Resolution,Résolution,Auflösung,解像度,分辨率,Risoluzione,Resolución,해상도,Resolução,Разрешение
+MENU_OPTIONS_WINDOW_MODE,Tryb okna,Window mode,Mode fenêtre,Fenstermodus,ウィンドウモード,窗口模式,Modalità finestra,Modo ventana,창 모드,Modo janela,Оконный режим
+MENU_LABEL_PROGRESSION,Progresja,Progression,Progression,Spielfortschritt,進行状況,游戏进度,Progressione,Progreso,진행 상황,Progresso,Прогресс
+MENU_OPTIONS_WINDOW_MODE_WINDOWED,Okno,Windowed,Fenêtré,Fenstermodus,ウィンドウ,窗口,Finestra,Ventana,창 모드,Janela,Оконный режим
+MENU_OPTIONS_WINDOW_MODE_FULLSCREEN,Pełny ekran,Fullscreen,Plein écran,Vollbild,フルスクリーン,全屏,Schermo intero,Pantalla completa,전체 화면,Tela cheia,Полноэкранный режим
+MENU_OPTIONS_WINDOW_MODE_BORDERLESS,Pełny ekran bez ramek,Borderless,Plein écran sans bordure,Randloses Vollbild,ボーダーレス,无边框全屏,Schermo intero senza bordi,Pantalla completa sin bordes,테두리 없는 전체 화면,Tela cheia sem bordas,Полноэкранный режим без рамок
+MENU_OPTIONS_WINDOW_MODE_EXCLUSIVE,Pełny ekran (ekskluzywny),Fullscreen (exclusive),Plein écran exclusif,Exklusives Vollbild,フルスクリーン（排他的）,独占全屏,Schermo intero esclusivo,Pantalla completa exclusiva,독점 전체 화면,Tela cheia exclusiva,Эксклюзивный полноэкранный режим
+WEAPON_IRON_SWORD_NAME,Żelazny miecz,Iron sword,Épée en fer,Eisenschwert,鉄の剣,铁剑,Spada di ferro,Espada de hierro,철검,Espada de ferro,Железный меч
+WEAPON_IRON_SWORD_DESC,Opis żelaznego miecza,Iron sword desc,Description de l'épée en fer,Beschreibung des Eisenschwerts,鉄の剣の説明,铁剑描述,Descrizione della spada di ferro,Descripción de la espada de hierro,철검 설명,Descrição da espada de ferro,Описание железного меча
+RARITY_COMMON,Zwykły,Common,Commun,Gewöhnlich,コモン,普通,Comune,Común,일반,Comum,Обычный
+RARITY_UNCOMMON,Niezwykły,Uncommon,Peu commun,Ungewöhnlich,アンコモン,非凡,Non comune,Poco común,고급,Incomum,Необычный
+RARITY_RARE,Rzadki,Rare,Rare,Selten,レア,稀有,Raro,Raro,희귀,Raro,Редкий
+RARITY_EPIC,Epicki,Epic,Épique,Episch,エピック,史诗,Epico,Épico,에픽,Épico,Эпический
+RARITY_LEGENDARY,Legendarny,Legendary,Légendaire,Legendär,レジェンダリー,传说,Leggendario,Legendario,전설,Lendário,Легендарный
+RARITY_MYTHIC,Mityczny,Mythic,Mythique,Mythisch,ミシック,神话,Mitico,Mítico,신화,Mítico,Мифический
+GAME_LABEL_HP,Zdrowie,HP,PV,LP,HP,生命值,HP,PV,HP,HP,ОЗ
+GAME_LABEL_SHIELD,Tarcza,Shield,Bouclier,Schild,盾,盾牌,Scudo,Escudo,방패,Escudo,Щит
+GAME_LABEL_GOLD,Złoto,Gold,Or,Gold,ゴールド,金币,Oro,Oro,골드,Ouro,Золото
+GAME_LABEL_NEXT_ENEMY,Następny przeciwnik,Next enemy,Prochain ennemi,Nächster Gegner,次の敵,下一个敌人,Prossimo nemico,Siguiente enemigo,다음 적,Próximo inimigo,Следующий противник
+GAME_LABEL_NEXT_ENEMY_DISABLED,Nie możesz walczyć bez wyposażenia,You can't fight without equipment,Vous ne pouvez pas combattre sans équipement,Du kannst nicht ohne Ausrüstung kämpfen,装備なしでは戦えません,没有装备无法战斗,Non puoi combattere senza equipaggiamento,No puedes luchar sin equipamiento,장비 없이는 전투할 수 없습니다,Você não pode lutar sem equipamento,Нельзя сражаться без экипировки
+SKILL_BASIC_STRIK_NAME,Podstawowy atak,Basic strike,Attaque de base,Basisangriff,通常攻撃,普通攻击,Attacco base,Ataque básico,기본 공격,Ataque básico,Базовая атака
+SKILL_BASIC_STRIK_DESC,Podstawowy atak,Basic strike,Attaque de base,Basisangriff,通常攻撃,普通攻击,Attacco base,Ataque básico,기본 공격,Ataque básico,Базовая атака

@@ -13,8 +13,8 @@ metadata/_custom_type_script = "uid://oma4qvx1pxtp"
 [resource]
 script = ExtResource("3_aih0g")
 id = "basic_strike"
-skill_name = "Basic Strike"
+skill_name = "SKILL_BASIC_STRIKE_NAME"
 icon = ExtResource("1_cs1i5")
-description = "Basic Strike"
+description = "SKILL_BASIC_STRIKE_DESC"
 scalings = Array[ExtResource("2_cs1i5")]([SubResource("Resource_g7d3i")])
 metadata/_custom_type_script = "uid://dgjg1vlcvdtpi"

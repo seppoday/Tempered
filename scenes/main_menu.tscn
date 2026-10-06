@@ -52,7 +52,7 @@ layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="Label" type="Label" parent="CenterContainer/VBoxContainer" unique_id=743447371]
+[node name="GameName" type="Label" parent="CenterContainer/VBoxContainer" unique_id=743447371]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_ekxnf")
@@ -63,23 +63,23 @@ horizontal_alignment = 1
 [node name="StartButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=290647456]
 unique_name_in_owner = true
 layout_mode = 2
-text = "PLAY"
+text = "MENU_LABEL_PLAY"
 
 [node name="SettingsButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=2050618333]
 unique_name_in_owner = true
 layout_mode = 2
-text = "SETTINGS"
+text = "MENU_LABEL_SETTINGS"
 
 [node name="ProgressionButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=584378560]
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true
-text = "PROGRESSION"
+text = "MENU_LABEL_PROGRESSION"
 
 [node name="ExitButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=2026070034]
 unique_name_in_owner = true
 layout_mode = 2
-text = "EXIT"
+text = "MENU_LABEL_EXIT"
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]

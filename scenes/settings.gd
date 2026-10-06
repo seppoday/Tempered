@@ -10,10 +10,10 @@ var resolutions: Array[Vector2i] = [
 ]
 
 var window_modes: Array[String] = [
-	"WINDOW_MODE_WINDOWED",
-	"WINDOW_MODE_FULLSCREEN",
-	"WINDOW_MODE_BORDERLESS",
-	"WINDOW_MODE_EXCLUSIVE"
+	"MENU_OPTIONS_WINDOW_MODE_WINDOWED",
+	"MENU_OPTIONS_WINDOW_MODE_FULLSCREEN",
+	"MENU_OPTIONS_WINDOW_MODE_BORDERLESS",
+	"MENU_OPTIONS_WINDOW_MODE_EXCLUSIVE"
 ]
 
 var languages: Array[String] = [
@@ -103,7 +103,11 @@ func _populate_languages() -> void:
 func _connect_signals() -> void:
 	apply_button.pressed.connect(_on_apply_pressed)
 	back_button.pressed.connect(_on_back_pressed)
+	LocaleManager.locale_changed.connect(_on_locale_changed)
 
+func _on_locale_changed(_locale: String) -> void:
+	_populate_languages()           # dropdown języka pokaże aktualny wybór
+	_populate_window_modes(true)    # przetłumaczone nazwy trybów okna
 
 func _on_apply_pressed() -> void:
 	_apply_settings()
@@ -116,11 +120,9 @@ func _on_back_pressed() -> void:
 
 func _apply_language() -> void:
 	var selected_index := language_option_button.selected
-	if selected_index < 0 or selected_index >= languages.size():
+	if selected_index < 0 or selected_index >= LocaleManager.languages.size():
 		return
-	var selected_language := languages[selected_index]
-	TranslationServer.set_locale(selected_language)
-	_update_localized_text()
+	LocaleManager.set_language(LocaleManager.languages[selected_index], false)
 
 
 func _update_localized_text() -> void:

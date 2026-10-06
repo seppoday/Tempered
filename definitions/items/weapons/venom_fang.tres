@@ -10,12 +10,19 @@ script = ExtResource("1_2t3g2")
 element = 3
 multiplier = 1.5
 
+[sub_resource type="Resource" id="Resource_yjtal"]
+script = ExtResource("1_2t3g2")
+element = 4
+multiplier = 0.2
+metadata/_custom_type_script = "uid://cint7quw6fy51"
+
 [resource]
 script = ExtResource("3_8wfxg")
 default_skill = ExtResource("2_3vve8")
 magic = 4.0
 status = 12.0
-affinities = Array[ExtResource("1_2t3g2")]([SubResource("Resource_gyc24")])
+affinities = Array[ExtResource("1_2t3g2")]([SubResource("Resource_gyc24"), SubResource("Resource_yjtal")])
 id = "venom_fang"
 name = "Venom Fang"
+description = "A deadly fang that poisons enemies with every strike."
 icon = ExtResource("3_yjtal")

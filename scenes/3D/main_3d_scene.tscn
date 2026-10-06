@@ -823,14 +823,14 @@ vertical = true
 custom_minimum_size = Vector2(36, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
-text = "HP"
+text = "GAME_LABEL_HP"
 vertical_alignment = 1
 
 [node name="ShieldLabel" type="Label" parent="MainSceneUICanvasLayer/BoxContainer/HBoxContainer2/BoxContainer" unique_id=749575843]
 custom_minimum_size = Vector2(36, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
-text = "SHIELD"
+text = "GAME_LABEL_SHIELD"
 vertical_alignment = 1
 
 [node name="BoxContainer2" type="BoxContainer" parent="MainSceneUICanvasLayer/BoxContainer/HBoxContainer2" unique_id=207418956]
@@ -903,7 +903,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 offset_transform_enabled = true
 theme_override_font_sizes/font_size = 22
-text = "GOLD"
+text = "GAME_LABEL_GOLD"
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("8_ice7a")

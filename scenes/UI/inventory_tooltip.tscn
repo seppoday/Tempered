@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://d3l2j2u2xebjv"]
 
 [ext_resource type="Script" uid="uid://cct67fc0pu5hd" path="res://scripts/UI/inventory_tooltip.gd" id="1_ymwa4"]
+[ext_resource type="FontFile" uid="uid://w8scsdxdvbw7" path="res://assets/fonts/FiraSans-Regular.ttf" id="2_28wi0"]
+[ext_resource type="FontFile" uid="uid://dok171t6oxmnq" path="res://assets/fonts/FiraSans-Bold.ttf" id="3_w0q6o"]
 
 [node name="InventoryTooltip" type="PanelContainer" unique_id=1611436189]
 custom_minimum_size = Vector2(700, 0)
@@ -8,6 +10,8 @@ custom_maximum_size = Vector2(700, -1)
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_ymwa4")
+font_normal = ExtResource("2_28wi0")
+font_bold = ExtResource("3_w0q6o")
 
 [node name="Root" type="VBoxContainer" parent="." unique_id=1153736935]
 unique_name_in_owner = true
@@ -26,7 +30,7 @@ layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TitleBox" type="VBoxContainer" parent="Root/Header" unique_id=1990469574]
+[node name="TitleBox" type="BoxContainer" parent="Root/Header" unique_id=1654671476]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -34,24 +38,13 @@ size_flags_horizontal = 3
 [node name="Name" type="Label" parent="Root/Header/TitleBox" unique_id=420066179]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
 
 [node name="Category" type="Label" parent="Root/Header/TitleBox" unique_id=916046604]
 unique_name_in_owner = true
 layout_mode = 2
-
-[node name="Slot" type="Label" parent="Root/Header/TitleBox" unique_id=984225742]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-
-[node name="PriceBox" type="VBoxContainer" parent="Root/Header" unique_id=491599097]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Price" type="Label" parent="Root/Header/PriceBox" unique_id=1015862886]
-unique_name_in_owner = true
-layout_mode = 2
-text = "$"
+size_flags_vertical = 0
 
 [node name="StatsSeparator" type="ColorRect" parent="Root" unique_id=643570725]
 unique_name_in_owner = true

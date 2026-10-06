@@ -18,8 +18,9 @@ weight = 0.2
 [resource]
 script = ExtResource("2_s34pt")
 id = "heal"
-skill_name = "Heal"
+skill_name = "SKILL_HEAL_NAME"
 icon = ExtResource("1_wf0p2")
+description = "SKILL_HEAL_DESC"
 effect_type = 1
 target_type = 0
 scalings = Array[ExtResource("1_8xpnj")]([SubResource("Resource_qte4o"), SubResource("Resource_ysmgp")])

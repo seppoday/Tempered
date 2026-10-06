@@ -17,7 +17,7 @@ func _ready() -> void:
 	register_command("help", _cmd_help, "help — lista komend")
 	register_command("additem", _cmd_additem, "additem <id> [ilość] — dodaje item do plecaka po ID")
 	register_command("listitems", _cmd_list_items, "listitems [filtr] — wypisuje dostępne ID przedmiotów")
-
+	register_command("lang", _cmd_lang, "lang [kod] — pokazuje lub zmienia język (np. lang en, lang pt_BR)")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_console"):
@@ -42,6 +42,21 @@ func unregister_command(name: String, callable: Callable = Callable()) -> void:
 	if callable.is_valid() and _commands[name]["callable"] != callable:
 		return
 	_commands.erase(name)
+
+
+func _cmd_lang(args: Array) -> String:
+	if args.is_empty():
+		var lines: Array[String] = [
+			"Aktualny język: [color=yellow]%s[/color]" % TranslationServer.get_locale()
+		]
+		for i in LocaleManager.languages.size():
+			lines.append("  %s — %s" % [LocaleManager.languages[i], LocaleManager.language_names[i]])
+		return "\n".join(lines)
+
+	var code := String(args[0])
+	if not LocaleManager.set_language(code):
+		return "[color=red]Nieznany język '%s' (wpisz 'lang' aby zobaczyć listę)[/color]" % code
+	return "[color=green]Zmieniono język na %s[/color]" % LocaleManager.find_language(code)
 
 func _on_submitted(text: String) -> void:
 	input.clear()
@@ -122,6 +137,8 @@ func _inventory_databases() -> Dictionary:
 		"consumable": ConsumableDatabase,
 		"skill_item": SkillItemDatabase,
 	}
+
+
 
 
 func _find_entry(id: String) -> InventoryEntry:
