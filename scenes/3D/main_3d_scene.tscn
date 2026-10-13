@@ -946,18 +946,54 @@ text = "PICK 2 CARDS"
 
 [node name="RewardsCanvasLayer" type="CanvasLayer" parent="." unique_id=203425883]
 layer = 2
-visible = false
 script = ExtResource("58_dwi8f")
 
-[node name="Equipment" type="PanelContainer" parent="RewardsCanvasLayer" unique_id=856071807]
-offset_left = 204.0
-offset_top = 120.0
-offset_right = 1716.0
-offset_bottom = 240.0
+[node name="BoxContainer" type="BoxContainer" parent="RewardsCanvasLayer" unique_id=292383165]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+vertical = true
+
+[node name="NextEnemyButton" type="Button" parent="RewardsCanvasLayer/BoxContainer" unique_id=2062853075]
+custom_maximum_size = Vector2(-1, 50)
+layout_mode = 2
+size_flags_vertical = 3
+text = "NEXT_ENEMY"
+
+[node name="Label" type="Label" parent="RewardsCanvasLayer/BoxContainer" unique_id=328517720]
+visible = false
+layout_mode = 2
+text = "rewards!"
+
+[node name="CenterContainer" type="CenterContainer" parent="RewardsCanvasLayer/BoxContainer" unique_id=452466779]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RewardsContainer" type="BoxContainer" parent="RewardsCanvasLayer/BoxContainer/CenterContainer" unique_id=696820551]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="RewardOne" parent="RewardsCanvasLayer/BoxContainer/CenterContainer/RewardsContainer" unique_id=95318190 instance=ExtResource("59_3w64d")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="RewardTwo" parent="RewardsCanvasLayer/BoxContainer/CenterContainer/RewardsContainer" unique_id=382896508 instance=ExtResource("59_3w64d")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="RewardThree" parent="RewardsCanvasLayer/BoxContainer/CenterContainer/RewardsContainer" unique_id=1269566067 instance=ExtResource("59_3w64d")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Equipment" type="PanelContainer" parent="RewardsCanvasLayer/BoxContainer" unique_id=856071807]
+layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_3w64d")
 
-[node name="MarginContainer" type="MarginContainer" parent="RewardsCanvasLayer/Equipment" unique_id=2026303553]
+[node name="MarginContainer" type="MarginContainer" parent="RewardsCanvasLayer/BoxContainer/Equipment" unique_id=2026303553]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 12
@@ -965,7 +1001,7 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="EquipmentGrid" type="GridContainer" parent="RewardsCanvasLayer/Equipment/MarginContainer" unique_id=413871814]
+[node name="EquipmentGrid" type="GridContainer" parent="RewardsCanvasLayer/BoxContainer/Equipment/MarginContainer" unique_id=413871814]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
@@ -973,105 +1009,64 @@ theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 8
 columns = 11
 
-[node name="AmuletSlot" parent="RewardsCanvasLayer/Equipment/MarginContainer/EquipmentGrid" unique_id=1626732313 instance=ExtResource("10_sj3ib")]
+[node name="AmuletSlot" parent="RewardsCanvasLayer/BoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1626732313 instance=ExtResource("10_sj3ib")]
 unique_name_in_owner = true
 layout_mode = 2
 slot_type = 5
 placeholder_texture = ExtResource("11_lw8pt")
 
-[node name="HelmetSlot" parent="RewardsCanvasLayer/Equipment/MarginContainer/EquipmentGrid" unique_id=2133731764 instance=ExtResource("10_sj3ib")]
+[node name="HelmetSlot" parent="RewardsCanvasLayer/BoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=2133731764 instance=ExtResource("10_sj3ib")]
 unique_name_in_owner = true
 layout_mode = 2
 slot_type = 1
 placeholder_texture = ExtResource("12_hgf45")
 
-[node name="RingSlot" parent="RewardsCanvasLayer/Equipment/MarginContainer/EquipmentGrid" unique_id=143110602 instance=ExtResource("10_sj3ib")]
+[node name="RingSlot" parent="RewardsCanvasLayer/BoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=143110602 instance=ExtResource("10_sj3ib")]
 unique_name_in_owner = true
 layout_mode = 2
 slot_type = 6
 placeholder_texture = ExtResource("13_6ydfj")
 
-[node name="VSeparator" type="VSeparator" parent="RewardsCanvasLayer/Equipment/MarginContainer/EquipmentGrid" unique_id=367803559]
+[node name="VSeparator" type="VSeparator" parent="RewardsCanvasLayer/BoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=367803559]
 layout_mode = 2
 
-[node name="WeaponSlot" parent="RewardsCanvasLayer/Equipment/MarginContainer/EquipmentGrid" unique_id=1196668936 instance=ExtResource("10_sj3ib")]
+[node name="WeaponSlot" parent="RewardsCanvasLayer/BoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1196668936 instance=ExtResource("10_sj3ib")]
 unique_name_in_owner = true
 layout_mode = 2
 placeholder_texture = ExtResource("14_2r5wi")
 
-[node name="ArmorSlot" parent="RewardsCanvasLayer/Equipment/MarginContainer/EquipmentGrid" unique_id=1580699172 instance=ExtResource("10_sj3ib")]
+[node name="ArmorSlot" parent="RewardsCanvasLayer/BoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1580699172 instance=ExtResource("10_sj3ib")]
 unique_name_in_owner = true
 layout_mode = 2
 slot_type = 2
 placeholder_texture = ExtResource("15_j5tbv")
 
-[node name="ShieldSlot" parent="RewardsCanvasLayer/Equipment/MarginContainer/EquipmentGrid" unique_id=882899261 instance=ExtResource("10_sj3ib")]
+[node name="ShieldSlot" parent="RewardsCanvasLayer/BoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=882899261 instance=ExtResource("10_sj3ib")]
 unique_name_in_owner = true
 layout_mode = 2
 slot_type = 7
 placeholder_texture = ExtResource("16_hgqcf")
 
-[node name="VSeparator2" type="VSeparator" parent="RewardsCanvasLayer/Equipment/MarginContainer/EquipmentGrid" unique_id=397386627]
+[node name="VSeparator2" type="VSeparator" parent="RewardsCanvasLayer/BoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=397386627]
 layout_mode = 2
 
-[node name="GlovesSlot" parent="RewardsCanvasLayer/Equipment/MarginContainer/EquipmentGrid" unique_id=1698877738 instance=ExtResource("10_sj3ib")]
+[node name="GlovesSlot" parent="RewardsCanvasLayer/BoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1698877738 instance=ExtResource("10_sj3ib")]
 unique_name_in_owner = true
 layout_mode = 2
 slot_type = 3
 placeholder_texture = ExtResource("40_fdv13")
 
-[node name="BootsSlot" parent="RewardsCanvasLayer/Equipment/MarginContainer/EquipmentGrid" unique_id=1105090111 instance=ExtResource("10_sj3ib")]
+[node name="BootsSlot" parent="RewardsCanvasLayer/BoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=1105090111 instance=ExtResource("10_sj3ib")]
 unique_name_in_owner = true
 layout_mode = 2
 slot_type = 4
 placeholder_texture = ExtResource("18_ufuvc")
 
-[node name="LegsSlot" parent="RewardsCanvasLayer/Equipment/MarginContainer/EquipmentGrid" unique_id=286919428 instance=ExtResource("10_sj3ib")]
+[node name="LegsSlot" parent="RewardsCanvasLayer/BoxContainer/Equipment/MarginContainer/EquipmentGrid" unique_id=286919428 instance=ExtResource("10_sj3ib")]
 unique_name_in_owner = true
 layout_mode = 2
 slot_type = 8
 placeholder_texture = ExtResource("42_fdv13")
-
-[node name="Label" type="Label" parent="RewardsCanvasLayer" unique_id=328517720]
-visible = false
-offset_left = 955.0
-offset_top = 432.0
-offset_right = 995.0
-offset_bottom = 452.0
-text = "rewards!"
-
-[node name="CenterContainer" type="CenterContainer" parent="RewardsCanvasLayer" unique_id=452466779]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="RewardsContainer" type="BoxContainer" parent="RewardsCanvasLayer/CenterContainer" unique_id=696820551]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/separation = 24
-
-[node name="RewardOne" parent="RewardsCanvasLayer/CenterContainer/RewardsContainer" unique_id=95318190 instance=ExtResource("59_3w64d")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="RewardTwo" parent="RewardsCanvasLayer/CenterContainer/RewardsContainer" unique_id=382896508 instance=ExtResource("59_3w64d")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="RewardThree" parent="RewardsCanvasLayer/CenterContainer/RewardsContainer" unique_id=1269566067 instance=ExtResource("59_3w64d")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="NextEnemyButton" type="Button" parent="RewardsCanvasLayer" unique_id=2062853075]
-custom_minimum_size = Vector2(0, 200)
-offset_left = 204.0
-offset_top = 546.0
-offset_right = 1716.0
-offset_bottom = 960.0
-size_flags_vertical = 3
-text = "NEXT_ENEMY"
 
 [node name="GameOverCanvasLayer" type="CanvasLayer" parent="." unique_id=250188959]
 visible = false
@@ -1253,6 +1248,6 @@ custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 text = "END"
 
-[connection signal="pressed" from="RewardsCanvasLayer/NextEnemyButton" to="." method="_on_next_enemy_button_pressed"]
+[connection signal="pressed" from="RewardsCanvasLayer/BoxContainer/NextEnemyButton" to="." method="_on_next_enemy_button_pressed"]
 [connection signal="pressed" from="GameOverCanvasLayer/Main/BoxContainer/EndRunButton" to="." method="_on_end_run_button_pressed"]
 [connection signal="pressed" from="MetaProgressionCanvasLayer/Main/BoxContainer/EndMetaButton" to="." method="_on_end_meta_button_pressed"]

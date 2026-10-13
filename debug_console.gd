@@ -135,7 +135,6 @@ func _inventory_databases() -> Dictionary:
 		"item": ItemDatabase,
 		"material": MaterialDatabase,
 		"consumable": ConsumableDatabase,
-		"skill_item": SkillItemDatabase,
 	}
 
 
