@@ -105,8 +105,6 @@ func _render() -> void:
 	if def is ItemDefinition:
 		slot_name = EquipmentSlot.Type.keys()[def.slot].capitalize()
 		cat_text += "  •  " + tr(slot_name)
-	elif def is SkillItemDefinition:
-		cat_text += "  •  " + tr("Skill")
 
 	var dice_size: int = 0
 	if item_data.definition is ItemDefinition and item_data.dice_level >= 0:
@@ -159,16 +157,11 @@ func _render() -> void:
 	var processed_skill := false
 	if item_data.definition is ItemDefinition and item_data.dice_level >= 0:
 		var item_def: ItemDefinition = item_data.definition
-		var active_skill: SkillDefinition = item_data.equipped_skill if item_data.equipped_skill else item_def.default_skill
+		var active_skill: SkillDefinition = item_def.default_skill
 
 		if active_skill:
 			_add_skill_properties_box(active_skill, stat_display, dice_size, active_skill.skill_name, false)
 			processed_skill = true
-
-	if not processed_skill and def is SkillItemDefinition:
-		var loose_skill_def: SkillDefinition = def.skill
-		if loose_skill_def:
-			_add_skill_properties_box(loose_skill_def, stat_display, 0, "", true)
 
 	skill_box.visible = skill_box.get_child_count() > 0
 

@@ -4,8 +4,6 @@ extends Node
 signal stats_changed(changed_stat_key: String)
 signal item_equipped(slot_type: EquipmentSlot.Type, item_instance: ItemInstance)
 signal shield_changed(current_shield: int, max_hp: int)
-signal stat_preview_started(preview_totals: Dictionary)
-signal stat_preview_ended
 signal player_dodged
 
 signal attributes_changed
@@ -162,13 +160,6 @@ func calculate_attack() -> Dictionary:
 		"color": text_color,
 		"stats": stats
 	}
-
-func get_total_stats_with_swap(slot_type: EquipmentSlot.Type, hypothetical_item: ItemInstance) -> Dictionary:
-	var previous: ItemInstance = equipped_items.get(slot_type)
-	equipped_items[slot_type] = hypothetical_item
-	var totals := get_total_stats()
-	equipped_items[slot_type] = previous
-	return totals
 
 func take_damage(raw_amount: int) -> void:
 	var stats := get_total_stats()

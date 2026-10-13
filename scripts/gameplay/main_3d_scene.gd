@@ -192,13 +192,7 @@ func _on_enemy_status_tick(status_name: String, damage: int) -> void:
 func _on_enemy_died(enemy) -> void:
 	box.close_lid()
 	await get_tree().create_timer(.35).timeout
-	
-	# Zamiast na sztywno iść na ENEMY_REWARDS, sprawdzamy czy są nagrody do pokazania
-	if RewardManager.has_rewards():
-		GameManager.set_state(GameManager.State.ENEMY_REWARDS, self)
-	else:
-		# Brak kart z nagrodami - pomijamy ekran loota i idziemy od razu dalej
-		GameManager.set_state(GameManager.State.WEAPON_SELECT, self)
+	GameManager.set_state(GameManager.State.ENEMY_REWARDS, self)
 
 
 func _on_dice_hand_results_ready() -> void:
@@ -209,7 +203,7 @@ func _on_player_died() -> void:
 	GameManager.set_state(GameManager.State.GAME_OVER, self)
 
 func _on_reward_claimed() -> void:
-	GameManager.set_state(GameManager.State.WEAPON_SELECT, self)
+	pass
 
 func _on_next_enemy_button_pressed() -> void:
 	wave_manager.request_next_enemy()

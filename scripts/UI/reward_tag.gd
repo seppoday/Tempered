@@ -13,34 +13,51 @@ var _locked := false
 var _hover_tween: Tween
 var _select_tween: Tween
 var _locked_tween: Tween
-var _item: InventoryEntry
+var _option: RewardOption
 
 
 func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 
-func setup(item: InventoryEntry) -> void:
-	if not item:
+func setup(option: RewardOption) -> void:
+	if not option:
 		return
 
 	_locked = false
 	is_selected = false
-	_item = item
+	_option = option
 
-	if icon_rect:
-		icon_rect.texture = item.icon
-	if name_label:
-		name_label.text = item.name
+	match option.type:
+		RewardOption.Type.ITEM:
+			if icon_rect:
+				icon_rect.texture = option.item_definition.icon
+			if name_label:
+				name_label.text = option.item_definition.name
+		RewardOption.Type.UPGRADE:
+			if icon_rect:
+				icon_rect.texture = option.upgrade_display_item.icon
+			if name_label:
+				name_label.text = "⬆ Upgrade: %s" % option.upgrade_display_item.name
 
-	tooltip_text = "use_custom"   # bez tego Godot nie wywoła _make_custom_tooltip wcale
+	tooltip_text = "use_custom"
 
 
 func _make_custom_tooltip(_for_text: String) -> Control:
-	if not _item:
+	if not _option:
 		return null
 
-	var instance := ItemInstance.new(_item, 1, 0)  # quantity=1, dice_level=0 — podgląd bazowego d4
+	var instance: ItemInstance
+	match _option.type:
+		RewardOption.Type.ITEM:
+			instance = ItemInstance.new(_option.item_definition, 1, 0)
+		RewardOption.Type.UPGRADE:
+			var current := PlayerData.get_equipped_item(_option.upgrade_slot)
+			var preview_level: int = (current.dice_level + 1) if current else 0
+			instance = ItemInstance.new(_option.upgrade_display_item, 1, preview_level)
+		_:
+			return null
+
 	var tooltip := preload("uid://d3l2j2u2xebjv").instantiate() as InventoryTooltip
 	tooltip.populate(instance, InventorySlot.STAT_DISPLAY)
 
@@ -119,7 +136,6 @@ func _animate_hover(target: float) -> void:
 
 func _get_shader_material() -> ShaderMaterial:
 	var overlay := effect_overlay if effect_overlay else get_node_or_null("EffectOverlay")
-	print(overlay)
 	if overlay and overlay.material is ShaderMaterial:
 		return overlay.material as ShaderMaterial
 	return null
