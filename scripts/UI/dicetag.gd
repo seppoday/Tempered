@@ -24,7 +24,7 @@ signal toggled(card: PanelContainer, is_selected: bool)
 @onready var skill_name_label: Label = %SkillNameLabel
 @onready var value_label: Label = %ValueLabel
 @onready var roll_detail_label: Label = %RollDetailLabel
-@onready var scaling_label: Label = %ScalingLabel  # <--- NOWY
+@onready var scaling_label: Label = %ScalingLabel
 @onready var effect_overlay: ColorRect = %EffectOverlay
 
 var is_selected: bool = false
@@ -155,6 +155,38 @@ func _get_element_icon(element: GameEnums.DamageElement) -> String:
 		GameEnums.DamageElement.PHYSICAL: return "⚔"
 		_: return ""
 
+
+## Krótka podpowiedź dla triggera dopasowana do nowego systemu
+func _get_trigger_hint(trigger: SkillTrigger) -> String:
+	var effect_str := ""
+	if trigger.apply_status != GameEnums.StatusType.NONE:
+		effect_str = GameEnums.StatusType.keys()[trigger.apply_status].capitalize()
+		if trigger.status_stacks > 1:
+			effect_str += "×%d" % trigger.status_stacks
+	elif trigger.effect != GameEnums.TriggerEffect.NONE:
+		effect_str = GameEnums.TriggerEffect.keys()[trigger.effect].replace("_", " ").capitalize()
+
+	if effect_str == "":
+		return ""
+
+	match trigger.trigger_type:
+		GameEnums.TriggerType.ON_HIT:
+			return "→ %s" % effect_str
+		GameEnums.TriggerType.ON_ROLL_AT_LEAST:
+			return "Roll≥%d → %s" % [trigger.threshold, effect_str]
+		GameEnums.TriggerType.ON_ROLL_AT_MOST:
+			return "Roll≤%d → %s" % [trigger.threshold, effect_str]
+		GameEnums.TriggerType.ON_MAX_ROLL:
+			return "Max Roll → %s" % effect_str
+		GameEnums.TriggerType.ON_LOW_ROLL:
+			return "Low Roll → %s" % effect_str
+		GameEnums.TriggerType.ON_KILL:
+			return "On Kill → %s" % effect_str
+		GameEnums.TriggerType.ON_TARGET_STATUS:
+			return "Target Status → %s" % effect_str
+	return ""
+
+
 ## Krótki "punch" karty przy trafieniu. Trwa ~0.19 s, czyli mniej niż delay_between_effects (0.35 s).
 func play_strike_animation() -> void:
 	if Engine.is_editor_hint():
@@ -163,8 +195,8 @@ func play_strike_animation() -> void:
 	offset_transform_enabled = true
 	pivot_offset = size / 2.0
 
-	# Wracamy do skali spoczynkowej (hover ustawia 1.2)
-	var rest := Vector2.ONE * (1.2 if is_hovering else 1.0)
+	# Wracamy do skali spoczynkowej (hover ustawia 1.1)
+	var rest := Vector2.ONE * (1.1 if is_hovering else 1.0)
 
 	var tween := create_tween()
 
@@ -179,26 +211,6 @@ func play_strike_animation() -> void:
 	tween.parallel().tween_property(self, "modulate", Color.WHITE, 0.12)
 
 	await tween.finished
-
-## Krótka podpowiedź dla triggera
-func _get_trigger_hint(trigger: SkillTrigger) -> String:
-	match trigger.trigger_type:
-		GameEnums.TriggerType.ON_HIT:
-			var status_name: String = GameEnums.StatusType.keys()[trigger.apply_status].capitalize()
-			return "→ %s" % status_name
-		GameEnums.TriggerType.ON_HIGH_ROLL:
-			var status_name: String = GameEnums.StatusType.keys()[trigger.apply_status].capitalize()
-			var pct: int = int(trigger.threshold * 100)
-			return "High Roll (%d%%+) → %s×%d" % [pct, status_name, trigger.status_stacks]
-		GameEnums.TriggerType.ON_MAX_ROLL:
-			return "Max Roll → ×2"
-		GameEnums.TriggerType.ON_LOW_HP:
-			var pct: int = int(trigger.threshold * 100)
-			return "HP<%d%% → mocniej" % pct
-		GameEnums.TriggerType.EXECUTE:
-			var pct: int = int(trigger.threshold * 100)
-			return "Execute <%d%% HP" % pct
-	return ""
 
 
 ## Formatuje liczbę: 1.0 → "1", 0.25 → "0.25"

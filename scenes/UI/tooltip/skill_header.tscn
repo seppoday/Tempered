@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://ypktilcmco1t"]
+
+[ext_resource type="Script" uid="uid://b3gc8n6pslsxd" path="res://scripts/ui/tooltip/skill_header.gd" id="1_hcokk"]
+[ext_resource type="Theme" uid="uid://blbtetk1ea1b3" path="res://themes/tooltip_theme.tres" id="2_wvm7b"]
+
+[node name="SkillHeader" type="HBoxContainer" unique_id=2042423679]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = 8
+script = ExtResource("1_hcokk")
+
+[node name="Icon" type="TextureRect" parent="." unique_id=401083755]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="." unique_id=1626684547]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_wvm7b")
+theme_type_variation = &"TooltipHeader"
+
+[node name="Subtitle" type="RichTextLabel" parent="." unique_id=737783869]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_colors/default_color = Color(0.76737565, 0.7483791, 0.6799758, 1)
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 0

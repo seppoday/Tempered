@@ -6,16 +6,13 @@ const FONT_SIZE: int = 24
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
-
-	if not PlayerData.item_equipped.is_connected(_on_item_equipped):
-		PlayerData.item_equipped.connect(_on_item_equipped)
+	PlayerData.item_equipped.connect(_on_item_equipped)
 
 	_update_ui()
-
+	
 
 func _on_item_equipped(slot_type: EquipmentSlot.Type, _item_instance: ItemInstance) -> void:
 	_update_ui(slot_type)
-
 
 func _update_ui(changed_slot: int = -1) -> void:
 	if not skills_box: return
@@ -32,7 +29,7 @@ func _update_ui(changed_slot: int = -1) -> void:
 			continue
 
 		var slot_name: String = EquipmentSlot.Type.keys()[slot_type].capitalize()
-		var row := _add_label("%s: %s" % [slot_name, skill.skill_name], Color.WHITE, FONT_SIZE, str(slot_type))
+		var row := _add_label("%s: %s" % [slot_name, tr(skill.skill_name)], Color.WHITE, FONT_SIZE, str(slot_type))
 
 		if slot_type == changed_slot:
 			_pop_label(row)

@@ -1,0 +1,13 @@
+[gd_resource type="Theme" format=3 uid="uid://blbtetk1ea1b3"]
+
+[ext_resource type="FontFile" uid="uid://dok171t6oxmnq" path="res://assets/fonts/FiraSans-Bold.ttf" id="1_2r5jm"]
+[ext_resource type="FontFile" uid="uid://w8scsdxdvbw7" path="res://assets/fonts/FiraSans-Regular.ttf" id="1_6gfbd"]
+
+[resource]
+default_font = ExtResource("1_6gfbd")
+default_font_size = 20
+TooltipHeader/base_type = &"Label"
+TooltipHeader/font_sizes/font_size = 20
+TooltipHeader/fonts/font = ExtResource("1_2r5jm")
+TooltipTitle/base_type = &"Label"
+TooltipTitle/font_sizes/font_size = 28

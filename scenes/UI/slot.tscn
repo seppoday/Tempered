@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bbadchds7qm5n"]
 
-[ext_resource type="Script" uid="uid://dgospwr7yh66l" path="res://scripts/UI/slot.gd" id="1_c24ra"]
+[ext_resource type="Script" uid="uid://dgospwr7yh66l" path="res://scripts/ui/slot.gd" id="1_jkamp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wvhbo"]
 bg_color = Color(0.11764706, 0.11764706, 0.14117648, 1)
@@ -19,7 +19,7 @@ custom_minimum_size = Vector2(96, 96)
 offset_right = 40.0
 offset_bottom = 40.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_wvhbo")
-script = ExtResource("1_c24ra")
+script = ExtResource("1_jkamp")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=372657439]
 layout_mode = 1

@@ -6,7 +6,6 @@
 
 [sub_resource type="Resource" id="Resource_0daba"]
 script = ExtResource("1_8p1qr")
-damage = 25
 metadata/_custom_type_script = "uid://doyuee4t73gkp"
 
 [resource]
@@ -16,5 +15,4 @@ enemy_name = "Ghoul"
 sprite = ExtResource("3_8p1qr")
 max_hp = 180
 attack_patterns = Array[ExtResource("1_8p1qr")]([SubResource("Resource_0daba")])
-damage_growth = 5
 metadata/_custom_type_script = "uid://dfsxlht8w22ue"

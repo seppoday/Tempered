@@ -1,17 +1,15 @@
 [gd_scene format=3 uid="uid://d3l2j2u2xebjv"]
 
-[ext_resource type="Script" uid="uid://cct67fc0pu5hd" path="res://scripts/UI/inventory_tooltip.gd" id="1_ymwa4"]
-[ext_resource type="FontFile" uid="uid://w8scsdxdvbw7" path="res://assets/fonts/FiraSans-Regular.ttf" id="2_28wi0"]
-[ext_resource type="FontFile" uid="uid://dok171t6oxmnq" path="res://assets/fonts/FiraSans-Bold.ttf" id="3_w0q6o"]
+[ext_resource type="Theme" uid="uid://blbtetk1ea1b3" path="res://themes/tooltip_theme.tres" id="1_ly8fp"]
+[ext_resource type="Script" uid="uid://cct67fc0pu5hd" path="res://scripts/ui/inventory_tooltip.gd" id="2_ao8ps"]
 
 [node name="InventoryTooltip" type="PanelContainer" unique_id=1611436189]
 custom_minimum_size = Vector2(700, 0)
 custom_maximum_size = Vector2(700, -1)
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("1_ymwa4")
-font_normal = ExtResource("2_28wi0")
-font_bold = ExtResource("3_w0q6o")
+theme = ExtResource("1_ly8fp")
+script = ExtResource("2_ao8ps")
 
 [node name="Root" type="VBoxContainer" parent="." unique_id=1153736935]
 unique_name_in_owner = true
@@ -40,6 +38,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
+theme_type_variation = &"TooltipTitle"
 
 [node name="Category" type="Label" parent="Root/Header/TitleBox" unique_id=916046604]
 unique_name_in_owner = true

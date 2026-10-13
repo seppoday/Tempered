@@ -8,12 +8,13 @@
 [sub_resource type="Resource" id="Resource_wf0p2"]
 script = ExtResource("2_k41cl")
 stat = 2
+weight = 0.7
 metadata/_custom_type_script = "uid://oma4qvx1pxtp"
 
 [sub_resource type="Resource" id="Resource_7hb0y"]
 script = ExtResource("2_k41cl")
 stat = 3
-weight = 0.5
+weight = 0.8
 metadata/_custom_type_script = "uid://oma4qvx1pxtp"
 
 [resource]
@@ -21,9 +22,9 @@ script = ExtResource("2_pbkqh")
 id = "shield"
 skill_name = "SKILL_SHIELD_NAME"
 icon = ExtResource("1_8gli0")
-description = "SKILL_SHIELD_DESC"
+description = "Done
+"
 effect_type = 3
 target_type = 0
 scalings = Array[ExtResource("2_k41cl")]([SubResource("Resource_wf0p2"), SubResource("Resource_7hb0y")])
-damage_element = 4
 metadata/_custom_type_script = "uid://dgjg1vlcvdtpi"

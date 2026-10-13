@@ -7,7 +7,7 @@ extends Node3D
 
 @export var dice_roller: DiceRoller
 @export var dice_hand: DiceHand
-@export var enemy_scene: PackedScene
+#@export var enemy_scene: PackedScene
 @export var wave_manager: WaveManager
 
 @onready var camera = %Camera3D
@@ -36,6 +36,10 @@ func _ready() -> void:
 	# --- Sygnały statusów i efektów na wrogu ---
 	CombatManager.status_applied_to_enemy.connect(_on_enemy_status_applied)
 	CombatManager.status_tick_on_enemy.connect(_on_enemy_status_tick)
+		# --- Sygnały statusów i efektów na graczu ---
+	CombatManager.status_applied_to_player.connect(_on_player_status_applied)
+	CombatManager.status_tick_on_player.connect(_on_player_status_tick)
+	
 	RewardManager.reward_claimed.connect(_on_reward_claimed)
 	
 	dice_roller.sync_dice_with_equipment()
@@ -98,6 +102,17 @@ func _execute_roll() -> void:
 	dice_hand.start_rolling()
 	GameManager.set_state(GameManager.State.RESOLVING, self)
 	dice_roller.roll()
+
+func _on_player_status_applied(status_name: String) -> void:
+	var status_type: GameEnums.StatusType = GameEnums.StatusType[status_name] as GameEnums.StatusType
+	var pos: Vector2 = %HpProgressBar.global_position + Vector2(0, -20)
+	FloatingTextManager.spawn_status_applied(status_type, pos)
+
+
+func _on_player_status_tick(status_name: String, damage: int) -> void:
+	var status_type: GameEnums.StatusType = GameEnums.StatusType[status_name] as GameEnums.StatusType
+	var pos: Vector2 = %HpProgressBar.global_position + Vector2(0, -20)
+	FloatingTextManager.spawn_status_tick(damage, status_type, pos)
 
 func _on_selection_complete(selected_results: Array[Dictionary]) -> void:
 	GameManager.set_state(GameManager.State.RESOLVING, self)
@@ -163,16 +178,14 @@ func _on_enemy_status_applied(status_name: String) -> void:
 	if CombatManager.current_enemy == null:
 		return
 	var status_type: GameEnums.StatusType = GameEnums.StatusType[status_name] as GameEnums.StatusType
-	var enemy_pos: Vector2 = CombatManager.current_enemy.global_position
-	FloatingTextManager.spawn_status_applied(status_type, enemy_pos)
+	FloatingTextManager.spawn_status_applied_world(status_type, %LidScreen.global_position)
 
 
 func _on_enemy_status_tick(status_name: String, damage: int) -> void:
 	if CombatManager.current_enemy == null:
 		return
 	var status_type: GameEnums.StatusType = GameEnums.StatusType[status_name] as GameEnums.StatusType
-	var enemy_pos: Vector2 = CombatManager.current_enemy.global_position
-	FloatingTextManager.spawn_status_tick(damage, status_type, enemy_pos)
+	FloatingTextManager.spawn_status_tick_world(damage, status_type, %LidScreen.global_position)
 
 
 # ── REAKCJA NA ŚMIERĆ PRZECIWNIKA ──

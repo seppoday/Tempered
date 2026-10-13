@@ -16,8 +16,6 @@ enum Type {
 @export var slot_type: Type = Type.WEAPON
 @export var placeholder_texture: Texture2D
 
-@onready var skill_icon: TextureRect = %SkillIcon
-
 func _ready() -> void:
 	super._ready()
 	PlayerData.item_equipped.connect(_on_item_equipped)
@@ -95,9 +93,6 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	if def == null:
 		return false
 
-	if def is SkillItemDefinition:
-		return not is_empty() and item_data.definition is ItemDefinition
-
 	if def is MaterialDefinition:
 		return def.category == InventoryEntry.Category.UPGRADE_STONE
 
@@ -109,10 +104,6 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	var dragged_instance: ItemInstance = data["item_instance"]
 	super._drop_data(_at_position, data)
-
-	if dragged_instance.definition is SkillItemDefinition:
-		return
-
 	PlayerData.equip_item(item_data)
 
 
@@ -128,17 +119,7 @@ func _update_visual() -> void:
 			icon.texture = placeholder_texture
 			icon.visible = true
 			icon.modulate = Color(1, 1, 1, 0.15)
-		skill_icon.texture = null
-		skill_icon.visible = false
 		return
 
 	if icon:
 		icon.modulate = Color(1, 1, 1, 1)
-
-	var active_skill: SkillDefinition = item_data.equipped_skill if item_data.equipped_skill else item_data.definition.default_skill
-	if active_skill and active_skill.icon:
-		skill_icon.texture = active_skill.icon
-		skill_icon.visible = true
-	else:
-		skill_icon.texture = null
-		skill_icon.visible = false

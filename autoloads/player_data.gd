@@ -17,12 +17,14 @@ var max_shield: float
 var pending_block: float = 0.0
 var pending_dodge_bonus: float = 0.0
 
+var status_manager: StatusManager = StatusManager.new()
+
+
 var totals: Dictionary = {
 	"dmg": 1,
 	"magic": 1,
 	"def": 1,
 	"vit": 1,
-	"speed": 1,
 	"luck": 1,
 	"status": 1,
 	"crit": 1,
@@ -44,7 +46,6 @@ const BASE_DMG: float = 0.0
 const BASE_MAGIC: float = 0.0
 const BASE_DEF: float = 0.0
 const BASE_VIT: float = 5.0
-const BASE_SPEED: float = 0.0
 const BASE_LUCK: float = 0.0
 const BASE_STATUS: float = 0.0
 const BASE_CRIT: float = 0.0
@@ -60,7 +61,7 @@ func equip_starting_loadout() -> void:
 			continue
 
 		# Domyślnie zakładamy 1 sztukę o poziomie 1
-		var item_instance := ItemInstance.new(item_definition, 1, 1)
+		var item_instance := ItemInstance.new(item_definition, 1, 0)
 		equip_item(item_instance)
 
 func _ready() -> void:
@@ -88,7 +89,6 @@ func get_total_stats() -> Dictionary:
 		"magic": BASE_MAGIC,
 		"def": BASE_DEF,
 		"vit": BASE_VIT,
-		"speed": BASE_SPEED,
 		"luck": BASE_LUCK,
 		"status": BASE_STATUS,
 		"crit": BASE_CRIT,
@@ -105,7 +105,7 @@ func get_total_stats() -> Dictionary:
 			totals[key] += def.get_stat(stat)
 
 	totals["hp"] = totals["vit"] * 10
-	totals["dodge"] = totals["speed"] / (totals["speed"] + 100.0)
+	totals["dodge"] = totals["luck"] / (totals["luck"] + 100.0)
 
 	return totals
 
@@ -230,6 +230,7 @@ func _on_player_died() -> void:
 func reset_for_new_run() -> void:
 	# 1. Reset tarczy
 	pending_block = 0.0
+	status_manager.clear_all()
 	pending_dodge_bonus = 0.0
 
 	# 2. Czyszczenie ekwipunku

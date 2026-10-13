@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://dobwsnlvgyey1"]
+
+[ext_resource type="Theme" uid="uid://blbtetk1ea1b3" path="res://themes/tooltip_theme.tres" id="1_2w0ny"]
+[ext_resource type="Script" uid="uid://dbpnkulvw4ei4" path="res://scripts/UI/tooltip/description_block.gd" id="1_tqsyi"]
+
+[node name="DescriptionBlock" type="VBoxContainer" unique_id=1757886137]
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_vertical = 0
+theme_override_constants/separation = 2
+script = ExtResource("1_tqsyi")
+
+[node name="Title" type="Label" parent="." unique_id=272611582]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("1_2w0ny")
+theme_type_variation = &"TooltipHeader"
+
+[node name="Body" type="RichTextLabel" parent="." unique_id=801644600]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(668, 0)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/default_color = Color(0.86663747, 0.86663747, 0.85430586, 1)
+bbcode_enabled = true
+fit_content = true
+scroll_active = false

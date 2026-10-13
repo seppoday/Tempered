@@ -11,12 +11,11 @@ weight = 0.9
 [sub_resource type="Resource" id="Resource_03j1w"]
 script = ExtResource("3_0uxmd")
 trigger_type = 3
-base_value_override = 1.0
 
 [resource]
 script = ExtResource("2_10k7c")
 id = "wild_slash"
 skill_name = "Wild Slash"
 scalings = Array[ExtResource("1_m8otg")]([SubResource("Resource_l3ocy")])
-tags = Array[int]([0, 5])
+damage_element = 1
 triggers = Array[ExtResource("3_0uxmd")]([SubResource("Resource_03j1w")])

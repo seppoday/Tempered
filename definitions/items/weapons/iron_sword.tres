@@ -9,6 +9,8 @@
 script = ExtResource("2_3fu4x")
 default_skill = ExtResource("2_6kxcf")
 dmg = 8.0
+magic = 10.0
+status = 10.0
 id = "iron_sword"
 name = "WEAPON_IRON_SWORD_NAME"
 description = "WEAPON_IRON_SWORD_DESC"

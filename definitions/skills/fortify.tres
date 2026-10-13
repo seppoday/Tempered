@@ -8,15 +8,15 @@
 [sub_resource type="Resource" id="Resource_4cx0o"]
 script = ExtResource("1_be7td")
 stat = 2
+weight = 2.0
 
 [resource]
 script = ExtResource("2_oygyx")
 id = "fortify"
 skill_name = "Fortify"
 icon = ExtResource("1_oygyx")
+description = "Done
+"
 effect_type = 3
 target_type = 0
-base_value = 1.5
 scalings = Array[ExtResource("1_be7td")]([SubResource("Resource_4cx0o")])
-damage_element = 4
-tags = Array[int]([9])

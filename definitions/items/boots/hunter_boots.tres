@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_ferye"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="2_b3qms"]
 [ext_resource type="Resource" uid="uid://c47fxxua7vnpl" path="res://definitions/skills/swift_strike.tres" id="2_ysbrt"]
+[ext_resource type="Texture2D" uid="uid://i3dlhw7phm8n" path="res://assets/lute.jpg" id="3_ferye"]
 
 [resource]
 script = ExtResource("2_b3qms")
@@ -12,3 +13,4 @@ dmg = 3.0
 speed = 80.0
 id = "hunter_boots"
 name = "Hunter's Boots"
+icon = ExtResource("3_ferye")

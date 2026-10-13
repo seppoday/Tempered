@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://uc7tppxatbwg"]
+
+[ext_resource type="Theme" uid="uid://blbtetk1ea1b3" path="res://themes/tooltip_theme.tres" id="1_y03ka"]
+[ext_resource type="Script" uid="uid://nq0puf0c8mon" path="res://scripts/ui/tooltip/section_header.gd" id="2_ayu4u"]
+
+[node name="SectionHeader" type="Label" unique_id=974190861]
+offset_right = 40.0
+offset_bottom = 20.0
+theme = ExtResource("1_y03ka")
+theme_type_variation = &"TooltipHeader"
+text = "Test"
+script = ExtResource("2_ayu4u")

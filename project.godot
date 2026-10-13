@@ -66,7 +66,7 @@ mouse_cursor/custom_image_hotspot=Vector2(23, 3)
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/anthonyec.camera_preview/plugin.cfg", "res://addons/script-ide/plugin.cfg")
+enabled=PackedStringArray("res://addons/anthonyec.camera_preview/plugin.cfg", "res://addons/items_overview/plugin.cfg", "res://addons/script-ide/plugin.cfg")
 
 [file_customization]
 
@@ -76,6 +76,7 @@ folder_colors={
 "res://components/": "yellow",
 "res://data/": "green",
 "res://definitions/": "teal",
+"res://localization/": "pink",
 "res://scenes/": "blue",
 "res://scripts/": "purple"
 }

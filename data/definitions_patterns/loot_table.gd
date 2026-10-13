@@ -4,6 +4,7 @@ class_name LootTable extends Resource
 @export var loot_entries: Array[LootEntry] = []
 @export var gold_min: int = 0
 @export var gold_max: int = 0
+@export var upgrade_weight: int = 0  # waga szansy na wylosowanie opcji "upgrade" zamiast itemu
 
 func roll_entry() -> LootEntry:
 	return RNG.weighted_pick(loot_entries) as LootEntry

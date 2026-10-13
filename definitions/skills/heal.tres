@@ -8,21 +8,25 @@
 [sub_resource type="Resource" id="Resource_qte4o"]
 script = ExtResource("1_8xpnj")
 stat = 3
-weight = 0.5
+weight = 0.7
 
 [sub_resource type="Resource" id="Resource_ysmgp"]
 script = ExtResource("1_8xpnj")
 stat = 1
-weight = 0.2
+weight = 0.3
+
+[sub_resource type="Resource" id="Resource_elqmu"]
+script = ExtResource("3_ti3mt")
+metadata/_custom_type_script = "uid://dojdi1mwgn37i"
 
 [resource]
 script = ExtResource("2_s34pt")
 id = "heal"
 skill_name = "SKILL_HEAL_NAME"
 icon = ExtResource("1_wf0p2")
-description = "SKILL_HEAL_DESC"
+description = "Done
+"
 effect_type = 1
 target_type = 0
 scalings = Array[ExtResource("1_8xpnj")]([SubResource("Resource_qte4o"), SubResource("Resource_ysmgp")])
-damage_element = 4
-tags = Array[int]([6])
+triggers = Array[ExtResource("3_ti3mt")]([SubResource("Resource_elqmu")])

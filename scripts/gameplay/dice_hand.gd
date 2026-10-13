@@ -31,8 +31,7 @@ func _ready() -> void:
 	dice_roller.dice_settled.connect(_on_dice_settled)
 	CombatManager.effect_applied.connect(_on_combat_effect_applied)
 
-	
-	
+
 func start_rolling() -> void:
 	is_rolling = true
 
@@ -76,11 +75,13 @@ func reset_for_new_roll() -> void:
 	
 	picks_label.hide()
 
+
 func _update_picks_label() -> void:
 	var limit := PlayerData.picks_per_cycle
 	var chosen := selected_tags.size()
 	picks_label.text = "Wybierz %d/%d" % [chosen, limit]
 	
+
 # --- OBSŁUGA SYGNAŁÓW I EVENTÓW ---
 
 func _on_dice_spawned(dice: Array[RigidBody3D]) -> void:
@@ -119,6 +120,7 @@ func _on_card_toggled(card: PanelContainer, wants_selected: bool) -> void:
 	if selected_tags.size() == PlayerData.picks_per_cycle:
 		var results := await confirm_selection()
 		selection_complete.emit(results)
+
 
 func _on_combat_effect_applied(skill: SkillDefinition, value: int, target: String) -> void:
 	# Odczyt MUSI być przed pierwszym await
@@ -266,9 +268,8 @@ func _setup_tag_from_result(tag: Control, result: Dictionary) -> void:
 	var face: int = result["face"]
 	var max_face: int = GameEnums.DICE_PROGRESSION[item.dice_level]
 
-	var context := CombatManager.build_trigger_context(face, max_face)
-	var base := CombatManager.get_effective_base(skill, context)
-	var effect_value := CombatManager.calculate_effect_value(skill, item.definition, face, base)
+	# Nie używamy już usuniętego get_effective_base() i przekazujemy tylko 3 parametry do kalkulatora:
+	var effect_value := CombatManager.calculate_effect_value(skill, item.definition, face)
 
 	tag.setup(skill, face, max_face, effect_value, item.definition)
 

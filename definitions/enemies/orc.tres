@@ -6,7 +6,6 @@
 
 [sub_resource type="Resource" id="Resource_0daba"]
 script = ExtResource("1_og4pc")
-damage = 20
 metadata/_custom_type_script = "uid://doyuee4t73gkp"
 
 [resource]
@@ -16,5 +15,4 @@ enemy_name = "Orc"
 sprite = ExtResource("3_og4pc")
 max_hp = 150
 attack_patterns = Array[ExtResource("1_og4pc")]([SubResource("Resource_0daba")])
-damage_growth = 4
 metadata/_custom_type_script = "uid://dfsxlht8w22ue"

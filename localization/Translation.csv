@@ -26,5 +26,11 @@ GAME_LABEL_SHIELD,Tarcza,Shield,Bouclier,Schild,盾,盾牌,Scudo,Escudo,방패,E
 GAME_LABEL_GOLD,Złoto,Gold,Or,Gold,ゴールド,金币,Oro,Oro,골드,Ouro,Золото
 GAME_LABEL_NEXT_ENEMY,Następny przeciwnik,Next enemy,Prochain ennemi,Nächster Gegner,次の敵,下一个敌人,Prossimo nemico,Siguiente enemigo,다음 적,Próximo inimigo,Следующий противник
 GAME_LABEL_NEXT_ENEMY_DISABLED,Nie możesz walczyć bez wyposażenia,You can't fight without equipment,Vous ne pouvez pas combattre sans équipement,Du kannst nicht ohne Ausrüstung kämpfen,装備なしでは戦えません,没有装备无法战斗,Non puoi combattere senza equipaggiamento,No puedes luchar sin equipamiento,장비 없이는 전투할 수 없습니다,Você não pode lutar sem equipamento,Нельзя сражаться без экипировки
-SKILL_BASIC_STRIK_NAME,Podstawowy atak,Basic strike,Attaque de base,Basisangriff,通常攻撃,普通攻击,Attacco base,Ataque básico,기본 공격,Ataque básico,Базовая атака
-SKILL_BASIC_STRIK_DESC,Podstawowy atak,Basic strike,Attaque de base,Basisangriff,通常攻撃,普通攻击,Attacco base,Ataque básico,기본 공격,Ataque básico,Базовая атака
+SKILL_BASIC_STRIKE_NAME,Podstawowy atak,Basic strike,Attaque de base,Basisangriff,通常攻撃,普通攻击,Attacco base,Ataque básico,기본 공격,Ataque básico,Базовая атака
+SKILL_BASIC_STRIKE_DESC,Podstawowy atak,Basic strike,Attaque de base,Basisangriff,通常攻撃,普通攻击,Attacco base,Ataque básico,기본 공격,Ataque básico,Базовая атака
+SKILL_GOLD_COINS_NAME,Złota moneta,Gold Coin,Pièce d’or,Goldmünze,金貨,金币,Moneta d’oro,Moneda de oro,금화,Moeda de ouro,Золотая монета
+SKILL_GOLD_COINS_DESC,Złota moneta,Gold Coin,Pièce d’or,Goldmünze,金貨,金币,Moneta d’oro,Moneda de oro,금화,Moeda de ouro,Золотая монета
+SKILL_HEAL_NAME,Leczenie,Heal,Soin,Heilung,回復,治疗,Cura,Curación,치유,Cura,Исцеление
+SKILL_HEAL_DESC,Leczenie,Heal,Soin,Heilung,回復,治疗,Cura,Curación,치유,Cura,Исцеление
+SKILL_SHIELD_NAME,Tarcza,Shield,Bouclier,Schild,シールド,护盾,Scudo,Escudo,보호막,Escudo,Щит
+SKILL_SHIELD_DESC,Tarcza,Shield,Bouclier,Schild,シールド,护盾,Scudo,Escudo,보호막,Escudo,Щит

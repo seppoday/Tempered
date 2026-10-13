@@ -14,7 +14,6 @@ const STAT_DISPLAY := {
 	"magic":  ["Magic Damage", Color(0.95, 0.95, 0.95), preload("uid://cyu1e16lmrvk7")],
 	"def":    ["Defense", Color(0.95, 0.95, 0.95), preload("uid://cyu1e16lmrvk7")],
 	"vit":    ["Vitality", Color(0.95, 0.95, 0.95), preload("uid://cyu1e16lmrvk7")],
-	"speed":  ["Speed", Color(0.95, 0.95, 0.95), preload("uid://cyu1e16lmrvk7")],
 	"luck":   ["Luck", Color(0.95, 0.95, 0.95), preload("uid://cyu1e16lmrvk7")],
 	"status": ["Status", Color(0.95, 0.95, 0.95), preload("uid://cyu1e16lmrvk7")],
 	"crit":   ["Critical", Color(0.95, 0.95, 0.95), preload("uid://cyu1e16lmrvk7")],
@@ -145,10 +144,6 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	var dragged_instance: ItemInstance = data["item_instance"]
 	var drag_count: int = data["drag_count"]
 	var is_partial: bool = data["is_partial"]
-	
-	if not is_empty() and dragged_instance.definition is SkillItemDefinition and item_data.definition is ItemDefinition:
-		_assign_skill_to_item(dragged_instance.definition.skill, source_slot)
-		return
 
 	if not self.is_empty() and dragged_instance.definition is MaterialDefinition and dragged_instance.definition.category == InventoryEntry.Category.UPGRADE_STONE:
 		if not item_data.definition is ItemDefinition:
@@ -214,35 +209,6 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 			source_slot.set_item(temp_instance)
 
 	slot_changed.emit(self)
-	source_slot.slot_changed.emit(source_slot)
-	
-func _assign_skill_to_item(skill: SkillDefinition, source_slot: Panel) -> void:
-	var existing: SkillDefinition = item_data.equipped_skill
-
-	if existing == null:
-		_confirm_skill_assignment(skill, source_slot)
-		return
-
-	var confirm := ConfirmationDialog.new()
-	confirm.dialog_text = "Nadpisać \"%s\" skillem \"%s\"?" % [existing.skill_name, skill.skill_name]
-	confirm.confirmed.connect(func():
-		_confirm_skill_assignment(skill, source_slot)
-		confirm.queue_free()
-	)
-	confirm.canceled.connect(confirm.queue_free)
-	get_tree().root.add_child(confirm)
-	confirm.popup_centered()
-
-
-func _confirm_skill_assignment(skill: SkillDefinition, source_slot: Panel) -> void:
-	item_data.equipped_skill = skill
-	_update_visual()
-
-	source_slot.item_data.quantity -= 1
-	if source_slot.item_data.quantity <= 0:
-		source_slot.clear()
-	else:
-		source_slot._update_visual()
 	source_slot.slot_changed.emit(source_slot)
 
 func set_item(new_instance: ItemInstance) -> void:

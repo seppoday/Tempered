@@ -12,6 +12,7 @@ stat = 1
 script = ExtResource("2_iuyq4")
 id = "arcane_burst"
 skill_name = "Arcane Burst"
+description = "Done
+"
 scalings = Array[ExtResource("1_qs5sb")]([SubResource("Resource_3jp0v")])
-damage_element = 4
-tags = Array[int]([0, 1])
+damage_element = 1

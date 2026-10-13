@@ -15,6 +15,5 @@ script = ExtResource("2_17fyx")
 id = "swift_strike"
 skill_name = "Swift Strike"
 icon = ExtResource("1_17fyx")
-base_value = 0.5
 scalings = Array[ExtResource("1_exrd1")]([SubResource("Resource_bycpo")])
-tags = Array[int]([0, 5])
+damage_element = 1

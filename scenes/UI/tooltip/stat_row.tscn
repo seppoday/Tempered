@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://ci7hkfppg4w4g"]
+
+[ext_resource type="Script" uid="uid://dwot41dfwrit5" path="res://scripts/ui/tooltip/stat_row.gd" id="1_2nmun"]
+
+[node name="StatRow" type="HBoxContainer" unique_id=1873164032]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = 6
+script = ExtResource("1_2nmun")
+
+[node name="Icon" type="TextureRect" parent="." unique_id=798761383]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Value" type="Label" parent="." unique_id=1200059036]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="." unique_id=663609145]
+unique_name_in_owner = true
+layout_mode = 2

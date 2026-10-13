@@ -76,7 +76,19 @@ func spawn_status_tick(value: int, status_type: GameEnums.StatusType, screen_pos
 		GameEnums.StatusType.BLEED:
 			spawn_screen(text + " 🩸", screen_position, COLOR_BLEED)
 
+func spawn_status_applied_world(status_type: GameEnums.StatusType, world_position: Vector3) -> void:
+	var camera := get_viewport().get_camera_3d()
+	if camera == null or camera.is_position_behind(world_position):
+		return
+	spawn_status_applied(status_type, camera.unproject_position(world_position))
 
+
+func spawn_status_tick_world(value: int, status_type: GameEnums.StatusType, world_position: Vector3) -> void:
+	var camera := get_viewport().get_camera_3d()
+	if camera == null or camera.is_position_behind(world_position):
+		return
+	spawn_status_tick(value, status_type, camera.unproject_position(world_position))
+	
 ## Spawnuje blok tarczy (np. "-12 🛡️") w 2D (nad paskiem HP gracza) lub w 3D (nad wrogiem)
 func spawn_shield_block(value: int, position: Vector2) -> void:
 	var text = "-" + Utilities.format_large_number(value)

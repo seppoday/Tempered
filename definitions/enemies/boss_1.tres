@@ -6,8 +6,6 @@
 
 [sub_resource type="Resource" id="Resource_0daba"]
 script = ExtResource("1_fs7tl")
-damage = 50
-hits = 2
 metadata/_custom_type_script = "uid://doyuee4t73gkp"
 
 [resource]

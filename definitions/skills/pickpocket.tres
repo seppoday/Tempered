@@ -14,7 +14,8 @@ script = ExtResource("2_nxmg1")
 id = "pickpocket"
 skill_name = "Pickpocket"
 icon = ExtResource("1_nxmg1")
+description = "Done
+"
 effect_type = 2
-target_type = 3
+target_type = 2
 scalings = Array[ExtResource("1_t22m8")]([SubResource("Resource_rasnl")])
-damage_element = 4

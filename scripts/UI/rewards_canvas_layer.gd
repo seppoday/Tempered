@@ -3,7 +3,7 @@ extends CanvasLayer
 @onready var rewards_container: BoxContainer = %RewardsContainer
 # Opcjonalnie: @onready var gold_label: Label = %GoldLabel
 
-var _pending_loot: Array[LootEntry] = []
+var _pending_options: Array[RewardOption] = []
 
 func _ready() -> void:
 	await get_tree().physics_frame
@@ -21,27 +21,20 @@ func _ready() -> void:
 
 
 # Wywoływane przez RewardManager, gdy trzeba pokazać nagrody
-func _on_rewards_generated(gold_amount: int, loot_entries: Array[LootEntry]) -> void:
-	_pending_loot = loot_entries
-	
-	# Tutaj możesz zaktualizować labelkę ze złotem, jeśli masz taką w UI
-	# if gold_label: gold_label.text = "+%d Gold" % gold_amount
-	
+func _on_rewards_generated(gold_amount: int, options: Array[RewardOption]) -> void:
+	_pending_options = options
 	_populate_reward_cards()
 
 func _populate_reward_cards() -> void:
 	var cards := rewards_container.get_children()
-
 	for i in range(cards.size()):
 		var card = cards[i]
-
 		if card.has_method("reset_state"):
 			card.reset_state()
-
-		if i < _pending_loot.size():
-			var loot: LootEntry = _pending_loot[i]
+		if i < _pending_options.size():
+			var option: RewardOption = _pending_options[i]
 			if card.has_method("setup"):
-				card.setup(loot.entry)
+				card.setup(option)
 			else:
 				Log.print("[WARNING] Karta nie posiada metody setup()!")
 			card.visible = true
@@ -54,20 +47,13 @@ func _populate_reward_cards() -> void:
 func _on_card_selected(card) -> void:
 	var cards := rewards_container.get_children()
 	var card_index := cards.find(card)
-
-	if card_index == -1 or card_index >= _pending_loot.size():
+	if card_index == -1 or card_index >= _pending_options.size():
 		return
-
-	# Od razu blokujemy UI, żeby gracz nie kliknął podwójnie
 	for other_card in cards:
 		other_card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		if other_card.has_method("lock"):
 			other_card.lock()
-
-	var loot: LootEntry = _pending_loot[card_index]
-	
-	# Przekazujemy odpowiedzialność do RewardManagera
-	RewardManager.claim_item(loot)
+	RewardManager.claim_option(_pending_options[card_index])
 
 
 func _on_reward_claimed() -> void:

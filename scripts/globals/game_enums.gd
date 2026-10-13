@@ -14,18 +14,17 @@ enum Stat {
 	MAGIC,
 	DEF,
 	VIT,
-	SPEED,
 	LUCK,
 	STATUS,
 	CRIT
 }
 
 enum DamageElement {
+	NONE,
 	PHYSICAL, 
 	FIRE, 
 	ICE, 
 	POISON, 
-	NONE
 }
 
 enum SkillEffect {
@@ -33,45 +32,45 @@ enum SkillEffect {
 	HEAL,           # Leczenie castera
 	GOLD,           # Złoto dla gracza
 	SHIELD,         # Tarcza na castera
-	BUFF_CRIT,      # Mnożnik crit do następnego ataku
-	BUFF_DAMAGE,    # +% do obrażeń wszystkich skilli w tej turze
-	DEBUFF_ARMOR,   # Zmniejszenie pancerza wroga
+	CLEANSE,
+	#BUFF_CRIT,      # Mnożnik crit do następnego ataku
+	#BUFF_DAMAGE,    # +% do obrażeń wszystkich skilli w tej turze
+	#DEBUFF_ARMOR,   # Zmniejszenie pancerza wroga
 }
 
 enum SkillTarget {
 	SELF,
-	SINGLE_ENEMY,
-	ALL_ENEMIES,
+	ENEMY,
 	NONE, # Efekty globalne (gold, buffy)
 }
 
 enum StatusType {
+	NONE,
 	BURN,
 	POISON,
 	BLEED,
 }
 
 enum TriggerType {
-	NONE,           # Brak triggera — skill działa normalnie
-	ON_HIT,         # Przy każdym trafieniu
-	ON_HIGH_ROLL,   # Gdy rzut >= 75% max ścianki (top 25%)
-	ON_MAX_ROLL,    # Gdy rzut == max ścianki (naturalne max)
-	ON_LOW_HP,      # Gdy HP castera < próg (dla healów)
-	EXECUTE,        # Gdy HP celu < próg (dla ataków)
+	ON_HIT,            # zawsze przy trafieniu
+	ON_ROLL_AT_LEAST,  # rolled_face >= threshold
+	ON_ROLL_AT_MOST,   # rolled_face <= threshold
+	ON_MAX_ROLL,       # wypadł max wynik na kości
+	ON_LOW_ROLL,       # wypadło 1
+	ON_KILL,           # ten hit zabił wroga
+	ON_TARGET_STATUS,  # cel ma jeden ze statusów z target_statuses
 }
 
-enum SkillTag {
-	ATTACK,
-	ELEMENTAL,
-	FIRE,
-	ICE,
-	POISON,
-	PHYSICAL,
-	HEALING,
-	MULTI_HIT,
-	EXECUTE,
-	DEFENSIVE,
-	DOT,
+enum TriggerEffect {
+	NONE,                  # brak dodatkowego efektu (użyj gdy chcesz TYLKO apply_status)
+	BONUS_DAMAGE,          # dodatkowe, płaskie obrażenia na celu
+	GAIN_SHIELD,           # gracz zyskuje tarczę
+	GAIN_HP,               # gracz leczy się
+	GAIN_GOLD,             # gracz zyskuje złoto
+	DAMAGE_MULTIPLIER,     # mnoży już wyliczoną wartość trafienia (3.0 = "crit" x300%)
+	SET_TO_MAX_VALUE,      # przelicza wartość tak, jakby wypadł max na kości
+	IGNORE_TARGET_SHIELD,  # to trafienie ignoruje tarczę wroga
+	PERMANENT_DAMAGE_BUFF, # trwały bonus do obrażeń do końca walki
 }
 
 const DICE_PROGRESSION: Array[int] = [6, 8, 10, 12, 16, 20]
@@ -110,6 +109,3 @@ static func get_skill_target_name(target: SkillTarget) -> String:
 
 static func get_trigger_name(trigger: TriggerType) -> String:
 	return Utilities.translate_enum(TriggerType, trigger, "TRIGGER")
-
-static func get_skill_tag_name(tag: SkillTag) -> String:
-	return Utilities.translate_enum(SkillTag, tag, "SKILL_TAG")

@@ -11,11 +11,13 @@ class_name ItemDefinition extends InventoryEntry
 @export var magic: float = 0.0
 @export var def: float = 0.0
 @export var vit: float = 0.0
-@export var speed: float = 0.0
 @export var luck: float = 0.0
 @export var status: float = 0.0
 @export var crit: float = 0.0
 @export var price: int = 0
+
+@export_category("Special")
+@export_range(0.0, 1.0, 0.01) var lifesteal_percent: float = 0.0
 
 @export_category("Affinity")
 @export var affinities: Array[ItemAffinity] = []
@@ -26,7 +28,6 @@ func get_stat(stat: GameEnums.Stat) -> float:
 		GameEnums.Stat.MAGIC: return magic
 		GameEnums.Stat.DEF: return def
 		GameEnums.Stat.VIT: return vit
-		GameEnums.Stat.SPEED: return speed
 		GameEnums.Stat.LUCK: return luck
 		GameEnums.Stat.STATUS: return status
 		GameEnums.Stat.CRIT: return crit

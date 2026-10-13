@@ -7,13 +7,19 @@
 [sub_resource type="Resource" id="Resource_y28wi"]
 script = ExtResource("1_h35vm")
 stat = 5
+weight = 1.5
+
+[sub_resource type="Resource" id="Resource_17fyx"]
+script = ExtResource("1_h35vm")
+stat = 4
+weight = 0.5
+metadata/_custom_type_script = "uid://oma4qvx1pxtp"
 
 [resource]
 script = ExtResource("2_qnpbn")
 id = "loot"
 skill_name = "Loot"
+description = "Done"
 effect_type = 2
-target_type = 3
-base_value = 2.0
-scalings = Array[ExtResource("1_h35vm")]([SubResource("Resource_y28wi")])
-damage_element = 4
+target_type = 2
+scalings = Array[ExtResource("1_h35vm")]([SubResource("Resource_y28wi"), SubResource("Resource_17fyx")])

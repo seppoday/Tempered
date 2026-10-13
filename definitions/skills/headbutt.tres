@@ -17,6 +17,5 @@ weight = 0.3
 script = ExtResource("2_5fkhf")
 id = "headbutt"
 skill_name = "Headbutt"
-base_value = 0.6
 scalings = Array[ExtResource("1_1xkh5")]([SubResource("Resource_x0tqw"), SubResource("Resource_0pwve")])
-tags = Array[int]([0, 5, 9])
+damage_element = 1

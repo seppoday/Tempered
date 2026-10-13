@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bbkjtosvst7i2"]
 
-[ext_resource type="Script" uid="uid://ceksib7lxfweo" path="res://scripts/UI/reward_tag.gd" id="1_cd3re"]
+[ext_resource type="Script" uid="uid://ceksib7lxfweo" path="res://scripts/ui/reward_tag.gd" id="1_cd3re"]
 [ext_resource type="Texture2D" uid="uid://1f8lt201861u" path="res://assets/icons/test.png" id="2_txbqc"]
 [ext_resource type="Shader" uid="uid://0oxx6d0b4k3s" path="res://shaders/dice_tag_effect.gdshader" id="5_ufewc"]
 
@@ -30,6 +30,7 @@ shader_parameter/locked_intensity = 0.0
 shader_parameter/locked_color = Color(0.1, 0.1, 0.12, 0.6)
 
 [node name="PanelContainer" type="PanelContainer" unique_id=95318190]
+clip_contents = true
 offset_right = 162.0
 offset_bottom = 164.0
 pivot_offset_ratio = Vector2(0.5, 0.5)
@@ -41,14 +42,11 @@ script = ExtResource("1_cd3re")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1557987852]
 layout_mode = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
 [node name="BoxContainer" type="BoxContainer" parent="MarginContainer" unique_id=857229474]
 layout_mode = 2
-theme_override_constants/separation = 0
+theme_override_constants/separation = 12
 alignment = 1
 vertical = true
 

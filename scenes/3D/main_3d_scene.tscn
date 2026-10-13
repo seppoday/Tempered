@@ -3,17 +3,15 @@
 [ext_resource type="Script" uid="uid://b2tk28s7m5b0s" path="res://scripts/gameplay/main_3d_scene.gd" id="1_8ngun"]
 [ext_resource type="PackedScene" uid="uid://dei603y45frkh" path="res://scenes/UI/dicetag.tscn" id="2_rqbel"]
 [ext_resource type="Texture2D" uid="uid://ccnj0242llxhy" path="res://assets/hdri/hdri.exr" id="3_yvypd"]
-[ext_resource type="PackedScene" uid="uid://ckvbsvfexndh8" path="res://scenes/enemies/enemy.tscn" id="4_yvypd"]
 [ext_resource type="Script" uid="uid://4h22nrdhg6oe" path="res://scripts/dice/dice_roller.gd" id="5_kamvo"]
 [ext_resource type="Script" uid="uid://ben0ee225yp5g" path="res://scripts/lights/fireplace.gd" id="6_hgf45"]
-[ext_resource type="Script" uid="uid://lsq25y02lat2" path="res://scripts/UI/main_ui.gd" id="7_ap16l"]
+[ext_resource type="Script" uid="uid://lsq25y02lat2" path="res://scripts/ui/main_ui.gd" id="7_ap16l"]
 [ext_resource type="Script" uid="uid://d17lfr8pb8lfj" path="res://scripts/gameplay/wave_manager.gd" id="7_avuin"]
 [ext_resource type="Script" uid="uid://isk6xjs47cxp" path="res://data/definitions_patterns/wave_sequence.gd" id="7_lw8pt"]
 [ext_resource type="Script" uid="uid://c4ww5udmcqrer" path="res://scenes/3D/camera_3d.gd" id="7_ufuvc"]
 [ext_resource type="Script" uid="uid://dfsxlht8w22ue" path="res://data/definitions_patterns/enemy_definition.gd" id="8_hgf45"]
-[ext_resource type="Script" uid="uid://dpyk5dj1dlqss" path="res://scripts/UI/gold_label.gd" id="8_ice7a"]
+[ext_resource type="Script" uid="uid://dpyk5dj1dlqss" path="res://scripts/ui/gold_label.gd" id="8_ice7a"]
 [ext_resource type="Resource" uid="uid://8uf3l7cr560u" path="res://definitions/enemies/goblin.tres" id="9_6ydfj"]
-[ext_resource type="Script" uid="uid://rhwee7ilv64" path="res://scripts/UI/item_panel.gd" id="9_xr32f"]
 [ext_resource type="Resource" uid="uid://bncecrr3fl5gv" path="res://definitions/enemies/wolf.tres" id="10_2r5wi"]
 [ext_resource type="PackedScene" uid="uid://x4spoxodgh4x" path="res://scenes/UI/equipment_slot.tscn" id="10_sj3ib"]
 [ext_resource type="Texture2D" uid="uid://ygdvvwu2iiq5" path="res://assets/ui/amulet_slot_placeholder.png" id="11_lw8pt"]
@@ -29,15 +27,15 @@
 [ext_resource type="Script" uid="uid://bvnx5uagtyhgg" path="res://scripts/environment/box.gd" id="16_mpvc3"]
 [ext_resource type="Material" uid="uid://bokvdv1n3qqfv" path="res://highlight_material_3d_2.tres" id="17_4aqfo"]
 [ext_resource type="Texture2D" uid="uid://hckl245r3g2f" path="res://assets/ui/boots_slot_placeholder.png" id="18_ufuvc"]
-[ext_resource type="Script" uid="uid://ciakkvnknrtrw" path="res://scripts/UI/alchemy_panel.gd" id="19_8r76n"]
-[ext_resource type="Script" uid="uid://cpns5yr2xh0ev" path="res://scripts/UI/inventory.gd" id="20_q0ack"]
+[ext_resource type="Script" uid="uid://ciakkvnknrtrw" path="res://scripts/ui/alchemy_panel.gd" id="19_8r76n"]
+[ext_resource type="Script" uid="uid://cpns5yr2xh0ev" path="res://scripts/ui/inventory.gd" id="20_q0ack"]
 [ext_resource type="PackedScene" uid="uid://bjm17lslb6bev" path="res://assets/models/wine_jug_01.glb" id="21_6qjdx"]
 [ext_resource type="PackedScene" uid="uid://bdinjjx14c0ko" path="res://assets/models/dagger_02.glb" id="22_fdv13"]
 [ext_resource type="FontFile" uid="uid://dok171t6oxmnq" path="res://assets/fonts/FiraSans-Bold.ttf" id="24_amdh2"]
-[ext_resource type="Script" uid="uid://b0nh08jlx8xfr" path="res://scripts/UI/equipment_canvas_layer.gd" id="28_8r76n"]
+[ext_resource type="Script" uid="uid://b0nh08jlx8xfr" path="res://scripts/ui/equipment_canvas_layer.gd" id="28_8r76n"]
 [ext_resource type="Script" uid="uid://b2ds0q8y88g1k" path="res://scenes/3D/post_processing.gd" id="29_4psnp"]
 [ext_resource type="PackedScene" uid="uid://bbadchds7qm5n" path="res://scenes/UI/slot.tscn" id="31_ifyqo"]
-[ext_resource type="Script" uid="uid://dpg71kpxh2esj" path="res://scripts/UI/dice_tags.gd" id="31_mpvc3"]
+[ext_resource type="Script" uid="uid://dpg71kpxh2esj" path="res://scripts/ui/dice_tags.gd" id="31_mpvc3"]
 [ext_resource type="Texture2D" uid="uid://dyhh4dx4wna1x" path="res://wood_table_nor_dx_1k.png" id="36_2r5wi"]
 [ext_resource type="VoxelGIData" uid="uid://cjgs3mam0qcsa" path="res://main_3d_scene.VoxelGI_data.res" id="36_hgf45"]
 [ext_resource type="Texture2D" uid="uid://b14a1l82bk56j" path="res://wood_table_diff_1k.jpg" id="36_hgqcf"]
@@ -50,11 +48,10 @@
 [ext_resource type="Texture2D" uid="uid://c113jmy871e2p" path="res://assets/models/materials/carpet/cotton_jersey_ao_1k.jpg" id="42_50bjb"]
 [ext_resource type="Texture2D" uid="uid://dnaguf6uyfwym" path="res://assets/ui/legs_slot_placeholder.png" id="42_fdv13"]
 [ext_resource type="Script" uid="uid://c6w0ntq5lk1od" path="res://scripts/gameplay/dice_hand.gd" id="43_8r76n"]
-[ext_resource type="Script" uid="uid://df8tf81xso1wc" path="res://scenes/3D/skills_panel.gd" id="46_4aqfo"]
 [ext_resource type="Shader" uid="uid://dixfqjkcloefu" path="res://postprocessing.gdshader" id="46_lhg76"]
 [ext_resource type="Script" uid="uid://e0wtwogaocqf" path="res://scenes/3D/game_over_canvas_layer.gd" id="52_ct24d"]
 [ext_resource type="Script" uid="uid://druvchqrj4kex" path="res://scenes/3D/meta_progression_canvas_layer.gd" id="54_ev28f"]
-[ext_resource type="Script" uid="uid://c73k0xhw4yeyb" path="res://scripts/UI/rewards_canvas_layer.gd" id="58_dwi8f"]
+[ext_resource type="Script" uid="uid://c73k0xhw4yeyb" path="res://scripts/ui/rewards_canvas_layer.gd" id="58_dwi8f"]
 [ext_resource type="PackedScene" uid="uid://bbkjtosvst7i2" path="res://scenes/UI/reward_tag.tscn" id="59_3w64d"]
 
 [sub_resource type="Resource" id="Resource_nvv70"]
@@ -159,9 +156,9 @@ clearcoat = 0.4
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_l3r7w"]
 material = SubResource("StandardMaterial3D_abi3o")
-top_radius = 0.4272461
-bottom_radius = 0.4272461
-height = 0.12402344
+top_radius = 0.35
+bottom_radius = 0.35
+height = 0.1
 
 [sub_resource type="BoxMesh" id="BoxMesh_ifow5"]
 size = Vector3(4.4379883, 0.6767578, 2.7385254)
@@ -426,7 +423,6 @@ script = ExtResource("1_8ngun")
 box_clicker = NodePath("BoxDiceClicker")
 dice_roller = NodePath("Box/DiceRoller")
 dice_hand = NodePath("DiceHand")
-enemy_scene = ExtResource("4_yvypd")
 wave_manager = NodePath("WaveManager")
 
 [node name="DiceHand" type="Node" parent="." unique_id=187322700 node_paths=PackedStringArray("picks_label", "camera", "dice_tag_canvas_layer", "dice_roller", "enemy_spawn_point", "hp_progress_bar")]
@@ -679,11 +675,23 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.90528655, 4.581102, 1.25562
 mesh = SubResource("CylinderMesh_l3r7w")
 
 [node name="MeshInstance3D7" type="MeshInstance3D" parent="Props" unique_id=900675602]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0689392, -0.18536007, 1.8877363)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9808311, -0.18536007, 1.7585602)
 mesh = SubResource("CylinderMesh_l3r7w")
 
 [node name="MeshInstance3D6" type="MeshInstance3D" parent="Props" unique_id=2008974576]
 transform = Transform3D(0.98358154, -0.18046412, 0, 0.18046412, 0.98358154, 0, 0, 0, 1, -3.1933336, -0.10927549, 1.0452685)
+mesh = SubResource("CylinderMesh_l3r7w")
+
+[node name="MeshInstance3D14" type="MeshInstance3D" parent="Props" unique_id=1938591527]
+transform = Transform3D(0.7591373, 6.88898e-09, 0.65093064, -0.087012365, 0.99102545, 0.101476744, -0.64508885, -0.13367379, 0.75232434, -2.5100422, -0.13833016, 0.20232047)
+mesh = SubResource("CylinderMesh_l3r7w")
+
+[node name="MeshInstance3D15" type="MeshInstance3D" parent="Props" unique_id=958270596]
+transform = Transform3D(0.75419205, 0.07823212, 0.6519771, -0.092714734, 0.9956178, -0.012216038, -0.6500758, -0.051234663, 0.75814027, -2.27418, -0.083467476, 0.8665952)
+mesh = SubResource("CylinderMesh_l3r7w")
+
+[node name="MeshInstance3D16" type="MeshInstance3D" parent="Props" unique_id=889162611]
+transform = Transform3D(0.74667335, -0.13699706, 0.65093064, 0.09326081, 0.99045706, 0.10147675, -0.65862066, -0.015063679, 0.7523243, -2.8894846, -0.024561975, 0.4155798)
 mesh = SubResource("CylinderMesh_l3r7w")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="Props" unique_id=381559824]
@@ -743,6 +751,7 @@ unique_name_in_owner = true
 transform = Transform3D(4.371139e-08, -3.8213714e-15, -1.0000001, -8.742278e-08, -1.0000001, 0, -1, 8.7422784e-08, -4.3711392e-08, 0.9, 0.1, 0)
 
 [node name="LidScreen" type="Sprite3D" parent="Box/Lid" unique_id=998124579]
+unique_name_in_owner = true
 transform = Transform3D(-6.993823e-09, 0.16000001, -6.9849193e-09, 0, -6.9849193e-09, -0.16000001, -0.16, -6.993822e-09, 3.0570968e-16, 0.89054126, 0.048349068, 4.3289685e-08)
 texture = SubResource("ViewportTexture_wvhbo")
 metadata/extras = {
@@ -941,7 +950,6 @@ text = "PICK 2 CARDS"
 
 [node name="EquipmentCanvasLayer" type="CanvasLayer" parent="." unique_id=219155604]
 unique_name_in_owner = true
-visible = false
 script = ExtResource("28_8r76n")
 
 [node name="ColorRect" type="ColorRect" parent="EquipmentCanvasLayer" unique_id=1037858027]
@@ -1006,50 +1014,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="Stats" type="PanelContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/HBoxContainer" unique_id=2117071596]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_3w64d")
-script = ExtResource("9_xr32f")
-
-[node name="MarginContainer" type="MarginContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/HBoxContainer/Stats" unique_id=795250180]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
-
-[node name="StatsBox" type="VBoxContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/HBoxContainer/Stats/MarginContainer" unique_id=1443945344]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-alignment = 1
-
-[node name="Skills" type="PanelContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/HBoxContainer" unique_id=85465600]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_3w64d")
-script = ExtResource("46_4aqfo")
-
-[node name="MarginContainer" type="MarginContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/HBoxContainer/Skills" unique_id=80696076]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
-
-[node name="SkillsBox" type="VBoxContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/HBoxContainer/Skills/MarginContainer" unique_id=2103111230]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-alignment = 1
-
 [node name="InventoryPanel" type="BoxContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/HBoxContainer" unique_id=912831016]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 12
 vertical = true
 
@@ -1057,7 +1024,6 @@ vertical = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_3w64d")
-script = ExtResource("9_xr32f")
 
 [node name="MarginContainer" type="MarginContainer" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/HBoxContainer/InventoryPanel/Equipment" unique_id=2026303553]
 layout_mode = 2
@@ -1099,6 +1065,7 @@ layout_mode = 2
 [node name="WeaponSlot" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/HBoxContainer/InventoryPanel/Equipment/MarginContainer/EquipmentGrid" unique_id=1196668936 instance=ExtResource("10_sj3ib")]
 unique_name_in_owner = true
 layout_mode = 2
+slot_type = null
 placeholder_texture = ExtResource("14_2r5wi")
 
 [node name="ArmorSlot" parent="EquipmentCanvasLayer/Main/Margin/MiddlePanel/InventorySection/HBoxContainer/InventoryPanel/Equipment/MarginContainer/EquipmentGrid" unique_id=1580699172 instance=ExtResource("10_sj3ib")]
@@ -1407,7 +1374,7 @@ custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 24
-text = "First"
+text = "+1 karta do wyboru (max 5)"
 
 [node name="EndMetaButton" type="Button" parent="MetaProgressionCanvasLayer/Main/BoxContainer" unique_id=2102362502]
 custom_minimum_size = Vector2(0, 64)

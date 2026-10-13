@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dei603y45frkh"]
 
-[ext_resource type="Script" uid="uid://gom6cpdggn8p" path="res://scripts/UI/dicetag.gd" id="1_54fgk"]
+[ext_resource type="Script" uid="uid://gom6cpdggn8p" path="res://scripts/ui/dicetag.gd" id="1_54fgk"]
 [ext_resource type="Texture2D" uid="uid://1f8lt201861u" path="res://assets/icons/test.png" id="2_we6yk"]
 [ext_resource type="FontFile" uid="uid://cdjqfdlffrhaq" path="res://assets/fonts/FiraSans-LightItalic.ttf" id="4_e10p4"]
 [ext_resource type="FontFile" uid="uid://ksubfguv2mi1" path="res://assets/fonts/FiraSans-ExtraBold.ttf" id="4_s5h31"]
