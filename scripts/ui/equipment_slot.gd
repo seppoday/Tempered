@@ -35,27 +35,6 @@ func _on_item_equipped(equipped_slot_type: Type, item_instance: ItemInstance) ->
 	else:
 		super.set_item(item_instance)
 
-func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	if not super._can_drop_data(_at_position, data):
-		return false
-
-	var dragged_instance: ItemInstance = data["item_instance"]
-	var def := dragged_instance.definition
-	if def == null:
-		return false
-
-	if def is MaterialDefinition:
-		return def.category == InventoryEntry.Category.UPGRADE_STONE
-
-	if def is ItemDefinition:
-		return def.category == InventoryEntry.Category.EQUIPMENT and def.slot == slot_type
-
-	return false
-
-func _drop_data(_at_position: Vector2, data: Variant) -> void:
-	super._drop_data(_at_position, data)
-	PlayerData.equip_item(item_data)
-
 
 func clear() -> void:
 	super.clear()

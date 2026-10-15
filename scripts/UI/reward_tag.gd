@@ -38,7 +38,7 @@ func setup(option: RewardOption) -> void:
 			if icon_rect:
 				icon_rect.texture = option.upgrade_display_item.icon
 			if name_label:
-				name_label.text = "⬆ Upgrade: %s" % option.upgrade_display_item.name
+				name_label.text = "⬆ Upgrade: %s" % tr(option.upgrade_display_item.name)
 
 	tooltip_text = "use_custom"
 

@@ -988,6 +988,10 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="RewardFour" parent="RewardsCanvasLayer/BoxContainer/CenterContainer/RewardsContainer" unique_id=1755913623 instance=ExtResource("59_3w64d")]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="Equipment" type="PanelContainer" parent="RewardsCanvasLayer/BoxContainer" unique_id=856071807]
 layout_mode = 2
 size_flags_horizontal = 3

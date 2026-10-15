@@ -4,7 +4,6 @@ enum Category {
 	CONSUMABLE,
 	EQUIPMENT,
 	MATERIAL,
-	UPGRADE_STONE,
 	SKILL,
 }
 

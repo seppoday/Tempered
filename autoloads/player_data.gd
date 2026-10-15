@@ -10,6 +10,10 @@ signal attributes_changed
 
 var picks_per_cycle: int = 2
 
+## Kara do liczby wybieranych kości przy NASTĘPNYM rzucie (np. ze skilla "duży dmg, mniej kart").
+## Ustawiana przez triggery (REDUCE_NEXT_PICKS), zużywana i zerowana przy starcie kolejnego rzutu.
+var pending_picks_penalty: int = 0
+
 var health: Health
 var max_shield: float
 var pending_block: float = 0.0
@@ -48,19 +52,7 @@ const BASE_LUCK: float = 0.0
 const BASE_STATUS: float = 0.0
 const BASE_CRIT: float = 0.0
 
-func equip_starting_loadout() -> void:
-	var starting_ids: Array[String] = MetaProgressionManager.get_starting_loadout()
 
-	for item_id in starting_ids:
-		var item_definition := ItemDatabase.get_by_id(item_id)
-
-		if item_definition == null:
-			Log.warning("equip_starting_loadout: nie znaleziono przedmiotu o ID: %s" % item_id)
-			continue
-
-		# Domyślnie zakładamy 1 sztukę o poziomie 1
-		var item_instance := ItemInstance.new(item_definition, 1, 0)
-		equip_item(item_instance)
 
 func _ready() -> void:
 	equip_starting_loadout()
@@ -80,6 +72,26 @@ func _cmd_heal(args: Array) -> String:
 func _cmd_die(args: Array) -> String:
 	health.take_damage(999999)
 	return "[color=green]Gracz umarł"
+
+func equip_starting_loadout() -> void:
+	var starting_ids: Array[String] = MetaProgressionManager.get_starting_loadout()
+
+	for item_id in starting_ids:
+		var item_definition := ItemDatabase.get_by_id(item_id)
+
+		if item_definition == null:
+			Log.warning("equip_starting_loadout: nie znaleziono przedmiotu o ID: %s" % item_id)
+			continue
+
+		# Domyślnie zakładamy 1 sztukę o poziomie 1
+		var item_instance := ItemInstance.new(item_definition, 1, 0)
+		equip_item(item_instance)
+
+## Zwraca ile kości gracz może wybrać w NADCHODZĄCYM rzucie i zeruje karę — wołać raz na rzut.
+func consume_picks_limit() -> int:
+	var limit: int = max(1, picks_per_cycle - pending_picks_penalty)
+	pending_picks_penalty = 0
+	return limit
 
 func get_total_stats() -> Dictionary:
 	var totals: Dictionary = {

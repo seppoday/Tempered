@@ -291,6 +291,9 @@ func _apply_post_hit_triggers(skill: SkillDefinition, context: Dictionary, hit_v
 			GameEnums.TriggerEffect.PERMANENT_DAMAGE_BUFF:
 				permanent_damage_bonus += amount
 				Log.print("Trwały bonus dmg: +%.1f (razem: %.1f)" % [amount, permanent_damage_bonus])
+			GameEnums.TriggerEffect.REDUCE_NEXT_PICKS:
+				PlayerData.pending_picks_penalty += int(round(amount))
+				Log.print("Następny rzut: -%d karty do wyboru" % int(round(amount)))
 			GameEnums.TriggerEffect.NONE:
 				pass
 		_apply_trigger_status_to_enemy(trigger, item_def, context["face"])

@@ -1,12 +1,6 @@
 class_name ItemInstance
 extends RefCounted
 
-enum UpgradeResult {
-	SUCCESS,
-	WRONG_DIE,
-	MAX_LEVEL_REACHED,
-}
-
 var definition: InventoryEntry
 var quantity: int = 1
 var dice_level: int = 0
@@ -23,16 +17,6 @@ func is_stackable() -> bool:
 
 func get_max_stack_size() -> int:
 	return definition.max_stack_size
-
-func attempt_upgrade(dice_item: MaterialDefinition) -> UpgradeResult:
-	if dice_level >= GameEnums.DICE_PROGRESSION.size() - 1:
-		return UpgradeResult.MAX_LEVEL_REACHED
-
-	if dice_item.dice_index != dice_level + 1:
-		return UpgradeResult.WRONG_DIE
-
-	dice_level += 1
-	return UpgradeResult.SUCCESS
 
 func roll_skill() -> Dictionary:
 	if not definition is ItemDefinition:

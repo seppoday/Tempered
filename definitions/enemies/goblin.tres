@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://dp0kh2akuu60m" path="res://data/definitions_patterns/loot_table.gd" id="6_swhgi"]
 [ext_resource type="Resource" uid="uid://cag2v24qfuy07" path="res://definitions/items/gloves/thiefs_gloves.tres" id="7_d47gl"]
 [ext_resource type="Resource" uid="uid://d05poumq2y3b4" path="res://definitions/items/amulets/silver_amulet.tres" id="8_d47gl"]
+[ext_resource type="Resource" uid="uid://d24qi4m4dxhnh" path="res://definitions/items/weapons/twin_daggers.tres" id="8_swhgi"]
 
 [sub_resource type="Resource" id="Resource_5i835"]
 script = ExtResource("1_amobi")
@@ -36,11 +37,17 @@ script = ExtResource("2_fit0o")
 entry = ExtResource("8_d47gl")
 metadata/_custom_type_script = "uid://dmw8mcvfjhous"
 
+[sub_resource type="Resource" id="Resource_g7q3g"]
+script = ExtResource("2_fit0o")
+entry = ExtResource("8_swhgi")
+metadata/_custom_type_script = "uid://dmw8mcvfjhous"
+
 [sub_resource type="Resource" id="Resource_dn3m8"]
 script = ExtResource("6_swhgi")
-loot_entries = Array[ExtResource("2_fit0o")]([SubResource("Resource_juifq"), SubResource("Resource_gpuxc"), SubResource("Resource_k7t0j"), SubResource("Resource_d47gl")])
+loot_entries = Array[ExtResource("2_fit0o")]([SubResource("Resource_juifq"), SubResource("Resource_gpuxc"), SubResource("Resource_k7t0j"), SubResource("Resource_d47gl"), SubResource("Resource_g7q3g")])
 gold_min = 2
 gold_max = 4
+upgrade_weight = 1000
 metadata/_custom_type_script = "uid://dp0kh2akuu60m"
 
 [resource]

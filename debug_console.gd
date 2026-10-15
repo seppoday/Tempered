@@ -102,13 +102,13 @@ func _cmd_additem(args: Array) -> String:
 	if definition == null:
 		return "[color=red]Nie znaleziono itemu o id '%s'[/color]" % id
 
-	var inventory := get_tree().get_first_node_in_group("inventory")
-	if inventory == null:
-		return "[color=red]Brak aktywnego plecaka w scenie[/color]"
+	if not definition is ItemDefinition:
+		return "[color=red]'%s' nie jest itemem do założenia (ItemDefinition)[/color]" % id
 
-	if inventory.add_item(ItemInstance.new(definition, amount)):
-		return "[color=green]Dodano %dx %s[/color]" % [amount, definition.name]
-	return "[color=red]Plecak pełny[/color]"
+	var previous: ItemInstance = PlayerData.equip_item(ItemInstance.new(definition, amount))
+	if previous != null:
+		return "[color=green]Założono %dx %s (zastąpiono %s)[/color]" % [amount, definition.name, previous.definition.name]
+	return "[color=green]Założono %dx %s[/color]" % [amount, definition.name]
 
 
 func _cmd_list_items(args: Array) -> String:

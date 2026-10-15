@@ -20,7 +20,7 @@ func generate_rewards(enemy_definition: EnemyDefinition) -> void:
 			MetaProgressionManager.add_gold(_pending_gold)
 
 	if table:
-		_pending_options = _roll_reward_options(table, 3)
+		_pending_options = _roll_reward_options(table, 4)
 
 	rewards_generated.emit(_pending_gold, _pending_options)
 

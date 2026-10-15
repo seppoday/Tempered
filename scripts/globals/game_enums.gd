@@ -71,6 +71,7 @@ enum TriggerEffect {
 	SET_TO_MAX_VALUE,      # przelicza wartość tak, jakby wypadł max na kości
 	IGNORE_TARGET_SHIELD,  # to trafienie ignoruje tarczę wroga
 	PERMANENT_DAMAGE_BUFF, # trwały bonus do obrażeń do końca walki
+	REDUCE_NEXT_PICKS,     # przy następnym rzucie gracz wybiera o effect_value mniej kości
 }
 
 const DICE_PROGRESSION: Array[int] = [6, 8, 10, 12, 16, 20]

@@ -24,6 +24,10 @@ var current_hit_index: int = 0
 
 var is_rolling: bool = false
 
+## Limit kart do wyboru dla BIEŻĄCEGO rzutu — liczony raz na rzut przez
+## PlayerData.consume_picks_limit(), żeby kara z REDUCE_NEXT_PICKS zadziałała
+## dokładnie na jeden, najbliższy rzut, a nie na stałe.
+var current_picks_limit: int = PlayerData.picks_per_cycle
 
 func _ready() -> void:
 	picks_label.hide()
@@ -77,7 +81,7 @@ func reset_for_new_roll() -> void:
 
 
 func _update_picks_label() -> void:
-	var limit := PlayerData.picks_per_cycle
+	var limit := current_picks_limit
 	var chosen := selected_tags.size()
 	picks_label.text = "Wybierz %d/%d" % [chosen, limit]
 	
@@ -97,6 +101,7 @@ func _on_dice_spawned(dice: Array[RigidBody3D]) -> void:
 
 func _on_dice_settled(results: Array[Dictionary]) -> void:
 	pending_results = results
+	current_picks_limit = PlayerData.consume_picks_limit()
 	await _reveal_results_domino()
 
 	if not CombatManager.is_game_over:
@@ -105,7 +110,7 @@ func _on_dice_settled(results: Array[Dictionary]) -> void:
 
 func _on_card_toggled(card: PanelContainer, wants_selected: bool) -> void:
 	if wants_selected:
-		if selected_tags.size() >= PlayerData.picks_per_cycle:
+		if selected_tags.size() >= current_picks_limit:
 			card.set_selected(false)
 			return
 		selected_tags.append(card)
@@ -117,7 +122,7 @@ func _on_card_toggled(card: PanelContainer, wants_selected: bool) -> void:
 	_update_lock_states()
 	_update_picks_label()
 	
-	if selected_tags.size() == PlayerData.picks_per_cycle:
+	if selected_tags.size() == current_picks_limit:
 		var results := await confirm_selection()
 		selection_complete.emit(results)
 
@@ -288,7 +293,7 @@ func _animate_fade_out(tween: Tween, tag: Control) -> void:
 
 
 func _update_lock_states() -> void:
-	var limit_reached := selected_tags.size() >= PlayerData.picks_per_cycle
+	var limit_reached := selected_tags.size() >= current_picks_limit
 	for tag in active_tags:
 		if is_instance_valid(tag):
 			var should_lock = limit_reached and not tag in selected_tags
