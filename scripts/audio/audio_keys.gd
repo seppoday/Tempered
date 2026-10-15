@@ -3,7 +3,7 @@ class_name AudioKeys
 extends RefCounted
 
 # MUSIC
-const MUSIC_TEST: StringName = &"test"
+const MUSIC_TEST: StringName = &"music"
 
 # SFX
 const SFX_POP: StringName = &"pop"

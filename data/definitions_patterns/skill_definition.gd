@@ -17,4 +17,4 @@ class_name SkillDefinition
 @export var duration_rounds: int = 0
 @export var bonus_hits_per_stat: SkillScaling
 
-@export var triggers: Array[SkillTrigger] = []
+@export var triggers: Array[SkillTriggerBase] = []

@@ -4,7 +4,7 @@ extends Node
 signal enemy_changed(enemy: EnemyInstance)
 signal player_died
 signal enemy_died(enemy: EnemyInstance)
-signal effect_applied(skill: SkillDefinition, value: int, target: String)
+signal effect_applied(skill: SkillDefinition, value: int, target: String, source: String)
 signal buff_applied_to_player(buff_name: String, value_text: String)
 signal player_attack_finished
 signal status_applied_to_enemy(status_name: String)
@@ -120,7 +120,7 @@ func build_trigger_context(rolled_face: int, max_face: int) -> Dictionary:
 	return {"face": rolled_face, "max_face": max_face, "caster_hp_ratio": caster_hp_ratio, "target_hp_ratio": target_hp_ratio}
 
 ## Tworzy StatusEffect na podstawie triggera i statystyk gracza.
-func _create_status_from_trigger(trigger: SkillTrigger, _item: ItemDefinition, dice_roll: int) -> StatusEffect:
+func _create_status_from_trigger(trigger: SkillTriggerBase, _item: ItemDefinition, dice_roll: int) -> StatusEffect:
 	var status_type := trigger.apply_status
 	var tick := 0.0
 	var initial := 0.0
@@ -199,13 +199,7 @@ func _count_equipped_skills_with_element(element: GameEnums.DamageElement, exclu
 			count += 1
 	return count
 
-const PRE_HIT_EFFECTS := [
-	GameEnums.TriggerEffect.DAMAGE_MULTIPLIER,
-	GameEnums.TriggerEffect.SET_TO_MAX_VALUE,
-	GameEnums.TriggerEffect.IGNORE_TARGET_SHIELD,
-]
-
-func _trigger_condition_met(trigger: SkillTrigger, context: Dictionary, enemy_died: bool) -> bool:
+func _trigger_condition_met(trigger: SkillTriggerBase, context: Dictionary, enemy_died: bool) -> bool:
 	match trigger.trigger_type:
 		GameEnums.TriggerType.ON_HIT:
 			return true
@@ -219,22 +213,26 @@ func _trigger_condition_met(trigger: SkillTrigger, context: Dictionary, enemy_di
 			return context["face"] == 1
 		GameEnums.TriggerType.ON_KILL:
 			return enemy_died
+		GameEnums.TriggerType.ON_SELF_HP_BELOW:
+			return context["caster_hp_ratio"] <= trigger.threshold
+		GameEnums.TriggerType.ON_TARGET_HP_BELOW:
+			return context["target_hp_ratio"] <= trigger.threshold
 		GameEnums.TriggerType.ON_TARGET_STATUS:
 			if current_enemy == null:
 				return false
-			for status in trigger.target_statuses:
-				if current_enemy.status_manager.has_status(status):  # TODO: sprawdź nazwę metody
+			for status in trigger.required_target_statuses:
+				if current_enemy.status_manager.has_status(status):
 					return true
 			return false
 		_:
 			return false
 
-func _pay_hp_cost(trigger: SkillTrigger) -> void:
+func _pay_hp_cost(trigger: SkillTriggerBase) -> void:
 	if trigger.hp_cost > 0.0:
 		PlayerData.health.take_damage(int(round(trigger.hp_cost)))
 		Log.print("Trigger koszt: -%d HP" % int(round(trigger.hp_cost)))
 
-func _apply_trigger_status_to_enemy(trigger: SkillTrigger, item_def: ItemDefinition, rolled_face: int) -> void:
+func _apply_trigger_status_to_enemy(trigger: SkillTriggerBase, item_def: ItemDefinition, rolled_face: int) -> void:
 	if current_enemy == null:
 		return
 	for _i in range(trigger.status_stacks):
@@ -244,7 +242,7 @@ func _apply_trigger_status_to_enemy(trigger: SkillTrigger, item_def: ItemDefinit
 		current_enemy.status_manager.apply_status(status)
 		status_applied_to_enemy.emit(GameEnums.StatusType.keys()[status.status_type])
 
-func _apply_trigger_status_to_player(trigger: SkillTrigger, enemy: EnemyInstance) -> void:
+func _apply_trigger_status_to_player(trigger: SkillTriggerBase, enemy: EnemyInstance) -> void:
 	for _i in range(trigger.status_stacks):
 		var status := _create_status_from_enemy_trigger(trigger, enemy)
 		if status.get_total_tick_damage() <= 0:
@@ -253,67 +251,61 @@ func _apply_trigger_status_to_player(trigger: SkillTrigger, enemy: EnemyInstance
 		status_applied_to_player.emit(GameEnums.StatusType.keys()[status.status_type])
 
 func _resolve_pre_hit_triggers(skill: SkillDefinition, item_def: ItemDefinition, context: Dictionary, base_value: float) -> Dictionary:
-	var value := base_value
-	var ignore_shield := false
+	var hit_data := {
+		"skill": skill,
+		"item_def": item_def,
+		"context": context,
+		"value": base_value,
+		"ignore_shield": false,
+	}
 	for trigger in skill.triggers:
-		if not (trigger.effect in PRE_HIT_EFFECTS):
+		if not trigger.is_pre_hit():
 			continue
 		if not _trigger_condition_met(trigger, context, false):
 			continue
 		_pay_hp_cost(trigger)
-		match trigger.effect:
-			GameEnums.TriggerEffect.DAMAGE_MULTIPLIER:
-				value *= trigger.effect_value
-			GameEnums.TriggerEffect.SET_TO_MAX_VALUE:
-				value = calculate_effect_value(skill, item_def, context["max_face"])
-			GameEnums.TriggerEffect.IGNORE_TARGET_SHIELD:
-				ignore_shield = true
+		trigger.apply(self, hit_data)
 		_apply_trigger_status_to_enemy(trigger, item_def, context["face"])
-	return {"value": value, "ignore_shield": ignore_shield}
+	return {"value": hit_data["value"], "ignore_shield": hit_data["ignore_shield"]}
 
 func _apply_post_hit_triggers(skill: SkillDefinition, context: Dictionary, hit_value: float, item_def: ItemDefinition, enemy_died: bool) -> void:
 	for trigger in skill.triggers:
-		if trigger.effect in PRE_HIT_EFFECTS:
+		if trigger.is_pre_hit():
 			continue
 		if not _trigger_condition_met(trigger, context, enemy_died):
 			continue
 		_pay_hp_cost(trigger)
-		var amount := hit_value if trigger.scale_with_hit_value else trigger.effect_value
-		match trigger.effect:
-			GameEnums.TriggerEffect.BONUS_DAMAGE:
-				_apply_damage_to_enemy(skill, int(round(amount)))
-			GameEnums.TriggerEffect.GAIN_SHIELD:
-				_apply_shield_to_player(skill, int(round(amount)))
-			GameEnums.TriggerEffect.GAIN_HP:
-				_apply_heal_to_player(skill, int(round(amount)))
-			GameEnums.TriggerEffect.GAIN_GOLD:
-				_apply_gold_to_player(skill, int(round(amount)))
-			GameEnums.TriggerEffect.PERMANENT_DAMAGE_BUFF:
-				permanent_damage_bonus += amount
-				Log.print("Trwały bonus dmg: +%.1f (razem: %.1f)" % [amount, permanent_damage_bonus])
-			GameEnums.TriggerEffect.REDUCE_NEXT_PICKS:
-				PlayerData.pending_picks_penalty += int(round(amount))
-				Log.print("Następny rzut: -%d karty do wyboru" % int(round(amount)))
-			GameEnums.TriggerEffect.NONE:
-				pass
+		var hit_data := {
+			"skill": skill,
+			"item_def": item_def,
+			"context": context,
+			"value": hit_value,
+			"enemy_died": enemy_died,
+			"target": "enemy",
+		}
+		trigger.apply(self, hit_data)
 		_apply_trigger_status_to_enemy(trigger, item_def, context["face"])
 
 ## Zastępuje starą _process_enemy_on_hit_triggers. UWAGA: ON_TARGET_STATUS tu nie zadziała
 ## poprawnie (sprawdza current_enemy, nie gracza) — nieobsługiwane na razie dla ataków wroga.
 func _apply_post_hit_triggers_to_player(skill: SkillDefinition, context: Dictionary, enemy: EnemyInstance, hit_value: float, player_died: bool) -> void:
 	for trigger in skill.triggers:
-		if trigger.effect in PRE_HIT_EFFECTS:
+		if trigger.is_pre_hit():
+			continue
+		if not trigger.is_valid_for_enemy_cast():
+			Log.warning("Skill '%s' (enemy) ma trigger %s, który nie jest przeznaczony dla wroga — pomijam" % [skill.skill_name, trigger.get_class()])
 			continue
 		if not _trigger_condition_met(trigger, context, player_died):
 			continue
-		var amount := hit_value if trigger.scale_with_hit_value else trigger.effect_value
-		match trigger.effect:
-			GameEnums.TriggerEffect.BONUS_DAMAGE:
-				_apply_damage_to_player(skill, int(round(amount)))
-			GameEnums.TriggerEffect.NONE:
-				pass
-			_:
-				Log.warning("Trigger effect %s nieobsługiwany dla ataku wroga" % trigger.effect)
+		var hit_data := {
+			"skill": skill,
+			"context": context,
+			"enemy": enemy,
+			"value": hit_value,
+			"player_died": player_died,
+			"target": "player",
+		}
+		trigger.apply(self, hit_data)
 		_apply_trigger_status_to_player(trigger, enemy)
 
 func _apply_damage_to_enemy(skill: SkillDefinition, value: int, ignore_shield: bool = false) -> void:
@@ -328,8 +320,9 @@ func _apply_damage_to_enemy(skill: SkillDefinition, value: int, ignore_shield: b
 	if reduction > 0.0:
 		Log.print("Pancerz wroga: %.0f → redukcja %.1f%% → dmg %d → %d" % [effective_armor, reduction * 100.0, total_value, final_damage])
 	current_enemy.health.take_damage(final_damage)
-	effect_applied.emit(skill, final_damage, "enemy")
+	effect_applied.emit(skill, final_damage, "enemy", "player")
 	_apply_lifesteal(final_damage)
+	
 
 ## Oblicza liczbę trafień na podstawie statystyki gracza.
 func _calculate_hit_count(skill: SkillDefinition) -> int:
@@ -354,7 +347,7 @@ func build_enemy_trigger_context(enemy: EnemyInstance) -> Dictionary:
 
 ## Tworzy StatusEffect na podstawie triggera i statystyk WROGA (analogicznie do _create_status_from_trigger,
 ## ale bez mnożenia przez dice_roll — enemy nie rzuca kością).
-func _create_status_from_enemy_trigger(trigger: SkillTrigger, enemy: EnemyInstance) -> StatusEffect:
+func _create_status_from_enemy_trigger(trigger: SkillTriggerBase, enemy: EnemyInstance) -> StatusEffect:
 	var status_type := trigger.apply_status
 	var tick := 0.0
 	var initial := 0.0
@@ -464,12 +457,12 @@ func _calculate_enemy_hit_count(skill: SkillDefinition, enemy: EnemyInstance) ->
 #region Aplikacja efektów wroga na gracza
 func _apply_damage_to_player(skill: SkillDefinition, value: int) -> void:
 	PlayerData.take_damage(value)
-	effect_applied.emit(skill, value, "player")
+	effect_applied.emit(skill, value, "player", "enemy")
 
 
 func _apply_heal_to_enemy(skill: SkillDefinition, value: int, enemy: EnemyInstance) -> void:
 	enemy.health.heal(value)
-	effect_applied.emit(skill, value, "enemy")
+	effect_applied.emit(skill, value, "enemy", "enemy")
 #endregion
 
 #region Aplikacja efektów
@@ -495,18 +488,18 @@ func _get_total_lifesteal_percent() -> float:
 ## Leczy gracza.
 func _apply_heal_to_player(skill: SkillDefinition, value: int) -> void:
 	PlayerData.health.heal(value)
-	effect_applied.emit(skill, value, "player")
+	effect_applied.emit(skill, value, "player", "player")
 
 ## Dodaje graczowi block.
 func _apply_shield_to_player(skill: SkillDefinition, value: int) -> void:
 	PlayerData.add_block(float(value))
-	effect_applied.emit(skill, value, "player")
+	effect_applied.emit(skill, value, "player", "player")
 	Log.print("Gracz zyskał %d block" % value)
 
 ## Dodaje graczowi złoto.
 func _apply_gold_to_player(skill: SkillDefinition, value: int) -> void:
 	MetaProgressionManager.add_gold(value)
-	effect_applied.emit(skill, value, "player")
+	effect_applied.emit(skill, value, "player", "player")
 	Log.print("Gracz zyskał %d złota" % value)
 
 ## Usuwa wszystkie negatywne statusy nałożone na gracza (np. Burn/Poison/Bleed od wroga).
@@ -515,7 +508,7 @@ func _apply_cleanse_to_player(skill: SkillDefinition) -> void:
 		Log.print("Cleanse: brak statusów do usunięcia")
 		return
 	PlayerData.status_manager.clear_all()
-	effect_applied.emit(skill, 0, "player")
+	effect_applied.emit(skill, 0, "player", "player")
 	Log.print("Cleanse: usunięto wszystkie statusy gracza")
 #endregion
 

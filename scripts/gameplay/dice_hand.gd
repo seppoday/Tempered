@@ -127,7 +127,10 @@ func _on_card_toggled(card: PanelContainer, wants_selected: bool) -> void:
 		selection_complete.emit(results)
 
 
-func _on_combat_effect_applied(skill: SkillDefinition, value: int, target: String) -> void:
+func _on_combat_effect_applied(skill: SkillDefinition, value: int, target: String, source: String) -> void:
+	if source != "player":
+		return   # to efekt tury wroga — DiceHand go nie dotyczy, nie ma tu czego animować
+
 	# Odczyt MUSI być przed pierwszym await
 	var idx := CombatManager.current_result_index
 	if idx < 0 or idx >= resolving_tags.size():

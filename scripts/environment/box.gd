@@ -31,7 +31,7 @@ func _ready() -> void:
 		_original_lid_rot = lid.global_rotation_degrees
 
 
-func _on_effect_applied(skill: SkillDefinition, value: int, target: String) -> void:
+func _on_effect_applied(skill: SkillDefinition, value: int, target: String, source: String) -> void:
 	if target == "enemy":
 		bump()
 

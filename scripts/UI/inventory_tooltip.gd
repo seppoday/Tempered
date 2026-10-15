@@ -274,18 +274,16 @@ func _add_skill_properties_box(skill_def: SkillDefinition, stat_display: Diction
 			box.add_child(row)
 			row.setup(percentage, stat_icon_tex, stat_name, stat_color, raw_stat, scaling_contrib)
 
-		# Wrzucamy wszystkie triggery przypisane do skilla
-		var active_triggers: Array[SkillTrigger] = []
-		for trigger in skill_def.triggers:
-			active_triggers.append(trigger)
+			# Wrzucamy wszystkie triggery przypisane do skilla
+			var active_triggers: Array[SkillTriggerBase] = skill_def.triggers
 
-		if not active_triggers.is_empty():
-			var trig_title := SECTION_HEADER.instantiate()
-			box.add_child(trig_title)
-			trig_title.setup("Additional Effects:", COLOR_BODY_TEXT)
+			if not active_triggers.is_empty():
+				var trig_title := SECTION_HEADER.instantiate()
+				box.add_child(trig_title)
+				trig_title.setup("Additional Effects:", COLOR_BODY_TEXT)
 
-			for trigger in active_triggers:
-				box.add_child(_make_trigger_line(trigger, dice_size, is_skill_item))
+				for trigger in active_triggers:
+					box.add_child(_make_trigger_line(trigger, dice_size, is_skill_item))
 
 	if skill_def.bonus_hits_per_stat:
 		var bonus = skill_def.bonus_hits_per_stat
@@ -313,7 +311,7 @@ func _get_skill_effect_name(skill_def: SkillDefinition) -> String:
 	return "Skill"
 
 
-func _make_trigger_line(trigger: SkillTrigger, dice_size: int, is_skill_item: bool) -> RichTextLabel:
+func _make_trigger_line(trigger: SkillTriggerBase, dice_size: int, is_skill_item: bool) -> RichTextLabel:
 	var rtl := RichTextLabel.new()
 	rtl.bbcode_enabled = true
 	rtl.fit_content = true
@@ -326,16 +324,10 @@ func _make_trigger_line(trigger: SkillTrigger, dice_size: int, is_skill_item: bo
 	var condition_text := _get_trigger_condition_text(trigger)
 	var parts: Array[String] = []
 
-	# 1. Dodaj opis dla efektu (TriggerEffect) jeśli nie jest to NONE
-	if trigger.effect != GameEnums.TriggerEffect.NONE:
-		var effect_name = GameEnums.TriggerEffect.keys()[trigger.effect].replace("_", " ").capitalize()
-		var val_str := ""
-		if trigger.effect_value != 0.0:
-			if trigger.effect == GameEnums.TriggerEffect.DAMAGE_MULTIPLIER:
-				val_str = " x%.1f" % trigger.effect_value
-			else:
-				val_str = " %d" % int(round(trigger.effect_value))
-		parts.append("[color=#ff8c39]%s%s[/color]" % [effect_name, val_str])
+	# 1. Opis efektu specyficznego dla podklasy (jeśli trigger go ma)
+	var effect_desc := trigger.get_effect_description()
+	if effect_desc != "":
+		parts.append("[color=#ff8c39]%s[/color]" % effect_desc)
 
 	# 2. Dodaj opis dla nakładanego statusu (StatusType)
 	if trigger.apply_status != GameEnums.StatusType.NONE:
@@ -376,7 +368,7 @@ func _make_trigger_line(trigger: SkillTrigger, dice_size: int, is_skill_item: bo
 	return rtl
 
 
-func _get_trigger_condition_text(trigger: SkillTrigger) -> String:
+func _get_trigger_condition_text(trigger: SkillTriggerBase) -> String:
 	match trigger.trigger_type:
 		GameEnums.TriggerType.ON_HIT:
 			return "On Hit"
@@ -392,6 +384,10 @@ func _get_trigger_condition_text(trigger: SkillTrigger) -> String:
 			return "On Kill"
 		GameEnums.TriggerType.ON_TARGET_STATUS:
 			return "On Target Status"
+		GameEnums.TriggerType.ON_SELF_HP_BELOW:
+			return "Below %d%% HP" % int(trigger.threshold * 100)
+		GameEnums.TriggerType.ON_TARGET_HP_BELOW:
+			return "Target Below %d%% HP" % int(trigger.threshold * 100)
 		_:
 			return "Trigger"
 

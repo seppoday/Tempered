@@ -59,19 +59,8 @@ enum TriggerType {
 	ON_LOW_ROLL,       # wypadło 1
 	ON_KILL,           # ten hit zabił wroga
 	ON_TARGET_STATUS,  # cel ma jeden ze statusów z target_statuses
-}
-
-enum TriggerEffect {
-	NONE,                  # brak dodatkowego efektu (użyj gdy chcesz TYLKO apply_status)
-	BONUS_DAMAGE,          # dodatkowe, płaskie obrażenia na celu
-	GAIN_SHIELD,           # gracz zyskuje tarczę
-	GAIN_HP,               # gracz leczy się
-	GAIN_GOLD,             # gracz zyskuje złoto
-	DAMAGE_MULTIPLIER,     # mnoży już wyliczoną wartość trafienia (3.0 = "crit" x300%)
-	SET_TO_MAX_VALUE,      # przelicza wartość tak, jakby wypadł max na kości
-	IGNORE_TARGET_SHIELD,  # to trafienie ignoruje tarczę wroga
-	PERMANENT_DAMAGE_BUFF, # trwały bonus do obrażeń do końca walki
-	REDUCE_NEXT_PICKS,     # przy następnym rzucie gracz wybiera o effect_value mniej kości
+	ON_TARGET_HP_BELOW,   # context["target_hp_ratio"] <= threshold (0.0–1.0)
+	ON_SELF_HP_BELOW,     # context["caster_hp_ratio"] <= threshold — "desperacja"
 }
 
 const DICE_PROGRESSION: Array[int] = [6, 8, 10, 12, 16, 20]

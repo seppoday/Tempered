@@ -131,7 +131,7 @@ static func get_total_stat_value(stat_enum: GameEnums.Stat, preview_item: ItemIn
 
 ## Przewiduje zakres efektu statusu nakładanego przez trigger (dla tooltipa).
 ## Formuła musi być zgodna z CombatManager._create_status_from_trigger (strona gracza).
-static func calculate_trigger_status_preview(trigger: SkillTrigger, dice_size: int, preview_item: ItemInstance) -> Dictionary:
+static func calculate_trigger_status_preview(trigger: SkillTriggerBase, dice_size: int, preview_item: ItemInstance) -> Dictionary:
 	var min_roll := 1.0
 	var max_roll := float(dice_size) if dice_size > 0 else 1.0
 

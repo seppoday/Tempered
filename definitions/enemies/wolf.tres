@@ -4,16 +4,10 @@
 [ext_resource type="Script" uid="uid://dfsxlht8w22ue" path="res://data/definitions_patterns/enemy_definition.gd" id="2_8fqqs"]
 [ext_resource type="Resource" uid="uid://c5htyq6mhco5i" path="res://definitions/skills/basic_strike.tres" id="2_rmrld"]
 [ext_resource type="Texture2D" uid="uid://bftlcbgr8bch7" path="res://assets/enemies/enemy.jpg" id="3_n0q5s"]
-[ext_resource type="Resource" uid="uid://c5vyhyjogciu5" path="res://definitions/skills/heal.tres" id="3_rmrld"]
 
 [sub_resource type="Resource" id="Resource_0daba"]
 script = ExtResource("1_n0q5s")
 skill = ExtResource("2_rmrld")
-metadata/_custom_type_script = "uid://doyuee4t73gkp"
-
-[sub_resource type="Resource" id="Resource_hpwcx"]
-script = ExtResource("1_n0q5s")
-skill = ExtResource("3_rmrld")
 metadata/_custom_type_script = "uid://doyuee4t73gkp"
 
 [resource]
@@ -22,5 +16,5 @@ id = "wolf"
 enemy_name = "Wolf"
 sprite = ExtResource("3_n0q5s")
 max_hp = 120
-attack_patterns = Array[ExtResource("1_n0q5s")]([SubResource("Resource_0daba"), SubResource("Resource_hpwcx")])
+attack_patterns = Array[ExtResource("1_n0q5s")]([SubResource("Resource_0daba")])
 metadata/_custom_type_script = "uid://dfsxlht8w22ue"

@@ -1,32 +1,29 @@
-[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://c5vyhyjogciu5"]
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://cjn1a7wpl4mtm"]
 
 [ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_8xpnj"]
-[ext_resource type="Texture2D" uid="uid://c3dt1o7p27p24" path="res://assets/icons/heal.svg" id="1_wf0p2"]
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="1_wf0p2"]
 [ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_s34pt"]
-[ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="3_ti3mt"]
+[ext_resource type="Script" uid="uid://b2olght573nvi" path="res://scripts/gameplay/triggers/skill_trigger_base.gd" id="4_wf0p2"]
 
-[sub_resource type="Resource" id="Resource_qte4o"]
+[sub_resource type="Resource" id="Resource_5vfip"]
 script = ExtResource("1_8xpnj")
 stat = 3
 weight = 0.7
+metadata/_custom_type_script = "uid://oma4qvx1pxtp"
 
-[sub_resource type="Resource" id="Resource_ysmgp"]
+[sub_resource type="Resource" id="Resource_wf0p2"]
 script = ExtResource("1_8xpnj")
 stat = 1
 weight = 0.3
-
-[sub_resource type="Resource" id="Resource_elqmu"]
-script = ExtResource("3_ti3mt")
-metadata/_custom_type_script = "uid://dojdi1mwgn37i"
+metadata/_custom_type_script = "uid://oma4qvx1pxtp"
 
 [resource]
 script = ExtResource("2_s34pt")
 id = "heal"
 skill_name = "SKILL_HEAL_NAME"
 icon = ExtResource("1_wf0p2")
-description = "Done
-"
+description = "Done"
 effect_type = 1
 target_type = 0
-scalings = Array[ExtResource("1_8xpnj")]([SubResource("Resource_qte4o"), SubResource("Resource_ysmgp")])
-triggers = Array[ExtResource("3_ti3mt")]([SubResource("Resource_elqmu")])
+scalings = Array[ExtResource("1_8xpnj")]([SubResource("Resource_5vfip"), SubResource("Resource_wf0p2")])
+metadata/_custom_type_script = "uid://dgjg1vlcvdtpi"

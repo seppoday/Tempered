@@ -156,18 +156,24 @@ func _get_element_icon(element: GameEnums.DamageElement) -> String:
 		_: return ""
 
 
-## Krótka podpowiedź dla triggera dopasowana do nowego systemu
-func _get_trigger_hint(trigger: SkillTrigger) -> String:
-	var effect_str := ""
-	if trigger.apply_status != GameEnums.StatusType.NONE:
-		effect_str = GameEnums.StatusType.keys()[trigger.apply_status].capitalize()
-		if trigger.status_stacks > 1:
-			effect_str += "×%d" % trigger.status_stacks
-	elif trigger.effect != GameEnums.TriggerEffect.NONE:
-		effect_str = GameEnums.TriggerEffect.keys()[trigger.effect].replace("_", " ").capitalize()
+## Krótka podpowiedź dla triggera, łączy status (jeśli jest) z efektem specyficznym dla podklasy.
+func _get_trigger_hint(trigger: SkillTriggerBase) -> String:
+	var parts: Array[String] = []
 
-	if effect_str == "":
+	var effect_desc := trigger.get_effect_description()
+	if effect_desc != "":
+		parts.append(effect_desc)
+
+	if trigger.apply_status != GameEnums.StatusType.NONE:
+		var status_str: String = GameEnums.StatusType.keys()[trigger.apply_status].capitalize()
+		if trigger.status_stacks > 1:
+			status_str += "×%d" % trigger.status_stacks
+		parts.append(status_str)
+
+	if parts.is_empty():
 		return ""
+
+	var effect_str := " + ".join(parts)
 
 	match trigger.trigger_type:
 		GameEnums.TriggerType.ON_HIT:
@@ -184,6 +190,10 @@ func _get_trigger_hint(trigger: SkillTrigger) -> String:
 			return "On Kill → %s" % effect_str
 		GameEnums.TriggerType.ON_TARGET_STATUS:
 			return "Target Status → %s" % effect_str
+		GameEnums.TriggerType.ON_SELF_HP_BELOW:
+			return "Below %d%% HP → %s" % [int(trigger.threshold * 100), effect_str]
+		GameEnums.TriggerType.ON_TARGET_HP_BELOW:
+			return "Target Below %d%% HP → %s" % [int(trigger.threshold * 100), effect_str]
 	return ""
 
 

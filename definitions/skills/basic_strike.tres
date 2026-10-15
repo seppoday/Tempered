@@ -3,11 +3,17 @@
 [ext_resource type="Texture2D" uid="uid://qsf3svrqjvdn" path="res://assets/icons/sword.svg" id="1_cs1i5"]
 [ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="2_cs1i5"]
 [ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="3_aih0g"]
+[ext_resource type="Script" uid="uid://b2olght573nvi" path="res://scripts/gameplay/triggers/skill_trigger_base.gd" id="4_aih0g"]
+[ext_resource type="Script" uid="uid://c7r05k1kuvpyd" path="res://scripts/gameplay/triggers/reduce_next_picks_trigger.gd" id="5_c42wn"]
 
 [sub_resource type="Resource" id="Resource_g7d3i"]
 script = ExtResource("2_cs1i5")
 weight = 0.8
 metadata/_custom_type_script = "uid://oma4qvx1pxtp"
+
+[sub_resource type="Resource" id="Resource_g7q3g"]
+script = ExtResource("5_c42wn")
+metadata/_custom_type_script = "uid://c7r05k1kuvpyd"
 
 [resource]
 script = ExtResource("3_aih0g")
@@ -18,6 +24,5 @@ description = "Done
 "
 scalings = Array[ExtResource("2_cs1i5")]([SubResource("Resource_g7d3i")])
 damage_element = 1
-duration_rounds = null
-triggers = null
+triggers = Array[ExtResource("4_aih0g")]([SubResource("Resource_g7q3g")])
 metadata/_custom_type_script = "uid://dgjg1vlcvdtpi"

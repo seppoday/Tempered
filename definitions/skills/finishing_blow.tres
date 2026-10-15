@@ -2,10 +2,17 @@
 
 [ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_epbjw"]
 [ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_m1db2"]
-[ext_resource type="Script" uid="uid://dojdi1mwgn37i" path="res://scripts/gameplay/skill_trigger.gd" id="3_6ladd"]
+[ext_resource type="Script" uid="uid://b2olght573nvi" path="res://scripts/gameplay/triggers/skill_trigger_base.gd" id="3_amdkl"]
+[ext_resource type="Script" uid="uid://cfu0mmgyulxw" path="res://scripts/gameplay/triggers/execute_trigger.gd" id="4_2tp7v"]
 
 [sub_resource type="Resource" id="Resource_e2exd"]
 script = ExtResource("1_epbjw")
+
+[sub_resource type="Resource" id="Resource_amdkl"]
+script = ExtResource("4_2tp7v")
+trigger_type = 7
+threshold = 0.5
+metadata/_custom_type_script = "uid://cfu0mmgyulxw"
 
 [resource]
 script = ExtResource("2_m1db2")
@@ -15,3 +22,4 @@ description = "Dopisać execute bez status type burn itp.  I aby działało na z
 "
 scalings = Array[ExtResource("1_epbjw")]([SubResource("Resource_e2exd")])
 damage_element = 1
+triggers = Array[ExtResource("3_amdkl")]([SubResource("Resource_amdkl")])
