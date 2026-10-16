@@ -98,8 +98,9 @@ func resolve_player_attack(selected_results: Array[Dictionary]) -> void:
 				_:
 					Log.warning("CombatManager: nieobsłużony effect_type %s" % skill.effect_type)
 
-			var enemy_died = current_enemy == null or (current_enemy.health != null and current_enemy.health.current <= 0)
-			_apply_post_hit_triggers(skill, context, value, item_instance.definition, enemy_died)
+			var enemy_died := current_enemy == null or (current_enemy.health != null and current_enemy.health.current <= 0)
+			var post_context := build_trigger_context(rolled_face, max_face, enemy_died)
+			_apply_post_hit_triggers(skill, post_context, value, item_instance.definition, enemy_died)
 
 			if current_enemy == null or current_enemy != target or is_game_over: break
 			if delay_between_effects > 0.0:
@@ -110,12 +111,14 @@ func resolve_player_attack(selected_results: Array[Dictionary]) -> void:
 
 #region Triggery i statusy
 ## Buduje kontekst używany do sprawdzania triggerów.
-func build_trigger_context(rolled_face: int, max_face: int) -> Dictionary:
+func build_trigger_context(rolled_face: int, max_face: int, enemy_dead: bool = false) -> Dictionary:
 	var caster_hp_ratio: float = 1.0
 	if PlayerData.health.max_hp > 0:
 		caster_hp_ratio = float(PlayerData.health.current) / float(PlayerData.health.max_hp)
 	var target_hp_ratio: float = 1.0
-	if current_enemy != null and current_enemy.health.max_hp > 0:
+	if enemy_dead:
+		target_hp_ratio = 0.0
+	elif current_enemy != null and current_enemy.health.max_hp > 0:
 		target_hp_ratio = float(current_enemy.health.current) / float(current_enemy.health.max_hp)
 	return {"face": rolled_face, "max_face": max_face, "caster_hp_ratio": caster_hp_ratio, "target_hp_ratio": target_hp_ratio}
 
@@ -263,6 +266,8 @@ func _resolve_pre_hit_triggers(skill: SkillDefinition, item_def: ItemDefinition,
 			continue
 		if not _trigger_condition_met(trigger, context, false):
 			continue
+		if not trigger.should_fire(hit_data):
+			continue
 		_pay_hp_cost(trigger)
 		trigger.apply(self, hit_data)
 		_apply_trigger_status_to_enemy(trigger, item_def, context["face"])
@@ -274,7 +279,6 @@ func _apply_post_hit_triggers(skill: SkillDefinition, context: Dictionary, hit_v
 			continue
 		if not _trigger_condition_met(trigger, context, enemy_died):
 			continue
-		_pay_hp_cost(trigger)
 		var hit_data := {
 			"skill": skill,
 			"item_def": item_def,
@@ -283,6 +287,9 @@ func _apply_post_hit_triggers(skill: SkillDefinition, context: Dictionary, hit_v
 			"enemy_died": enemy_died,
 			"target": "enemy",
 		}
+		if not trigger.should_fire(hit_data):
+			continue
+		_pay_hp_cost(trigger)
 		trigger.apply(self, hit_data)
 		_apply_trigger_status_to_enemy(trigger, item_def, context["face"])
 
@@ -305,6 +312,8 @@ func _apply_post_hit_triggers_to_player(skill: SkillDefinition, context: Diction
 			"player_died": player_died,
 			"target": "player",
 		}
+		if not trigger.should_fire(hit_data):
+			continue
 		trigger.apply(self, hit_data)
 		_apply_trigger_status_to_player(trigger, enemy)
 

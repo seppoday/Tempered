@@ -27,6 +27,11 @@ extends Resource
 func is_pre_hit() -> bool:
 	return false
 
+## Ostatnia bramka przed odpaleniem: wołana PO sprawdzeniu warunku, a PRZED kosztem HP,
+## apply() i nałożeniem statusu. Zwrócenie false pomija cały trigger. Nadpisz np. dla losowości.
+func should_fire(_hit_data: Dictionary) -> bool:
+	return true
+
 func apply(combat_manager, hit_data: Dictionary) -> void:
 	pass
 

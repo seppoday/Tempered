@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_bmj64"]
 [ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_80ifi"]
 [ext_resource type="Script" uid="uid://b2olght573nvi" path="res://scripts/gameplay/triggers/skill_trigger_base.gd" id="4_4wul4"]
+[ext_resource type="Script" uid="uid://ufpc5mn8nmht" path="res://scripts/gameplay/triggers/apply_status_trigger.gd" id="5_qwry7"]
 
 [sub_resource type="Resource" id="Resource_iwefr"]
 script = ExtResource("1_bmj64")
@@ -15,6 +16,12 @@ script = ExtResource("1_bmj64")
 stat = 6
 weight = 0.2
 
+[sub_resource type="Resource" id="Resource_kpirm"]
+script = ExtResource("5_qwry7")
+apply_status = 1
+status_stacks = 2
+metadata/_custom_type_script = "uid://ufpc5mn8nmht"
+
 [resource]
 script = ExtResource("2_80ifi")
 id = "fire_attack"
@@ -24,3 +31,4 @@ description = "Done
 "
 scalings = Array[ExtResource("1_bmj64")]([SubResource("Resource_iwefr"), SubResource("Resource_vqdxr")])
 damage_element = 2
+triggers = Array[ExtResource("4_4wul4")]([SubResource("Resource_kpirm")])
