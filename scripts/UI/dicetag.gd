@@ -194,6 +194,10 @@ func _get_trigger_hint(trigger: SkillTriggerBase) -> String:
 			return "Below %d%% HP → %s" % [int(trigger.threshold * 100), effect_str]
 		GameEnums.TriggerType.ON_TARGET_HP_BELOW:
 			return "Target Below %d%% HP → %s" % [int(trigger.threshold * 100), effect_str]
+		GameEnums.TriggerType.ON_ROLL_PERCENT_AT_LEAST:
+			return "Top %d%% → %s" % [int(round((1.0 - trigger.threshold) * 100.0)), effect_str]
+		GameEnums.TriggerType.ON_ROLL_PERCENT_AT_MOST:
+			return "Bottom %d%% → %s" % [int(round(trigger.threshold * 100.0)), effect_str]
 	return ""
 
 

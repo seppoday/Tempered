@@ -18,6 +18,7 @@ func _ready() -> void:
 	register_command("additem", _cmd_additem, "additem <id> [ilość] — dodaje item do plecaka po ID")
 	register_command("listitems", _cmd_list_items, "listitems [filtr] — wypisuje dostępne ID przedmiotów")
 	register_command("lang", _cmd_lang, "lang [kod] — pokazuje lub zmienia język (np. lang en, lang pt_BR)")
+	register_command("gold", _cmd_gold, "gold [ilość] — pokazuje złoto; gold 0 zeruje; gold 500 ustawia")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_console"):
@@ -43,6 +44,36 @@ func unregister_command(name: String, callable: Callable = Callable()) -> void:
 		return
 	_commands.erase(name)
 
+func _cmd_gold(args: Array) -> String:
+	# Dostosuj getter/setter do MetaProgressionManager (gold / get_gold / set_gold)
+	var current: int = 0
+	if "gold" in MetaProgressionManager:
+		current = int(MetaProgressionManager.gold)
+	elif MetaProgressionManager.has_method("get_gold"):
+		current = int(MetaProgressionManager.get_gold())
+
+	if args.is_empty():
+		return "Złoto: [color=yellow]%d[/color]  (wpisz [color=gray]gold 0[/color] aby wyzerować)" % current
+
+	var target: int = int(args[0])
+	if target < 0:
+		return "[color=red]Ilość nie może być ujemna[/color]"
+
+	if MetaProgressionManager.has_method("set_gold"):
+		MetaProgressionManager.set_gold(target)
+	elif "gold" in MetaProgressionManager:
+		# Fallback przez add_gold, jeśli nie ma settera
+		var delta: int = target - current
+		if delta != 0 and MetaProgressionManager.has_method("add_gold"):
+			MetaProgressionManager.add_gold(delta)
+		else:
+			MetaProgressionManager.gold = target
+	elif MetaProgressionManager.has_method("add_gold"):
+		MetaProgressionManager.add_gold(target - current)
+	else:
+		return "[color=red]MetaProgressionManager nie ma gold / set_gold / add_gold[/color]"
+
+	return "[color=green]Złoto: %d → %d[/color]" % [current, target]
 
 func _cmd_lang(args: Array) -> String:
 	if args.is_empty():
@@ -136,8 +167,6 @@ func _inventory_databases() -> Dictionary:
 		"material": MaterialDatabase,
 		"consumable": ConsumableDatabase,
 	}
-
-
 
 
 func _find_entry(id: String) -> InventoryEntry:

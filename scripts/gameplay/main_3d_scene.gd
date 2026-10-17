@@ -203,17 +203,22 @@ func _on_player_died() -> void:
 	GameManager.set_state(GameManager.State.GAME_OVER, self)
 
 func _on_reward_claimed() -> void:
-	pass
+	# Krótka pauza, żeby dokończyła się animacja wyboru karty / UI nagród
+	await get_tree().create_timer(0.4).timeout
+	_advance_after_reward()
 
-func _on_next_enemy_button_pressed() -> void:
+
+func _advance_after_reward() -> void:
 	wave_manager.request_next_enemy()
 	dice_roller.sync_dice_with_equipment()
-	#dice_roller._clear_previous_dice()
-	#dice_roller._spawn_dice_for_equipped_items()
 	GameManager.set_state(GameManager.State.PLAYER_TURN, self)
-	
-	await get_tree().create_timer(.35).timeout
+	await get_tree().create_timer(0.35).timeout
 	box.open_lid()
+
+
+func _on_next_enemy_button_pressed() -> void:
+	# Zostaw przycisk na wypadek ręcznego użycia / debug
+	_advance_after_reward()
 
 
 func _on_end_run_button_pressed() -> void:

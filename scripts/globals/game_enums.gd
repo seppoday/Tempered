@@ -61,6 +61,8 @@ enum TriggerType {
 	ON_TARGET_STATUS,  # cel ma jeden ze statusów z target_statuses
 	ON_TARGET_HP_BELOW,   # context["target_hp_ratio"] <= threshold (0.0–1.0)
 	ON_SELF_HP_BELOW,     # context["caster_hp_ratio"] <= threshold — "desperacja"
+	ON_ROLL_PERCENT_AT_LEAST, # face / max_face >= threshold (0.0–1.0) — skaluje się z rozmiarem kości
+	ON_ROLL_PERCENT_AT_MOST,  # face / max_face <= threshold (0.0–1.0)
 }
 
 const DICE_PROGRESSION: Array[int] = [6, 8, 10, 12, 16, 20]

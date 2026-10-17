@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://btykll5xl1oxt"]
 
 [ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_epbjw"]
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://assets/icon.svg" id="1_pqshp"]
 [ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_m1db2"]
 [ext_resource type="Script" uid="uid://b2olght573nvi" path="res://scripts/gameplay/triggers/skill_trigger_base.gd" id="3_amdkl"]
 [ext_resource type="Script" uid="uid://cfu0mmgyulxw" path="res://scripts/gameplay/triggers/execute_trigger.gd" id="4_2tp7v"]
@@ -18,6 +19,7 @@ metadata/_custom_type_script = "uid://cfu0mmgyulxw"
 script = ExtResource("2_m1db2")
 id = "finishing_blow"
 skill_name = "Finishing Blow"
+icon = ExtResource("1_pqshp")
 description = "Dopisać execute bez status type burn itp.  I aby działało na zasadzie, jeżeli po ataku przeciwnikowi zostanie x% hp to bonus dmg wartości tego co zostanie
 "
 scalings = Array[ExtResource("1_epbjw")]([SubResource("Resource_e2exd")])

@@ -1,15 +1,12 @@
 extends CanvasLayer
 
 @onready var rewards_container: BoxContainer = %RewardsContainer
-# Opcjonalnie: @onready var gold_label: Label = %GoldLabel
-
 var _pending_options: Array[RewardOption] = []
+
 
 func _ready() -> void:
 	await get_tree().physics_frame
 	GameManager.state_changed.connect(_on_state_changed)
-	
-	# Podłączamy się do sygnałów managera
 	RewardManager.rewards_generated.connect(_on_rewards_generated)
 	RewardManager.reward_claimed.connect(_on_reward_claimed)
 
@@ -20,10 +17,10 @@ func _ready() -> void:
 	visible = GameManager.current_state == GameManager.State.ENEMY_REWARDS
 
 
-# Wywoływane przez RewardManager, gdy trzeba pokazać nagrody
-func _on_rewards_generated(gold_amount: int, options: Array[RewardOption]) -> void:
+func _on_rewards_generated(_gold_amount: int, options: Array[RewardOption]) -> void:
 	_pending_options = options
 	_populate_reward_cards()
+
 
 func _populate_reward_cards() -> void:
 	var cards := rewards_container.get_children()
@@ -56,41 +53,39 @@ func _on_card_selected(card) -> void:
 	RewardManager.claim_option(_pending_options[card_index])
 
 
+## Tylko blokada kart — advance (wróg, lid, state) jest w BattleManager.
 func _on_reward_claimed() -> void:
-	# Opcjonalnie: dodatkowe animacje po odebraniu nagrody
-	pass
+	for child in rewards_container.get_children():
+		child.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		if child.has_method("lock"):
+			child.lock()
 
 
 func _on_state_changed(new_state: GameManager.State) -> void:
 	var is_active := new_state == GameManager.State.ENEMY_REWARDS
-	
-	AudioManager.play_sfx(AudioLibrary.get_sfx(AudioKeys.SFX_SWOOSH))
 
 	if is_active:
+		AudioManager.play_sfx(AudioLibrary.get_sfx(AudioKeys.SFX_SWOOSH))
 		visible = true
-
 		for child in rewards_container.get_children():
 			child.offset_transform_enabled = true
 			child.offset_transform_position = Vector2(0, -200)
 			child.modulate.a = 0.0
 			child.mouse_filter = Control.MOUSE_FILTER_STOP
-
 		var delay := 0.0
 		for child in rewards_container.get_children():
 			UIAnim.slide_and_fade_in(child, Vector2.DOWN, 200.0, 0.5, true, delay)
 			delay += 0.1
 	else:
+		# Wyjście z nagród — swoosh tylko gdy panel był widoczny
 		if not visible:
 			return
-
+		AudioManager.play_sfx(AudioLibrary.get_sfx(AudioKeys.SFX_SWOOSH))
 		var delay := 0.0
 		var last_tween: Tween = null
-
 		for child in rewards_container.get_children():
 			last_tween = UIAnim.slide_and_fade_out(child, Vector2.DOWN, 200.0, 0.3, true, delay)
 			delay += 0.08
-
 		if last_tween:
 			await last_tween.finished
-
 		visible = false

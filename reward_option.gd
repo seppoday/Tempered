@@ -7,3 +7,4 @@ var type: Type
 var item_definition: ItemDefinition        # używane gdy type == ITEM
 var upgrade_slot: EquipmentSlot.Type       # używane gdy type == UPGRADE
 var upgrade_display_item: ItemDefinition   # do pokazania na karcie (ikona/nazwa itemu, który dostanie upgrade)
+var upgrade_from_level: int = 0

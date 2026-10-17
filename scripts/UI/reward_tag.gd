@@ -6,7 +6,6 @@ signal reward_selected(card)
 @onready var icon_rect: TextureRect = %Icon
 @onready var name_label: Label = %ItemName
 
-
 var is_selected := false
 var is_hovering := false
 var _locked := false
@@ -20,25 +19,30 @@ func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 
+
 func setup(option: RewardOption) -> void:
 	if not option:
 		return
-
 	_locked = false
 	is_selected = false
 	_option = option
 
 	match option.type:
 		RewardOption.Type.ITEM:
-			if icon_rect:
+			if icon_rect and option.item_definition:
 				icon_rect.texture = option.item_definition.icon
-			if name_label:
-				name_label.text = option.item_definition.name
+			if name_label and option.item_definition:
+				name_label.text = tr(option.item_definition.name)
+
 		RewardOption.Type.UPGRADE:
-			if icon_rect:
-				icon_rect.texture = option.upgrade_display_item.icon
-			if name_label:
-				name_label.text = "⬆ Upgrade: %s" % tr(option.upgrade_display_item.name)
+			var def: ItemDefinition = option.upgrade_display_item
+			if icon_rect and def:
+				icon_rect.texture = def.icon
+			if name_label and def:
+				var from_level: int = option.upgrade_from_level if "upgrade_from_level" in option else 0
+				var next_level: int = mini(from_level + 1, GameEnums.DICE_PROGRESSION.size() - 1)
+				var next_dice: int = GameEnums.DICE_PROGRESSION[next_level]
+				name_label.text = "⬆ Upgrade: %s → d%d" % [tr(def.name), next_dice]
 
 	tooltip_text = "use_custom"
 
@@ -50,22 +54,34 @@ func _make_custom_tooltip(_for_text: String) -> Control:
 	var instance: ItemInstance
 	match _option.type:
 		RewardOption.Type.ITEM:
+			if not _option.item_definition:
+				return null
+			# Nowy item zawsze na poziomie 0 (d6)
 			instance = ItemInstance.new(_option.item_definition, 1, 0)
+
 		RewardOption.Type.UPGRADE:
+			if not _option.upgrade_display_item:
+				return null
+			# Tooltip na OBECNYM poziomie — InventoryTooltip sam dorysuje
+			# "2 → 3" / "d6 → d8" jako preview JEDNEGO upgrade'u.
+			# (Wcześniej było level+1 i strzałka do level+2 = podwójny upgrade.)
 			var current := PlayerData.get_equipped_item(_option.upgrade_slot)
-			var preview_level: int = (current.dice_level + 1) if current else 0
-			instance = ItemInstance.new(_option.upgrade_display_item, 1, preview_level)
+			var from_level: int = 0
+			if current:
+				from_level = current.dice_level
+			elif "upgrade_from_level" in _option:
+				from_level = _option.upgrade_from_level
+			instance = ItemInstance.new(_option.upgrade_display_item, 1, from_level)
+
 		_:
 			return null
 
 	var tooltip := preload("uid://d3l2j2u2xebjv").instantiate() as InventoryTooltip
 	tooltip.populate(instance, InventorySlot.STAT_DISPLAY)
-
 	tooltip.tree_entered.connect(
 		_clear_tooltip_panel_bg.bind(tooltip),
 		CONNECT_ONE_SHOT
 	)
-
 	return tooltip
 
 
@@ -74,6 +90,7 @@ func _clear_tooltip_panel_bg(tooltip_content: Control) -> void:
 	if parent == null:
 		return
 	parent.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+
 
 func reset_state() -> void:
 	_locked = false
@@ -90,7 +107,6 @@ func lock() -> void:
 func _gui_input(event: InputEvent) -> void:
 	if _locked:
 		return
-
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		_locked = true
 		is_selected = true
@@ -102,7 +118,6 @@ func _gui_input(event: InputEvent) -> void:
 func _on_mouse_entered() -> void:
 	if _locked:
 		return
-
 	is_hovering = true
 	UIAnim.scale_to(self, Vector2(1.1, 1.1))
 	_animate_hover(1.0)
@@ -111,7 +126,6 @@ func _on_mouse_entered() -> void:
 func _on_mouse_exited() -> void:
 	if _locked:
 		return
-
 	is_hovering = false
 	UIAnim.scale_to(self, Vector2(1, 1))
 	_animate_hover(0.0)
@@ -120,11 +134,9 @@ func _on_mouse_exited() -> void:
 func _animate_hover(target: float) -> void:
 	if _hover_tween and _hover_tween.is_valid():
 		_hover_tween.kill()
-
 	var mat := _get_shader_material()
 	if not mat:
 		return
-
 	_hover_tween = create_tween()
 	_hover_tween.tween_method(
 		func(v: float): mat.set_shader_parameter("hover_intensity", v),

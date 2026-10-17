@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_0di8e"]
 [ext_resource type="Resource" uid="uid://bh7cfgi3ll2sm" path="res://definitions/skills/pickpocket.tres" id="2_sg7s0"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_4etrm"]
-[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://icon.svg" id="3_uy8lj"]
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://assets/icon.svg" id="3_uy8lj"]
 
 [resource]
 script = ExtResource("3_4etrm")

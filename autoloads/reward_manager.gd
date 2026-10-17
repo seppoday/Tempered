@@ -7,9 +7,9 @@ var _pending_options: Array[RewardOption] = []
 var _pending_gold: int = 0
 var _reward_claimed := false
 
+
 func generate_rewards(enemy_definition: EnemyDefinition) -> void:
 	var table: LootTable = enemy_definition.loot_table
-
 	_reward_claimed = false
 	_pending_options.clear()
 	_pending_gold = 0
@@ -24,6 +24,7 @@ func generate_rewards(enemy_definition: EnemyDefinition) -> void:
 
 	rewards_generated.emit(_pending_gold, _pending_options)
 
+
 func _roll_reward_options(table: LootTable, count: int) -> Array[RewardOption]:
 	var options: Array[RewardOption] = []
 	var available_entries: Array[LootEntry] = table.loot_entries.duplicate()
@@ -37,10 +38,13 @@ func _roll_reward_options(table: LootTable, count: int) -> Array[RewardOption]:
 		if roll_upgrade:
 			var slot: EquipmentSlot.Type = upgrade_candidates.pick_random()
 			upgrade_candidates.erase(slot)
+			var equipped: ItemInstance = PlayerData.get_equipped_item(slot)
 			var option := RewardOption.new()
 			option.type = RewardOption.Type.UPGRADE
 			option.upgrade_slot = slot
-			option.upgrade_display_item = PlayerData.get_equipped_item(slot).definition
+			option.upgrade_display_item = equipped.definition if equipped else null
+			# Przechowujemy aktualny poziom, żeby UI/tooltip mogły pokazać delty statów
+			option.upgrade_from_level = equipped.dice_level if equipped else 0
 			options.append(option)
 			continue
 
@@ -59,11 +63,13 @@ func _roll_reward_options(table: LootTable, count: int) -> Array[RewardOption]:
 
 	return options
 
+
 func _total_weight(entries: Array[LootEntry]) -> int:
 	var total := 0
 	for e in entries:
 		total += e.weight
 	return total
+
 
 func _get_upgradeable_slots() -> Array:
 	var result: Array = []
@@ -73,8 +79,10 @@ func _get_upgradeable_slots() -> Array:
 			result.append(slot_type)
 	return result
 
+
 func has_rewards() -> bool:
 	return not _pending_options.is_empty()
+
 
 func claim_option(option: RewardOption) -> void:
 	if _reward_claimed:
@@ -86,11 +94,18 @@ func claim_option(option: RewardOption) -> void:
 			var instance := ItemInstance.new(option.item_definition, 1, 0)
 			PlayerData.equip_item(instance)
 			Log.print("[REWARD] Założono item -> %s" % option.item_definition.name)
+
 		RewardOption.Type.UPGRADE:
 			var item: ItemInstance = PlayerData.get_equipped_item(option.upgrade_slot)
 			if item != null and item.dice_level < GameEnums.DICE_PROGRESSION.size() - 1:
 				item.dice_level += 1
-				Log.print("[REWARD] Upgrade w slocie %s -> poziom %d" % [option.upgrade_slot, item.dice_level])
+				# Odśwież staty (HP z vit, tarcza z def itd.)
+				PlayerData.stats_changed.emit(EquipmentSlot.Type.keys()[option.upgrade_slot])
+				Log.print("[REWARD] Upgrade w slocie %s -> poziom %d (d%d)" % [
+					option.upgrade_slot,
+					item.dice_level,
+					GameEnums.DICE_PROGRESSION[item.dice_level]
+				])
 
 	reward_claimed.emit()
 	_pending_options.clear()

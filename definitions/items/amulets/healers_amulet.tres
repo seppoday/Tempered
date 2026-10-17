@@ -11,6 +11,7 @@ slot = 5
 default_skill = ExtResource("2_jx1xs")
 magic = 1.0
 vit = 2.0
+vit_per_level = 1.0
 id = "healers_amulet"
 name = "Healer's Amulet"
 icon = ExtResource("3_6m742")

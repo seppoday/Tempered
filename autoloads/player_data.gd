@@ -103,21 +103,21 @@ func get_total_stats() -> Dictionary:
 		"status": BASE_STATUS,
 		"crit": BASE_CRIT,
 	}
-	
+
 	for slot_type in equipped_items:
 		var item: ItemInstance = equipped_items[slot_type]
 		if item == null or item.definition == null:
 			continue
-
 		var def: ItemDefinition = item.definition
+		var level: int = item.dice_level
 		for stat in GameEnums.Stat.values():
 			var key: String = GameEnums.Stat.keys()[stat].to_lower()
-			totals[key] += def.get_stat(stat)
+			totals[key] += def.get_stat(stat, level)
 
 	totals["hp"] = totals["vit"] * 10
 	totals["dodge"] = totals["luck"] / (totals["luck"] + 100.0)
-
 	return totals
+
 
 func get_equipped_item(slot_type: EquipmentSlot.Type) -> ItemInstance:
 	return equipped_items.get(slot_type, null)
@@ -173,7 +173,7 @@ func calculate_attack() -> Dictionary:
 		"stats": stats
 	}
 
-func take_damage(raw_amount: int) -> void:
+func take_damage(raw_amount: int, ignore_shield: bool = false) -> void:
 	var stats := get_total_stats()
 
 	# 1. Unik (Dodge)
@@ -185,7 +185,7 @@ func take_damage(raw_amount: int) -> void:
 		return
 
 	# 2. Obliczamy ile tarczy pochłonie obrażenia
-	var shield_absorbed: float = min(pending_block, float(raw_amount))
+	var shield_absorbed: float = 0.0 if ignore_shield else min(pending_block, float(raw_amount))
 	pending_block -= shield_absorbed
 	
 	var shield_damage_taken: int = int(shield_absorbed)

@@ -564,6 +564,7 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -1.5
 shape = SubResource("BoxShape3D_a5i42")
 
 [node name="CollisionShape3D4" type="CollisionShape3D" parent="BoxBlocker" unique_id=1623994409]
+process_mode = 7
 transform = Transform3D(-4.371139e-08, 1, -4.371139e-08, -1.323489e-22, -4.371139e-08, -1, -1, -4.371139e-08, 1.9106863e-15, 30.082962, 0, -0.22585729)
 shape = SubResource("BoxShape3D_a5i42")
 

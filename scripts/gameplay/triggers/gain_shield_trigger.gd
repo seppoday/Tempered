@@ -7,8 +7,8 @@ func get_base_amount() -> float:
 	return shield_amount
 
 func apply(combat_manager, hit_data: Dictionary) -> void:
-	var amount := get_amount(hit_data["value"])
+	var amount := get_amount(combat_manager, hit_data)
 	combat_manager._apply_shield_to_player(hit_data["skill"], int(round(amount)))
 
 func get_effect_description() -> String:
-	return "+Shield" if scale_with_hit_value else "+%s Shield" % format_amount(shield_amount)
+	return describe_amount("Shield")

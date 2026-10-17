@@ -4,9 +4,7 @@ extends PanelContainer
 const TOOLTIP_WIDTH := 700
 const FONT_TITLE := 28
 const FONT_BODY := 20
-
 const BASE_BG := Color(0.111, 0.127, 0.157, 0.96)
-
 const COLOR_HEADER := Color(0.91, 0.75, 0.35)
 const COLOR_BODY_TEXT := Color(0.85, 0.85, 0.85)
 
@@ -20,13 +18,10 @@ const SKILL_HEADER := preload("uid://ypktilcmco1t")
 @onready var icon: TextureRect = %Icon
 @onready var name_label: Label = %Name
 @onready var category_label: Label = %Category
-
 @onready var stats_separator: ColorRect = %StatsSeparator
 @onready var stats_box: VBoxContainer = %Stats
-
 @onready var affinities_separator: ColorRect = %AffinitiesSeparator
 @onready var affinities_box: VBoxContainer = %Affinities
-
 @onready var skill_box: VBoxContainer = %Skill
 @onready var description_box: VBoxContainer = %Description
 
@@ -43,9 +38,7 @@ func _ready() -> void:
 	_force_shrink(affinities_box)
 	_force_shrink(skill_box)
 	_force_shrink(description_box)
-
 	_clear()
-
 	if _cached_item_data != null:
 		_render()
 
@@ -59,7 +52,6 @@ func _notification(what: int) -> void:
 func populate(item_data: ItemInstance, stat_display: Dictionary) -> void:
 	_cached_item_data = item_data
 	_cached_stat_display = stat_display
-
 	if is_node_ready():
 		_render()
 
@@ -73,10 +65,8 @@ func _force_shrink(node: Control) -> void:
 
 func _render() -> void:
 	_clear()
-
 	var item_data := _cached_item_data
 	var stat_display := _cached_stat_display
-
 	if item_data == null or not item_data.definition:
 		return
 
@@ -96,21 +86,24 @@ func _render() -> void:
 
 	icon.visible = def.icon != null
 	icon.texture = def.icon
-
 	name_label.text = tr(def.name)
 	name_label.add_theme_color_override("font_color", Color(0.91, 0.84, 0.58))
 
 	var cat_text = GameEnums.get_rarity_name(def.rarity)
-
+	var dice_level := 0
+	var dice_size := 0
+	var max_dice_level := GameEnums.DICE_PROGRESSION.size() - 1
 	if def is ItemDefinition:
 		slot_name = EquipmentSlot.Type.keys()[def.slot].capitalize()
 		cat_text += "  •  " + tr(slot_name)
-
-	var dice_size: int = 0
-	if item_data.definition is ItemDefinition and item_data.dice_level >= 0:
-		dice_size = GameEnums.DICE_PROGRESSION[item_data.dice_level]
-		cat_text += "  •  d%d" % dice_size
-
+		if item_data.dice_level >= 0:
+			dice_level = item_data.dice_level
+			dice_size = GameEnums.DICE_PROGRESSION[dice_level]
+			if dice_level < max_dice_level:
+				var next_dice: int = GameEnums.DICE_PROGRESSION[dice_level + 1]
+				cat_text += "  •  d%d → d%d" % [dice_size, next_dice]
+			else:
+				cat_text += "  •  d%d" % dice_size
 	category_label.text = cat_text
 	category_label.add_theme_color_override("font_color", Color(0.55, 0.52, 0.42))
 
@@ -120,33 +113,60 @@ func _render() -> void:
 		if description_box.get_parent() == root:
 			root.move_child(description_box, mini(1, root.get_child_count() - 1))
 
-	for property in stat_display.keys():
-		if property not in def:
-			continue
+	# --- Staty: "2 → 3" (3 na zielono) gdy jest możliwy upgrade i per_level > 0 ---
+	# Bez osobnej sekcji "On Upgrade".
+	if def is ItemDefinition:
+		var item_def: ItemDefinition = def
+		var stat_keys := [
+			["dmg", GameEnums.Stat.DMG],
+			["magic", GameEnums.Stat.MAGIC],
+			["def", GameEnums.Stat.DEF],
+			["vit", GameEnums.Stat.VIT],
+			["luck", GameEnums.Stat.LUCK],
+			["status", GameEnums.Stat.STATUS],
+			["crit", GameEnums.Stat.CRIT],
+		]
+		for pair in stat_keys:
+			var prop: String = pair[0]
+			var stat_enum: GameEnums.Stat = pair[1]
+			var current_val: float = item_def.get_stat(stat_enum, dice_level)
+			if current_val == 0.0:
+				# Pokaż też gdy baza=0 ale następny poziom da wartość
+				if dice_level >= max_dice_level:
+					continue
+				var next_check: float = item_def.get_stat(stat_enum, dice_level + 1)
+				if next_check == 0.0:
+					continue
+			if not stat_display.has(prop):
+				continue
+			var info = stat_display[prop]
+			var stat_icon_tex: Texture2D = info[2] if info.size() > 2 else null
+			var row := STAT_ROW.instantiate()
+			stats_box.add_child(row)
 
-		var value = def.get(property)
-		if value == 0 or value == 0.0:
-			continue
+			var can_upgrade_stat := false
+			var next_val := current_val
+			if dice_level < max_dice_level:
+				next_val = item_def.get_stat(stat_enum, dice_level + 1)
+				can_upgrade_stat = not is_equal_approx(next_val, current_val)
 
-		var info = stat_display[property]
-		var stat_icon_tex: Texture2D = info[2] if info.size() > 2 else null
-
-		var row := STAT_ROW.instantiate()
-		stats_box.add_child(row)
-		row.setup(stat_icon_tex, value, info[0], info[1])
+			if can_upgrade_stat:
+				row.setup(stat_icon_tex, current_val, info[0], info[1], next_val)
+			else:
+				row.setup(stat_icon_tex, current_val, info[0], info[1])
 
 	var has_stats := stats_box.get_child_count() > 0
 	stats_box.visible = has_stats
 	stats_separator.visible = has_stats
 
-	if item_data.definition is ItemDefinition:
-		var item_def: ItemDefinition = item_data.definition
-		if not item_def.affinities.is_empty():
+	# --- Affinities ---
+	if def is ItemDefinition:
+		var item_def2: ItemDefinition = def
+		if not item_def2.affinities.is_empty():
 			var aff_title := SECTION_HEADER.instantiate()
 			affinities_box.add_child(aff_title)
 			aff_title.setup("Elemental Affinities:", COLOR_HEADER)
-
-			for affinity in item_def.affinities:
+			for affinity in item_def2.affinities:
 				var element_name = GameEnums.DamageElement.keys()[affinity.element].capitalize()
 				affinities_box.add_child(_make_affinity_line(element_name, affinity.multiplier))
 
@@ -154,17 +174,13 @@ func _render() -> void:
 	affinities_box.visible = has_affinities
 	affinities_separator.visible = has_affinities
 
-	var processed_skill := false
-	if item_data.definition is ItemDefinition and item_data.dice_level >= 0:
-		var item_def: ItemDefinition = item_data.definition
-		var active_skill: SkillDefinition = item_def.default_skill
-
+	# --- Skill ---
+	if def is ItemDefinition and item_data.dice_level >= 0:
+		var active_skill: SkillDefinition = def.default_skill
 		if active_skill:
 			_add_skill_properties_box(active_skill, stat_display, dice_size, active_skill.skill_name, false)
-			processed_skill = true
 
 	skill_box.visible = skill_box.get_child_count() > 0
-
 	_force_shrink(stats_box)
 	_force_shrink(affinities_box)
 	_force_shrink(skill_box)
@@ -178,17 +194,14 @@ func _build_description_blocks(desc_text: String, container: Container) -> void:
 		var block: String = blocks[i].strip_edges()
 		if block.is_empty():
 			continue
-
 		var lines := block.split("\n", false)
 		var desc_instance := DESCRIPTION_BLOCK.instantiate()
 		container.add_child(desc_instance)
-
 		if lines.size() >= 2:
 			var body_text := "\n".join(lines.slice(1))
 			desc_instance.setup(lines[0], _colorize_numbers(body_text))
 		else:
 			desc_instance.setup("", _colorize_numbers(block))
-
 		if i < blocks.size() - 1:
 			var gap := Control.new()
 			gap.custom_minimum_size = Vector2(0, 4)
@@ -204,14 +217,12 @@ func _add_skill_properties_box(skill_def: SkillDefinition, stat_display: Diction
 
 	var effect_name := _get_skill_effect_name(skill_def)
 	var subtitle_text := effect_name
-
 	if "damage_element" in skill_def and skill_def.damage_element != GameEnums.DamageElement.NONE:
 		var element_name = GameEnums.DamageElement.keys()[skill_def.damage_element].capitalize()
 		var element_color = _get_element_color(element_name)
 		subtitle_text += "  •  [color=#%s]%s[/color]" % [element_color.to_html(false), element_name]
 
 	var skill_icon: Texture2D = skill_def.icon if ("icon" in skill_def and skill_def.icon) else null
-
 	var header := SKILL_HEADER.instantiate()
 	box.add_child(header)
 	header.setup(skill_icon, tr(skill_name_to_display) if not skill_name_to_display.is_empty() else "", subtitle_text)
@@ -222,11 +233,10 @@ func _add_skill_properties_box(skill_def: SkillDefinition, stat_display: Diction
 		box.add_child(s_desc_box)
 		_build_description_blocks(tr(skill_def.description), s_desc_box)
 
-	# --- Projected value (pomijane dla luźnych skill itemów — brak kontekstu rzutu kością) ---
+	# Projected value
 	if not is_skill_item and not skill_def.scalings.is_empty():
 		var projected_range = SkillStatCalculator.calculate_projected_range(skill_def, dice_size, _cached_item_data)
 		var proj_lbl := Label.new()
-
 		var action_word := "Value"
 		match effect_name.to_lower():
 			"damage", "deal_damage", "dmg":
@@ -235,27 +245,22 @@ func _add_skill_properties_box(skill_def: SkillDefinition, stat_display: Diction
 				action_word = "Healing"
 			"coin", "coins", "gold", "gain_coins":
 				action_word = "Coins"
-
 		proj_lbl.text = "Projected %s: %d - %d" % [action_word, int(round(projected_range.x)), int(round(projected_range.y))]
 		proj_lbl.add_theme_color_override("font_color", Color(0.35, 0.85, 0.95))
 		proj_lbl.theme_type_variation = &"TooltipHeader"
 		proj_lbl.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 		box.add_child(proj_lbl)
 
-	# USUNIĘTE: wyświetlanie nieistniejącego skill_def.base_value
-
+	# Scales with
 	if not skill_def.scalings.is_empty():
 		var scaling_title := SECTION_HEADER.instantiate()
 		box.add_child(scaling_title)
 		scaling_title.setup("Scales with:", COLOR_BODY_TEXT)
-
 		for scaling in skill_def.scalings:
 			var stat_key := SkillStatCalculator.get_stat_key_from_enum(scaling.stat)
-
 			var stat_name: String
 			var stat_color: Color
 			var stat_icon_tex: Texture2D = null
-
 			if stat_display.has(stat_key):
 				var stat_info = stat_display[stat_key]
 				stat_name = stat_info[0]
@@ -265,31 +270,26 @@ func _add_skill_properties_box(skill_def: SkillDefinition, stat_display: Diction
 			else:
 				stat_name = GameEnums.Stat.keys()[scaling.stat].capitalize()
 				stat_color = Color(0.7, 0.7, 0.7)
-
 			var percentage := int(round(scaling.weight * 100.0))
-			var raw_stat := SkillStatCalculator.get_total_stat_value(scaling.stat, _cached_item_data)
+			var raw_stat := SkillStatCalculator.get_item_stat(_cached_item_data, scaling.stat)
 			var scaling_contrib := raw_stat * scaling.weight
-
 			var row := SCALING_ROW.instantiate()
 			box.add_child(row)
 			row.setup(percentage, stat_icon_tex, stat_name, stat_color, raw_stat, scaling_contrib)
 
-			# Wrzucamy wszystkie triggery przypisane do skilla
-			var active_triggers: Array[SkillTriggerBase] = skill_def.triggers
-
-			if not active_triggers.is_empty():
-				var trig_title := SECTION_HEADER.instantiate()
-				box.add_child(trig_title)
-				trig_title.setup("Additional Effects:", COLOR_BODY_TEXT)
-
-				for trigger in active_triggers:
-					box.add_child(_make_trigger_line(trigger, dice_size, is_skill_item))
+		# Triggers
+		var active_triggers: Array[SkillTriggerBase] = skill_def.triggers
+		if not active_triggers.is_empty():
+			var trig_title := SECTION_HEADER.instantiate()
+			box.add_child(trig_title)
+			trig_title.setup("Additional Effects:", COLOR_BODY_TEXT)
+			for trigger in active_triggers:
+				box.add_child(_make_trigger_line(trigger, dice_size, is_skill_item))
 
 	if skill_def.bonus_hits_per_stat:
 		var bonus = skill_def.bonus_hits_per_stat
 		var bonus_stat_key = SkillStatCalculator.get_stat_key_from_enum(bonus.stat)
 		var bonus_stat_name = stat_display[bonus_stat_key][0] if stat_display.has(bonus_stat_key) else GameEnums.Stat.keys()[bonus.stat].capitalize()
-
 		var bonus_lbl := Label.new()
 		bonus_lbl.text = "Bonus Hits: +1 hit per %.1f %s" % [bonus.weight, bonus_stat_name]
 		bonus_lbl.add_theme_color_override("font_color", Color(0.9, 0.6, 0.2))
@@ -300,14 +300,11 @@ func _add_skill_properties_box(skill_def: SkillDefinition, stat_display: Diction
 func _get_skill_effect_name(skill_def: SkillDefinition) -> String:
 	if not skill_def or not "effect_type" in skill_def or skill_def.effect_type == null:
 		return "Skill"
-
 	var effect_val = skill_def.effect_type
 	var values = GameEnums.SkillEffect.values()
 	var idx = values.find(effect_val)
-
 	if idx != -1:
 		return GameEnums.SkillEffect.keys()[idx].capitalize()
-
 	return "Skill"
 
 
@@ -324,20 +321,16 @@ func _make_trigger_line(trigger: SkillTriggerBase, dice_size: int, is_skill_item
 	var condition_text := _get_trigger_condition_text(trigger)
 	var parts: Array[String] = []
 
-	# 1. Opis efektu specyficznego dla podklasy (jeśli trigger go ma)
 	var effect_desc := trigger.get_effect_description()
 	if effect_desc != "":
 		parts.append("[color=#ff8c39]%s[/color]" % effect_desc)
 
-	# 2. Dodaj opis dla nakładanego statusu (StatusType)
 	if trigger.apply_status != GameEnums.StatusType.NONE:
 		var status_name = GameEnums.StatusType.keys()[trigger.apply_status].capitalize()
 		var status_color := _get_status_color(trigger.apply_status)
 		var status_text := "[color=#%s]%s[/color]" % [status_color.to_html(false), status_name]
-
 		if trigger.status_stacks > 1:
 			status_text += " (x%d)" % trigger.status_stacks
-
 		if not is_skill_item:
 			var preview := SkillStatCalculator.calculate_trigger_status_preview(trigger, dice_size, _cached_item_data)
 			var value_parts: Array[String] = []
@@ -363,7 +356,6 @@ func _make_trigger_line(trigger: SkillTriggerBase, dice_size: int, is_skill_item
 		line = "%s → None" % condition_text
 	else:
 		line = "%s → %s" % [condition_text, " & ".join(parts)]
-
 	rtl.text = line
 	return rtl
 
@@ -388,6 +380,10 @@ func _get_trigger_condition_text(trigger: SkillTriggerBase) -> String:
 			return "Below %d%% HP" % int(trigger.threshold * 100)
 		GameEnums.TriggerType.ON_TARGET_HP_BELOW:
 			return "Target Below %d%% HP" % int(trigger.threshold * 100)
+		GameEnums.TriggerType.ON_ROLL_PERCENT_AT_LEAST:
+			return "On Roll in Top %d%%" % int(round((1.0 - trigger.threshold) * 100.0))
+		GameEnums.TriggerType.ON_ROLL_PERCENT_AT_MOST:
+			return "On Roll in Bottom %d%%" % int(round(trigger.threshold * 100.0))
 		_:
 			return "Trigger"
 
@@ -426,7 +422,6 @@ func _make_affinity_line(element_name: String, multiplier: float) -> RichTextLab
 	rtl.custom_minimum_size = Vector2(TOOLTIP_WIDTH - 32, 0)
 	rtl.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	rtl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-
 	if is_equal_approx(multiplier, 1.0):
 		rtl.text = "[color=#%s]%s[/color] skills deal normal damage" % [
 			element_color.to_html(false), element_name
@@ -440,33 +435,37 @@ func _make_affinity_line(element_name: String, multiplier: float) -> RichTextLab
 			element_color.to_html(false), element_name,
 			percent_color.to_html(false), percent, direction
 		]
-
 	return rtl
 
 
 func _get_element_color(element_name: String) -> Color:
 	match element_name.to_lower():
-		"fire": return Color(0.95, 0.45, 0.25)
-		"frost", "ice", "cold": return Color(0.55, 0.85, 0.95)
-		"poison": return Color(0.62, 0.86, 0.35)
-		"lightning", "electric": return Color(0.95, 0.85, 0.35)
-		"physical": return Color(0.8, 0.8, 0.8)
-		"magic", "arcane": return Color(0.7, 0.55, 0.95)
-		_: return Color(0.7, 0.85, 0.95)
+		"fire":
+			return Color(0.95, 0.45, 0.25)
+		"frost", "ice", "cold":
+			return Color(0.55, 0.85, 0.95)
+		"poison":
+			return Color(0.62, 0.86, 0.35)
+		"lightning", "electric":
+			return Color(0.95, 0.85, 0.35)
+		"physical":
+			return Color(0.8, 0.8, 0.8)
+		"magic", "arcane":
+			return Color(0.7, 0.55, 0.95)
+		_:
+			return Color(0.7, 0.85, 0.95)
 
 
 func _clear() -> void:
 	icon.texture = null
 	name_label.text = ""
 	category_label.text = ""
-
 	stats_separator.visible = false
 	affinities_separator.visible = false
 	stats_box.visible = false
 	affinities_box.visible = false
 	skill_box.visible = false
 	description_box.visible = false
-
 	_clear_children(stats_box)
 	_clear_children(affinities_box)
 	_clear_children(skill_box)
@@ -482,3 +481,9 @@ func _colorize_numbers(text: String) -> String:
 	var regex := RegEx.new()
 	regex.compile(r"(\d+\.?\d*%?)")
 	return regex.sub(text, "[color=#ff8c39]$1[/color]", true)
+
+
+func _format_stat_number(value: float) -> String:
+	if is_equal_approx(value, round(value)):
+		return "%d" % int(round(value))
+	return "%.1f" % value

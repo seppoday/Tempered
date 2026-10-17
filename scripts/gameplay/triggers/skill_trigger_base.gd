@@ -21,6 +21,7 @@ extends Resource
 ## === KONTRAKT hit_data (bez zmian) ===
 ## Zawsze: "skill", "context", "value".
 ## PRE-HIT: + "item_def", "ignore_shield".
+## PRE-HIT enemy: "skill", "context", "value", "enemy", "ignore_shield", "target" = "player" (bez "item_def").
 ## POST-HIT enemy: + "item_def", "enemy_died", "target" = "enemy".
 ## POST-HIT player: + "enemy", "player_died", "target" = "player".
 
