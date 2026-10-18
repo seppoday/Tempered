@@ -45,7 +45,7 @@ script = ExtResource("6_swhgi")
 loot_entries = Array[ExtResource("2_fit0o")]([SubResource("Resource_juifq"), SubResource("Resource_gpuxc"), SubResource("Resource_k7t0j"), SubResource("Resource_d47gl"), SubResource("Resource_g7q3g")])
 gold_min = 2
 gold_max = 4
-upgrade_weight = 1000
+upgrade_weight = 5
 metadata/_custom_type_script = "uid://dp0kh2akuu60m"
 
 [resource]

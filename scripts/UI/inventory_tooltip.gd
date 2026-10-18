@@ -20,8 +20,6 @@ const SKILL_HEADER := preload("uid://ypktilcmco1t")
 @onready var category_label: Label = %Category
 @onready var stats_separator: ColorRect = %StatsSeparator
 @onready var stats_box: VBoxContainer = %Stats
-@onready var affinities_separator: ColorRect = %AffinitiesSeparator
-@onready var affinities_box: VBoxContainer = %Affinities
 @onready var skill_box: VBoxContainer = %Skill
 @onready var description_box: VBoxContainer = %Description
 
@@ -35,7 +33,6 @@ func _ready() -> void:
 	size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	_force_shrink(root)
 	_force_shrink(stats_box)
-	_force_shrink(affinities_box)
 	_force_shrink(skill_box)
 	_force_shrink(description_box)
 	_clear()
@@ -159,20 +156,6 @@ func _render() -> void:
 	stats_box.visible = has_stats
 	stats_separator.visible = has_stats
 
-	# --- Affinities ---
-	if def is ItemDefinition:
-		var item_def2: ItemDefinition = def
-		if not item_def2.affinities.is_empty():
-			var aff_title := SECTION_HEADER.instantiate()
-			affinities_box.add_child(aff_title)
-			aff_title.setup("Elemental Affinities:", COLOR_HEADER)
-			for affinity in item_def2.affinities:
-				var element_name = GameEnums.DamageElement.keys()[affinity.element].capitalize()
-				affinities_box.add_child(_make_affinity_line(element_name, affinity.multiplier))
-
-	var has_affinities := affinities_box.get_child_count() > 0
-	affinities_box.visible = has_affinities
-	affinities_separator.visible = has_affinities
 
 	# --- Skill ---
 	if def is ItemDefinition and item_data.dice_level >= 0:
@@ -182,7 +165,6 @@ func _render() -> void:
 
 	skill_box.visible = skill_box.get_child_count() > 0
 	_force_shrink(stats_box)
-	_force_shrink(affinities_box)
 	_force_shrink(skill_box)
 	_force_shrink(description_box)
 	reset_size()
@@ -412,32 +394,6 @@ func _get_status_scaling_text(status_type: GameEnums.StatusType) -> String:
 			return ""
 
 
-func _make_affinity_line(element_name: String, multiplier: float) -> RichTextLabel:
-	var element_color := _get_element_color(element_name)
-	var rtl := RichTextLabel.new()
-	rtl.bbcode_enabled = true
-	rtl.fit_content = true
-	rtl.scroll_active = false
-	rtl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	rtl.custom_minimum_size = Vector2(TOOLTIP_WIDTH - 32, 0)
-	rtl.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	rtl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	if is_equal_approx(multiplier, 1.0):
-		rtl.text = "[color=#%s]%s[/color] skills deal normal damage" % [
-			element_color.to_html(false), element_name
-		]
-	else:
-		var is_buff := multiplier > 1.0
-		var percent := int(round(absf(multiplier - 1.0) * 100.0))
-		var percent_color := Color(0.55, 0.9, 0.45) if is_buff else Color(0.95, 0.45, 0.4)
-		var direction := "more" if is_buff else "less"
-		rtl.text = "[color=#%s]%s[/color] skills are [color=#%s]%d%%[/color] %s effective" % [
-			element_color.to_html(false), element_name,
-			percent_color.to_html(false), percent, direction
-		]
-	return rtl
-
-
 func _get_element_color(element_name: String) -> Color:
 	match element_name.to_lower():
 		"fire":
@@ -461,13 +417,10 @@ func _clear() -> void:
 	name_label.text = ""
 	category_label.text = ""
 	stats_separator.visible = false
-	affinities_separator.visible = false
 	stats_box.visible = false
-	affinities_box.visible = false
 	skill_box.visible = false
 	description_box.visible = false
 	_clear_children(stats_box)
-	_clear_children(affinities_box)
 	_clear_children(skill_box)
 	_clear_children(description_box)
 

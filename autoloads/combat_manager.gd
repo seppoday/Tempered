@@ -175,14 +175,13 @@ func calculate_effect_value(skill: SkillDefinition, item: ItemDefinition, dice_r
 	for i in range(1, skill.scalings.size()):
 		var secondary := skill.scalings[i]
 		inner_sum += item.get_stat(secondary.stat, dice_level) * secondary.weight
-	var affinity_multiplier: float = item.get_affinity_multiplier(skill.damage_element)
-	var final_value: float = dice_roll * primary.weight * inner_sum * affinity_multiplier
+	var final_value: float = dice_roll * primary.weight * inner_sum
 	if skill.element_synergy_bonus > 0.0:
 		var synergy_count := _count_equipped_skills_with_element(skill.damage_element, skill)
 		if synergy_count > 0:
 			final_value += synergy_count * skill.element_synergy_bonus
-	Log.print("=== SKILL VALUE ===\nRoll: %d | lvl: %d | weight: %.2f | item_sum: %.2f | affinity: %.2f | final: %.2f" % [
-		dice_roll, dice_level, primary.weight, inner_sum, affinity_multiplier, final_value
+	Log.print("=== SKILL VALUE ===\nRoll: %d | lvl: %d | weight: %.2f | item_sum: %.2f | final: %.2f" % [
+		dice_roll, dice_level, primary.weight, inner_sum, final_value
 	])
 	return final_value
 

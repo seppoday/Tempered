@@ -30,9 +30,6 @@ extends InventoryEntry
 @export_category("Special")
 @export_range(0.0, 1.0, 0.01) var lifesteal_percent: float = 0.0
 
-@export_category("Affinity")
-@export var affinities: Array[ItemAffinity] = []
-
 
 ## Zwraca wartość statystyki z uwzględnieniem poziomu kości.
 func get_stat(stat: GameEnums.Stat, dice_level: int = 0) -> float:
@@ -61,13 +58,6 @@ func get_stat(stat: GameEnums.Stat, dice_level: int = 0) -> float:
 			base = crit
 			per_level = crit_per_level
 	return base + per_level * max(0, dice_level)
-
-
-func get_affinity_multiplier(element: GameEnums.DamageElement) -> float:
-	for affinity in affinities:
-		if affinity.element == element:
-			return affinity.multiplier
-	return 1.0
 
 
 ## Lista statów, które rosną przy upgrade.

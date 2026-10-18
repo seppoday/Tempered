@@ -125,35 +125,18 @@ func _build_scaling_text(skill: SkillDefinition, item: ItemDefinition) -> String
 		var stat_name: String = GameEnums.Stat.keys()[scaling.stat]
 		parts.append("%s×%s" % [stat_name, _fmt(scaling.weight)])
 
-	# 2. Affinity itemu (tylko jeśli != 1.0 i element pasuje)
-	if item != null and skill.damage_element != GameEnums.DamageElement.NONE:
-		var affinity: float = item.get_affinity_multiplier(skill.damage_element)
-		if not is_equal_approx(affinity, 1.0):
-			var elem_icon := _get_element_icon(skill.damage_element)
-			parts.append("%s×%s" % [elem_icon, _fmt(affinity)])
-
-	# 3. Multi-hit (bonus_hits_per_stat)
+	# 2. Multi-hit (bonus_hits_per_stat)
 	if skill.bonus_hits_per_stat != null:
 		var hit_stat: String = GameEnums.Stat.keys()[skill.bonus_hits_per_stat.stat]
 		parts.append("+hity: %s" % hit_stat)
 
-	# 4. Trigger (podpowiedź, że coś się odpali)
+	# 3. Trigger (podpowiedź, że coś się odpali)
 	for trigger in skill.triggers:
 		var hint := _get_trigger_hint(trigger)
 		if hint != "":
 			parts.append(hint)
 
 	return " • ".join(parts)
-
-
-## Krótki emoji dla elementu
-func _get_element_icon(element: GameEnums.DamageElement) -> String:
-	match element:
-		GameEnums.DamageElement.FIRE: return "🔥"
-		GameEnums.DamageElement.ICE: return "❄"
-		GameEnums.DamageElement.POISON: return "🧪"
-		GameEnums.DamageElement.PHYSICAL: return "⚔"
-		_: return ""
 
 
 ## Krótka podpowiedź dla triggera, łączy status (jeśli jest) z efektem specyficznym dla podklasy.

@@ -7,7 +7,7 @@ const SAVE_PATH := "user://meta_progression.save"
 
 var gold: int = 0
 var unlocked_item_ids: Array[String] = []
-var starting_loadout_ids: Array[String] = ["executioner_blade", "healers_amulet", "iron_ring"]
+var starting_loadout_ids: Array[String] = ["ember_stuff", "cinder_amulet", "kindling_ring"]
 
 
 func _ready() -> void:

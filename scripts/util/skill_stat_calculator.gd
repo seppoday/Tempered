@@ -145,7 +145,7 @@ static func calculate_trigger_status_preview(trigger: SkillTriggerBase, dice_siz
 	}
 
 
-## dice_roll * primary.weight * inner_sum(item @ dice_level) * affinity * hits
+## dice_roll * primary.weight * inner_sum(item @ dice_level) * hits
 static func calculate_projected_range(skill_def: SkillDefinition, dice_size: int, preview_item: ItemInstance) -> Vector2:
 	if skill_def.scalings.is_empty():
 		return Vector2.ZERO
@@ -156,22 +156,13 @@ static func calculate_projected_range(skill_def: SkillDefinition, dice_size: int
 	for i in range(1, skill_def.scalings.size()):
 		var secondary := skill_def.scalings[i]
 		inner_sum += get_item_stat(preview_item, secondary.stat) * secondary.weight
-	var affinity_mult := 1.0
-	if preview_item and preview_item.definition:
-		if preview_item.definition.has_method("get_affinity_multiplier"):
-			affinity_mult = preview_item.definition.get_affinity_multiplier(skill_def.damage_element)
-		elif "affinities" in preview_item.definition:
-			for aff in preview_item.definition.affinities:
-				if aff.element == skill_def.damage_element:
-					affinity_mult = aff.multiplier
-					break
 	var total_hits := 1
 	if skill_def.bonus_hits_per_stat:
 		var bonus_stat_val := get_item_stat(preview_item, skill_def.bonus_hits_per_stat.stat)
 		var bonus_hits := int(floor(bonus_stat_val * skill_def.bonus_hits_per_stat.weight))
 		total_hits += bonus_hits
-	var min_outcome := min_roll * primary.weight * inner_sum * affinity_mult * total_hits
-	var max_outcome := max_roll * primary.weight * inner_sum * affinity_mult * total_hits
+	var min_outcome := min_roll * primary.weight * inner_sum * total_hits
+	var max_outcome := max_roll * primary.weight * inner_sum * total_hits
 	return Vector2(min_outcome, max_outcome)
 
 
