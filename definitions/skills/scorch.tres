@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://05kao1uja36n"]
+
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://assets/icon.svg" id="1_6763o"]
+[ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_sw372"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_tie2n"]
+[ext_resource type="Script" uid="uid://b2olght573nvi" path="res://scripts/gameplay/triggers/skill_trigger_base.gd" id="3_6763o"]
+[ext_resource type="Script" uid="uid://ufpc5mn8nmht" path="res://scripts/gameplay/triggers/apply_status_trigger.gd" id="5_66mus"]
+
+[sub_resource type="Resource" id="Resource_66mus"]
+script = ExtResource("1_sw372")
+stat = 1
+weight = 0.8
+metadata/_custom_type_script = "uid://oma4qvx1pxtp"
+
+[sub_resource type="Resource" id="Resource_c1tes"]
+script = ExtResource("1_sw372")
+stat = 5
+weight = 0.2
+metadata/_custom_type_script = "uid://oma4qvx1pxtp"
+
+[sub_resource type="Resource" id="Resource_s27xk"]
+script = ExtResource("5_66mus")
+apply_status = 1
+metadata/_custom_type_script = "uid://ufpc5mn8nmht"
+
+[resource]
+script = ExtResource("2_tie2n")
+id = "scorch"
+skill_name = "Scorch"
+icon = ExtResource("1_6763o")
+description = "Burns the target"
+scalings = Array[ExtResource("1_sw372")]([SubResource("Resource_66mus"), SubResource("Resource_c1tes")])
+damage_element = 2
+triggers = Array[ExtResource("3_6763o")]([SubResource("Resource_s27xk")])
+metadata/_custom_type_script = "uid://dgjg1vlcvdtpi"

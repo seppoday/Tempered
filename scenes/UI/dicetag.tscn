@@ -113,6 +113,10 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 1
 
+[node name="EffectsBox" type="VBoxContainer" parent="MarginContainer/BoxContainer" unique_id=291970216]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="EffectOverlay" type="ColorRect" parent="." unique_id=417394727]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_wvhbo")

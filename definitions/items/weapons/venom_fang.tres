@@ -1,27 +1,14 @@
 [gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://j6xuijp73so4"]
 
-[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_2t3g2"]
 [ext_resource type="Resource" uid="uid://cnn7lyrr1fr60" path="res://definitions/skills/poison_sting.tres" id="2_3vve8"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_8wfxg"]
 [ext_resource type="Texture2D" uid="uid://crr54t24bj0s5" path="res://assets/items/Long_Sword_item_HD.webp" id="3_yjtal"]
-
-[sub_resource type="Resource" id="Resource_gyc24"]
-script = ExtResource("1_2t3g2")
-element = 3
-multiplier = 1.5
-
-[sub_resource type="Resource" id="Resource_yjtal"]
-script = ExtResource("1_2t3g2")
-element = 4
-multiplier = 0.2
-metadata/_custom_type_script = "uid://cint7quw6fy51"
 
 [resource]
 script = ExtResource("3_8wfxg")
 default_skill = ExtResource("2_3vve8")
 magic = 4.0
 status = 12.0
-affinities = Array[ExtResource("1_2t3g2")]([SubResource("Resource_gyc24"), SubResource("Resource_yjtal")])
 id = "venom_fang"
 name = "Venom Fang"
 description = "A deadly fang that poisons enemies with every strike."

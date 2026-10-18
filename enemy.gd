@@ -66,8 +66,7 @@ func refresh_status_label() -> void:
 		var status_name: String = GameEnums.StatusType.keys()[status.status_type].capitalize()
 		var icon := _get_status_icon(status.status_type)
 		var tick_dmg := int(round(status.get_total_tick_damage()))
-		var stacks_suffix := " x%d" % status.stacks if status.stacks > 1 else ""
-		lines.append("%s %s%s (%d) — %d dmg" % [icon, status_name, stacks_suffix, status.remaining_rounds, tick_dmg])
+		lines.append("%s %s x%d — %d dmg" % [icon, status_name, status.stacks, tick_dmg])
 
 	status_label.text = "\n".join(lines)
 

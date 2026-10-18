@@ -122,26 +122,22 @@ static func calculate_trigger_status_preview(trigger: SkillTriggerBase, dice_siz
 	var tick_max := 0.0
 	var initial_min := 0.0
 	var initial_max := 0.0
-	var duration := 3
 	match trigger.apply_status:
 		GameEnums.StatusType.BURN:
 			tick_min = status_stat * 0.4 * min_roll
 			tick_max = status_stat * 0.4 * max_roll
-			duration = 3 + int(floor(status_stat / 20.0))
 		GameEnums.StatusType.POISON:
 			initial_min = magic_stat * 0.3 * min_roll
 			initial_max = magic_stat * 0.3 * max_roll
 			tick_min = status_stat * 0.6 * min_roll
 			tick_max = status_stat * 0.6 * max_roll
-			duration = 4
 		GameEnums.StatusType.BLEED:
 			tick_min = dmg_stat * 0.25
 			tick_max = dmg_stat * 0.25
-			duration = 3
 	return {
 		"tick_min": tick_min, "tick_max": tick_max,
 		"initial_min": initial_min, "initial_max": initial_max,
-		"duration": duration
+		"stacks": trigger.status_stacks
 	}
 
 

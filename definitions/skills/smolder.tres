@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3 uid="uid://cdfapwvdqpq3i"]
+
+[ext_resource type="Script" uid="uid://oma4qvx1pxtp" path="res://scripts/gameplay/skill_scaling.gd" id="1_i06xu"]
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://assets/icon.svg" id="1_uoaqt"]
+[ext_resource type="Script" uid="uid://dgjg1vlcvdtpi" path="res://data/definitions_patterns/skill_definition.gd" id="2_ft18o"]
+[ext_resource type="Script" uid="uid://b2olght573nvi" path="res://scripts/gameplay/triggers/skill_trigger_base.gd" id="3_uoaqt"]
+[ext_resource type="Script" uid="uid://ufpc5mn8nmht" path="res://scripts/gameplay/triggers/apply_status_trigger.gd" id="5_owqhf"]
+
+[sub_resource type="Resource" id="Resource_owqhf"]
+script = ExtResource("1_i06xu")
+stat = 5
+weight = 0.7
+metadata/_custom_type_script = "uid://oma4qvx1pxtp"
+
+[sub_resource type="Resource" id="Resource_5st7d"]
+script = ExtResource("1_i06xu")
+stat = 1
+weight = 0.5
+metadata/_custom_type_script = "uid://oma4qvx1pxtp"
+
+[sub_resource type="Resource" id="Resource_7sju5"]
+script = ExtResource("5_owqhf")
+trigger_type = 9
+threshold = 0.8
+apply_status = 1
+status_stacks = 2
+metadata/_custom_type_script = "uid://ufpc5mn8nmht"
+
+[resource]
+script = ExtResource("2_ft18o")
+id = "smolder"
+skill_name = "Smolder"
+icon = ExtResource("1_uoaqt")
+scalings = Array[ExtResource("1_i06xu")]([SubResource("Resource_owqhf"), SubResource("Resource_5st7d")])
+damage_element = 2
+triggers = Array[ExtResource("3_uoaqt")]([SubResource("Resource_7sju5")])
+metadata/_custom_type_script = "uid://dgjg1vlcvdtpi"

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://cn03d0jkiw6cq"]
+
+[ext_resource type="Resource" uid="uid://05kao1uja36n" path="res://definitions/skills/scorch.tres" id="1_as73l"]
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="1_s2tl2"]
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://assets/icon.svg" id="2_fublw"]
+
+[resource]
+script = ExtResource("1_s2tl2")
+default_skill = ExtResource("1_as73l")
+magic = 7.0
+status = 3.0
+magic_per_level = 1.0
+status_per_level = 0.5
+id = "ember_stuff"
+name = "Ember Stuff"
+description = "A charred staff that sets every target ablaze"
+icon = ExtResource("2_fublw")
+metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

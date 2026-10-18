@@ -5,35 +5,30 @@ signal status_tick(status: StatusEffect, damage: int)
 signal status_removed(status: StatusEffect)
 
 var active_statuses: Array[StatusEffect] = []
-
+const MAX_STACKS := 10
 
 ## Nakłada nowy status. Jeśli ten typ już istnieje:
 ## - Poison → dodaje stack (nie odświeża czasu)
 ## - Burn/Bleed → odświeża czas i bierze wyższy tick
+
+
+
+## Nakłada status. Jeśli ten typ już jest: dodaje stacki (do MAX_STACKS) i bierze wyższy tick.
 func apply_status(new_status: StatusEffect) -> void:
 	for existing in active_statuses:
 		if existing.status_type == new_status.status_type:
-			if new_status.status_type == GameEnums.StatusType.POISON:
-				existing.add_stack(new_status)
-				Log.print("Poison stack! Teraz %d stacków" % existing.stacks)
-			else:
-				existing.remaining_rounds = max(
-					existing.remaining_rounds,
-					new_status.remaining_rounds
-				)
-				existing.tick_damage = max(
-					existing.tick_damage,
-					new_status.tick_damage
-				)
+			existing.stacks = min(existing.stacks + new_status.stacks, MAX_STACKS)
+			existing.tick_damage = max(existing.tick_damage, new_status.tick_damage)
 			status_applied.emit(existing)
 			return
 
+	new_status.stacks = min(new_status.stacks, MAX_STACKS)
 	active_statuses.append(new_status)
 	status_applied.emit(new_status)
-	Log.print("Nałożono %s na %d rund (tick: %.1f)" % [
+	Log.print("Nałożono %s x%d (tick: %.1f)" % [
 		GameEnums.StatusType.keys()[new_status.status_type],
-		new_status.remaining_rounds,
-		new_status.get_total_tick_damage()
+		new_status.stacks,
+		new_status.tick_damage
 	])
 
 

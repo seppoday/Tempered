@@ -1,6 +1,5 @@
 [gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://6rolgcu38b88"]
 
-[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_egvoe"]
 [ext_resource type="Resource" uid="uid://c5htyq6mhco5i" path="res://definitions/skills/basic_strike.tres" id="2_igf4g"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="3_58kv1"]
 

@@ -128,23 +128,17 @@ func _create_status_from_trigger(trigger: SkillTriggerBase, item: ItemDefinition
 	var status_type := trigger.apply_status
 	var tick := 0.0
 	var initial := 0.0
-	var duration := 3
 	match status_type:
 		GameEnums.StatusType.BURN:
-			var stat_status := item.get_stat(GameEnums.Stat.STATUS, dice_level)
-			tick = stat_status * 0.4 * dice_roll
-			duration = 3 + int(floor(stat_status / 20.0))
+			tick = item.get_stat(GameEnums.Stat.STATUS, dice_level) * 0.4 * dice_roll
 		GameEnums.StatusType.POISON:
 			var stat_magic := item.get_stat(GameEnums.Stat.MAGIC, dice_level)
 			var stat_status := item.get_stat(GameEnums.Stat.STATUS, dice_level)
 			initial = stat_magic * 0.3 * dice_roll
 			tick = stat_status * 0.6 * dice_roll
-			duration = 4
 		GameEnums.StatusType.BLEED:
-			var stat_dmg := item.get_stat(GameEnums.Stat.DMG, dice_level)
-			tick = stat_dmg * 0.25
-			duration = 3
-	return StatusEffect.new(status_type, duration, tick, initial)
+			tick = item.get_stat(GameEnums.Stat.DMG, dice_level) * 0.25
+	return StatusEffect.new(status_type, trigger.status_stacks, tick, initial)
 
 
 func _tick_enemy_statuses() -> void:
@@ -241,21 +235,19 @@ func _pay_hp_cost(trigger: SkillTriggerBase) -> void:
 func _apply_trigger_status_to_enemy(trigger: SkillTriggerBase, item_def: ItemDefinition, rolled_face: int, dice_level: int = 0) -> void:
 	if current_enemy == null:
 		return
-	for _i in range(trigger.status_stacks):
-		var status := _create_status_from_trigger(trigger, item_def, rolled_face, dice_level)
-		if status.get_total_tick_damage() <= 0:
-			continue
-		current_enemy.status_manager.apply_status(status)
-		status_applied_to_enemy.emit(GameEnums.StatusType.keys()[status.status_type])
+	var status := _create_status_from_trigger(trigger, item_def, rolled_face, dice_level)
+	if status.tick_damage <= 0:
+		return
+	current_enemy.status_manager.apply_status(status)
+	status_applied_to_enemy.emit(GameEnums.StatusType.keys()[status.status_type])
 
 
 func _apply_trigger_status_to_player(trigger: SkillTriggerBase, enemy: EnemyInstance) -> void:
-	for _i in range(trigger.status_stacks):
-		var status := _create_status_from_enemy_trigger(trigger, enemy)
-		if status.get_total_tick_damage() <= 0:
-			continue
-		PlayerData.status_manager.apply_status(status)
-		status_applied_to_player.emit(GameEnums.StatusType.keys()[status.status_type])
+	var status := _create_status_from_enemy_trigger(trigger, enemy)
+	if status.tick_damage <= 0:
+		return
+	PlayerData.status_manager.apply_status(status)
+	status_applied_to_player.emit(GameEnums.StatusType.keys()[status.status_type])
 
 
 func _resolve_pre_hit_triggers(skill: SkillDefinition, item_def: ItemDefinition, context: Dictionary, base_value: float, dice_level: int = 0) -> Dictionary:
@@ -399,24 +391,18 @@ func _create_status_from_enemy_trigger(trigger: SkillTriggerBase, enemy: EnemyIn
 	var status_type := trigger.apply_status
 	var tick := 0.0
 	var initial := 0.0
-	var duration := 3
 	var enemy_stats := enemy.definition.get_total_stats()
 	match status_type:
 		GameEnums.StatusType.BURN:
-			var stat_status := _get_player_stat(enemy_stats, GameEnums.Stat.STATUS)
-			tick = stat_status * 0.4
-			duration = 3 + int(floor(stat_status / 20.0))
+			tick = _get_player_stat(enemy_stats, GameEnums.Stat.STATUS) * 0.4
 		GameEnums.StatusType.POISON:
 			var stat_magic := _get_player_stat(enemy_stats, GameEnums.Stat.MAGIC)
 			var stat_status := _get_player_stat(enemy_stats, GameEnums.Stat.STATUS)
 			initial = stat_magic * 0.3
 			tick = stat_status * 0.6
-			duration = 4
 		GameEnums.StatusType.BLEED:
-			var stat_dmg := _get_player_stat(enemy_stats, GameEnums.Stat.DMG)
-			tick = stat_dmg * 0.25
-			duration = 3
-	return StatusEffect.new(status_type, duration, tick, initial)
+			tick = _get_player_stat(enemy_stats, GameEnums.Stat.DMG) * 0.25
+	return StatusEffect.new(status_type, trigger.status_stacks, tick, initial)
 
 
 func _tick_player_statuses() -> void:

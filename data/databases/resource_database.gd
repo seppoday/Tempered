@@ -6,12 +6,12 @@ func load_folder(path: String, expected_type) -> void:
 	_scan_folder(path, expected_type)
 
 
-func _scan_folder(path: String, expected_type) -> void:	
+func _scan_folder(path: String, expected_type) -> void:
 	var dir := DirAccess.open(path)
 	if dir == null:
 		Log.print("Nie udało się otworzyć katalogu: ", path)
 		return
-	
+
 	dir.list_dir_begin()
 	var file_name = dir.get_next()
 
@@ -20,18 +20,19 @@ func _scan_folder(path: String, expected_type) -> void:
 
 		if dir.current_is_dir():
 			_scan_folder(full_path, expected_type)
-			pass
 		elif file_name.ends_with(".tres"):
+			Log.print("ResourceDatabase: ładuję ", full_path)
 			var resource := load(full_path)
-			if is_instance_of(resource, expected_type):
+			if resource == null:
+				Log.warning("ResourceDatabase: nie udało się wczytać: ", full_path)
+			elif is_instance_of(resource, expected_type):
 				if _entries.has(resource.id):
 					Log.print("UWAGA: Duplikat Resource o ID: ", resource.id, " w pliku: ", full_path)
 				else:
 					_entries[resource.id] = resource
 			else:
 				Log.print("Plik nie jest oczekiwanym typem: ", full_path)
-			pass
-		
+
 		file_name = dir.get_next()
 
 func get_entry(id: String) -> Resource:

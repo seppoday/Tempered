@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://c3utrov610idh"]
+
+[ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="1_2rnnd"]
+[ext_resource type="Texture2D" uid="uid://diogvek57s22k" path="res://assets/icon.svg" id="1_25lhr"]
+[ext_resource type="Resource" uid="uid://cdfapwvdqpq3i" path="res://definitions/skills/smolder.tres" id="1_td0cs"]
+
+[resource]
+script = ExtResource("1_2rnnd")
+slot = 5
+default_skill = ExtResource("1_td0cs")
+magic = 4.0
+vit = 2.0
+status = 3.0
+magic_per_level = 1.0
+vit_per_level = 1.0
+status_per_level = 0.5
+id = "cinder_amulet"
+name = "Cinder Amulet"
+description = "Smoldering embers that ignite on a strong roll"
+icon = ExtResource("1_25lhr")
+metadata/_custom_type_script = "uid://c8gwocrlh6aa7"

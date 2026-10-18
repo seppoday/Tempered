@@ -27,6 +27,11 @@ signal toggled(card: PanelContainer, is_selected: bool)
 @onready var scaling_label: Label = %ScalingLabel
 @onready var effect_overlay: ColorRect = %EffectOverlay
 
+@onready var effects_box: VBoxContainer = %EffectsBox
+
+const EFFECT_DIM_ALPHA := 0.4
+const EFFECT_COLOR_DRAWBACK := Color(1.0, 0.5, 0.45)
+
 var is_selected: bool = false
 var is_hovering: bool = false
 var is_locked: bool = false
@@ -89,9 +94,9 @@ func _update_editor_preview() -> void:
 		mat.set_shader_parameter("locked_intensity", 1.0 if podglad_locked else 0.0)
 
 
-func setup(skill: SkillDefinition, face: int, max_face: int, effect_value: float, item: ItemDefinition = null) -> void:
+func setup(skill: SkillDefinition, face: int, max_face: int, effect_value: float, item: ItemDefinition = null, dice_level: int = 0) -> void:
 	if Engine.is_editor_hint(): return
-	
+
 	icon.texture = skill.icon
 	skill_name_label.text = skill.skill_name
 	roll_detail_label.text = "%d" % face
@@ -112,75 +117,94 @@ func setup(skill: SkillDefinition, face: int, max_face: int, effect_value: float
 	var element_color: Color = ELEMENT_COLORS.get(skill.damage_element, Color.WHITE)
 	roll_detail_label.add_theme_color_override("font_color", element_color)
 
-	# ── NOWE: krótki opis skalowania ──
-	scaling_label.text = _build_scaling_text(skill, item)
+	_build_effect_lines(skill, face, max_face, item, dice_level)
 
 
-## Buduje krótki opis skąd bierze się wartość skilla
-func _build_scaling_text(skill: SkillDefinition, item: ItemDefinition) -> String:
-	var parts: Array[String] = []
+## Jedna linia na trigger: "warunek → efekt". Nietrafione warunki są przyciemnione.
+func _build_effect_lines(skill: SkillDefinition, face: int, max_face: int, item: ItemDefinition, dice_level: int) -> void:
+	for child in effects_box.get_children():
+		child.queue_free()
 
-	# 1. Scaling po statach: "DMG×1.0 • STATUS×0.2"
-	for scaling in skill.scalings:
-		var stat_name: String = GameEnums.Stat.keys()[scaling.stat]
-		parts.append("%s×%s" % [stat_name, _fmt(scaling.weight)])
-
-	# 2. Multi-hit (bonus_hits_per_stat)
-	if skill.bonus_hits_per_stat != null:
-		var hit_stat: String = GameEnums.Stat.keys()[skill.bonus_hits_per_stat.stat]
-		parts.append("+hity: %s" % hit_stat)
-
-	# 3. Trigger (podpowiedź, że coś się odpali)
+	var context := CombatManager.build_trigger_context(face, max_face)
 	for trigger in skill.triggers:
-		var hint := _get_trigger_hint(trigger)
-		if hint != "":
-			parts.append(hint)
+		if trigger == null:
+			continue
+		var text := _get_trigger_hint(trigger, item, face, dice_level)
+		if text == "":
+			continue
 
-	return " • ".join(parts)
+		var line: Label = scaling_label.duplicate()   # styl bierzemy z ukrytego ScalingLabel
+		line.visible = true
+		line.text = text
+		if _is_drawback(trigger):
+			line.add_theme_color_override("font_color", EFFECT_COLOR_DRAWBACK)
+		if not CombatManager._trigger_condition_met(trigger, context, false):
+			line.modulate.a = EFFECT_DIM_ALPHA
+		effects_box.add_child(line)
 
 
-## Krótka podpowiedź dla triggera, łączy status (jeśli jest) z efektem specyficznym dla podklasy.
-func _get_trigger_hint(trigger: SkillTriggerBase) -> String:
+func _is_drawback(trigger: SkillTriggerBase) -> bool:
+	if trigger.hp_cost > 0.0 or trigger is ReduceNextPicksTrigger:
+		return true
+	return trigger is ChanceTrigger and trigger.inner_trigger is ReduceNextPicksTrigger
+
+
+## "warunek → efekt + status + koszt"; bez warunku (ON_HIT) samo "→ efekt".
+func _get_trigger_hint(trigger: SkillTriggerBase, item: ItemDefinition, face: int, dice_level: int) -> String:
 	var parts: Array[String] = []
 
 	var effect_desc := trigger.get_effect_description()
 	if effect_desc != "":
 		parts.append(effect_desc)
-
 	if trigger.apply_status != GameEnums.StatusType.NONE:
-		var status_str: String = GameEnums.StatusType.keys()[trigger.apply_status].capitalize()
-		if trigger.status_stacks > 1:
-			status_str += "×%d" % trigger.status_stacks
-		parts.append(status_str)
-
+		parts.append(_get_status_text(trigger, item, face, dice_level))
+	if trigger.hp_cost > 0.0:
+		parts.append("-%d HP" % int(round(trigger.hp_cost)))
 	if parts.is_empty():
 		return ""
 
 	var effect_str := " + ".join(parts)
+	var condition := _get_condition_text(trigger)
+	return "→ %s" % effect_str if condition == "" else "%s → %s" % [condition, effect_str]
 
+
+func _get_status_text(trigger: SkillTriggerBase, item: ItemDefinition, face: int, dice_level: int) -> String:
+	var status_name: String = GameEnums.StatusType.keys()[trigger.apply_status].capitalize()
+	var text := "%s ×%d" % [status_name, trigger.status_stacks]
+	if item != null:
+		# Stack = runda: obrażenia to tick × s + tick × (s-1) + ... + tick × 1.
+		var status: StatusEffect = CombatManager._create_status_from_trigger(trigger, item, face, dice_level)
+		var total := int(round(status.tick_damage * status.stacks * (status.stacks + 1) / 2.0))
+		if total > 0:
+			text += " (%d dmg)" % total
+	return text
+
+
+func _get_condition_text(trigger: SkillTriggerBase) -> String:
 	match trigger.trigger_type:
-		GameEnums.TriggerType.ON_HIT:
-			return "→ %s" % effect_str
 		GameEnums.TriggerType.ON_ROLL_AT_LEAST:
-			return "Roll≥%d → %s" % [trigger.threshold, effect_str]
+			return "Roll≥%d" % trigger.threshold
 		GameEnums.TriggerType.ON_ROLL_AT_MOST:
-			return "Roll≤%d → %s" % [trigger.threshold, effect_str]
+			return "Roll≤%d" % trigger.threshold
 		GameEnums.TriggerType.ON_MAX_ROLL:
-			return "Max Roll → %s" % effect_str
+			return "Max Roll"
 		GameEnums.TriggerType.ON_LOW_ROLL:
-			return "Low Roll → %s" % effect_str
+			return "Low Roll"
 		GameEnums.TriggerType.ON_KILL:
-			return "On Kill → %s" % effect_str
+			return "On Kill"
 		GameEnums.TriggerType.ON_TARGET_STATUS:
-			return "Target Status → %s" % effect_str
+			var names: Array[String] = []
+			for s in trigger.required_target_statuses:
+				names.append(GameEnums.StatusType.keys()[s].capitalize())
+			return "vs %s" % "/".join(names) if not names.is_empty() else "Target Status"
 		GameEnums.TriggerType.ON_SELF_HP_BELOW:
-			return "Below %d%% HP → %s" % [int(trigger.threshold * 100), effect_str]
+			return "Below %d%% HP" % int(trigger.threshold * 100)
 		GameEnums.TriggerType.ON_TARGET_HP_BELOW:
-			return "Target Below %d%% HP → %s" % [int(trigger.threshold * 100), effect_str]
+			return "Target <%d%% HP" % int(trigger.threshold * 100)
 		GameEnums.TriggerType.ON_ROLL_PERCENT_AT_LEAST:
-			return "Top %d%% → %s" % [int(round((1.0 - trigger.threshold) * 100.0)), effect_str]
+			return "Top %d%%" % int(round((1.0 - trigger.threshold) * 100.0))
 		GameEnums.TriggerType.ON_ROLL_PERCENT_AT_MOST:
-			return "Bottom %d%% → %s" % [int(round(trigger.threshold * 100.0)), effect_str]
+			return "Bottom %d%%" % int(round(trigger.threshold * 100.0))
 	return ""
 
 
@@ -208,13 +232,6 @@ func play_strike_animation() -> void:
 	tween.parallel().tween_property(self, "modulate", Color.WHITE, 0.12)
 
 	await tween.finished
-
-
-## Formatuje liczbę: 1.0 → "1", 0.25 → "0.25"
-func _fmt(value: float) -> String:
-	if is_equal_approx(value, round(value)):
-		return "%d" % int(value)
-	return "%.2f" % value
 
 
 func _gui_input(event: InputEvent) -> void:

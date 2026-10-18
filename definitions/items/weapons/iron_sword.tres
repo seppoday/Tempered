@@ -1,6 +1,5 @@
 [gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://dk71jywyh32lp"]
 
-[ext_resource type="Script" uid="uid://cint7quw6fy51" path="res://scripts/gameplay/item_affinity.gd" id="1_keopn"]
 [ext_resource type="Script" uid="uid://c8gwocrlh6aa7" path="res://data/definitions_patterns/item_definition.gd" id="2_3fu4x"]
 [ext_resource type="Resource" uid="uid://c5htyq6mhco5i" path="res://definitions/skills/basic_strike.tres" id="2_6kxcf"]
 [ext_resource type="Texture2D" uid="uid://crr54t24bj0s5" path="res://assets/items/Long_Sword_item_HD.webp" id="3_6kxcf"]

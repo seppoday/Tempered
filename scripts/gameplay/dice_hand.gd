@@ -45,13 +45,10 @@ func has_selection() -> bool:
 
 
 func confirm_selection() -> Array[Dictionary]:
-	# Sortujemy wybrane tagi od lewej do prawej
-	selected_tags.sort_custom(func(a, b): return a.position.x < b.position.x)
-
 	# Filtrujemy tylko instancje, które wciąż istnieją
 	resolving_tags = selected_tags.filter(func(tag): return is_instance_valid(tag))
 
-	# ✅ NOWE: Reset indeksu hitu
+	# Reset indeksu hitu
 	current_hit_index = 0
 
 	var selected_results: Array[Dictionary] = []
@@ -83,7 +80,15 @@ func reset_for_new_roll() -> void:
 func _update_picks_label() -> void:
 	var limit := current_picks_limit
 	var chosen := selected_tags.size()
-	picks_label.text = "Wybierz %d/%d" % [chosen, limit]
+	var text := "Wybierz %d/%d" % [chosen, limit]
+	if chosen > 0:
+		var names := PackedStringArray()
+		for tag in selected_tags:
+			var i := active_tags.find(tag)
+			if i != -1:
+				names.append(pending_results[i]["skill"].skill_name)
+		text += "  (%s)" % " → ".join(names)
+	picks_label.text = text
 	
 
 # --- OBSŁUGA SYGNAŁÓW I EVENTÓW ---
@@ -166,13 +171,20 @@ func _reveal_results_domino() -> void:
 	picks_label.show()
 	_update_picks_label()
 
-	# Najpierw ustawiamy teksty, żeby tagi dostały finalny rozmiar
+	# Najpierw ustawiamy teksty, żeby tagi dostały finalny rozmiar.
+	# Ukryty Control nie liczy layoutu, więc pokazujemy go niewidocznego i poza ekranem
+	# (nie da się go wtedy kliknąć) — pop_in niżej ustawi position, alpha i skalę od nowa.
 	for i in active_tags.size():
 		var tag = active_tags[i]
 		if is_instance_valid(tag):
 			_setup_tag_from_result(tag, pending_results[i])
+			tag.modulate.a = 0.0
+			tag.position = Vector2(-10000.0, -10000.0)
+			tag.show()
 
-	# Jedna klatka na przeliczenie layoutu (poprawny size => pivot i wyśrodkowanie)
+	# Dwie klatki: pierwsza sortuje kontenery, druga przelicza wysokość zawijanych
+	# (autowrap) linii efektów — dopiero wtedy size jest finalny (pivot i wyśrodkowanie).
+	await get_tree().process_frame
 	await get_tree().process_frame
 
 	var target_positions = _calculate_centered_positions(active_tags, SPACING_X)
