@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d3l2j2u2xebjv"]
 
 [ext_resource type="Theme" uid="uid://blbtetk1ea1b3" path="res://themes/tooltip_theme.tres" id="1_ly8fp"]
-[ext_resource type="Script" uid="uid://cct67fc0pu5hd" path="res://scripts/ui/inventory_tooltip.gd" id="2_ao8ps"]
+[ext_resource type="Script" uid="uid://cct67fc0pu5hd" path="res://scripts/UI/inventory_tooltip.gd" id="2_ao8ps"]
 
 [node name="InventoryTooltip" type="PanelContainer" unique_id=1611436189]
 custom_minimum_size = Vector2(700, 0)

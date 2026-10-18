@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bbkjtosvst7i2"]
 
-[ext_resource type="Script" uid="uid://ceksib7lxfweo" path="res://scripts/ui/reward_tag.gd" id="1_cd3re"]
+[ext_resource type="Script" uid="uid://ceksib7lxfweo" path="res://scripts/UI/reward_tag.gd" id="1_cd3re"]
 [ext_resource type="Texture2D" uid="uid://1f8lt201861u" path="res://assets/icons/test.png" id="2_txbqc"]
 [ext_resource type="Shader" uid="uid://0oxx6d0b4k3s" path="res://shaders/dice_tag_effect.gdshader" id="5_ufewc"]
 

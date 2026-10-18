@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ci7hkfppg4w4g"]
 
-[ext_resource type="Script" uid="uid://dwot41dfwrit5" path="res://scripts/ui/tooltip/stat_row.gd" id="1_2nmun"]
+[ext_resource type="Script" uid="uid://dwot41dfwrit5" path="res://scripts/UI/tooltip/stat_row.gd" id="1_2nmun"]
 
 [node name="StatRow" type="HBoxContainer" unique_id=1873164032]
 offset_right = 40.0
